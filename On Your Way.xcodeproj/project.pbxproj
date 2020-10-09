@@ -42,6 +42,8 @@
 		834C98C125312C5700BE8691 /* chat.json in Resources */ = {isa = PBXBuildFile; fileRef = 834C98AD25312C5700BE8691 /* chat.json */; };
 		834C98C225312C5700BE8691 /* wearMask.json in Resources */ = {isa = PBXBuildFile; fileRef = 834C98AE25312C5700BE8691 /* wearMask.json */; };
 		834C98C325312C5700BE8691 /* wash_your_hands_regularly.json in Resources */ = {isa = PBXBuildFile; fileRef = 834C98AF25312C5700BE8691 /* wash_your_hands_regularly.json */; };
+		834C98C625312E3900BE8691 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98C525312E3900BE8691 /* User.swift */; };
+		834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98C92531309300BE8691 /* FirebaseUserListener.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +86,8 @@
 		834C98AD25312C5700BE8691 /* chat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chat.json; sourceTree = "<group>"; };
 		834C98AE25312C5700BE8691 /* wearMask.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wearMask.json; sourceTree = "<group>"; };
 		834C98AF25312C5700BE8691 /* wash_your_hands_regularly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wash_your_hands_regularly.json; sourceTree = "<group>"; };
+		834C98C525312E3900BE8691 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		834C98C92531309300BE8691 /* FirebaseUserListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserListener.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,10 +139,11 @@
 				834C989B25312C3000BE8691 /* JSON files */,
 				834C98742531227D00BE8691 /* Constants.swift */,
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
-				834C989625312BC100BE8691 /* Extension */,
+				834C98C82531308200BE8691 /* Firebase helpers */,
 				834C988E25312B2700BE8691 /* Auth Controller arch */,
 				834C9883253128E700BE8691 /* View Controllers arch */,
 				834C98772531234600BE8691 /* Model */,
+				834C989625312BC100BE8691 /* Extension */,
 				834C982425311CCE00BE8691 /* Assets.xcassets */,
 				834C982625311CCE00BE8691 /* LaunchScreen.storyboard */,
 				834C986F25311EAD00BE8691 /* GoogleService-Info.plist */,
@@ -150,6 +155,7 @@
 		834C98772531234600BE8691 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				834C98C525312E3900BE8691 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -207,6 +213,14 @@
 				834C98A325312C5700BE8691 /* width_measure_tape.json */,
 			);
 			path = "JSON files";
+			sourceTree = "<group>";
+		};
+		834C98C82531308200BE8691 /* Firebase helpers */ = {
+			isa = PBXGroup;
+			children = (
+				834C98C92531309300BE8691 /* FirebaseUserListener.swift */,
+			);
+			path = "Firebase helpers";
 			sourceTree = "<group>";
 		};
 		9972412D674DDD21CF23548C /* Frameworks */ = {
@@ -377,9 +391,11 @@
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C98752531227D00BE8691 /* Constants.swift in Sources */,
+				834C98C625312E3900BE8691 /* User.swift in Sources */,
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
 				834C988B25312A7600BE8691 /* ProfileController.swift in Sources */,
+				834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
