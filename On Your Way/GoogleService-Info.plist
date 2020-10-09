@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>356643909360-lh865p9l9qejuntbi2jn91036k32h185.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.356643909360-lh865p9l9qejuntbi2jn91036k32h185</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB8mFAWB4EcCG3-cvpeXerOSx5h9fboPMk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>356643909360</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ARMobileApps.org.On-Your-Way</string>
+	<key>PROJECT_ID</key>
+	<string>onyourwayappios</string>
+	<key>STORAGE_BUCKET</key>
+	<string>onyourwayappios.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:356643909360:ios:0d335ceb985e28501cdc35</string>
+	<key>DATABASE_URL</key>
+	<string>https://onyourwayappios.firebaseio.com</string>
+</dict>
+</plist>
