@@ -19,6 +19,28 @@ class TripsTimelineController: UIViewController {
         
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        configureTapBarController()
+    }
+    
+    
+    func configureTapBarController(){
+        let newTripController = NewTripController()
+        newTripController.delegate = self
+        newTripController.popupItem.title = "Design your trip"
+        newTripController.popupBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        newTripController.popupItem.subtitle = "show people what packages you can take"
+        newTripController.popupItem.progress = 0.34
+        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
+        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
+        tabBarController?.presentPopupBar(withContentViewController: newTripController, animated: true, completion: nil)
+    }
+    
     
     func configureUI(){
         
@@ -50,4 +72,14 @@ class TripsTimelineController: UIViewController {
         }
     }
     
+}
+
+extension TripsTimelineController: NewTripControllerDelegate {
+    func dismissNewTripView(_ view: NewTripController) {
+        tabBarController?.closePopup(animated: true, completion: { [self] in
+            let safetyControllerGuidelines = SafetyControllerGuidelines()
+            safetyControllerGuidelines.modalPresentationStyle = .custom
+            present(safetyControllerGuidelines, animated: true, completion: nil)
+        })
+    }
 }

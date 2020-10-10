@@ -311,6 +311,35 @@ extension UIViewController {
     
 }
 
+extension UIColor {
+    
+    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
+    }
+    ///for background UIView
+    static let backgroundGreen = UIColor.rgb(red: 206, green: 228, blue: 228)
+    ///for images / icons
+    static let greenIcon = UIColor.rgb(red: 74, green: 150, blue: 149)
+    ///for fonts
+    static let fontGreen = UIColor.rgb(red: 182, green: 203, blue: 203)
+    
+    ///for background UIView
+    static let blueLightBackground = UIColor.rgb(red: 232, green: 229, blue: 243)
+    ///for fonts
+    static let blueLightFont = UIColor.rgb(red: 205, green: 202, blue: 223)
+    ///for images / icons
+    static let blueLightIcon = UIColor.rgb(red: 64, green: 65, blue: 113)
+    
+    ///for background UIView
+    static let redBackground = UIColor.rgb(red: 188, green: 159, blue: 161)
+    ///for fonts
+    static let redFont = UIColor.rgb(red: 252, green: 56, blue: 48)
+    ///for images / icons
+    static let redIcon = UIColor.rgb(red: 254, green: 224, blue: 220)
+    
+}
+
+
 extension UINavigationController {
 
     func setStatusBar(backgroundColor: UIColor) {
@@ -623,16 +652,6 @@ extension MKPlacemark {
             return "\(subThroughFare) \(thoroughfare) , \(locality), \(adminArea)"
         }
     }
-}
-
-
-
-extension UIColor {
-    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
-    }
-    
-    static let twitterBlue = UIColor.rgb(red: 29, green: 161, blue: 242)
 }
 
 extension UINavigationController {
