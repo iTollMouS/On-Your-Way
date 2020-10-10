@@ -16,12 +16,23 @@ class TripsTimelineController: UIViewController {
         
         checkIfUserLoggedIn()
         configureUI()
+        
     }
     
     
     func configureUI(){
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         
+    }
+    
+    func logout(){
+        do {
+            try Auth.auth().signOut()
+            presentLoggingController()
+            self.tabBarController?.selectedIndex = 0
+        } catch (let error){
+            print("DEBUG: error happen while logging out \(error.localizedDescription)")
+        }
     }
     
     

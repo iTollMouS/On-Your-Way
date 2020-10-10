@@ -98,7 +98,7 @@ class LoginController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setHeight(height: 50)
         button.layer.cornerRadius = 50 / 2
-        button.backgroundColor = #colorLiteral(red: 0.7803921569, green: 0.662745098, blue: 0.5490196078, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.7176470588, green: 0.4862745098, blue: 0.2941176471, alpha: 1)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(handleLoggingWithPhoneNumber), for: .touchUpInside)
         return button
@@ -137,6 +137,7 @@ class LoginController: UIViewController {
         configureUI()
         configureGoogleSignIn()
         textFieldObservance()
+        self.hideKeyboardWhenTouchOutsideTextField()
         
     }
     
@@ -199,7 +200,18 @@ class LoginController: UIViewController {
     @objc func handleLoggingWithPhoneNumber(){
         let phoneLoginController = PhoneLoginController()
         phoneLoginController.modalPresentationStyle = .custom
+        phoneLoginController.delegate = self
         present(phoneLoginController, animated: true, completion: nil)
+    }
+    
+    
+}
+
+extension LoginController: PhoneLoginControllerDelegate {
+    func handlePhoneControllerDismissal(_ view: PhoneLoginController) {
+        view.dismiss(animated: true) { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
     }
     
     

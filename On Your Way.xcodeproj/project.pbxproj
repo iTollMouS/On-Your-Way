@@ -48,6 +48,7 @@
 		834C98D2253193D800BE8691 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98D1253193D800BE8691 /* CustomTextField.swift */; };
 		834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */; };
 		834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */; };
+		834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98E32531D0F800BE8691 /* AuthServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +97,7 @@
 		834C98D1253193D800BE8691 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginController.swift; sourceTree = "<group>"; };
 		834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOPTTextField.swift; sourceTree = "<group>"; };
+		834C98E32531D0F800BE8691 /* AuthServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServices.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -238,6 +240,7 @@
 		834C98D92531A98200BE8691 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				834C98E32531D0F800BE8691 /* AuthServices.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
 				834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */,
 				834C988B25312A7600BE8691 /* ProfileController.swift in Sources */,
+				834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */,
 				834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */,
 				834C98D2253193D800BE8691 /* CustomTextField.swift in Sources */,
 			);

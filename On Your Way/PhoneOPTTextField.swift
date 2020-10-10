@@ -71,8 +71,9 @@ class PhoneOPTTextField: UITextField {
             label.setDimensions(height: 50, width: 50)
             label.layer.cornerRadius = 50 / 2
             label.text = defaultCharacter
+            label.textColor = .white
             label.clipsToBounds = true
-            label.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+            label.backgroundColor = .clear
             label.isUserInteractionEnabled = true
             stackView.addArrangedSubview(label)
             digitsLabel.append(label)
@@ -91,11 +92,10 @@ class PhoneOPTTextField: UITextField {
                 currentLabel.text = String(text[index])
             } else {
                 currentLabel.text = defaultCharacter
-                
             }
         }
         
-        if text.count == digitsLabel.count {  didEnterLastDigit?(text) }
+        if text.count == digitsLabel.count { didEnterLastDigit?(text) }
         
     }
     

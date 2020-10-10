@@ -10,6 +10,8 @@ import SystemConfiguration
 import MapKit
 import AudioToolbox
 import Photos
+import JGProgressHUD
+import Loaf
 
 public struct AnchoredConstraints {
     public var top, leading, bottom, trailing, width, height: NSLayoutConstraint?
@@ -166,7 +168,7 @@ extension UIColor {
 extension UIViewController {
     
     func showAlertMessage( _ title: String? ,_ message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
@@ -238,31 +240,31 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    //
-    //    // show a success / warning / failed  banner when an event happens
-    //    static let banner = Loaf.self
-    //
-    //    func showBanner(message: String, state: Loaf.State,
-    //                    location: Loaf.Location, presentingDirection: Loaf.Direction,
-    //                    dismissingDirection: Loaf.Direction, sender: UIViewController) {
-    //        UIViewController.banner.init(message, state: state,
-    //                                     location: location, presentingDirection: presentingDirection,
-    //                                     dismissingDirection: dismissingDirection, sender: sender).show()
-    //    }
-    //
-    //    // show indicator for an event
-    //    static let hud = JGProgressHUD(style: .dark)
-    //    func showLoader(_ show: Bool, message: String? = nil) {
-    //        view.endEditing(true)
-    //
-    //        if show {
-    //            UIViewController.hud.textLabel.text = message
-    //            UIViewController.hud.show(in: view)
-    //        } else {
-    //            UIViewController.hud.textLabel.text = message
-    //            UIViewController.hud.dismiss()
-    //        }
-    //    }
+    
+        // show a success / warning / failed  banner when an event happens
+        static let banner = Loaf.self
+    
+        func showBanner(message: String, state: Loaf.State,
+                        location: Loaf.Location, presentingDirection: Loaf.Direction,
+                        dismissingDirection: Loaf.Direction, sender: UIViewController) {
+            UIViewController.banner.init(message, state: state,
+                                         location: location, presentingDirection: presentingDirection,
+                                         dismissingDirection: dismissingDirection, sender: sender).show()
+        }
+    
+        // show indicator for an event
+        static let hud = JGProgressHUD(style: .dark)
+        func showLoader(_ show: Bool, message: String? = nil) {
+            view.endEditing(true)
+    
+            if show {
+                UIViewController.hud.textLabel.text = message
+                UIViewController.hud.show(in: view)
+            } else {
+                UIViewController.hud.textLabel.text = message
+                UIViewController.hud.dismiss()
+            }
+        }
     
     
     // check if the user is connecting to the internet
