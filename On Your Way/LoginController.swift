@@ -28,7 +28,7 @@ class LoginController: UIViewController {
     
     private lazy var loggingButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Log in", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
         button.setHeight(height: 50)
         button.alpha = 0
@@ -46,7 +46,7 @@ class LoginController: UIViewController {
         label.font = .boldSystemFont(ofSize: 14)
         label.textAlignment = .center
         label.backgroundColor = .clear
-        label.text = "OR\nlog in with other services "
+        label.text = "OR\nlogin with other services "
         label.numberOfLines = 0
         return label
     }()
@@ -66,6 +66,21 @@ class LoginController: UIViewController {
     
     
     // MARK: - Logging Buttons
+    
+    private lazy var browsAnonymousButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("  Brows as anonymous", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
+        button.setHeight(height: 50)
+        button.tintColor = .white
+        button.setImage(UIImage(systemName: "eyes.inverse"), for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.layer.cornerRadius = 50 / 2
+        button.backgroundColor = #colorLiteral(red: 0.2588235294, green: 0.2588235294, blue: 0.2588235294, alpha: 1)
+        button.addTarget(self, action: #selector(handleAnonymousMode), for: .touchUpInside)
+        return button
+    }()
+    
     private let googleLoginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "btn_google_light_pressed_ios").withRenderingMode(.alwaysOriginal) , for: .normal)
@@ -111,7 +126,8 @@ class LoginController: UIViewController {
                                                        orLabel,
                                                        signWithAppleID,
                                                        googleLoginButton,
-                                                       phoneNumberLogging])
+                                                       phoneNumberLogging,
+                                                       browsAnonymousButton])
         stackView.axis = .vertical
         stackView.spacing = 12
         stackView.distribution = .fillEqually
@@ -128,6 +144,7 @@ class LoginController: UIViewController {
                                                                      .font : UIFont.boldSystemFont(ofSize: 20)]))
         button.setAttributedTitle(attributedText, for: .normal)
         button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(handleRegisterPressed), for: .touchUpInside)
         return button
     }()
     
@@ -141,13 +158,16 @@ class LoginController: UIViewController {
         
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .darkContent
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .default : .lightContent
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.isHidden = true
+        setNeedsStatusBarAppearanceUpdate()
+        
     }
     
     
@@ -193,15 +213,28 @@ class LoginController: UIViewController {
     
     
     // MARK: - Actions
-    @objc func handleLogin(){
+    
+    @objc private func handleAnonymousMode(){
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func handleLogin(){
         print("DEBUG: button is pressed")
     }
     
-    @objc func handleLoggingWithPhoneNumber(){
+    @objc private func handleLoggingWithPhoneNumber(){
         let phoneLoginController = PhoneLoginController()
         phoneLoginController.modalPresentationStyle = .custom
         phoneLoginController.delegate = self
         present(phoneLoginController, animated: true, completion: nil)
+    }
+    
+    @objc private func handleRegisterPressed(){
+        
+        let registrationController = RegistrationController()
+        registrationController.modalPresentationStyle = .custom
+        present(registrationController, animated: true, completion: nil)
+        
     }
     
     
@@ -241,7 +274,7 @@ extension LoginController: GIDSignInDelegate {
                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                             sender: self)
         }
-
+        
         AuthServices.shared.registerUserWithGoogle(didSignInfo: user) { error in
             if let error = error {
                 self.showAlertMessage( nil ,error.localizedDescription)
