@@ -51,18 +51,18 @@ class LoginController: UIViewController {
         return label
     }()
     
-    private lazy var emailTextField = CustomTextField(textColor: .white, placeholder: "example@example.com",
-                                                      placeholderColor: .white, placeholderAlpa: 0.9, isSecure: false)
+    private lazy var emailTextField = CustomTextField(textColor: .black, placeholder: "example@example.com",
+                                                      placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: false)
     
     private lazy var emailContainerView = CustomContainerView(image: UIImage(systemName: "envelope"), textField: emailTextField,
-                                                              iconTintColor: .white, dividerViewColor: .clear, dividerAlpa: 0.0,
-                                                              setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.3))
+                                                              iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
+                                                              setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
     
-    private lazy var passwordTextField = CustomTextField(textColor: .white, placeholder: "**********",
-                                                         placeholderColor: .white, placeholderAlpa: 0.9, isSecure: true)
+    private lazy var passwordTextField = CustomTextField(textColor: .black, placeholder: "**********",
+                                                         placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: true)
     private lazy var passwordContainerView = CustomContainerView(image: UIImage(systemName: "lock"), textField: passwordTextField,
-                                                                 iconTintColor: .white, dividerViewColor: .clear, dividerAlpa: 0.0,
-                                                                 setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.3))
+                                                                 iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
+                                                                 setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
     
     
     // MARK: - Logging Buttons
@@ -231,28 +231,32 @@ extension LoginController: GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         guard let user = user else { return }
-        //        self.showBlurView()
-        //        self.showLoader(true, message: "Please wait while we create account for you...")
-        //
-        //        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
-        //            self.removeBlurView()
-        //            self.showLoader(false)
-        //            self.showBanner(message: "Successfully created account with Google account", state: .success,
-        //                            location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
-        //                            sender: self)
-        //        }
-        //        AuthService.signInWithGoogle(didSignInfo: user) { (error) in
-        //            if let error = error {
-        //                self.showAlertMessage( nil ,error.localizedDescription)
-        //                return
-        //            }
-        //            self.removeBlurView()
-        //            self.showLoader(false)
-        //        }
+        self.showBlurView()
+        self.showLoader(true, message: "Please wait while we create account for you...")
+        
+        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+            self.removeBlurView()
+            self.showLoader(false)
+            self.showBanner(message: "Successfully created account with Google account", state: .success,
+                            location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                            sender: self)
+        }
+
+        AuthServices.shared.registerUserWithGoogle(didSignInfo: user) { error in
+            if let error = error {
+                self.showAlertMessage( nil ,error.localizedDescription)
+                return
+            }
+            print("DEBUG: user id \(user.userID)")
+            
+            self.removeBlurView()
+            self.showLoader(false)
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        
     }
 }
-
-
 
 extension LoginController {
     

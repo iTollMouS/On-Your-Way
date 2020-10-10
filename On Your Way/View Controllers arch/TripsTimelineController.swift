@@ -21,6 +21,7 @@ class TripsTimelineController: UIViewController {
     
     
     func configureUI(){
+        
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         
     }
@@ -39,7 +40,6 @@ class TripsTimelineController: UIViewController {
     func checkIfUserLoggedIn(){
         Auth.auth().currentUser?.uid == nil ? presentLoggingController() : print("")
     }
-    
     
     func presentLoggingController(){
         DispatchQueue.main.async { [self] in

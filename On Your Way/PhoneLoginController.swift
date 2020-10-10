@@ -41,7 +41,7 @@ class PhoneLoginController: UIViewController {
         button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
         button.setDimensions(height: 50, width: 50)
         button.layer.cornerRadius = 50 / 2
-        button.backgroundColor = UIColor.systemRed.withAlphaComponent(0.6)
+        button.backgroundColor = UIColor.systemRed.withAlphaComponent(0.4)
         button.tintColor = .white
         button.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
         return button
