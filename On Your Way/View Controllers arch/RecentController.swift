@@ -15,6 +15,11 @@ class RecentController: UIViewController {
         view.backgroundColor = .blue
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        tabBarController?.dismissPopupBar(animated: true, completion: nil)
+    }
+    
 
 
 }

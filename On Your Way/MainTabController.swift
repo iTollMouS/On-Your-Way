@@ -35,20 +35,20 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar, recentControllerNavBar, profileControllerNavBar]
     }
     
-    //    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-    //        let index = viewControllers?.firstIndex(of: viewController)
-    //        if index == 2 {
-    //            let notificationsController = MessagesController()
-    //            let navController = UINavigationController(rootViewController: notificationsController)
-    //            navController.modalPresentationStyle = .fullScreen
-    //            navController.navigationBar.barStyle = .black
-    //            navController.navigationBar.isTranslucent = true
-    //            present(navController, animated: true, completion: nil)
-    //            return false
-    //        }
-    //
-    //        return true
-    //    }
+        func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+            let index = viewControllers?.firstIndex(of: viewController)
+            if index == 2 {
+                let recentController = RecentController()
+                let navController = UINavigationController(rootViewController: recentController)
+                navController.modalPresentationStyle = .fullScreen
+                navController.navigationBar.barStyle = .black
+                navController.navigationBar.isTranslucent = true
+                present(navController, animated: true, completion: nil)
+                return false
+            }
+    
+            return true
+        }
     
     
     func templateNavController(image: UIImage, rootViewController: UIViewController, tabBarItemTitle: String) -> UINavigationController {

@@ -49,7 +49,39 @@
 		834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */; };
 		834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */; };
 		834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98E32531D0F800BE8691 /* AuthServices.swift */; };
+		834C98F02532304600BE8691 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; };
+		834C98F12532304600BE8691 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		834C98F42532307E00BE8691 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98F32532307E00BE8691 /* LNPopupController.framework */; };
+		834C98F52532307E00BE8691 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98F32532307E00BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98F7253231DF00BE8691 /* SafetyControllerGuidelines.swift */; };
+		834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98F8253231DF00BE8691 /* SafetyFooterView.swift */; };
+		834C98FD253231E000BE8691 /* SafetyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98F9253231E000BE8691 /* SafetyCell.swift */; };
+		834C98FE253231E000BE8691 /* TableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98FA253231E000BE8691 /* TableHeaderView.swift */; };
+		834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99002532326800BE8691 /* PeopleReviewHeader.swift */; };
+		834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99012532326800BE8691 /* PeopleReviewsCell.swift */; };
+		834C99052532326800BE8691 /* PeopleReviewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99022532326800BE8691 /* PeopleReviewsController.swift */; };
+		834C990A253232D700BE8691 /* OnboardingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9907253232D600BE8691 /* OnboardingController.swift */; };
+		834C990B253232D700BE8691 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9908253232D600BE8691 /* Page.swift */; };
+		834C990C253232D700BE8691 /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9909253232D700BE8691 /* OnboardingCell.swift */; };
+		834C9911253233D300BE8691 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C990E253233D200BE8691 /* ProfileHeader.swift */; };
+		834C9912253233D300BE8691 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C990F253233D300BE8691 /* ProfileCell.swift */; };
+		834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9910253233D300BE8691 /* ProfileFooterView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		834C98F22532304700BE8691 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				834C98F12532304600BE8691 /* LNPopupController.framework in Embed Frameworks */,
+				834C98F52532307E00BE8691 /* LNPopupController.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_On_Your_Way.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +130,21 @@
 		834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginController.swift; sourceTree = "<group>"; };
 		834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOPTTextField.swift; sourceTree = "<group>"; };
 		834C98E32531D0F800BE8691 /* AuthServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServices.swift; sourceTree = "<group>"; };
+		834C98EF2532304600BE8691 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		834C98F32532307E00BE8691 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		834C98F7253231DF00BE8691 /* SafetyControllerGuidelines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafetyControllerGuidelines.swift; sourceTree = "<group>"; };
+		834C98F8253231DF00BE8691 /* SafetyFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafetyFooterView.swift; sourceTree = "<group>"; };
+		834C98F9253231E000BE8691 /* SafetyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafetyCell.swift; sourceTree = "<group>"; };
+		834C98FA253231E000BE8691 /* TableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableHeaderView.swift; sourceTree = "<group>"; };
+		834C99002532326800BE8691 /* PeopleReviewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleReviewHeader.swift; sourceTree = "<group>"; };
+		834C99012532326800BE8691 /* PeopleReviewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleReviewsCell.swift; sourceTree = "<group>"; };
+		834C99022532326800BE8691 /* PeopleReviewsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleReviewsController.swift; sourceTree = "<group>"; };
+		834C9907253232D600BE8691 /* OnboardingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingController.swift; sourceTree = "<group>"; };
+		834C9908253232D600BE8691 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
+		834C9909253232D700BE8691 /* OnboardingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingCell.swift; sourceTree = "<group>"; };
+		834C990E253233D200BE8691 /* ProfileHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
+		834C990F253233D300BE8691 /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		834C9910253233D300BE8691 /* ProfileFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFooterView.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +154,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */,
+				834C98F02532304600BE8691 /* LNPopupController.framework in Frameworks */,
+				834C98F42532307E00BE8691 /* LNPopupController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +198,9 @@
 				834C989B25312C3000BE8691 /* JSON files */,
 				834C98742531227D00BE8691 /* Constants.swift */,
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
+				834C9906253232CD00BE8691 /* Onboarding arch */,
+				834C98FF2532325D00BE8691 /* People Reviews arch */,
+				834C98F6253231CA00BE8691 /* Safety arch */,
 				834C98D92531A98200BE8691 /* API */,
 				834C98C82531308200BE8691 /* Firebase helpers */,
 				834C988E25312B2700BE8691 /* Auth Controller arch */,
@@ -177,7 +229,7 @@
 				834C987D2531286100BE8691 /* TripsTimelineController.swift */,
 				834C9886253129FF00BE8691 /* RecentController.swift */,
 				834C98802531288D00BE8691 /* OrdersController.swift */,
-				834C988A25312A7600BE8691 /* ProfileController.swift */,
+				834C990D253233C400BE8691 /* Profile arch */,
 			);
 			path = "View Controllers arch";
 			sourceTree = "<group>";
@@ -254,9 +306,53 @@
 			name = "Phone auth arch";
 			sourceTree = "<group>";
 		};
+		834C98F6253231CA00BE8691 /* Safety arch */ = {
+			isa = PBXGroup;
+			children = (
+				834C98F9253231E000BE8691 /* SafetyCell.swift */,
+				834C98F7253231DF00BE8691 /* SafetyControllerGuidelines.swift */,
+				834C98F8253231DF00BE8691 /* SafetyFooterView.swift */,
+				834C98FA253231E000BE8691 /* TableHeaderView.swift */,
+			);
+			path = "Safety arch";
+			sourceTree = "<group>";
+		};
+		834C98FF2532325D00BE8691 /* People Reviews arch */ = {
+			isa = PBXGroup;
+			children = (
+				834C99002532326800BE8691 /* PeopleReviewHeader.swift */,
+				834C99012532326800BE8691 /* PeopleReviewsCell.swift */,
+				834C99022532326800BE8691 /* PeopleReviewsController.swift */,
+			);
+			path = "People Reviews arch";
+			sourceTree = "<group>";
+		};
+		834C9906253232CD00BE8691 /* Onboarding arch */ = {
+			isa = PBXGroup;
+			children = (
+				834C9909253232D700BE8691 /* OnboardingCell.swift */,
+				834C9907253232D600BE8691 /* OnboardingController.swift */,
+				834C9908253232D600BE8691 /* Page.swift */,
+			);
+			path = "Onboarding arch";
+			sourceTree = "<group>";
+		};
+		834C990D253233C400BE8691 /* Profile arch */ = {
+			isa = PBXGroup;
+			children = (
+				834C990F253233D300BE8691 /* ProfileCell.swift */,
+				834C9910253233D300BE8691 /* ProfileFooterView.swift */,
+				834C990E253233D200BE8691 /* ProfileHeader.swift */,
+				834C988A25312A7600BE8691 /* ProfileController.swift */,
+			);
+			path = "Profile arch";
+			sourceTree = "<group>";
+		};
 		9972412D674DDD21CF23548C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				834C98F32532307E00BE8691 /* LNPopupController.framework */,
+				834C98EF2532304600BE8691 /* LNPopupController.framework */,
 				675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */,
 			);
 			name = Frameworks;
@@ -275,6 +371,7 @@
 				834C981625311CCC00BE8691 /* Resources */,
 				5E65AFD9FD3EF2DB2937D741 /* [CP] Embed Pods Frameworks */,
 				A4794056D0D2C5F2901D4B25 /* [CP] Copy Pods Resources */,
+				834C98F22532304700BE8691 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -414,12 +511,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				834C99052532326800BE8691 /* PeopleReviewsController.swift in Sources */,
+				834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */,
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
+				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
 				834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */,
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
+				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
+				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
+				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
+				834C9912253233D300BE8691 /* ProfileCell.swift in Sources */,
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,
 				834C989825312BCE00BE8691 /* Extenions.swift in Sources */,
+				834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */,
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C98752531227D00BE8691 /* Constants.swift in Sources */,
@@ -428,9 +533,14 @@
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
 				834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */,
+				834C98FE253231E000BE8691 /* TableHeaderView.swift in Sources */,
 				834C988B25312A7600BE8691 /* ProfileController.swift in Sources */,
+				834C990C253232D700BE8691 /* OnboardingCell.swift in Sources */,
 				834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */,
+				834C990B253232D700BE8691 /* Page.swift in Sources */,
+				834C98FD253231E000BE8691 /* SafetyCell.swift in Sources */,
 				834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */,
+				834C9911253233D300BE8691 /* ProfileHeader.swift in Sources */,
 				834C98D2253193D800BE8691 /* CustomTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
