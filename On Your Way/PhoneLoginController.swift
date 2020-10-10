@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import Lottie
 
 protocol PhoneLoginControllerDelegate: class {
     func handlePhoneControllerDismissal(_ view: PhoneLoginController)
@@ -14,8 +15,10 @@ protocol PhoneLoginControllerDelegate: class {
 
 class PhoneLoginController: UIViewController {
     
-    
+    // MARK: - delegate
     weak var delegate: PhoneLoginControllerDelegate?
+    
+    
     
     // MARK: - Propertes
     private let blurView : UIVisualEffectView = {
@@ -23,6 +26,15 @@ class PhoneLoginController: UIViewController {
         let view = UIVisualEffectView(effect: blurView)
         return view
     }()
+    
+    private lazy var animationView : AnimationView = {
+        let animationView = AnimationView()
+        animationView.setDimensions(height: 100, width: 100)
+        animationView.clipsToBounds = true
+        animationView.animation = Animation.named("textMessage_SMS")
+        return animationView
+    }()
+    
     
     private lazy var dismissView: UIButton = {
         let button = UIButton(type: .system)
@@ -42,7 +54,7 @@ class PhoneLoginController: UIViewController {
         attributedText.append(NSMutableAttributedString(string: "\nWe will send you a code to verify your phone number",
                                                         attributes: [.foregroundColor : UIColor.white, .font: UIFont.systemFont(ofSize: 16)]))
         label.attributedText = attributedText
-        label.setDimensions(height: 130, width: 300)
+        label.setDimensions(height: 100, width: 300)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.backgroundColor = .clear
@@ -82,14 +94,13 @@ class PhoneLoginController: UIViewController {
     }()
     
     
+    // MARK: - Custom Views
     private lazy var phoneNumberTextField = CustomTextField(textColor: .white, placeholder: "05XXXXXXXX",
                                                             placeholderColor: .white, placeholderAlpa: 0.9, isSecure: false)
     
     private lazy var phoneNumberContainerView = CustomContainerView(image: UIImage(systemName: "phone"), textField: phoneNumberTextField,
                                                                     iconTintColor: .white, dividerViewColor: .clear, dividerAlpa: 0.0,
                                                                     setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.3))
-    
-    
     
     private lazy var oneTimeCodeTextField = PhoneOPTTextField()
     
@@ -121,9 +132,11 @@ class PhoneLoginController: UIViewController {
         // create dismiss view on the top right
         view.addSubview(dismissView)
         dismissView.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 14, paddingRight: 20)
+        view.addSubview(animationView)
+        animationView.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor, paddingTop: 10)
         // create info label on the top
         view.addSubview(infoLabel)
-        infoLabel.centerX(inView: view, topAnchor: view.safeAreaLayoutGuide.topAnchor, paddingTop: 30)
+        infoLabel.centerX(inView: view, topAnchor: animationView.bottomAnchor, paddingTop: -10)
         infoLabel.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 20, paddingRight: 20)
         // create phone container view
         view.addSubview(phoneNumberContainerView)
@@ -131,7 +144,7 @@ class PhoneLoginController: UIViewController {
         phoneNumberContainerView.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 40 , paddingRight: 40)
         // create OPT verification
         view.addSubview(oneTimeCodeTextField)
-        oneTimeCodeTextField.centerX(inView: phoneNumberContainerView, topAnchor: phoneNumberContainerView.bottomAnchor, paddingTop: 20)
+        oneTimeCodeTextField.centerX(inView: phoneNumberContainerView, topAnchor: phoneNumberContainerView.bottomAnchor, paddingTop: 10)
         oneTimeCodeTextField.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 20, paddingRight: 20)
         // create request OPT Button
         view.addSubview(requestOPTButton)
@@ -159,13 +172,14 @@ class PhoneLoginController: UIViewController {
             UIView.animate(withDuration: 0.5) { [weak self] in
                 self?.requestOPTButton.alpha = 1
                 self?.requestOPTButton.isEnabled = true
+                self?.animationView.play()
+                self?.animationView.loopMode = .loop
                 
             }
         } else {
             UIView.animate(withDuration: 0.5) { [weak self] in
                 self?.requestOPTButton.alpha = 0
                 self?.requestOPTButton.isEnabled = false
-                
             }
         }
         
@@ -181,11 +195,15 @@ class PhoneLoginController: UIViewController {
         guard let phoneText = phoneNumberTextField.text else { return }
         self.requestOPTButton.alpha = 0
         self.requestOPTButton.isEnabled = false
+        animationView.play()
+        animationView.loopMode = .loop
         PhoneAuthProvider.provider().verifyPhoneNumber("+966\(phoneText)", uiDelegate: nil) { (verificationID, error) in
             if let error = error {
                 self.showAlertMessage("Error", error.localizedDescription)
                 return
             }
+            self.animationView.play()
+            self.animationView.loopMode = .loop
             guard let verificationID = verificationID else {return}
             userDefaults.setValue(verificationID, forKey: "verificationID")
             userDefaults.synchronize()
@@ -224,8 +242,6 @@ class PhoneLoginController: UIViewController {
                 
             }
         }
-        
-        
     }
     
 }
