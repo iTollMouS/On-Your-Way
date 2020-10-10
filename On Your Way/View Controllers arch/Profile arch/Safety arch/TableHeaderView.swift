@@ -10,8 +10,15 @@ import Lottie
 
 class TableHeaderView: UIView {
     
-    private lazy var animation = Animation.named("covid_19_protect")
-    private lazy var animationView = AnimationView(animation: animation)
+    
+    // MARK: - Properties
+    private lazy var animationView : AnimationView = {
+        let animationView = AnimationView()
+        animationView.clipsToBounds = true
+        animationView.animation = Animation.named("covid_19_protect")
+        animationView.backgroundColor = .clear
+        return animationView
+    }()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -46,7 +53,7 @@ class TableHeaderView: UIView {
         return stackView
     }()
 
-    
+    // MARK: - Init frame
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(animationView)
@@ -58,6 +65,7 @@ class TableHeaderView: UIView {
         configureAnimationView()
     }
     
+    // MARK: - configureAnimationView
     func configureAnimationView(){
         animationView.loopMode = .loop
         animationView.play()

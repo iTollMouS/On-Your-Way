@@ -200,7 +200,6 @@
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
 				834C9906253232CD00BE8691 /* Onboarding arch */,
 				834C98FF2532325D00BE8691 /* People Reviews arch */,
-				834C98F6253231CA00BE8691 /* Safety arch */,
 				834C98D92531A98200BE8691 /* API */,
 				834C98C82531308200BE8691 /* Firebase helpers */,
 				834C988E25312B2700BE8691 /* Auth Controller arch */,
@@ -309,10 +308,10 @@
 		834C98F6253231CA00BE8691 /* Safety arch */ = {
 			isa = PBXGroup;
 			children = (
-				834C98F9253231E000BE8691 /* SafetyCell.swift */,
 				834C98F7253231DF00BE8691 /* SafetyControllerGuidelines.swift */,
-				834C98F8253231DF00BE8691 /* SafetyFooterView.swift */,
 				834C98FA253231E000BE8691 /* TableHeaderView.swift */,
+				834C98F9253231E000BE8691 /* SafetyCell.swift */,
+				834C98F8253231DF00BE8691 /* SafetyFooterView.swift */,
 			);
 			path = "Safety arch";
 			sourceTree = "<group>";
@@ -340,10 +339,11 @@
 		834C990D253233C400BE8691 /* Profile arch */ = {
 			isa = PBXGroup;
 			children = (
+				834C988A25312A7600BE8691 /* ProfileController.swift */,
+				834C990E253233D200BE8691 /* ProfileHeader.swift */,
 				834C990F253233D300BE8691 /* ProfileCell.swift */,
 				834C9910253233D300BE8691 /* ProfileFooterView.swift */,
-				834C990E253233D200BE8691 /* ProfileHeader.swift */,
-				834C988A25312A7600BE8691 /* ProfileController.swift */,
+				834C98F6253231CA00BE8691 /* Safety arch */,
 			);
 			path = "Profile arch";
 			sourceTree = "<group>";

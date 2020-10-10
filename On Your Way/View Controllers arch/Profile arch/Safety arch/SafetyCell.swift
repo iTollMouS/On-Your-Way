@@ -10,11 +10,12 @@ import Lottie
 
 class SafetyCell: UITableViewCell {
     
+    // MARK: - Setup Model
     var viewModel: SafetyCellViewModel?{
         didSet{configure()}
     }
     
-    
+    // MARK: - Properties
     private lazy var animationView : AnimationView = {
         let animationView = AnimationView()
         animationView.setDimensions(height: 60, width: 60)
@@ -55,6 +56,7 @@ class SafetyCell: UITableViewCell {
         return stackView
     }()
 
+    // MARK: -  LifeCycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(animationView)
@@ -65,6 +67,7 @@ class SafetyCell: UITableViewCell {
         backgroundColor =  .clear
     }
     
+    // MARK: - configure()
     func configure(){
         guard let viewModel = viewModel else { return }
         titleLabel.text = viewModel.titleLabel
@@ -79,6 +82,8 @@ class SafetyCell: UITableViewCell {
     }
     
 }
+
+// MARK: - SafetyCellViewModel
 
 enum SafetyCellViewModel: Int, CaseIterable {
     case socialDistancing

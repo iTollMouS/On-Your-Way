@@ -13,8 +13,11 @@ protocol SafetyFooterViewDelegate: class {
 
 class SafetyFooterView: UIView {
 
+    // MARK: - Delegate
     weak var delegate: SafetyFooterViewDelegate?
     
+    
+    // MARK: - Properties 
     private lazy var reportButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Okay", for: .normal)
