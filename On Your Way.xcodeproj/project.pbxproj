@@ -44,6 +44,10 @@
 		834C98C325312C5700BE8691 /* wash_your_hands_regularly.json in Resources */ = {isa = PBXBuildFile; fileRef = 834C98AF25312C5700BE8691 /* wash_your_hands_regularly.json */; };
 		834C98C625312E3900BE8691 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98C525312E3900BE8691 /* User.swift */; };
 		834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98C92531309300BE8691 /* FirebaseUserListener.swift */; };
+		834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98CE253192C000BE8691 /* CustomContainerView.swift */; };
+		834C98D2253193D800BE8691 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98D1253193D800BE8691 /* CustomTextField.swift */; };
+		834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */; };
+		834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +92,10 @@
 		834C98AF25312C5700BE8691 /* wash_your_hands_regularly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wash_your_hands_regularly.json; sourceTree = "<group>"; };
 		834C98C525312E3900BE8691 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		834C98C92531309300BE8691 /* FirebaseUserListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserListener.swift; sourceTree = "<group>"; };
+		834C98CE253192C000BE8691 /* CustomContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomContainerView.swift; sourceTree = "<group>"; };
+		834C98D1253193D800BE8691 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginController.swift; sourceTree = "<group>"; };
+		834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOPTTextField.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +147,7 @@
 				834C989B25312C3000BE8691 /* JSON files */,
 				834C98742531227D00BE8691 /* Constants.swift */,
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
+				834C98D92531A98200BE8691 /* API */,
 				834C98C82531308200BE8691 /* Firebase helpers */,
 				834C988E25312B2700BE8691 /* Auth Controller arch */,
 				834C9883253128E700BE8691 /* View Controllers arch */,
@@ -163,9 +172,9 @@
 		834C9883253128E700BE8691 /* View Controllers arch */ = {
 			isa = PBXGroup;
 			children = (
+				834C987D2531286100BE8691 /* TripsTimelineController.swift */,
 				834C9886253129FF00BE8691 /* RecentController.swift */,
 				834C98802531288D00BE8691 /* OrdersController.swift */,
-				834C987D2531286100BE8691 /* TripsTimelineController.swift */,
 				834C988A25312A7600BE8691 /* ProfileController.swift */,
 			);
 			path = "View Controllers arch";
@@ -175,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				834C988F25312B5C00BE8691 /* LoginController.swift */,
+				834C98DE2531ADF700BE8691 /* Phone auth arch */,
 				834C989325312B6600BE8691 /* RegistrationController.swift */,
 			);
 			name = "Auth Controller arch";
@@ -184,6 +194,8 @@
 			isa = PBXGroup;
 			children = (
 				834C989725312BCE00BE8691 /* Extenions.swift */,
+				834C98CE253192C000BE8691 /* CustomContainerView.swift */,
+				834C98D1253193D800BE8691 /* CustomTextField.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -221,6 +233,22 @@
 				834C98C92531309300BE8691 /* FirebaseUserListener.swift */,
 			);
 			path = "Firebase helpers";
+			sourceTree = "<group>";
+		};
+		834C98D92531A98200BE8691 /* API */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		834C98DE2531ADF700BE8691 /* Phone auth arch */ = {
+			isa = PBXGroup;
+			children = (
+				834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */,
+				834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */,
+			);
+			name = "Phone auth arch";
 			sourceTree = "<group>";
 		};
 		9972412D674DDD21CF23548C /* Frameworks */ = {
@@ -384,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
+				834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */,
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,
@@ -391,11 +420,14 @@
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C98752531227D00BE8691 /* Constants.swift in Sources */,
+				834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */,
 				834C98C625312E3900BE8691 /* User.swift in Sources */,
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
+				834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */,
 				834C988B25312A7600BE8691 /* ProfileController.swift in Sources */,
 				834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */,
+				834C98D2253193D800BE8691 /* CustomTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
