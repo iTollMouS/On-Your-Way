@@ -66,6 +66,7 @@
 		834C9911253233D300BE8691 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C990E253233D200BE8691 /* ProfileHeader.swift */; };
 		834C9912253233D300BE8691 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C990F253233D300BE8691 /* ProfileCell.swift */; };
 		834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9910253233D300BE8691 /* ProfileFooterView.swift */; };
+		834C9915253237AC00BE8691 /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9914253237AC00BE8691 /* OrderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -145,6 +146,7 @@
 		834C990E253233D200BE8691 /* ProfileHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		834C990F253233D300BE8691 /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		834C9910253233D300BE8691 /* ProfileFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFooterView.swift; sourceTree = "<group>"; };
+		834C9914253237AC00BE8691 /* OrderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,13 +195,12 @@
 			isa = PBXGroup;
 			children = (
 				834C983125311CE900BE8691 /* On Your Way.entitlements */,
+				834C989B25312C3000BE8691 /* JSON files */,
 				834C981B25311CCC00BE8691 /* AppDelegate.swift */,
 				834C981D25311CCC00BE8691 /* SceneDelegate.swift */,
-				834C989B25312C3000BE8691 /* JSON files */,
 				834C98742531227D00BE8691 /* Constants.swift */,
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
 				834C9906253232CD00BE8691 /* Onboarding arch */,
-				834C98FF2532325D00BE8691 /* People Reviews arch */,
 				834C98D92531A98200BE8691 /* API */,
 				834C98C82531308200BE8691 /* Firebase helpers */,
 				834C988E25312B2700BE8691 /* Auth Controller arch */,
@@ -227,7 +228,7 @@
 			children = (
 				834C987D2531286100BE8691 /* TripsTimelineController.swift */,
 				834C9886253129FF00BE8691 /* RecentController.swift */,
-				834C98802531288D00BE8691 /* OrdersController.swift */,
+				834C9916253237B200BE8691 /* Orders arch */,
 				834C990D253233C400BE8691 /* Profile arch */,
 			);
 			path = "View Controllers arch";
@@ -343,9 +344,19 @@
 				834C990E253233D200BE8691 /* ProfileHeader.swift */,
 				834C990F253233D300BE8691 /* ProfileCell.swift */,
 				834C9910253233D300BE8691 /* ProfileFooterView.swift */,
+				834C98FF2532325D00BE8691 /* People Reviews arch */,
 				834C98F6253231CA00BE8691 /* Safety arch */,
 			);
 			path = "Profile arch";
+			sourceTree = "<group>";
+		};
+		834C9916253237B200BE8691 /* Orders arch */ = {
+			isa = PBXGroup;
+			children = (
+				834C98802531288D00BE8691 /* OrdersController.swift */,
+				834C9914253237AC00BE8691 /* OrderCell.swift */,
+			);
+			path = "Orders arch";
 			sourceTree = "<group>";
 		};
 		9972412D674DDD21CF23548C /* Frameworks */ = {
@@ -517,6 +528,7 @@
 				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
 				834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */,
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
+				834C9915253237AC00BE8691 /* OrderCell.swift in Sources */,
 				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
