@@ -360,6 +360,13 @@ extension LoginController: ASAuthorizationControllerDelegate {
         let credential = OAuthProvider.credential(withProviderID: "apple.com",
                                                   idToken: idTokenString,
                                                   rawNonce: nonce)
+        AuthServices.shared.signInWithAppleID(credential: credential, fullname: fullname) { error in
+            if let error = error {
+                self.showAlertMessage("Error", error.localizedDescription)
+                return
+            }
+            print("DEBUG: success")
+        }
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {

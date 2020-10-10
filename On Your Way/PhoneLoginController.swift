@@ -150,7 +150,7 @@ class PhoneLoginController: UIViewController {
         view.addSubview(requestOPTButton)
         requestOPTButton.centerX(inView: oneTimeCodeTextField, topAnchor: oneTimeCodeTextField.bottomAnchor, paddingTop: 10)
         requestOPTButton.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 30, paddingRight: 30)
-        
+        // create verify text
         view.addSubview(verifyOPTButton)
         verifyOPTButton.centerX(inView: oneTimeCodeTextField, topAnchor: oneTimeCodeTextField.bottomAnchor, paddingTop: 10)
         verifyOPTButton.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 30, paddingRight: 30)
@@ -161,7 +161,6 @@ class PhoneLoginController: UIViewController {
     func textFieldObservance(){
         phoneNumberTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
         phoneNumberTextField.keyboardType = .numberPad
-        
     }
     
     @objc func textDidChange(_ textField: UITextField){

@@ -17,8 +17,6 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.barStyle = .black
     }
     
-    
-    
     func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()

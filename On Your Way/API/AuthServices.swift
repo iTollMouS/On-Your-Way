@@ -33,7 +33,6 @@ struct AuthServices {
             self.saveUserToFirestore(user)
             completion(error)
         }
-        
     }
     
     func registerUserWithGoogle(didSignInfo user: GIDGoogleUser, completion: @escaping(Error?) -> Void) {
@@ -52,7 +51,6 @@ struct AuthServices {
             guard let authResult = authResult else {return}
             let user = User(id: uid, username: firstName, email: email,
                             pushId: "", avatarLink: profileImageUrl, status: "")
-            
             emailVerification(withEmail: email, userResult: authResult)
             saveUserToFirestore(user)
             saveUserLocally(user)
@@ -60,6 +58,26 @@ struct AuthServices {
             
         }
     }
+    
+    func signInWithAppleID(credential: AuthCredential, fullname: String, completion: @escaping(Error?) -> Void){
+        Auth.auth().signIn(with: credential) { (authResult, error) in
+            if let error = error {
+                print("DEBUG: error authenticate via phone number \(error)")
+                completion(error)
+                return
+            }
+            guard let authResult = authResult?.user else {return}
+            guard let email = authResult.email else {return}
+            let user = User(id: authResult.uid, username: fullname, email: email, pushId: "", avatarLink: "", status: "")
+            print("DEBUG: user info is \(user.id)")
+            print("DEBUG: user info is \(user.email)")
+            saveUserToFirestore(user)
+            saveUserLocally(user)
+            completion(error)
+            
+        }
+    }
+    
     
     func saveUserToFirestore(_ user: User){
         do {
