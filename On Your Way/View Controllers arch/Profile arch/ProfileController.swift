@@ -100,6 +100,7 @@ class ProfileController: UIViewController {
     // MARK: - configureNavBar
     func configureNavBarButtons(){
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleUserUpdates))
+        headerView.profileImageView.clipsToBounds = true
     }
     
     @objc func handleUserUpdates(){
@@ -117,7 +118,7 @@ class ProfileController: UIViewController {
         
     }
     
-    // MARK: -  Update ProfileImage
+    // MARK: -  Update ProfileImage to firebase and save it locally
     func updateUserImage(_ image: UIImage){
         // create a name directory for user image
         let fileDirectory = "Avatars/" + "_\(User.currentId)" + ".jpg"
@@ -279,9 +280,8 @@ extension ProfileController: ProfileCellDelegate {
 extension ProfileController: ProfileHeaderDelegate {
     
     func usernameChanges(_ header: ProfileHeader) {
-        guard let text = header.fullNameTextField.text else { return }
-        user?.username = text
-        print("DEBUG: text is \(text)")
+        guard let newName = header.fullNameTextField.text else { return }
+        user?.username = newName
         configureNavBarButtons()
     }
     
