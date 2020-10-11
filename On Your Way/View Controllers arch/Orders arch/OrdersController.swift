@@ -108,6 +108,4 @@ extension OrdersController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         print("DEBUG: \(searchController.searchBar.text ?? "" )")
     }
-    
-    
 }

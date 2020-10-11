@@ -12,6 +12,9 @@ private let reuseIdentifier = "RecentCell"
 
 class RecentController: UITableViewController {
     
+    var allRecent: [RecentChat] = []
+    var filteredAllRecent: [RecentChat] = []
+    
     private let searchController = UISearchController(searchResultsController: nil)
     private let refreshController = UIRefreshControl()
     
@@ -44,7 +47,7 @@ class RecentController: UITableViewController {
     }
     func configureSearchController(){
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.hidesSearchBarWhenScrolling = true
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search for a user"
         searchController.searchResultsUpdater = self

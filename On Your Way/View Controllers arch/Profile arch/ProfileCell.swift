@@ -177,8 +177,8 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_1: return (24, 24)
         case .section_2: return (24, 24)
         case .section_3: return (24, 24)
-        case .section_4: return (24, 24)
-        case .section_5: return (26, 24)
+        case .section_4: return (28, 24)
+        case .section_5: return (30, 24)
         }
     }
 }

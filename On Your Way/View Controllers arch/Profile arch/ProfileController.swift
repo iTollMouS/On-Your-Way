@@ -70,6 +70,7 @@ class ProfileController: UIViewController {
             presentLoggingController()
         } else {
             self.user = User.currentUser
+            title = user?.username
             headerView.profileImageView.clipsToBounds = true
         }
     }
@@ -182,6 +183,8 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         return ProfileViewModel.allCases[section].numberOfCells
     }
     
+    
+    // MARK: - cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ProfileCell
         guard let viewModel = ProfileViewModel(rawValue: indexPath.section) else { return cell }
@@ -194,6 +197,7 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    // MARK: - Header cells
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let viewModel = ProfileViewModel(rawValue: section) else { return UIView() }
         
@@ -215,8 +219,6 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         label.centerY(inView: iconImage, leftAnchor: iconImage.rightAnchor, paddingLeft: 8)
         return containerView
     }
-    
-    
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60

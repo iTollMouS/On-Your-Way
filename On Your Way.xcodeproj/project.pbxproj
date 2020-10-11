@@ -73,6 +73,12 @@
 		834C9920253289C200BE8691 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C991F253289C200BE8691 /* PushNotificationService.swift */; };
 		834C99222532D7B900BE8691 /* UserServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99212532D7B900BE8691 /* UserServices.swift */; };
 		834C99242532E61500BE8691 /* FileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99232532E61500BE8691 /* FileStorage.swift */; };
+		834C992B2533542B00BE8691 /* TripCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C992A2533542B00BE8691 /* TripCell.swift */; };
+		834C993525337C0A00BE8691 /* RecentChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993425337C0900BE8691 /* RecentChat.swift */; };
+		834C9938253382B400BE8691 /* FirebaseRecentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9937253382B400BE8691 /* FirebaseRecentService.swift */; };
+		834C993A253384C700BE8691 /* StartChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9939253384C700BE8691 /* StartChat.swift */; };
+		834C993C25338D1C00BE8691 /* FirebaseTripService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993B25338D1C00BE8691 /* FirebaseTripService.swift */; };
+		834C993E25338D6800BE8691 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993D25338D6800BE8691 /* Trip.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -159,6 +165,12 @@
 		834C991F253289C200BE8691 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		834C99212532D7B900BE8691 /* UserServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServices.swift; sourceTree = "<group>"; };
 		834C99232532E61500BE8691 /* FileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStorage.swift; sourceTree = "<group>"; };
+		834C992A2533542B00BE8691 /* TripCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCell.swift; sourceTree = "<group>"; };
+		834C993425337C0900BE8691 /* RecentChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChat.swift; sourceTree = "<group>"; };
+		834C9937253382B400BE8691 /* FirebaseRecentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRecentService.swift; sourceTree = "<group>"; };
+		834C9939253384C700BE8691 /* StartChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartChat.swift; sourceTree = "<group>"; };
+		834C993B25338D1C00BE8691 /* FirebaseTripService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseTripService.swift; sourceTree = "<group>"; };
+		834C993D25338D6800BE8691 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,6 +243,8 @@
 			isa = PBXGroup;
 			children = (
 				834C98C525312E3900BE8691 /* User.swift */,
+				834C993D25338D6800BE8691 /* Trip.swift */,
+				834C993425337C0900BE8691 /* RecentChat.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -238,8 +252,7 @@
 		834C9883253128E700BE8691 /* View Controllers arch */ = {
 			isa = PBXGroup;
 			children = (
-				834C987D2531286100BE8691 /* TripsTimelineController.swift */,
-				834C99172532390E00BE8691 /* Trip arch */,
+				834C99362533808400BE8691 /* Trip arch */,
 				834C991E25323C3A00BE8691 /* Recent Message arch */,
 				834C9916253237B200BE8691 /* Orders arch */,
 				834C990D253233C400BE8691 /* Profile arch */,
@@ -299,6 +312,9 @@
 			isa = PBXGroup;
 			children = (
 				834C98C92531309300BE8691 /* FirebaseUserListener.swift */,
+				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
+				834C993B25338D1C00BE8691 /* FirebaseTripService.swift */,
+				834C9939253384C700BE8691 /* StartChat.swift */,
 			);
 			path = "Firebase helpers";
 			sourceTree = "<group>";
@@ -375,13 +391,13 @@
 			path = "Orders arch";
 			sourceTree = "<group>";
 		};
-		834C99172532390E00BE8691 /* Trip arch */ = {
+		834C99172532390E00BE8691 /* New Trip arch */ = {
 			isa = PBXGroup;
 			children = (
-				834C99192532391B00BE8691 /* DateAndTimeController.swift */,
 				834C99182532391B00BE8691 /* NewTripController.swift */,
+				834C99192532391B00BE8691 /* DateAndTimeController.swift */,
 			);
-			path = "Trip arch";
+			path = "New Trip arch";
 			sourceTree = "<group>";
 		};
 		834C991E25323C3A00BE8691 /* Recent Message arch */ = {
@@ -391,6 +407,16 @@
 				834C991C25323C3200BE8691 /* RecentCell.swift */,
 			);
 			path = "Recent Message arch";
+			sourceTree = "<group>";
+		};
+		834C99362533808400BE8691 /* Trip arch */ = {
+			isa = PBXGroup;
+			children = (
+				834C987D2531286100BE8691 /* TripsTimelineController.swift */,
+				834C992A2533542B00BE8691 /* TripCell.swift */,
+				834C99172532390E00BE8691 /* New Trip arch */,
+			);
+			path = "Trip arch";
 			sourceTree = "<group>";
 		};
 		9972412D674DDD21CF23548C /* Frameworks */ = {
@@ -556,8 +582,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				834C993E25338D6800BE8691 /* Trip.swift in Sources */,
 				834C99052532326800BE8691 /* PeopleReviewsController.swift in Sources */,
 				834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */,
+				834C9938253382B400BE8691 /* FirebaseRecentService.swift in Sources */,
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
 				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
 				834C991D25323C3200BE8691 /* RecentCell.swift in Sources */,
@@ -565,22 +593,26 @@
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
 				834C9915253237AC00BE8691 /* OrderCell.swift in Sources */,
 				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
+				834C993C25338D1C00BE8691 /* FirebaseTripService.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
 				834C99242532E61500BE8691 /* FileStorage.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
+				834C992B2533542B00BE8691 /* TripCell.swift in Sources */,
 				834C9912253233D300BE8691 /* ProfileCell.swift in Sources */,
 				834C991A2532391B00BE8691 /* NewTripController.swift in Sources */,
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,
 				834C989825312BCE00BE8691 /* Extenions.swift in Sources */,
 				834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */,
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
+				834C993525337C0A00BE8691 /* RecentChat.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C991B2532391B00BE8691 /* DateAndTimeController.swift in Sources */,
 				834C98752531227D00BE8691 /* Constants.swift in Sources */,
 				834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */,
 				834C98C625312E3900BE8691 /* User.swift in Sources */,
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
+				834C993A253384C700BE8691 /* StartChat.swift in Sources */,
 				834C9920253289C200BE8691 /* PushNotificationService.swift in Sources */,
 				834C99222532D7B900BE8691 /* UserServices.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
