@@ -44,8 +44,7 @@ class ProfileController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .white
+            
         configureUI()
     }
     
@@ -68,12 +67,9 @@ class ProfileController: UIViewController {
     // MARK: - checkUser
     func checkUser(){
         if User.currentUser == nil {
-            
             presentLoggingController()
-            
         } else {
             self.user = User.currentUser
-            footerView.logoutButton.setTitle("Log out", for: .normal)
         }
     }
     
