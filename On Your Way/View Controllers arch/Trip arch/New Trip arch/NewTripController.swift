@@ -153,15 +153,16 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         pickerView.tag = 0
         pickerView.delegate = self
         pickerView.dataSource = self
-//        pickerView.addTarget(self, action: #selector(handleTimeSelected(_ :)), for: .valueChanged)
+        //        pickerView.addTarget(self, action: #selector(handleTimeSelected(_ :)), for: .valueChanged)
         return pickerView
     }()
     
-    private lazy var destinationCityPickerView: UIDatePicker = {
-        let pickerView = UIDatePicker()
-        pickerView.datePickerMode = .time
-        pickerView.preferredDatePickerStyle = .wheels
-//        pickerView.addTarget(self, action: #selector(handleTimeSelected(_ :)), for: .valueChanged)
+    private lazy var destinationCityPickerView: UIPickerView = {
+        let pickerView = UIPickerView()
+        pickerView.tag = 0
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        //        pickerView.addTarget(self, action: #selector(handleTimeSelected(_ :)), for: .valueChanged)
         return pickerView
     }()
     
@@ -200,7 +201,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         currentLocationTextField.endEditing(true)
         destinationTextField.endEditing(true)
     }
-
+    
     // MARK: - configureUI()
     func configureUI(){
         view.addSubview(scrollView)
@@ -224,9 +225,13 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         mainContentView.addSubview(setupDateAndTimeButton)
         setupDateAndTimeButton.anchor(left: mainContentView.leftAnchor, bottom: mainContentView.bottomAnchor ,right: mainContentView.rightAnchor,
                                       paddingLeft: 20, paddingBottom: 20 ,paddingRight: 20)
+        
         currentLocationTextField.inputView = fromCityPickerView
         currentLocationTextField.inputAccessoryView = toolbar
         currentLocationTextField.delegate = self
+        destinationTextField.inputView = destinationCityPickerView
+        destinationTextField.inputAccessoryView = toolbar
+        destinationTextField.delegate = self
     }
     
     
@@ -238,14 +243,17 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         guard let pickupLocation  = meetingForPickupTextField.text else { return }
         guard let pickupTime  = timeToPickPackageTextField.text else { return }
         
+        
+        
         let trip = Trip(userID: user.id,
                         tripID: UUID().uuidString, tripDateAnnounced: Date().convertDate(formattedString: .formattedType3),
                         tripTime: "", fromCity: currentCity, destinationCity: destinationCity,
                         basePrice: "", packageType: "", timestamp: nil, pickupLocation: pickupLocation,
                         timeForPickingPackages: pickupTime)
-        
+        print("DEBUG: user trip is \(trip)")
         let dateAndTimeController = DateAndTimeController()
         dateAndTimeController.delegate = self
+        dateAndTimeController.trip = trip
         dateAndTimeController.modalPresentationStyle = .fullScreen
         present(dateAndTimeController, animated: true, completion: nil)
     }
@@ -275,6 +283,8 @@ extension NewTripController : UIPickerViewDataSource, UIPickerViewDelegate {
         switch pickerView.tag {
         case 0:
             currentLocationTextField.text = Cities.allCases[row].rawValue
+        case 1:
+            destinationTextField.text = Cities.allCases[row].rawValue
         default:
             break
         }
@@ -286,9 +296,19 @@ extension NewTripController : UIPickerViewDataSource, UIPickerViewDelegate {
 extension NewTripController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        guard let text = currentLocationTextField.text else { return  }
-        if text.isEmpty {
-            currentLocationTextField.text = Cities.allCases.first?.rawValue
+        
+        switch textField {
+        case currentLocationTextField:
+            guard let textCurrentLocation = currentLocationTextField.text else { return  }
+            if textCurrentLocation.isEmpty {
+                currentLocationTextField.text = Cities.allCases.first?.rawValue
+            }
+        case destinationTextField:
+            guard let destination = destinationTextField.text else { return  }
+            if destination.isEmpty {
+                destinationTextField.text = Cities.allCases.first?.rawValue
+            }
+        default: break
         }
     }
 }

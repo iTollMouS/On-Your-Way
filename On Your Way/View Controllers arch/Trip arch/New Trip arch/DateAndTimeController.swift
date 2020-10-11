@@ -45,6 +45,8 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     
     weak var delegate: DateAndTimeControllerDelegate?
     
+    var trip: Trip?
+    
     private lazy var scrollView : UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -256,6 +258,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         configureUI()
         self.hideKeyboardWhenTouchOutsideTextField()
+        print("DEBUG: trip is \(trip)")
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
