@@ -21,7 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = MainTabController()
         window?.makeKeyAndVisible()
         
-    
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

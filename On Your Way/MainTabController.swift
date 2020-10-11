@@ -20,17 +20,25 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()
-        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car.2")!, rootViewController: tripsTimelineController, tabBarItemTitle: "Travelers")
+        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car.2")!,
+                                                                  rootViewController: tripsTimelineController,
+                                                                  tabBarItemTitle: "Travelers")
         
         let ordersController = OrdersController()
-        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!, rootViewController: ordersController, tabBarItemTitle: "Orders")
+        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!,
+                                                           rootViewController: ordersController,
+                                                           tabBarItemTitle: "Orders")
         
         let recentController = RecentController()
-        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!, rootViewController: recentController, tabBarItemTitle: "Meesage")
+        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
+                                                           rootViewController: recentController,
+                                                           tabBarItemTitle: "Meesage")
         
         
         let profileController = ProfileController()
-        let profileControllerNavBar = templateNavController(image: UIImage(systemName: "person")!, rootViewController: profileController, tabBarItemTitle: "Profile")
+        let profileControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
+                                                            rootViewController: profileController,
+                                                            tabBarItemTitle: "Profile")
         
         viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar, recentControllerNavBar, profileControllerNavBar]
     }
@@ -49,7 +57,6 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         
         return true
     }
-    
     
     func templateNavController(image: UIImage, rootViewController: UIViewController, tabBarItemTitle: String) -> UINavigationController {
         let navController = UINavigationController(rootViewController: rootViewController)

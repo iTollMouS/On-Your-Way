@@ -153,16 +153,14 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         pickerView.tag = 0
         pickerView.delegate = self
         pickerView.dataSource = self
-        //        pickerView.addTarget(self, action: #selector(handleTimeSelected(_ :)), for: .valueChanged)
         return pickerView
     }()
     
     private lazy var destinationCityPickerView: UIPickerView = {
         let pickerView = UIPickerView()
-        pickerView.tag = 0
+        pickerView.tag = 1
         pickerView.delegate = self
         pickerView.dataSource = self
-        //        pickerView.addTarget(self, action: #selector(handleTimeSelected(_ :)), for: .valueChanged)
         return pickerView
     }()
     
@@ -321,8 +319,8 @@ extension NewTripController: UITextFieldDelegate {
 // MARK: - DateAndTimeControllerDelegate
 extension NewTripController: DateAndTimeControllerDelegate {
     func dismissDateAndTimeController(_ view: DateAndTimeController) {
-        view.dismiss(animated: true) { [self] in
-            delegate?.dismissNewTripView(self)
+        view.dismiss(animated: true) { [weak self]  in
+            self?.delegate?.dismissNewTripView(self!)
         }
     }
 }

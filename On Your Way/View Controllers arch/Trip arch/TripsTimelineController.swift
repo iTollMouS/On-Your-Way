@@ -105,12 +105,12 @@ class TripsTimelineController: UITableViewController {
     }
     
     func presentLoggingController(){
-        DispatchQueue.main.async { [self] in
+        DispatchQueue.main.async { [weak self]  in
             let loginController = LoginController()
             loginController.delegate = self
             let nav = UINavigationController(rootViewController: loginController)
             nav.modalPresentationStyle = .fullScreen
-            present(nav, animated: true, completion: nil)
+            self?.present(nav, animated: true, completion: nil)
         }
     }
     
