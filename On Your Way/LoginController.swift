@@ -124,9 +124,9 @@ class LoginController: UIViewController {
                                                        passwordContainerView,
                                                        loggingButton,
                                                        orLabel,
-                                                       signWithAppleID,
                                                        googleLoginButton,
                                                        phoneNumberLogging,
+                                                       signWithAppleID,
                                                        browsAnonymousButton])
         stackView.axis = .vertical
         stackView.spacing = 12

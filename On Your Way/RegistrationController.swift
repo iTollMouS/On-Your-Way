@@ -7,8 +7,22 @@
 
 import UIKit
 import CLTypingLabel
+import ProgressHUD
+import Loaf
+
 
 class RegistrationController: UIViewController {
+    
+    
+    
+    private var profileImage: UIImage?
+    
+    private lazy var backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = #imageLiteral(resourceName: "photo-1561494270-744b7f2ff037")
+        return imageView
+    }()
     
     private let blurView : UIVisualEffectView = {
         let blurView = UIBlurEffect(style: .systemChromeMaterialDark)
@@ -21,7 +35,7 @@ class RegistrationController: UIViewController {
         button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
         button.setDimensions(height: 50, width: 50)
         button.layer.cornerRadius = 50 / 2
-        button.backgroundColor = UIColor.systemRed.withAlphaComponent(0.7)
+        button.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.8)
         button.tintColor = .white
         button.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
         return button
@@ -62,12 +76,25 @@ class RegistrationController: UIViewController {
         button.setTitle("Register", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
         button.setHeight(height: 50)
-        button.alpha = 0
-        button.isEnabled = false
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.layer.cornerRadius = 50 / 2
+        button.isEnabled = false
+        button.alpha = 0
         button.backgroundColor = #colorLiteral(red: 0.2588235294, green: 0.2588235294, blue: 0.2588235294, alpha: 1)
+        button.layer.masksToBounds = false
+        button.clipsToBounds = true
+        button.setupShadow(opacity: 0.2, radius: 10, offset: CGSize(width: 0.0, height: 2.0), color: .white)
         button.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var selectProfileImage: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "plus_photo"), for: .normal)
+        button.setDimensions(height: 100, width: 100)
+        button.layer.cornerRadius = 100 / 2
+        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(handlePhotoSelected), for: .touchUpInside)
         return button
     }()
     
@@ -82,11 +109,33 @@ class RegistrationController: UIViewController {
         return stackView
     }()
     
+    private lazy var bottomContainerView: UIView = {
+        let view = UIView()
+        view.setDimensions(height: 500, width: view.frame.width)
+        view.layer.cornerRadius = 30
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    private lazy var topStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel,
+                                                       selectProfileImage])
+        stackView.axis = .horizontal
+        stackView.setDimensions(height: 100, width: view.frame.width)
+        return stackView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
         self.hideKeyboardWhenTouchOutsideTextField()
+        textFieldObservance()
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        bottomContainerView.setGradientBackground(colorTop: #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.2470588235, alpha: 1), colorBottom: #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1))
     }
     
     func configureUI(){
@@ -94,25 +143,118 @@ class RegistrationController: UIViewController {
         view.addSubview(blurView)
         blurView.frame = view.frame
         
+        
         view.addSubview(dismissView)
         dismissView.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 14, paddingRight: 20)
         
-        view.addSubview(titleLabel)
-        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor,
-                          paddingTop: 20, paddingLeft: 40)
+        view.addSubview(bottomContainerView)
+        bottomContainerView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         
-        view.addSubview(stackView)
-        stackView.centerX(inView: view, topAnchor: titleLabel.bottomAnchor, paddingTop: 50)
-        stackView.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 50, paddingRight: 50)
+        view.addSubview(topStackView)
+        topStackView.centerX(inView: view)
+        topStackView.anchor(left: view.leftAnchor, bottom: bottomContainerView.topAnchor, right: view.rightAnchor,
+                            paddingLeft: 40, paddingBottom: 40 , paddingRight: 40)
+        
+        bottomContainerView.addSubview(stackView)
+        stackView.centerX(inView: bottomContainerView, topAnchor: bottomContainerView.topAnchor, paddingTop: 30)
+        stackView.anchor(left: bottomContainerView.leftAnchor, right: bottomContainerView.rightAnchor,
+                         paddingLeft: 40, paddingRight: 40)
     }
     
+    
+    func textFieldObservance(){
+        emailTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        fullnameTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+    }
+    
+    @objc func textDidChange(_ textField: UITextField){
+        
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let fullname = fullnameTextField.text else { return }
+        
+        if !email.isEmpty && !password.isEmpty && !fullname.isEmpty {
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                self?.registrationButton.alpha = 1
+                self?.registrationButton.isEnabled = true
+            }
+        } else {
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                self?.registrationButton.alpha = 0
+                self?.registrationButton.isEnabled = false
+            }
+        }
+        
+    }
+    
+    
+    
     @objc private func handleRegistration(){
-        print("DEBUG: register pressed")
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let fullname = fullnameTextField.text else { return }
+        guard let profileImageView = profileImage else { return }
+        let imageID = UUID().uuidString
+        let fileDirectory = "Avatars/" + "_\(imageID)" + ".jpg"
+        
+        FileStorage.saveFileLocally(fileData: profileImageView.jpegData(compressionQuality: 0.5)! as NSData,
+                                    fileName: fileDirectory)
+        
+        FileStorage.uploadImage(profileImageView, directory: fileDirectory) { imageUrl in
+            guard let imageUrl =  imageUrl else {return}
+            let credential = userCredential(email: email, password: password, fullName: fullname, profileImageUrl: imageUrl)
+            UserServices.shared.registerUserWith(credential: credential) {  [weak self] error in
+                if let error = error {
+                    self?.showBlurView()
+                    self?.showLoader(false)
+                    self?.showAlertMessage("Error", error.localizedDescription)
+                    return
+                }
+                
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.showBanner(message: "Successfully create an account", state: .success,
+                                 location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                                 sender: self!)
+                
+                Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
+                    self?.showBlurView()
+                    self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+                }
+                
+                Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
+                    self?.removeBlurView()
+                    self?.showLoader(false)
+                    
+                }
+            }
+        }
     }
     
     @objc private func handleDismissal(){
         dismiss(animated: true, completion: nil)
     }
     
+    @objc func handlePhotoSelected(){
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
     
 }
+
+extension RegistrationController : UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.editedImage] as? UIImage
+        profileImage = image
+        selectProfileImage.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        selectProfileImage.layer.cornerRadius = 50
+        selectProfileImage.layer.borderColor = UIColor.white.cgColor
+        selectProfileImage.layer.borderWidth = 1.0
+        selectProfileImage.imageView?.contentMode = .scaleAspectFill
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+

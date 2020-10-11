@@ -48,16 +48,6 @@ class TripsTimelineController: UIViewController {
         
     }
     
-    func logout(){
-        do {
-            try Auth.auth().signOut()
-            presentLoggingController()
-            self.tabBarController?.selectedIndex = 0
-        } catch (let error){
-            print("DEBUG: error happen while logging out \(error.localizedDescription)")
-        }
-    }
-    
     
     func checkIfUserLoggedIn(){
         Auth.auth().currentUser?.uid == nil ? presentLoggingController() : print("")

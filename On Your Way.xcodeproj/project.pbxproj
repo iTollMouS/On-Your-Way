@@ -70,6 +70,9 @@
 		834C991A2532391B00BE8691 /* NewTripController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99182532391B00BE8691 /* NewTripController.swift */; };
 		834C991B2532391B00BE8691 /* DateAndTimeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99192532391B00BE8691 /* DateAndTimeController.swift */; };
 		834C991D25323C3200BE8691 /* RecentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C991C25323C3200BE8691 /* RecentCell.swift */; };
+		834C9920253289C200BE8691 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C991F253289C200BE8691 /* PushNotificationService.swift */; };
+		834C99222532D7B900BE8691 /* UserServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99212532D7B900BE8691 /* UserServices.swift */; };
+		834C99242532E61500BE8691 /* FileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99232532E61500BE8691 /* FileStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -153,6 +156,9 @@
 		834C99182532391B00BE8691 /* NewTripController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTripController.swift; sourceTree = "<group>"; };
 		834C99192532391B00BE8691 /* DateAndTimeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateAndTimeController.swift; sourceTree = "<group>"; };
 		834C991C25323C3200BE8691 /* RecentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentCell.swift; sourceTree = "<group>"; };
+		834C991F253289C200BE8691 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		834C99212532D7B900BE8691 /* UserServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServices.swift; sourceTree = "<group>"; };
+		834C99232532E61500BE8691 /* FileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStorage.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -206,13 +212,13 @@
 				834C981D25311CCC00BE8691 /* SceneDelegate.swift */,
 				834C98742531227D00BE8691 /* Constants.swift */,
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
+				834C9883253128E700BE8691 /* View Controllers arch */,
 				834C9906253232CD00BE8691 /* Onboarding arch */,
 				834C98D92531A98200BE8691 /* API */,
 				834C98C82531308200BE8691 /* Firebase helpers */,
 				834C988E25312B2700BE8691 /* Auth Controller arch */,
-				834C9883253128E700BE8691 /* View Controllers arch */,
 				834C98772531234600BE8691 /* Model */,
-				834C989625312BC100BE8691 /* Extension */,
+				834C989625312BC100BE8691 /* Utilities */,
 				834C982425311CCE00BE8691 /* Assets.xcassets */,
 				834C982625311CCE00BE8691 /* LaunchScreen.storyboard */,
 				834C986F25311EAD00BE8691 /* GoogleService-Info.plist */,
@@ -251,14 +257,15 @@
 			name = "Auth Controller arch";
 			sourceTree = "<group>";
 		};
-		834C989625312BC100BE8691 /* Extension */ = {
+		834C989625312BC100BE8691 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				834C989725312BCE00BE8691 /* Extenions.swift */,
+				834C991F253289C200BE8691 /* PushNotificationService.swift */,
 				834C98CE253192C000BE8691 /* CustomContainerView.swift */,
 				834C98D1253193D800BE8691 /* CustomTextField.swift */,
 			);
-			path = Extension;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		834C989B25312C3000BE8691 /* JSON files */ = {
@@ -300,6 +307,8 @@
 			isa = PBXGroup;
 			children = (
 				834C98E32531D0F800BE8691 /* AuthServices.swift */,
+				834C99232532E61500BE8691 /* FileStorage.swift */,
+				834C99212532D7B900BE8691 /* UserServices.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -558,6 +567,7 @@
 				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
+				834C99242532E61500BE8691 /* FileStorage.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
 				834C9912253233D300BE8691 /* ProfileCell.swift in Sources */,
 				834C991A2532391B00BE8691 /* NewTripController.swift in Sources */,
@@ -571,6 +581,8 @@
 				834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */,
 				834C98C625312E3900BE8691 /* User.swift in Sources */,
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
+				834C9920253289C200BE8691 /* PushNotificationService.swift in Sources */,
+				834C99222532D7B900BE8691 /* UserServices.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
 				834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */,
 				834C98FE253231E000BE8691 /* TableHeaderView.swift in Sources */,
