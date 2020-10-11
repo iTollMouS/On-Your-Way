@@ -41,11 +41,27 @@ class ProfileController: UIViewController {
         view.backgroundColor = .white
         configureUI()
         configureNavBar()
-        fetchUser()
     }
     
-    func fetchUser(){
-       
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        checkUser()
+        let demoVC = PeopleReviewsController()
+        demoVC.popupItem.title = "People Reviews "
+        demoVC.popupItem.subtitle = "Tab here to see who wrote a review about you"
+        demoVC.popupItem.progress = 0.34
+        tabBarController?.modalPresentationStyle = .custom
+        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
+        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
+        tabBarController?.presentPopupBar(withContentViewController: demoVC, animated: true, completion: nil)
+    }
+    
+    func checkUser(){
+        if Auth.auth().currentUser?.uid == nil {
+            footerView.logoutButton.setTitle("Create Account", for: .normal)
+        } else {
+            footerView.logoutButton.setTitle("Log out", for: .normal)
+        }
     }
     
     
@@ -56,6 +72,7 @@ class ProfileController: UIViewController {
         headerView.delegate = self
         footerView.delegate = self
     }
+    
     
     
     
@@ -71,37 +88,36 @@ class ProfileController: UIViewController {
         self.title = "Profile"
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        let demoVC = PeopleReviewsController()
-        demoVC.popupItem.title = "People Reviews "
-        demoVC.popupItem.subtitle = "Tab here to see who wrote a review about you"
-        demoVC.popupItem.progress = 0.34
-        tabBarController?.modalPresentationStyle = .custom
-        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
-        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
-        tabBarController?.presentPopupBar(withContentViewController: demoVC, animated: true, completion: nil)
-    }
     
     func logout(){
-        do {
-            try Auth.auth().signOut()
-            presentLoggingController()
-            self.tabBarController?.selectedIndex = 0
-        } catch (let error){
-            print("DEBUG: error happen while logging out \(error.localizedDescription)")
+        AuthServices.shared.logOutUser { [weak self] error in
+            if let error = error {
+                ProgressHUD.showError("\(error.localizedDescription)")
+                return
+            }
+            
+            print("DEBUG: user is logged out")
+            self?.presentLoggingController()
+            self?.tabBarController?.selectedIndex = 0
         }
     }
     
     func presentLoggingController(){
-        DispatchQueue.main.async { [self] in
+        DispatchQueue.main.async { [ weak self] in
             let loginController = LoginController()
+            loginController.delegate = self
             let nav = UINavigationController(rootViewController: loginController)
             nav.modalPresentationStyle = .fullScreen
-            present(nav, animated: true, completion: nil)
+            self?.present(nav, animated: true, completion: nil)
         }
     }
     
+}
+
+extension ProfileController: LoginControllerDelegate {
+    func handleLoggingControllerDismissal(_ view: LoginController) {
+        view.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension ProfileController: UITableViewDelegate, UITableViewDataSource {
@@ -130,7 +146,7 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         
         let iconImage = UIImageView(image: UIImage(systemName: viewModel.systemNameIcon))
         iconImage.setDimensions(height: viewModel.iconDimension.0, width: viewModel.iconDimension.1)
-
+        
         iconImage.tintColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
         let label = UILabel()
         label.text = viewModel.sectionTitle
@@ -147,7 +163,7 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         return containerView
     }
     
-  
+    
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
@@ -165,15 +181,19 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ProfileController: ProfileFooterDelegate {
-    func handleLogout() {
+    func handleLogout(view: ProfileFooterView) {
         
-        let alert = UIAlertController(title: nil, message: "Are you sure you want to logout ?", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "log out", style: .destructive, handler: { (alertAction) in
-            self.dismiss(animated: true) { [self] in logout()  }
-        }))
-        alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true, completion: nil)
+        if Auth.auth().currentUser?.uid == nil {
+            logout()
+        } else {
+            
+            let alert = UIAlertController(title: nil, message: "Are you sure you want to logout ?", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "log out", style: .destructive, handler: { (alertAction) in
+                self.dismiss(animated: true) { [self] in logout()  }
+            }))
+            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
     }
 }
 
@@ -194,14 +214,13 @@ extension ProfileController: ProfileHeaderDelegate {
         Config.Grid.FrameView.borderColor = .black
         Config.Grid.FrameView.fillColor = .black
         gallery.modalPresentationStyle = .fullScreen
-        
         self.present(gallery, animated: true, completion: nil)
     }
 }
 
 extension ProfileController: GalleryControllerDelegate {
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
-      
+        
         controller.dismiss(animated: true, completion: nil)
         
     }

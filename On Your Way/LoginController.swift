@@ -12,8 +12,15 @@ import CryptoKit
 import Firebase
 
 
+// MARK: - LoginControllerDelegate
+protocol LoginControllerDelegate: class {
+    func handleLoggingControllerDismissal(_ view: LoginController)
+}
+
 class LoginController: UIViewController {
     
+    
+    weak var delegate: LoginControllerDelegate?
     
     // MARK: - Properties
     
@@ -66,7 +73,6 @@ class LoginController: UIViewController {
     
     
     // MARK: - Logging Buttons
-    
     private lazy var browsAnonymousButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("  Brows as anonymous", for: .normal)
@@ -160,7 +166,7 @@ class LoginController: UIViewController {
     
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        return darkMode ? .default : .lightContent
+        return darkMode ? .lightContent : .lightContent
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -218,7 +224,38 @@ class LoginController: UIViewController {
     }
     
     @objc private func handleLogin(){
-        print("DEBUG: button is pressed")
+        
+        self.showBlurView()
+        self.showLoader(true, message: "Please wait...")
+        guard let email = emailTextField.text else { return  }
+        guard let password = passwordTextField.text else { return }
+        AuthServices.shared.logUserWitEmail(email: email, password: password) { [weak self] error in
+            if let error = error {
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.showAlertMessage("Error", error.localizedDescription)
+                return
+            }
+            
+            self?.removeBlurView()
+            self?.showLoader(false)
+            self?.showBanner(message: "Successfully logged in", state: .success,
+                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                             sender: self!)
+            
+            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
+                self?.showBlurView()
+                self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+            }
+            
+            Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.delegate?.handleLoggingControllerDismissal(self!)
+            }
+            
+        }
+        
     }
     
     @objc private func handleLoggingWithPhoneNumber(){

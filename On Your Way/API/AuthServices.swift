@@ -10,13 +10,30 @@ import Firebase
 import ProgressHUD
 import GoogleSignIn
 
+// MARK: - userCredential
+struct userCredential {
+    let email: String
+    let password: String
+    let fullName: String
+    let profileImageUrl: String
+}
 
+
+
+
+// MARK: -  AuthServices
 struct AuthServices {
     static let shared = AuthServices()
     
     private init() {}
     
-    func registerUserWithPhoneNumber(withCredentials authCredential : PhoneAuthCredential, completion: @escaping(Error?) -> Void){
+    
+    // MARK: - typealias APICompletion
+    typealias APICompletion = ((Error?) -> Void)
+    
+    
+    // MARK: - registerUserWithPhoneNumber
+    func registerUserWithPhoneNumber(withCredentials authCredential : PhoneAuthCredential, completion: @escaping APICompletion){
         Auth.auth().signIn(with: authCredential) { (authResult, error) in
             if let error = error {
                 print("DEBUG: error authenticate via phone number \(error)")
@@ -28,14 +45,16 @@ struct AuthServices {
             guard let phoneNumber = authResult.user.phoneNumber else {return}
             let user = User(id: authResult.user.uid,
                             username: phoneNumber,
-                            email: phoneNumber, pushId: "", avatarLink: "", status: "")
+                            email: phoneNumber, pushId: "", avatarLink: "", status: "", password: "")
             saveUserLocally(user)
             self.saveUserToFirestore(user)
             completion(error)
         }
     }
     
-    func registerUserWithGoogle(didSignInfo user: GIDGoogleUser, completion: @escaping(Error?) -> Void) {
+    
+    // MARK: - registerUserWithGoogle
+    func registerUserWithGoogle(didSignInfo user: GIDGoogleUser, completion: @escaping APICompletion) {
         guard let user = user.authentication else { return }
         let credentials = GoogleAuthProvider.credential(withIDToken: user.idToken, accessToken: user.accessToken)
         Auth.auth().signIn(with: credentials) { (authResult, error) in
@@ -50,7 +69,7 @@ struct AuthServices {
             guard let profileImageUrl = authResult?.user.photoURL?.absoluteString else {return}
             guard let authResult = authResult else {return}
             let user = User(id: uid, username: firstName, email: email,
-                            pushId: "", avatarLink: profileImageUrl, status: "")
+                            pushId: "", avatarLink: profileImageUrl, status: "", password: "")
             emailVerification(withEmail: email, userResult: authResult)
             saveUserToFirestore(user)
             saveUserLocally(user)
@@ -59,7 +78,9 @@ struct AuthServices {
         }
     }
     
-    func signInWithAppleID(credential: AuthCredential, fullname: String, completion: @escaping(Error?) -> Void){
+    
+    // MARK: - signInWithAppleID
+    func signInWithAppleID(credential: AuthCredential, fullname: String, completion: @escaping APICompletion){
         Auth.auth().signIn(with: credential) { (authResult, error) in
             if let error = error {
                 print("DEBUG: error authenticate via phone number \(error)")
@@ -68,7 +89,7 @@ struct AuthServices {
             }
             guard let authResult = authResult?.user else {return}
             guard let email = authResult.email else {return}
-            let user = User(id: authResult.uid, username: fullname, email: email, pushId: "", avatarLink: "", status: "")
+            let user = User(id: authResult.uid, username: fullname, email: email, pushId: "", avatarLink: "", status: "", password: "")
             print("DEBUG: user info is \(user.id)")
             print("DEBUG: user info is \(user.email)")
             saveUserToFirestore(user)
@@ -79,6 +100,75 @@ struct AuthServices {
     }
     
     
+    
+    // MARK: - logUserWitEmail
+    func logUserWitEmail(email: String, password: String, completion: @escaping APICompletion) {
+        Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+            if let error = error {
+                print("DEBUG: error while registering new user\(error)")
+                completion(error)
+                return
+            }
+            completion(error)
+        }
+    }
+    
+    
+    // MARK: - registerUserWith
+    func registerUserWith(credential: userCredential , completion: @escaping  APICompletion) {
+        Auth.auth().createUser(withEmail: credential.email, password: credential.password) { (authResult, error) in
+            if let error = error {
+                print("DEBUG: error while registering new user\(error)")
+                completion(error)
+                return
+            }
+            guard let authResult = authResult else {return}
+            authResult.user.sendEmailVerification { error in
+                if let error = error {
+                    print("DEBUG: error while registering new user\(error)")
+                    completion(error)
+                    return
+                }
+            }
+            
+            let user = User(id: authResult.user.uid, username: credential.fullName,
+                            email: credential.email, pushId: "", avatarLink: credential.profileImageUrl, status: "", password: credential.password)
+            saveUserLocally(user)
+            AuthServices.shared.saveUserToFirestore(user)
+            completion(error)
+        }
+        
+    }
+    
+    
+    // MARK: - resetPassword
+    func resetPassword(email: String, completion: @escaping APICompletion ){
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                print("DEBUG: error while registering new user\(error)")
+                completion(error)
+                return
+            }
+            completion(error)
+        }
+    }
+    
+    
+    // MARK: - logOutUser
+    func logOutUser(completion: @escaping APICompletion){
+        do {
+            try Auth.auth().signOut()
+            userDefaults.removeObject(forKey: kCURRENTUSER)
+            userDefaults.synchronize()
+            completion(nil)
+        } catch (let error) {
+            print("Error while logging user out! \(error.localizedDescription)")
+        }
+        
+    }
+    
+    
+    // MARK: - saveUserToFirestore
     func saveUserToFirestore(_ user: User){
         do {
             
@@ -89,6 +179,8 @@ struct AuthServices {
         }
     }
     
+    
+    // MARK: - emailVerification
     func emailVerification(withEmail: String, userResult: AuthDataResult){
         userResult.user.sendEmailVerification { error in
             if let error = error {

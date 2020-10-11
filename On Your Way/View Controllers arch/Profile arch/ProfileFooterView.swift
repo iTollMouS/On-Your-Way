@@ -8,16 +8,15 @@
 import UIKit
 
 protocol ProfileFooterDelegate: class {
-    func handleLogout()
+    func handleLogout(view: ProfileFooterView)
 }
 
 class ProfileFooterView: UIView {
 
     weak var delegate: ProfileFooterDelegate?
     
-    private lazy var logoutButton: UIButton = {
+     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Log out", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.6)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
@@ -44,6 +43,6 @@ class ProfileFooterView: UIView {
     
     
     @objc func handleLogout(){
-        delegate?.handleLogout()
+        delegate?.handleLogout(view: self)
     }
 }

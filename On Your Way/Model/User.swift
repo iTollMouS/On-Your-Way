@@ -17,7 +17,7 @@ struct User: Codable, Equatable{
     var pushId = ""
     var avatarLink = ""
     var status: String
-    
+    var password: String?
     
     static var currentId: String{
         guard let uid = Auth.auth().currentUser?.uid else { return "" }

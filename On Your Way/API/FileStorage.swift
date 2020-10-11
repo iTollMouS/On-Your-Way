@@ -12,10 +12,14 @@ import ProgressHUD
 
 let storage = Storage.storage()
 
+
+// MARK: - FileStorage
+
 class FileStorage {
     
-    class func uploadImage(_ image: UIImage, directory: String, completion: @escaping(_ documentLink: String?) -> Void) {
-        
+    
+    // MARK: - uploadImage
+    class func uploadImage(_ image: UIImage, directory: String, completion: @escaping(_ imageUrl: String?) -> Void) {
         
         let storageRef = storage.reference(forURL: storageReferenceKey).child(directory)
         
@@ -49,6 +53,8 @@ class FileStorage {
         ProgressHUD.dismiss()
     }
     
+    
+    // MARK: - downloadImage
     class func downloadImage(imageUrl: String, completion: @escaping (_ image: UIImage?) -> Void) {
         
         let imageFileName = fileNameFrom(fileUrl: imageUrl)
@@ -99,6 +105,8 @@ class FileStorage {
         }
     }
     
+    
+    // MARK: - saveFileLocally
     class func saveFileLocally(fileData: NSData, fileName: String) {
         let docUrl = getDocumentsURL().appendingPathComponent(fileName, isDirectory: false)
         fileData.write(to: docUrl, atomically: true)
@@ -107,6 +115,8 @@ class FileStorage {
 }
 
 
+
+// MARK: - Helpers
 func fileInDocumentsDirectory(fileName: String) -> String {
     return getDocumentsURL().appendingPathComponent(fileName).path
 }

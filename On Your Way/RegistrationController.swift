@@ -11,15 +11,19 @@ import ProgressHUD
 import Loaf
 
 
+// MARK: - RegistrationControllerDelegate
 protocol  RegistrationControllerDelegate: class {
     func handleRegistrationDismissal(_ view: RegistrationController)
 }
 
+
+
+
 class RegistrationController: UIViewController {
     
-    
     weak var delegate: RegistrationControllerDelegate?
-    
+
+    // MARK: - Properties
     private var profileImage: UIImage?
     
     private lazy var backgroundImageView: UIImageView = {
@@ -130,6 +134,9 @@ class RegistrationController: UIViewController {
         return stackView
     }()
     
+    
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -139,6 +146,7 @@ class RegistrationController: UIViewController {
         
     }
     
+    // MARK: - viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         bottomContainerView.setGradientBackground(colorTop: #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.2470588235, alpha: 1), colorBottom: #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1))
     }
@@ -147,7 +155,6 @@ class RegistrationController: UIViewController {
         // create blur view
         view.addSubview(blurView)
         blurView.frame = view.frame
-        
         
         view.addSubview(dismissView)
         dismissView.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 14, paddingRight: 20)
@@ -167,14 +174,14 @@ class RegistrationController: UIViewController {
     }
     
     
+    // MARK: - textFieldObservance
     func textFieldObservance(){
         emailTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
         fullnameTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
     }
     
-    @objc func textDidChange(_ textField: UITextField){
-        
+    @objc func textDidChange(){
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullname = fullnameTextField.text else { return }
@@ -194,7 +201,7 @@ class RegistrationController: UIViewController {
     }
     
     
-    
+    // MARK: - handleRegistration
     @objc private func handleRegistration(){
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
@@ -209,7 +216,7 @@ class RegistrationController: UIViewController {
         FileStorage.uploadImage(profileImageView, directory: fileDirectory) { imageUrl in
             guard let imageUrl =  imageUrl else {return}
             let credential = userCredential(email: email, password: password, fullName: fullname, profileImageUrl: imageUrl)
-            UserServices.shared.registerUserWith(credential: credential) {  [weak self] error in
+            AuthServices.shared.registerUserWith(credential: credential) {  [weak self] error in
                 if let error = error {
                     self?.showBlurView()
                     self?.showLoader(false)
@@ -237,6 +244,8 @@ class RegistrationController: UIViewController {
         }
     }
     
+    
+    // MARK: - handleDismissal
     @objc private func handleDismissal(){
         dismiss(animated: true, completion: nil)
     }
@@ -250,6 +259,12 @@ class RegistrationController: UIViewController {
     
 }
 
+// MARK: - extension
+
+
+
+
+// MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate
 extension RegistrationController : UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.editedImage] as? UIImage

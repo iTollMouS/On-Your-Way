@@ -56,6 +56,7 @@ class TripsTimelineController: UIViewController {
     func presentLoggingController(){
         DispatchQueue.main.async { [self] in
             let loginController = LoginController()
+            loginController.delegate = self
             let nav = UINavigationController(rootViewController: loginController)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
@@ -71,5 +72,11 @@ extension TripsTimelineController: NewTripControllerDelegate {
             safetyControllerGuidelines.modalPresentationStyle = .custom
             present(safetyControllerGuidelines, animated: true, completion: nil)
         })
+    }
+}
+
+extension TripsTimelineController: LoginControllerDelegate {
+    func handleLoggingControllerDismissal(_ view: LoginController) {
+        view.dismiss(animated: true, completion: nil)
     }
 }
