@@ -11,9 +11,14 @@ import ProgressHUD
 import Loaf
 
 
+protocol  RegistrationControllerDelegate: class {
+    func handleRegistrationDismissal(_ view: RegistrationController)
+}
+
 class RegistrationController: UIViewController {
     
     
+    weak var delegate: RegistrationControllerDelegate?
     
     private var profileImage: UIImage?
     
@@ -226,7 +231,7 @@ class RegistrationController: UIViewController {
                 Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
                     self?.removeBlurView()
                     self?.showLoader(false)
-                    
+                    self?.delegate?.handleRegistrationDismissal(self!)
                 }
             }
         }

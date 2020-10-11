@@ -213,7 +213,6 @@ class LoginController: UIViewController {
     
     
     // MARK: - Actions
-    
     @objc private func handleAnonymousMode(){
         dismiss(animated: true, completion: nil)
     }
@@ -230,24 +229,31 @@ class LoginController: UIViewController {
     }
     
     @objc private func handleRegisterPressed(){
-        
         let registrationController = RegistrationController()
         registrationController.modalPresentationStyle = .custom
+        registrationController.delegate = self
         present(registrationController, animated: true, completion: nil)
-        
     }
     
     
 }
 
+// MARK: -  PhoneLoginDelegate
 extension LoginController: PhoneLoginControllerDelegate {
     func handlePhoneControllerDismissal(_ view: PhoneLoginController) {
         view.dismiss(animated: true) { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
     }
-    
-    
+}
+
+// MARK: - RegistrationDelegate
+extension LoginController: RegistrationControllerDelegate {
+    func handleRegistrationDismissal(_ view: RegistrationController) {
+        view.dismiss(animated: true) { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: - Google Extenion
@@ -280,7 +286,6 @@ extension LoginController: GIDSignInDelegate {
                 self.showAlertMessage( nil ,error.localizedDescription)
                 return
             }
-            print("DEBUG: user id \(user.userID)")
             
             self.removeBlurView()
             self.showLoader(false)
@@ -291,6 +296,7 @@ extension LoginController: GIDSignInDelegate {
     }
 }
 
+// MARK: - SignInWithAppleID
 extension LoginController {
     
     @objc func handleSignInWithAppleID(){
