@@ -43,7 +43,6 @@
 		834C98C225312C5700BE8691 /* wearMask.json in Resources */ = {isa = PBXBuildFile; fileRef = 834C98AE25312C5700BE8691 /* wearMask.json */; };
 		834C98C325312C5700BE8691 /* wash_your_hands_regularly.json in Resources */ = {isa = PBXBuildFile; fileRef = 834C98AF25312C5700BE8691 /* wash_your_hands_regularly.json */; };
 		834C98C625312E3900BE8691 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98C525312E3900BE8691 /* User.swift */; };
-		834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98C92531309300BE8691 /* FirebaseUserListener.swift */; };
 		834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98CE253192C000BE8691 /* CustomContainerView.swift */; };
 		834C98D2253193D800BE8691 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98D1253193D800BE8691 /* CustomTextField.swift */; };
 		834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */; };
@@ -77,8 +76,8 @@
 		834C993525337C0A00BE8691 /* RecentChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993425337C0900BE8691 /* RecentChat.swift */; };
 		834C9938253382B400BE8691 /* FirebaseRecentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9937253382B400BE8691 /* FirebaseRecentService.swift */; };
 		834C993A253384C700BE8691 /* StartChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9939253384C700BE8691 /* StartChat.swift */; };
-		834C993C25338D1C00BE8691 /* FirebaseTripService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993B25338D1C00BE8691 /* FirebaseTripService.swift */; };
 		834C993E25338D6800BE8691 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993D25338D6800BE8691 /* Trip.swift */; };
+		834C99432533A92800BE8691 /* TripService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99422533A92800BE8691 /* TripService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,7 +136,6 @@
 		834C98AE25312C5700BE8691 /* wearMask.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wearMask.json; sourceTree = "<group>"; };
 		834C98AF25312C5700BE8691 /* wash_your_hands_regularly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wash_your_hands_regularly.json; sourceTree = "<group>"; };
 		834C98C525312E3900BE8691 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		834C98C92531309300BE8691 /* FirebaseUserListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserListener.swift; sourceTree = "<group>"; };
 		834C98CE253192C000BE8691 /* CustomContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomContainerView.swift; sourceTree = "<group>"; };
 		834C98D1253193D800BE8691 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginController.swift; sourceTree = "<group>"; };
@@ -169,8 +167,8 @@
 		834C993425337C0900BE8691 /* RecentChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChat.swift; sourceTree = "<group>"; };
 		834C9937253382B400BE8691 /* FirebaseRecentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRecentService.swift; sourceTree = "<group>"; };
 		834C9939253384C700BE8691 /* StartChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartChat.swift; sourceTree = "<group>"; };
-		834C993B25338D1C00BE8691 /* FirebaseTripService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseTripService.swift; sourceTree = "<group>"; };
 		834C993D25338D6800BE8691 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
+		834C99422533A92800BE8691 /* TripService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripService.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -311,10 +309,6 @@
 		834C98C82531308200BE8691 /* Firebase helpers */ = {
 			isa = PBXGroup;
 			children = (
-				834C98C92531309300BE8691 /* FirebaseUserListener.swift */,
-				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
-				834C993B25338D1C00BE8691 /* FirebaseTripService.swift */,
-				834C9939253384C700BE8691 /* StartChat.swift */,
 			);
 			path = "Firebase helpers";
 			sourceTree = "<group>";
@@ -325,6 +319,9 @@
 				834C98E32531D0F800BE8691 /* AuthServices.swift */,
 				834C99232532E61500BE8691 /* FileStorage.swift */,
 				834C99212532D7B900BE8691 /* UserServices.swift */,
+				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
+				834C9939253384C700BE8691 /* StartChat.swift */,
+				834C99422533A92800BE8691 /* TripService.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -593,7 +590,6 @@
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
 				834C9915253237AC00BE8691 /* OrderCell.swift in Sources */,
 				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
-				834C993C25338D1C00BE8691 /* FirebaseTripService.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
 				834C99242532E61500BE8691 /* FileStorage.swift in Sources */,
@@ -601,6 +597,7 @@
 				834C992B2533542B00BE8691 /* TripCell.swift in Sources */,
 				834C9912253233D300BE8691 /* ProfileCell.swift in Sources */,
 				834C991A2532391B00BE8691 /* NewTripController.swift in Sources */,
+				834C99432533A92800BE8691 /* TripService.swift in Sources */,
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,
 				834C989825312BCE00BE8691 /* Extenions.swift in Sources */,
 				834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */,
@@ -623,7 +620,6 @@
 				834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */,
 				834C990B253232D700BE8691 /* Page.swift in Sources */,
 				834C98FD253231E000BE8691 /* SafetyCell.swift in Sources */,
-				834C98CA2531309300BE8691 /* FirebaseUserListener.swift in Sources */,
 				834C9911253233D300BE8691 /* ProfileHeader.swift in Sources */,
 				834C98D2253193D800BE8691 /* CustomTextField.swift in Sources */,
 			);

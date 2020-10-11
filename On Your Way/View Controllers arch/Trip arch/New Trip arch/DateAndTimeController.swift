@@ -302,7 +302,31 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func handleSubmitNewTrip(){
-        delegate?.dismissDateAndTimeController(self)
+        guard let trip = trip else { return  }
+        self.showBlurView()
+        self.showLoader(true, message: "Please wait...")
+        TripService.shared.saveTripToFirestore(trip) { [weak self] error in
+            if let error = error {
+                print("DEBUG: error while uplaoding a trip ")
+                return
+            }
+            self?.removeBlurView()
+            self?.showLoader(false)
+            self?.showBanner(message: "Successfully uploaded the trip", state: .success,
+                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                             sender: self!)
+            
+            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
+                self?.showBlurView()
+                self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+            }
+            
+            Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] timer in
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.delegate?.dismissDateAndTimeController(self!)
+            }
+        }
     }
     
     @objc func handleTextInputChanger(){

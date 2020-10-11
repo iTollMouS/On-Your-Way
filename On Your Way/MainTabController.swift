@@ -30,7 +30,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         
         
         let profileController = ProfileController()
-        let profileControllerNavBar = templateNavController(image: UIImage(systemName: "gearshape")!, rootViewController: profileController, tabBarItemTitle: "Meesage")
+        let profileControllerNavBar = templateNavController(image: UIImage(systemName: "person")!, rootViewController: profileController, tabBarItemTitle: "Profile")
         
         viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar, recentControllerNavBar, profileControllerNavBar]
     }

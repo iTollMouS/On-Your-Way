@@ -28,6 +28,8 @@ class ProfileController: UIViewController {
         }
     }
     
+    let refreshController = UIRefreshControl()
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style:.insetGrouped)
         tableView.rowHeight = 50
@@ -37,6 +39,7 @@ class ProfileController: UIViewController {
         tableView.tableHeaderView = headerView
         tableView.register(ProfileCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableFooterView = footerView
+        tableView.refreshControl = refreshController
         return tableView
     }()
     
@@ -44,8 +47,9 @@ class ProfileController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
         configureUI()
+        configureRefreshController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +67,12 @@ class ProfileController: UIViewController {
         
     }
     
+    func configureRefreshController(){
+        refreshController.tintColor = .white
+        refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
+                                                                [.foregroundColor: UIColor.white])
+    }
+    
     
     // MARK: - checkUser
     func checkUser(){
@@ -71,6 +81,7 @@ class ProfileController: UIViewController {
         } else {
             self.user = User.currentUser
             title = user?.username
+            tableView.reloadData()
             headerView.profileImageView.clipsToBounds = true
         }
     }
@@ -232,6 +243,12 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if refreshController.isRefreshing {
+            checkUser()
+            self.refreshController.endRefreshing()
+        }
+    }
     
 }
 

@@ -86,7 +86,8 @@ class ProfileCell: UITableViewCell {
     }
     
     func configure(user: User){
-      
+        phoneNumberLabel.text = user.phoneNumber
+        emailLabel.text = user.email
     }
     
     func configureAccessory(){

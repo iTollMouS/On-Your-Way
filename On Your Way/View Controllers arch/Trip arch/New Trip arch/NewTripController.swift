@@ -243,13 +243,18 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         guard let pickupLocation  = meetingForPickupTextField.text else { return }
         guard let pickupTime  = timeToPickPackageTextField.text else { return }
         
-        
-        
         let trip = Trip(userID: user.id,
-                        tripID: UUID().uuidString, tripDateAnnounced: Date().convertDate(formattedString: .formattedType3),
-                        tripTime: "", fromCity: currentCity, destinationCity: destinationCity,
-                        basePrice: "", packageType: "", timestamp: nil, pickupLocation: pickupLocation,
+                        tripID: UUID().uuidString,
+                        tripDateAnnounced: Date().convertDate(formattedString: .formattedType3),
+                        tripDepartureTime: "",
+                        fromCity: currentCity,
+                        destinationCity: destinationCity,
+                        basePrice: "",
+                        packageType: "",
+                        timestamp: nil,
+                        pickupLocation: pickupLocation,
                         timeForPickingPackages: pickupTime)
+        
         print("DEBUG: user trip is \(trip)")
         let dateAndTimeController = DateAndTimeController()
         dateAndTimeController.delegate = self

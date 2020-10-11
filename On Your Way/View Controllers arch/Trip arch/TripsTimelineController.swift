@@ -18,6 +18,8 @@ class TripsTimelineController: UITableViewController {
     
     
     var user: User?
+    var trips: [Trip] = []
+    
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -25,14 +27,22 @@ class TripsTimelineController: UITableViewController {
         configureUI()
         configureRefreshController()
         checkIfUserLoggedIn()
-        
+        fetchTrips()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         configureTapBarController()
         configureNavBar()
-        
+    }
+    
+    func fetchTrips(){
+        TripService.shared.fetchAllTrips { [weak self] in
+            print("DEBUG: all trips \($0)")
+            self?.trips = $0
+            self?.tableView.reloadData()
+            
+        }
     }
     
     
@@ -69,6 +79,7 @@ class TripsTimelineController: UITableViewController {
         tableView.dataSource = self
         tableView.rowHeight = 150
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        tableView.tableHeaderView = UIView()
         
     }
     
@@ -104,8 +115,11 @@ class TripsTimelineController: UITableViewController {
     }
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        refreshController.isRefreshing ? refreshController.endRefreshing() : refreshController.beginRefreshing()
-    
+        if refreshController.isRefreshing {
+            fetchTrips()
+            refreshController.endRefreshing()
+        }
+        
     }
     
 }
@@ -117,12 +131,13 @@ class TripsTimelineController: UITableViewController {
 extension TripsTimelineController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 40
+        return trips.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripCell
-         
+        cell.textLabel?.text = trips[indexPath.row].tripID
+        cell.textLabel?.textColor = .white
         return cell
     }
     
@@ -130,10 +145,11 @@ extension TripsTimelineController {
 // MARK: -  NewTripControllerDelegate
 extension TripsTimelineController: NewTripControllerDelegate {
     func dismissNewTripView(_ view: NewTripController) {
-        tabBarController?.closePopup(animated: true, completion: { [self] in
+        tabBarController?.closePopup(animated: true, completion: { [weak self] in
             let safetyControllerGuidelines = SafetyControllerGuidelines()
             safetyControllerGuidelines.modalPresentationStyle = .custom
-            present(safetyControllerGuidelines, animated: true, completion: nil)
+            self?.present(safetyControllerGuidelines, animated: true, completion: nil)
+            self?.fetchTrips()
         })
     }
 }

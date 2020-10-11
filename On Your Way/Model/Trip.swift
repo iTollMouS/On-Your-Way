@@ -14,7 +14,7 @@ struct Trip: Codable {
     var userID = ""
     var tripID = ""
     var tripDateAnnounced = ""
-    var tripTime = ""
+    var tripDepartureTime = ""
     var fromCity = ""
     var destinationCity = ""
     var basePrice = ""
