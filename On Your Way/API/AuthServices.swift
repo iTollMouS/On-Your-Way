@@ -47,7 +47,7 @@ struct AuthServices {
                             username: phoneNumber,
                             email: phoneNumber, pushId: "", avatarLink: "", status: "", password: "")
             saveUserLocally(user)
-            self.saveUserToFirestore(user)
+            UserServices.shared.saveUserToFirestore(user)
             completion(error)
         }
     }
@@ -71,7 +71,7 @@ struct AuthServices {
             let user = User(id: uid, username: firstName, email: email,
                             pushId: "", avatarLink: profileImageUrl, status: "", password: "")
             emailVerification(withEmail: email, userResult: authResult)
-            saveUserToFirestore(user)
+            UserServices.shared.saveUserToFirestore(user)
             saveUserLocally(user)
             completion(error)
             
@@ -92,7 +92,7 @@ struct AuthServices {
             let user = User(id: authResult.uid, username: fullname, email: email, pushId: "", avatarLink: "", status: "", password: "")
             print("DEBUG: user info is \(user.id)")
             print("DEBUG: user info is \(user.email)")
-            saveUserToFirestore(user)
+            UserServices.shared.saveUserToFirestore(user)
             saveUserLocally(user)
             completion(error)
             
@@ -134,7 +134,7 @@ struct AuthServices {
             let user = User(id: authResult.user.uid, username: credential.fullName,
                             email: credential.email, pushId: "", avatarLink: credential.profileImageUrl, status: "", password: credential.password)
             saveUserLocally(user)
-            AuthServices.shared.saveUserToFirestore(user)
+            UserServices.shared.saveUserToFirestore(user)
             completion(error)
         }
         
@@ -166,20 +166,7 @@ struct AuthServices {
         }
         
     }
-    
-    
-    // MARK: - saveUserToFirestore
-    func saveUserToFirestore(_ user: User){
-        do {
-            
-            try Firestore.firestore().collection("users").document(user.id).setData(from: user, merge: true)
-            
-        } catch (let error ) {
-            print("DEBUG: error while saving user locally \(error.localizedDescription)")
-        }
-    }
-    
-    
+
     // MARK: - emailVerification
     func emailVerification(withEmail: String, userResult: AuthDataResult){
         userResult.user.sendEmailVerification { error in

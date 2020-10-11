@@ -15,7 +15,16 @@ class UserServices {
     
     private init() {}
     
-   
+    // MARK: - saveUserToFirestore
+    func saveUserToFirestore(_ user: User){
+        do {
+            
+            try Firestore.firestore().collection("users").document(user.id).setData(from: user, merge: true)
+            
+        } catch (let error ) {
+            print("DEBUG: error while saving user locally \(error.localizedDescription)")
+        }
+    }
     
     
 }

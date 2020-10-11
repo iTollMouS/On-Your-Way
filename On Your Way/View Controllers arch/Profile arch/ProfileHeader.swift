@@ -11,21 +11,30 @@ import Cosmos
 protocol ProfileHeaderDelegate: class {
     
     func handleUpdatePhoto(_ header: ProfileHeader)
+    func usernameChanges(_ header: ProfileHeader)
     
 }
 
 class ProfileHeader: UIView {
 
+    
+    var user: User?{
+        didSet{ configureUI()}
+    }
+    
     weak var delegate: ProfileHeaderDelegate?
     
-     lazy var profileImageView: UIButton = {
-        let imageView = UIButton(type: .system)
+     lazy var profileImageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.setDimensions(height: 100, width: 100)
         imageView.layer.cornerRadius = 100 / 2
-        imageView.backgroundColor = .clear
+        imageView.backgroundColor = .gray
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = false
+        imageView.setupShadow(opacity: 0.4, radius: 10, offset: CGSize(width: 0.0, height: 0.4), color: .white)
+        imageView.layer.masksToBounds = false
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectPhoto)))
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
@@ -39,20 +48,20 @@ class ProfileHeader: UIView {
         return label
     }()
     
-    private lazy var usernameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Tariq Almazyad"
-        label.textAlignment = .center
-        label.textColor = .lightGray
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.setHeight(height: 50)
-        return label
+     lazy var fullNameTextField: UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .center
+        textField.textColor = .lightGray
+        textField.font = UIFont.systemFont(ofSize: 30)
+        textField.setHeight(height: 50)
+        textField.delegate = self
+        textField.adjustsFontSizeToFitWidth = true
+        return textField
     }()
     
     
-    private lazy var userStatusLabel: UILabel = {
+     lazy var userStatusLabel: UILabel = {
         let label = UILabel()
-        label.text = "I am using chat"
         label.textAlignment = .center
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 14)
@@ -61,7 +70,7 @@ class ProfileHeader: UIView {
     }()
     
     private lazy var userInfoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [usernameLabel, userStatusLabel])
+        let stackView = UIStackView(arrangedSubviews: [fullNameTextField, userStatusLabel])
         stackView.axis = .vertical
         stackView.spacing = -20
         stackView.distribution = .fill
@@ -99,6 +108,31 @@ class ProfileHeader: UIView {
         ratingView.centerX(inView: userInfoStackView, topAnchor: userInfoStackView.bottomAnchor, paddingTop: 12)
         addSubview(editImageLabel)
         editImageLabel.centerX(inView: profileImageView, topAnchor: profileImageView.bottomAnchor, paddingTop: 2)
+        
+    }
+    
+    func configureUI(){
+        guard let user = user else { return }
+        fullNameTextField.text = user.username
+        FileStorage.downloadImage(imageUrl: user.avatarLink) { [weak self] image in
+            if let image = image  {
+                self?.profileImageView.image = image
+                self?.profileImageView.setDimensions(height: 100, width: 100)
+                self?.profileImageView.layer.cornerRadius = 100 / 2
+                self?.profileImageView.backgroundColor = .clear
+                self?.profileImageView.clipsToBounds = true
+                self?.profileImageView.layer.borderWidth = 1
+                self?.profileImageView.layer.borderColor = UIColor.white.cgColor
+                self?.profileImageView.layer.masksToBounds = true
+                self?.profileImageView.setupShadow(opacity: 0.4, radius: 10, offset: CGSize(width: 0.0, height: 0.4), color: .white)
+            }
+        }
+        if user.avatarLink == "" {
+            profileImageView.image = #imageLiteral(resourceName: "plus_photo")
+            profileImageView.setDimensions(height: 100, width: 100)
+            profileImageView.layer.cornerRadius = 100 / 2
+            profileImageView.backgroundColor = .clear
+        }
     }
     
     @objc func handleSelectPhoto(){
@@ -109,4 +143,11 @@ class ProfileHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+}
+
+
+extension ProfileHeader: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        delegate?.usernameChanges(self)
+    }
 }

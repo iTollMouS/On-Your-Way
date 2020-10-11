@@ -55,6 +55,7 @@ class FileStorage {
     
     
     // MARK: - downloadImage
+    /// download Image locally.
     class func downloadImage(imageUrl: String, completion: @escaping (_ image: UIImage?) -> Void) {
         
         let imageFileName = fileNameFrom(fileUrl: imageUrl)

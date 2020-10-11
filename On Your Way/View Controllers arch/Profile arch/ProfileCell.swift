@@ -89,6 +89,13 @@ class ProfileCell: UITableViewCell {
         
     }
     
+    func configure(user: User){
+        
+        print("DEBUG: user cell phone \(user.phoneNumber) ")
+        print("DEBUG: user cell name \(user.email)")
+        print("DEBUG: user cell \(user.username)")
+    }
+    
     func configureAccessory(){
         addSubview(accessoryButton)
         accessoryButton.centerY(inView: self)
@@ -119,7 +126,7 @@ class ProfileCell: UITableViewCell {
             addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShowGuidelines)))
             accessoryButton.addTarget(self, action: #selector(handleShowGuidelines), for: .touchUpInside)
             configureAccessory()
-            
+
         }
     }
     

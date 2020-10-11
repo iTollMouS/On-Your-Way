@@ -15,13 +15,18 @@ private let reuseIdentifier = "ProfileCell"
 
 class ProfileController: UIViewController {
     
+    // MARK: - Properties
     private lazy var headerView = ProfileHeader(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
     private lazy var footerView = ProfileFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 100))
-    
     private let gallery = GalleryController ()
     let cellSelectionStyle = UIView()
     
-    var user: User?
+    private var user: User? {
+        didSet{
+            headerView.user = user
+            tableView.reloadData()
+        }
+    }
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style:.insetGrouped)
@@ -35,12 +40,14 @@ class ProfileController: UIViewController {
         return tableView
     }()
     
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         configureUI()
-        configureNavBar()
+        fetchUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,17 +61,34 @@ class ProfileController: UIViewController {
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: demoVC, animated: true, completion: nil)
+        headerView.profileImageView.clipsToBounds = true
+    }
+    
+    
+    // MARK: - checkUser
+    
+    func fetchUser(){
+        if let user = User.currentUser {
+            self.user = user
+        } else {
+            guard let userId = Auth.auth().currentUser?.uid else { return }
+            FirebaseUserListener.shared.fetchUser(userId: userId) { user in
+                self.user = user
+            }
+        }
     }
     
     func checkUser(){
         if Auth.auth().currentUser?.uid == nil {
             footerView.logoutButton.setTitle("Create Account", for: .normal)
+            headerView.fullNameTextField.isUserInteractionEnabled = false
+            headerView.profileImageView.isUserInteractionEnabled = false
         } else {
             footerView.logoutButton.setTitle("Log out", for: .normal)
         }
     }
     
-    
+    // MARK: - configureUI
     func configureUI(){
         view.addSubview(tableView)
         tableView.fillSuperview()
@@ -73,35 +97,64 @@ class ProfileController: UIViewController {
         footerView.delegate = self
     }
     
-    
-    
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    // MARK: - configureNavBar
+    func configureNavBarButtons(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleUserUpdates))
     }
     
-    
-    
-    func configureNavBar(){
+    @objc func handleUserUpdates(){
+        guard let user = user else { return }
+        self.showBlurView()
+        self.showLoader(true, message: "Please wait while we\nupdate your info...")
+        UserServices.shared.saveUserToFirestore(user)
+        saveUserLocally(user)
+        self.removeBlurView()
+        self.showLoader(false)
+        self.showBanner(message: "You have successfully updated your info", state: .success,
+                        location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                        sender: self)
+        self.navigationItem.rightBarButtonItem?.customView?.isHidden = true
         
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.title = "Profile"
     }
     
+    // MARK: -  Update ProfileImage
+    func updateUserImage(_ image: UIImage){
+        // create a name directory for user image
+        let fileDirectory = "Avatars/" + "_\(User.currentId)" + ".jpg"
+        // we upload the image to firebase storage and download the associated link
+        FileStorage.uploadImage(image, directory: fileDirectory) { imageUrl in
+            guard let imageUrl = imageUrl else {return}
+            if var user = User.currentUser {
+                // we assign the profile url to user so that we save it to firebase
+                user.avatarLink = imageUrl
+                saveUserLocally(user)
+                UserServices.shared.saveUserToFirestore(user)
+                self.user = user
+            }
+            self.headerView.profileImageView.image = image
+            self.headerView.profileImageView.clipsToBounds = true
+            guard let image = image.jpegData(compressionQuality: 0.5) else {return}
+            FileStorage.saveFileLocally(fileData: image as NSData, fileName: User.currentId)
+            self.tableView.reloadData()
+        }
+        
+    }
     
+    // MARK: - logout
     func logout(){
         AuthServices.shared.logOutUser { [weak self] error in
             if let error = error {
                 ProgressHUD.showError("\(error.localizedDescription)")
                 return
             }
-            
             print("DEBUG: user is logged out")
             self?.presentLoggingController()
             self?.tabBarController?.selectedIndex = 0
         }
     }
     
+    
+    // MARK: - presentLoggingController
     func presentLoggingController(){
         DispatchQueue.main.async { [ weak self] in
             let loginController = LoginController()
@@ -114,12 +167,22 @@ class ProfileController: UIViewController {
     
 }
 
+
+// MARK: - extension
+
+
+
+
+// MARK: - LoginControllerDelegate
 extension ProfileController: LoginControllerDelegate {
     func handleLoggingControllerDismissal(_ view: LoginController) {
         view.dismiss(animated: true, completion: nil)
     }
 }
 
+
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension ProfileController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -133,8 +196,10 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ProfileCell
         guard let viewModel = ProfileViewModel(rawValue: indexPath.section) else { return cell }
+        guard let user = user else { return cell }
         cell.viewModel = viewModel
         cell.delegate = self
+        cell.configure(user: user)
         cellSelectionStyle.backgroundColor = UIColor.white.withAlphaComponent(0.2)
         cell.selectedBackgroundView = cellSelectionStyle
         return cell
@@ -142,7 +207,6 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let viewModel = ProfileViewModel(rawValue: section) else { return UIView() }
-        
         
         let iconImage = UIImageView(image: UIImage(systemName: viewModel.systemNameIcon))
         iconImage.setDimensions(height: viewModel.iconDimension.0, width: viewModel.iconDimension.1)
@@ -180,6 +244,8 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
+
+// MARK: - ProfileFooterDelegate
 extension ProfileController: ProfileFooterDelegate {
     func handleLogout(view: ProfileFooterView) {
         
@@ -197,6 +263,8 @@ extension ProfileController: ProfileFooterDelegate {
     }
 }
 
+
+// MARK: - ProfileCellDelegate
 extension ProfileController: ProfileCellDelegate {
     func showGuidelines(_ cell: ProfileCell) {
         let safetyControllerGuidelines = SafetyControllerGuidelines()
@@ -206,7 +274,17 @@ extension ProfileController: ProfileCellDelegate {
     
 }
 
+
+// MARK: - ProfileHeaderDelegate
 extension ProfileController: ProfileHeaderDelegate {
+    
+    func usernameChanges(_ header: ProfileHeader) {
+        guard let text = header.fullNameTextField.text else { return }
+        user?.username = text
+        print("DEBUG: text is \(text)")
+        configureNavBarButtons()
+    }
+    
     func handleUpdatePhoto(_ header: ProfileHeader) {
         Config.tabsToShow = [.imageTab, .cameraTab]
         Config.Camera.imageLimit = 1
@@ -218,11 +296,20 @@ extension ProfileController: ProfileHeaderDelegate {
     }
 }
 
+
+// MARK: - GalleryControllerDelegate
 extension ProfileController: GalleryControllerDelegate {
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
         
-        controller.dismiss(animated: true, completion: nil)
+        if images.count > 0 {
+            guard let image = images.first else { return  }
+            image.resolve { [weak self] image in
+                guard let image = image else {return}
+                self?.updateUserImage(image)
+            }
+        }
         
+        controller.dismiss(animated: true, completion: nil)
     }
     
     func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
