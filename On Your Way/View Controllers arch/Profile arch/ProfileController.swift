@@ -70,6 +70,7 @@ class ProfileController: UIViewController {
             presentLoggingController()
         } else {
             self.user = User.currentUser
+            headerView.profileImageView.clipsToBounds = true
         }
     }
     
@@ -80,6 +81,7 @@ class ProfileController: UIViewController {
         gallery.delegate = self
         headerView.delegate = self
         footerView.delegate = self
+        headerView.profileImageView.clipsToBounds = true
     }
     
     // MARK: - configureNavBar
@@ -100,6 +102,7 @@ class ProfileController: UIViewController {
                         location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                         sender: self)
         self.navigationItem.rightBarButtonItem?.title = ""
+        headerView.profileImageView.clipsToBounds = true
         
     }
     
@@ -122,6 +125,7 @@ class ProfileController: UIViewController {
             guard let image = image.jpegData(compressionQuality: 0.5) else {return}
             FileStorage.saveFileLocally(fileData: image as NSData, fileName: User.currentId)
             self?.tableView.reloadData()
+            self?.headerView.profileImageView.clipsToBounds = true
         }
         
     }
@@ -288,7 +292,7 @@ extension ProfileController: GalleryControllerDelegate {
         if images.count > 0 {
             guard let image = images.first else { return  }
             image.resolve { [weak self] image in
-                guard let image = image else {return}
+                guard let image = image?.circleMasked else {return}
                 self?.updateUserImage(image)
             }
         }

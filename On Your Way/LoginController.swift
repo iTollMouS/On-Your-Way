@@ -419,6 +419,9 @@ extension LoginController {
 
 extension LoginController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        
+        self.showBlurView()
+        self.showLoader(true, message: "Please wait...")
         guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {return}
         guard let nonce = currentNonce else {
             fatalError("Invalid state: a login callback was received, but no login request was sent!")
@@ -436,12 +439,31 @@ extension LoginController: ASAuthorizationControllerDelegate {
         let credential = OAuthProvider.credential(withProviderID: "apple.com",
                                                   idToken: idTokenString,
                                                   rawNonce: nonce)
-        AuthServices.shared.signInWithAppleID(credential: credential, fullname: fullname) { error in
+        AuthServices.shared.signInWithAppleID(credential: credential, fullname: fullname) { [weak self] error in
             if let error = error {
-                self.showAlertMessage("Error", error.localizedDescription)
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.showAlertMessage("Error", error.localizedDescription)
                 return
             }
-            print("DEBUG: success")
+            
+            self?.removeBlurView()
+            self?.showLoader(false)
+            self?.showBanner(message: "Successfully logged in", state: .success,
+                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                             sender: self!)
+            
+            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
+                self?.showBlurView()
+                self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+            }
+            
+            Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.delegate?.handleLoggingControllerDismissal(self!)
+            }
+            
         }
     }
     
