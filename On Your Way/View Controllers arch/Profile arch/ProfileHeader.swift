@@ -116,7 +116,7 @@ class ProfileHeader: UIView {
         fullNameTextField.text = user.username
         FileStorage.downloadImage(imageUrl: user.avatarLink) { [weak self] image in
             if let image = image  {
-                self?.profileImageView.image = image
+                self?.profileImageView.image = image.circleMasked
                 self?.profileImageView.setDimensions(height: 100, width: 100)
                 self?.profileImageView.layer.cornerRadius = 100 / 2
                 self?.profileImageView.backgroundColor = .clear

@@ -30,12 +30,12 @@ class ProfileController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style:.insetGrouped)
-        tableView.register(ProfileCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 50
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.tableHeaderView = headerView
+        tableView.register(ProfileCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableFooterView = footerView
         return tableView
     }()
@@ -47,7 +47,6 @@ class ProfileController: UIViewController {
         
         view.backgroundColor = .white
         configureUI()
-        fetchUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,28 +61,18 @@ class ProfileController: UIViewController {
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: demoVC, animated: true, completion: nil)
         headerView.profileImageView.clipsToBounds = true
+        
     }
     
     
     // MARK: - checkUser
-    
-    func fetchUser(){
-        if let user = User.currentUser {
-            self.user = user
-        } else {
-            guard let userId = Auth.auth().currentUser?.uid else { return }
-            FirebaseUserListener.shared.fetchUser(userId: userId) { user in
-                self.user = user
-            }
-        }
-    }
-    
     func checkUser(){
-        if Auth.auth().currentUser?.uid == nil {
-            footerView.logoutButton.setTitle("Create Account", for: .normal)
-            headerView.fullNameTextField.isUserInteractionEnabled = false
-            headerView.profileImageView.isUserInteractionEnabled = false
+        if User.currentUser == nil {
+            
+            presentLoggingController()
+            
         } else {
+            self.user = User.currentUser
             footerView.logoutButton.setTitle("Log out", for: .normal)
         }
     }
@@ -114,7 +103,7 @@ class ProfileController: UIViewController {
         self.showBanner(message: "You have successfully updated your info", state: .success,
                         location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                         sender: self)
-        self.navigationItem.rightBarButtonItem?.customView?.isHidden = true
+        self.navigationItem.rightBarButtonItem?.title = ""
         
     }
     
@@ -123,20 +112,20 @@ class ProfileController: UIViewController {
         // create a name directory for user image
         let fileDirectory = "Avatars/" + "_\(User.currentId)" + ".jpg"
         // we upload the image to firebase storage and download the associated link
-        FileStorage.uploadImage(image, directory: fileDirectory) { imageUrl in
+        FileStorage.uploadImage(image, directory: fileDirectory) { [ weak self] imageUrl in
             guard let imageUrl = imageUrl else {return}
             if var user = User.currentUser {
                 // we assign the profile url to user so that we save it to firebase
                 user.avatarLink = imageUrl
                 saveUserLocally(user)
                 UserServices.shared.saveUserToFirestore(user)
-                self.user = user
+                self?.user = user
             }
-            self.headerView.profileImageView.image = image
-            self.headerView.profileImageView.clipsToBounds = true
+            self?.headerView.profileImageView.image = image
+            self?.headerView.profileImageView.clipsToBounds = true
             guard let image = image.jpegData(compressionQuality: 0.5) else {return}
             FileStorage.saveFileLocally(fileData: image as NSData, fileName: User.currentId)
-            self.tableView.reloadData()
+            self?.tableView.reloadData()
         }
         
     }
@@ -148,15 +137,14 @@ class ProfileController: UIViewController {
                 ProgressHUD.showError("\(error.localizedDescription)")
                 return
             }
-            print("DEBUG: user is logged out")
             self?.presentLoggingController()
-            self?.tabBarController?.selectedIndex = 0
         }
     }
     
     
     // MARK: - presentLoggingController
     func presentLoggingController(){
+        tabBarController?.selectedIndex = 0
         DispatchQueue.main.async { [ weak self] in
             let loginController = LoginController()
             loginController.delegate = self
@@ -177,7 +165,7 @@ class ProfileController: UIViewController {
 // MARK: - LoginControllerDelegate
 extension ProfileController: LoginControllerDelegate {
     func handleLoggingControllerDismissal(_ view: LoginController) {
-        view.dismiss(animated: true, completion: nil)
+        view.dismiss(animated: true) { [weak self] in self?.checkUser() }
     }
 }
 

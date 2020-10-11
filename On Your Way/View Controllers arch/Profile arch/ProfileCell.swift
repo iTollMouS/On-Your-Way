@@ -21,7 +21,6 @@ class ProfileCell: UITableViewCell {
     
     private lazy var tellFriendLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tell a friend "
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -30,7 +29,6 @@ class ProfileCell: UITableViewCell {
     
     private lazy var phoneNumberLabel: UILabel = {
         let label = UILabel()
-        label.text = "0500845000 "
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -39,7 +37,6 @@ class ProfileCell: UITableViewCell {
     
     private lazy var emailLabel: UILabel = {
         let label = UILabel()
-        label.text = "tariq.almazyad@gmail.com "
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -48,7 +45,6 @@ class ProfileCell: UITableViewCell {
     
     private lazy var passwordLabel: UILabel = {
         let label = UILabel()
-        label.text = "********** "
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -90,10 +86,7 @@ class ProfileCell: UITableViewCell {
     }
     
     func configure(user: User){
-        
-        print("DEBUG: user cell phone \(user.phoneNumber) ")
-        print("DEBUG: user cell name \(user.email)")
-        print("DEBUG: user cell \(user.username)")
+      
     }
     
     func configureAccessory(){
