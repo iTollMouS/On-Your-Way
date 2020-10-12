@@ -38,7 +38,7 @@ class TripService {
                 return try? queryDocumentSnapshot.document.data(as: Trip.self)
             }
             for trip in allTrips {  trips.append(trip) }
-            trips.sort(by: { $0.tripDateAnnounced > $1.tripDateAnnounced })
+            trips.sort(by: { $0.timestamp! > $1.timestamp! })
             completion(trips)
         }
     }

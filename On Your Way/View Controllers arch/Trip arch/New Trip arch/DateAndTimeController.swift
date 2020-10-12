@@ -302,7 +302,15 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func handleSubmitNewTrip(){
-        guard let trip = trip else { return  }
+        guard var trip = trip else { return  }
+        guard let departureTime = timeTextField.text else { return }
+        guard let departureDate = dateTextField.text else { return }
+        guard let packageType = packageInfoTextView.text else { return }
+        
+        trip.tripDepartureTime = departureTime
+        trip.packageType = packageType
+        trip.tripDepartureDate = departureDate
+        
         self.showBlurView()
         self.showLoader(true, message: "Please whit while we verify ..")
         TripService.shared.saveTripToFirestore(trip) { [weak self] error in

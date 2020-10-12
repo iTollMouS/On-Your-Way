@@ -25,33 +25,13 @@ class TripCell: UITableViewCell {
         return imageView
     }()
     
-    
-    private lazy var dateLabel: UILabel = {
+    private lazy var timestampLabel: UILabel = {
         let label = UILabel()
-        label.text = ""
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 12)
         label.adjustsFontSizeToFitWidth = true
         return label
-    }()
-    
-    private lazy var timeLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.textAlignment = .center
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.adjustsFontSizeToFitWidth = true
-        return label
-    }()
-    
-    private lazy var dateAndTimeStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [timeLabel, dateLabel])
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.distribution = .fillProportionally
-        return stackView
     }()
     
     private lazy var containerView: UIView = {
@@ -63,7 +43,7 @@ class TripCell: UITableViewCell {
     }()
     
     
-    private lazy var timeTravel: UILabel = {
+    private lazy var departureTime: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
@@ -72,15 +52,8 @@ class TripCell: UITableViewCell {
         return label
     }()
     
-    private lazy var fromCity: UILabel = {
+    private lazy var currentLocation: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "",
-                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
-                                                                    .font: UIFont.systemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "\n09/11/2020\n12:12: AM",
-                                                        attributes: [.foregroundColor : UIColor.lightGray,
-                                                                     .font: UIFont.systemFont(ofSize: 12)]))
-        label.attributedText = attributedText
         label.textAlignment = .left
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
@@ -88,15 +61,8 @@ class TripCell: UITableViewCell {
     }()
     
     
-    private lazy var destinationCity: UILabel = {
+    private lazy var destinationLocation: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "",
-                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
-                                                                    .font: UIFont.systemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "",
-                                                        attributes: [.foregroundColor : UIColor.lightGray,
-                                                                     .font: UIFont.systemFont(ofSize: 12)]))
-        label.attributedText = attributedText
         label.textAlignment = .left
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
@@ -136,11 +102,10 @@ class TripCell: UITableViewCell {
     }()
     
     private lazy var citiesStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [fromCity, destinationCity])
+        let stackView = UIStackView(arrangedSubviews: [currentLocation, destinationLocation])
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 24
-        stackView.setWidth(width: 70)
+        stackView.setWidth(width: 120)
         return stackView
     }()
     
@@ -191,11 +156,11 @@ class TripCell: UITableViewCell {
         heightAnchor.constraint(equalToConstant: 250).isActive = true
         
         addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 32, paddingLeft: 12)
+        profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 32, paddingLeft: 8)
         addSubview(fullnameLable)
         fullnameLable.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 4)
-        addSubview(dateAndTimeStackView)
-        dateAndTimeStackView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 36, paddingRight: 8)
+        addSubview(timestampLabel)
+        timestampLabel.anchor(top: topAnchor, right: rightAnchor, paddingTop: 36, paddingRight: 8)
         
         // construct the dots and the line in between
         addSubview(fromCityDot)
@@ -206,29 +171,46 @@ class TripCell: UITableViewCell {
         lineBetweenCities.centerX(inView: fromCityDot)
         lineBetweenCities.anchor(top: fromCityDot.bottomAnchor, bottom: destinationCityDot.topAnchor, paddingTop: 8, paddingBottom: 8)
         addSubview(citiesStackView)
-        citiesStackView.centerY(inView: lineBetweenCities, leftAnchor: lineBetweenCities.rightAnchor, paddingLeft: 16)
+        citiesStackView.centerY(inView: lineBetweenCities, leftAnchor: lineBetweenCities.rightAnchor, paddingLeft: 12)
         citiesStackView.anchor(top: fromCityDot.topAnchor, bottom: destinationCityDot.bottomAnchor, paddingTop: -15, paddingBottom: -15)
         addSubview(containerInfoStackView)
         containerInfoStackView.anchor(top: fullnameLable.bottomAnchor, left: citiesStackView.rightAnchor, bottom: bottomAnchor,
                              right: rightAnchor, paddingRight: 12)
         
-        
     }
     
     private func configure(){
         guard let trip = trip else { return }
+         let viewModel = TripViewModel(trip: trip)
         UserServices.shared.fetchUser(userId: trip.userID) { user in
             FileStorage.downloadImage(imageUrl: user.avatarLink) { imageView in
                 self.profileImageView.image = imageView
             }
             self.fullnameLable.text = user.username
         }
-        dateLabel.text = trip.timestamp?.convertDate(formattedString: .formattedType2)
+        timestampLabel.text = viewModel.timestamp
+        priceBaseLabel.text = "SR: \(viewModel.basePrice)"
+        destinationLocation.text = viewModel.destinationLocation
+        departureTime.text = viewModel.tripDepartureTime
+        packagesTypes.text = viewModel.packageType
+        currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
+        destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
+        
     }
     
     
     @objc func handleOptionsTapped(){
         print("DEBUG: option is tapped")
+    }
+    
+    fileprivate func tripInfoText(location: String, tripDepartureDate: String, tripDepartureTime: String ) -> NSMutableAttributedString{
+        let attributedText = NSMutableAttributedString(string: location,
+                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
+                                                                    .font: UIFont.systemFont(ofSize: 14)])
+        attributedText.append(NSMutableAttributedString(string: "\n\(tripDepartureDate)\n\(tripDepartureTime)",
+                                                        attributes: [.foregroundColor : UIColor.lightGray,
+                                                                     .font: UIFont.systemFont(ofSize: 12)]))
+        return attributedText
     }
     
     fileprivate func createLabel(titleText: String, titleTextSize: CGFloat , titleColor: UIColor,

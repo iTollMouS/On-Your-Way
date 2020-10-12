@@ -78,6 +78,11 @@
 		834C993A253384C700BE8691 /* StartChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9939253384C700BE8691 /* StartChat.swift */; };
 		834C993E25338D6800BE8691 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993D25338D6800BE8691 /* Trip.swift */; };
 		834C99432533A92800BE8691 /* TripService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99422533A92800BE8691 /* TripService.swift */; };
+		83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3E92534720400FA88F0 /* TripDetailsController.swift */; };
+		83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */; };
+		83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */; };
+		83D7D3F02534720500FA88F0 /* TripDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */; };
+		83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -169,6 +174,11 @@
 		834C9939253384C700BE8691 /* StartChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartChat.swift; sourceTree = "<group>"; };
 		834C993D25338D6800BE8691 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		834C99422533A92800BE8691 /* TripService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripService.swift; sourceTree = "<group>"; };
+		83D7D3E92534720400FA88F0 /* TripDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsController.swift; sourceTree = "<group>"; };
+		83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsCell.swift; sourceTree = "<group>"; };
+		83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsHeaderView.swift; sourceTree = "<group>"; };
+		83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsFooterView.swift; sourceTree = "<group>"; };
+		83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripViewModel.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -411,9 +421,22 @@
 			children = (
 				834C987D2531286100BE8691 /* TripsTimelineController.swift */,
 				834C992A2533542B00BE8691 /* TripCell.swift */,
+				83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */,
 				834C99172532390E00BE8691 /* New Trip arch */,
+				83D7D3E8253471F700FA88F0 /* New Group */,
 			);
 			path = "Trip arch";
+			sourceTree = "<group>";
+		};
+		83D7D3E8253471F700FA88F0 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */,
+				83D7D3E92534720400FA88F0 /* TripDetailsController.swift */,
+				83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */,
+				83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		9972412D674DDD21CF23548C /* Frameworks */ = {
@@ -586,7 +609,9 @@
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
 				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
 				834C991D25323C3200BE8691 /* RecentCell.swift in Sources */,
+				83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */,
 				834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */,
+				83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */,
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
 				834C9915253237AC00BE8691 /* OrderCell.swift in Sources */,
 				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
@@ -602,11 +627,14 @@
 				834C989825312BCE00BE8691 /* Extenions.swift in Sources */,
 				834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */,
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
+				83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */,
 				834C993525337C0A00BE8691 /* RecentChat.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C991B2532391B00BE8691 /* DateAndTimeController.swift in Sources */,
+				83D7D3F02534720500FA88F0 /* TripDetailsFooterView.swift in Sources */,
 				834C98752531227D00BE8691 /* Constants.swift in Sources */,
 				834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */,
+				83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */,
 				834C98C625312E3900BE8691 /* User.swift in Sources */,
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
 				834C993A253384C700BE8691 /* StartChat.swift in Sources */,

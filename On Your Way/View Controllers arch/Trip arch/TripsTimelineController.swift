@@ -142,6 +142,14 @@ extension TripsTimelineController {
         return cell
     }
     
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tripDetailsController = TripDetailsController()
+        navigationController?.pushViewController(tripDetailsController, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }

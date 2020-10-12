@@ -13,14 +13,14 @@ import FirebaseFirestoreSwift
 struct Trip: Codable {
     var userID = ""
     var tripID = ""
-    var tripDateAnnounced = ""
     var tripDepartureTime = ""
-    var tripEstimateArrival = ""
-    var fromCity = ""
-    var destinationCity = ""
+    var tripDepartureDate = ""
+    var tripEstimateTimeArrival = ""
+    var currentLocation = ""
+    var destinationLocation = ""
     var basePrice = ""
     var packageType = ""
     @ServerTimestamp var timestamp = Date()
-    var pickupLocation = ""
-    var timeForPickingPackages = ""
+    var packagePickupLocation = ""
+    var packagePickupTime = ""
 }

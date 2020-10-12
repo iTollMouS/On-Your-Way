@@ -286,16 +286,15 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
 
         let trip = Trip(userID: user.id,
                         tripID: UUID().uuidString,
-                        tripDateAnnounced: Date().convertDate(formattedString: .formattedType3),
                         tripDepartureTime: "",
-                        tripEstimateArrival: tripEstimateArrival,
-                        fromCity: currentCity,
-                        destinationCity: destinationCity,
+                        tripDepartureDate: "",
+                        tripEstimateTimeArrival: tripEstimateArrival,
+                        currentLocation: currentCity,
+                        destinationLocation: destinationCity,
                         basePrice: basePrice,
-                        packageType: "",
-                        timestamp: nil,
-                        pickupLocation: pickupLocation,
-                        timeForPickingPackages: pickupTime)
+                        packageType: "", timestamp: Date(),
+                        packagePickupLocation: pickupLocation,
+                        packagePickupTime: pickupTime)
 
         print("DEBUG: user trip is \(trip)")
         let dateAndTimeController = DateAndTimeController()
