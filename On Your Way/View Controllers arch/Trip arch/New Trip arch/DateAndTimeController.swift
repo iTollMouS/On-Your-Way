@@ -341,12 +341,12 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
 
 extension DateAndTimeController: FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        dateTextField.text = date.convertDate(formattedString: .formattedType2)
+        dateTextField.text = date.convertDate(formattedString: .formattedType1)
         
     }
     
     func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        dateTextField.text = date.convertDate(formattedString: .formattedType2)
+        dateTextField.text = date.convertDate(formattedString: .formattedType1)
     }
     
 }

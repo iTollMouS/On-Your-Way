@@ -115,6 +115,15 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                                                                           dividerViewColor: .lightGray, dividerAlpa: 1,
                                                                           setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
+    private let basePriceTextField = CustomTextField(textColor: .white, placeholder: "base price?",
+                                                             placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
+    
+    
+    private lazy var basePriceContainerView = CustomContainerView(image:  UIImage(systemName: "dollarsign.circle.fill"),
+                                                                          textField: basePriceTextField, iconTintColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1),
+                                                                          dividerViewColor: .lightGray, dividerAlpa: 1,
+                                                                          setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
+    
     
     // MARK: - stacks
     private lazy var topStackView: UIStackView = {
@@ -127,7 +136,8 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     
     private lazy var middleStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [meetingForPickupDestinationContainerView,
-                                                       timeToPickPackageContainerView])
+                                                       timeToPickPackageContainerView,
+                                                       basePriceContainerView])
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.setHeight(height: CGFloat(stackView.subviews.count * 70))
@@ -221,7 +231,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         
         contentView.addSubview(mainContentView)
         mainContentView.anchor(top: titleLabel.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor,
-                               paddingTop: 20 , paddingLeft: 20, paddingBottom: 20 , paddingRight: 20, height: 400)
+                               paddingTop: 20 , paddingLeft: 20, paddingBottom: 20 , paddingRight: 20, height: 450)
         
         titleLabel.centerX(inView: contentView)
         contentView.addSubview(topContainerView)
@@ -253,17 +263,25 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func handleDateAndTimeTapped(){
-        guard let currentLocationCity = currentLocationCity else { return }
-        guard let destinationLocationCity = destinationLocationCity else { return }
+    
+        
+        guard let currentLocationCity = currentLocationCity else {
+            self.showAlertMessage("Error", "Please make sure you choose current city and destination")
+            return
+        }
+        guard let destinationLocationCity = destinationLocationCity else {
+            self.showAlertMessage("Error", "Please make sure you choose current city and destination")
+            return
+        }
         let tripEstimateArrival = getEstimatedTimeArrivalWith(currentLocation: currentLocationCity,
                                                                destinationLocation: destinationLocationCity)
         
         guard let user = user else { return  }
-        guard let currentCity  = currentLocationTextField.text else { return }
+        guard let currentCity  = currentLocationTextField.text else {return}
         guard let destinationCity  = destinationTextField.text else { return }
         guard let pickupLocation  = meetingForPickupTextField.text else { return }
         guard let pickupTime  = timeToPickPackageTextField.text else { return }
-
+        guard let basePrice = basePriceTextField.text else {return}
 
 
         let trip = Trip(userID: user.id,
@@ -273,7 +291,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                         tripEstimateArrival: tripEstimateArrival,
                         fromCity: currentCity,
                         destinationCity: destinationCity,
-                        basePrice: "",
+                        basePrice: basePrice,
                         packageType: "",
                         timestamp: nil,
                         pickupLocation: pickupLocation,

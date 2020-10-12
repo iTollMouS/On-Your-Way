@@ -18,6 +18,7 @@ class TripsTimelineController: UITableViewController {
     let refreshController = UIRefreshControl()
     
     
+    
     var user: User?
     var trips: [Trip] = []
     
@@ -78,7 +79,7 @@ class TripsTimelineController: UITableViewController {
         tableView.register(TripCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 150
+        tableView.rowHeight = 220
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.tableHeaderView = UIView()
         
@@ -137,8 +138,7 @@ extension TripsTimelineController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripCell
-        cell.textLabel?.text = trips[indexPath.row].tripID
-        cell.textLabel?.textColor = .white
+        cell.trip = trips[indexPath.row]
         return cell
     }
     
@@ -166,7 +166,7 @@ extension TripsTimelineController {
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.tableView.reloadData()
         }
-        action.image = #imageLiteral(resourceName: "Twitter_Logo_Blue")
+        action.image = #imageLiteral(resourceName: "RatingStarEmpty")
         action.backgroundColor = .red
         return action
     }
@@ -178,7 +178,7 @@ extension TripsTimelineController {
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.tableView.reloadData()
         }
-        action.image = #imageLiteral(resourceName: "avatar")
+        action.image = #imageLiteral(resourceName: "RatingStarEmpty")
         action.backgroundColor = .blueLightFont
         return action
     }
@@ -191,10 +191,7 @@ extension TripsTimelineController: NewTripControllerDelegate {
         tabBarController?.closePopup(animated: true, completion: { [weak self] in
             let safetyControllerGuidelines = SafetyControllerGuidelines()
             safetyControllerGuidelines.modalPresentationStyle = .custom
-            self?.present(safetyControllerGuidelines, animated: true) { [weak self] in
-
-            }
-            
+            self?.present(safetyControllerGuidelines, animated: true, completion: nil)
         })
     }
 }

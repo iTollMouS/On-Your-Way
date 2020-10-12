@@ -698,8 +698,8 @@ extension Date {
     enum DateFormattedType: String, CaseIterable {
         /// Date sample  Sunday, Sep 6, 2020
         case formattedType1 = "EEEE, MMM d, yyyy"
-        /// Date sample  09/06/2020
-        case formattedType2 = "MM/dd/yyyy"
+        /// Date sample  2:45 AM  09/06/2020
+        case formattedType2 = "h:mm a MM/dd/yyyy"
         /// Date sample  09-06-2020 02:45
         case formattedType3 = "MM-dd-yyyy HH:mm"
         /// Date sample  Sep 6, 2:45 AM
