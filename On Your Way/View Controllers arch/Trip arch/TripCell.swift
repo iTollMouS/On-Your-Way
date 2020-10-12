@@ -127,6 +127,7 @@ class TripCell: UITableViewCell {
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
         view.settings.textColor = .white
+        view.rating = 0
         view.settings.textMargin = 10
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
         view.backgroundColor = .clear
@@ -197,7 +198,7 @@ class TripCell: UITableViewCell {
         packagesTypes.text = viewModel.packageType
         currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
         destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
-
+        
     }
     
     

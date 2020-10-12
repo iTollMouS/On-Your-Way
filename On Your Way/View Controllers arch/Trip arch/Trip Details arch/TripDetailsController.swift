@@ -37,9 +37,13 @@ class TripDetailsController: UIViewController {
     }
     
     func fetchUser(){
-        guard let user = user else { return }
-        headerView.user = user
-        tableView.reloadData()
+        guard let trip = trip else { return  }
+        UserServices.shared.fetchUser(userId: trip.userID) { user in
+            self.user = user
+            self.headerView.user = user
+            self.tableView.reloadData()
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

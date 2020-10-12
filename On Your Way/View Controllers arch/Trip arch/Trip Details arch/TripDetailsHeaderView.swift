@@ -7,7 +7,7 @@
 
 import UIKit
 import Cosmos
-
+import SDWebImage
 
 protocol TripDetailsHeaderViewDelegate: class {
     func handleStartToChat(_ view: TripDetailsHeaderView)
@@ -71,6 +71,7 @@ class TripDetailsHeaderView: UIView {
         view.settings.emptyImage = #imageLiteral(resourceName: "RatingStarEmpty").withRenderingMode(.alwaysOriginal)
         view.settings.starSize = 24
         view.settings.totalStars = 5
+        view.rating = 0
         view.settings.starMargin = 3.0
         view.settings.updateOnTouch = false
         view.backgroundColor = .clear
@@ -110,17 +111,13 @@ class TripDetailsHeaderView: UIView {
     
     func configure(){
         guard let user = user else { return }
-        UserServices.shared.fetchUser(userId: user.id) { [weak self] user in
-            FileStorage.downloadImage(imageUrl: user.avatarLink) { [weak self] imageView in
-                guard let imageView = imageView else {return}
-                self?.profileImageView.image = imageView.circleMasked
-                self?.profileImageView.clipsToBounds = true
-                self?.profileImageView.layer.masksToBounds = false
-                self?.profileImageView.setupShadow(opacity: 0.3, radius: 10, offset: CGSize(width: 0.0, height: 3.0), color: .white)
-            }
-            self?.fullnameLabel.text = user.username
-            self?.phoneNumberLabel.text = user.phoneNumber
-        }
+        guard let imageUrl = URL(string: user.avatarLink) else { return }
+        profileImageView.sd_setImage(with: imageUrl)
+        profileImageView.clipsToBounds = true
+        fullnameLabel.text = user.username
+        phoneNumberLabel.text = user.phoneNumber
+        ratingView.rating = user.reviewsCount
+        
     }
     
     @objc func handleStartToChat(){
