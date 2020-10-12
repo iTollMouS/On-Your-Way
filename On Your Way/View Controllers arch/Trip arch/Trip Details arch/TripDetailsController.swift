@@ -25,13 +25,22 @@ class TripDetailsController: UIViewController {
         return tableView
     }()
     
+    var trip: Trip?
+    var user: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
         configureDelegates()
+        fetchUser()
     }
     
+    func fetchUser(){
+        guard let user = user else { return }
+        headerView.user = user
+        tableView.reloadData()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)

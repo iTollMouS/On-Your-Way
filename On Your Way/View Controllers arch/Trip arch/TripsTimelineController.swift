@@ -21,6 +21,7 @@ class TripsTimelineController: UITableViewController {
     
     var user: User?
     var trips: [Trip] = []
+    var filteredTrips: [Trip] = []
     
     
     // MARK: - LifeCycle
@@ -133,18 +134,21 @@ class TripsTimelineController: UITableViewController {
 extension TripsTimelineController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trips.count
+        return searchController.isActive ? filteredTrips.count : trips.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripCell
-        cell.trip = trips[indexPath.row]
+        cell.trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
         return cell
     }
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
         let tripDetailsController = TripDetailsController()
+        tripDetailsController.trip = trip
+        tripDetailsController.user = user
         navigationController?.pushViewController(tripDetailsController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -155,7 +159,7 @@ extension TripsTimelineController {
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        true
+        return trips[indexPath.row].userID == User.currentId ? true : false
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -170,7 +174,6 @@ extension TripsTimelineController {
     
     func deleteMyTrip(trip: Trip) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            
             TripService.shared.deleteMyTrip(trip: trip) { error in
                 if let error = error {
                     self.showAlertMessage("Error", "error with \(error.localizedDescription)")

@@ -423,20 +423,20 @@
 				834C992A2533542B00BE8691 /* TripCell.swift */,
 				83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */,
 				834C99172532390E00BE8691 /* New Trip arch */,
-				83D7D3E8253471F700FA88F0 /* New Group */,
+				83D7D3E8253471F700FA88F0 /* Trip Details arch */,
 			);
 			path = "Trip arch";
 			sourceTree = "<group>";
 		};
-		83D7D3E8253471F700FA88F0 /* New Group */ = {
+		83D7D3E8253471F700FA88F0 /* Trip Details arch */ = {
 			isa = PBXGroup;
 			children = (
-				83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */,
 				83D7D3E92534720400FA88F0 /* TripDetailsController.swift */,
-				83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */,
 				83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */,
+				83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */,
+				83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */,
 			);
-			path = "New Group";
+			path = "Trip Details arch";
 			sourceTree = "<group>";
 		};
 		9972412D674DDD21CF23548C /* Frameworks */ = {

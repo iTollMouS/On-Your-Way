@@ -17,6 +17,10 @@ class TripDetailsHeaderView: UIView {
     
     weak var delegate: TripDetailsHeaderViewDelegate?
     
+    var user: User?{
+        didSet{configure()}
+    }
+    
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 100, width: 100)
@@ -29,7 +33,16 @@ class TripDetailsHeaderView: UIView {
     
     private lazy var fullnameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tariq Almazyad"
+        label.textAlignment = .center
+        label.textColor = .lightGray
+        label.setHeight(height: 30)
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 22)
+        return label
+    }()
+    
+    private lazy var phoneNumberLabel: UILabel = {
+        let label = UILabel()
         label.textAlignment = .center
         label.textColor = .lightGray
         label.setHeight(height: 30)
@@ -40,6 +53,7 @@ class TripDetailsHeaderView: UIView {
     
     private lazy var userInfoStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [fullnameLabel,
+                                                       phoneNumberLabel,
                                                        ratingView,
                                                        submitReviewButton])
         stackView.axis = .vertical
@@ -91,7 +105,22 @@ class TripDetailsHeaderView: UIView {
         profileImageView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 20)
         addSubview(userInfoStackView)
         userInfoStackView.centerX(inView: self, topAnchor: profileImageView.bottomAnchor, paddingTop: 6)
-      
+        
+    }
+    
+    func configure(){
+        guard let user = user else { return }
+        UserServices.shared.fetchUser(userId: user.id) { [weak self] user in
+            FileStorage.downloadImage(imageUrl: user.avatarLink) { [weak self] imageView in
+                guard let imageView = imageView else {return}
+                self?.profileImageView.image = imageView.circleMasked
+                self?.profileImageView.clipsToBounds = true
+                self?.profileImageView.layer.masksToBounds = false
+                self?.profileImageView.setupShadow(opacity: 0.3, radius: 10, offset: CGSize(width: 0.0, height: 3.0), color: .white)
+            }
+            self?.fullnameLabel.text = user.username
+            self?.phoneNumberLabel.text = user.phoneNumber
+        }
     }
     
     @objc func handleStartToChat(){
