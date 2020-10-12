@@ -65,15 +65,11 @@ struct TripViewModel {
         let attributedText = NSMutableAttributedString(string: destinationLocation,
                                                        attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
                                                                     .font: UIFont.systemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "\n\(tripDepartureDate)\n\(tripEstimateTimeArrival)",
+        attributedText.append(NSMutableAttributedString(string: "\n\(tripDepartureDate)\n\(tripEstimateTimeArrival) hour/s",
                                                         attributes: [.foregroundColor : UIColor.lightGray,
                                                                      .font: UIFont.systemFont(ofSize: 12)]))
         return attributedText
     }
     
-    init(trip: Trip) {
-        self.trip = trip
-        
-        
-    }
+    init(trip: Trip) { self.trip = trip }
 }
