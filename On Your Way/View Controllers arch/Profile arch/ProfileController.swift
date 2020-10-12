@@ -21,12 +21,7 @@ class ProfileController: UIViewController {
     private let gallery = GalleryController ()
     let cellSelectionStyle = UIView()
     
-    private var user: User? {
-        didSet{
-            headerView.user = user
-            tableView.reloadData()
-        }
-    }
+    private var user: User?
     
     let refreshController = UIRefreshControl()
     
@@ -47,7 +42,7 @@ class ProfileController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        checkUser()
         configureUI()
         configureRefreshController()
     }
@@ -82,11 +77,12 @@ class ProfileController: UIViewController {
         } else {
             UserServices.shared.fetchUser(userId: User.currentId) { user in
                 self.user = user
+                print("DEBUG: user is \(user)")
                 self.title = user.username
                 self.tableView.reloadData()
+                self.headerView.user = user
                 self.headerView.profileImageView.clipsToBounds = true
             }
-            
         }
     }
     
@@ -278,6 +274,7 @@ extension ProfileController: ProfileFooterDelegate {
 
 // MARK: - ProfileCellDelegate
 extension ProfileController: ProfileCellDelegate {
+
     func showGuidelines(_ cell: ProfileCell) {
         let safetyControllerGuidelines = SafetyControllerGuidelines()
         safetyControllerGuidelines.modalPresentationStyle = .custom

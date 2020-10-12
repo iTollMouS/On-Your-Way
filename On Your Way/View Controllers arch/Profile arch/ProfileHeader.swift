@@ -12,7 +12,6 @@ protocol ProfileHeaderDelegate: class {
     
     func handleUpdatePhoto(_ header: ProfileHeader)
     func usernameChanges(_ header: ProfileHeader)
-    
 }
 
 class ProfileHeader: UIView {
@@ -54,7 +53,6 @@ class ProfileHeader: UIView {
         textField.textColor = .lightGray
         textField.font = UIFont.systemFont(ofSize: 30)
         textField.setHeight(height: 50)
-        textField.delegate = self
         textField.adjustsFontSizeToFitWidth = true
         return textField
     }()
@@ -108,6 +106,8 @@ class ProfileHeader: UIView {
         ratingView.centerX(inView: userInfoStackView, topAnchor: userInfoStackView.bottomAnchor, paddingTop: 12)
         addSubview(editImageLabel)
         editImageLabel.centerX(inView: profileImageView, topAnchor: profileImageView.bottomAnchor, paddingTop: 2)
+        fullNameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+
         
     }
     
@@ -124,6 +124,10 @@ class ProfileHeader: UIView {
         }
     }
     
+    @objc private func textFieldDidChange(){
+        delegate?.usernameChanges(self)
+    }
+    
     @objc func handleSelectPhoto(){
         delegate?.handleUpdatePhoto(self)
     }
@@ -132,11 +136,4 @@ class ProfileHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-}
-
-
-extension ProfileHeader: UITextFieldDelegate {
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        delegate?.usernameChanges(self)
-    }
 }

@@ -62,7 +62,7 @@ class FileStorage {
 
         if fileExistsAtPath(path: imageFileName) {
             //get it locally
-//            print("We have local image")
+            print("We have local image")
             
             if let contentsOfFile = UIImage(contentsOfFile: fileInDocumentsDirectory(fileName: imageFileName)) {
                 

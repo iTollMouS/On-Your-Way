@@ -178,17 +178,21 @@ class PeopleReviewsController: UIViewController {
         
     }
     
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
     func fetchUser(){
-        guard let user = user else { return  }
-        if user.id == User.currentId {
-            buttonContainerView.isHidden = true
-            tableView.fillSuperview()
+        
+        guard let uid = User.currentUser?.id else { return  }
+        print("DEBUG: user name is \(uid)")
+        print("DEBUG: user name is \(User.currentId)")
+        if User.currentId == uid {
             self.tableView.reloadData()
-        } 
+            self.tableView.fillSuperview()
+            self.buttonContainerView.isHidden = true
+        }
         
     }
     
@@ -297,10 +301,10 @@ extension PeopleReviewsController {
         attributes.screenInteraction = .dismiss // do something when the user touch the screen e.g .dismiss make the card dismisses on touch
         attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
         attributes.statusBar = .light
-//        attributes.entranceAnimation = .init(
-//                         translate: .init(duration: 0.7, anchorPosition: .top, spring: .init(damping: 1, initialVelocity: 0)),
-//                         scale: .init(from: 0.6, to: 1, duration: 0.7),
-//                         fade: .init(from: 0.8, to: 1, duration: 0.3))
+        //        attributes.entranceAnimation = .init(
+        //                         translate: .init(duration: 0.7, anchorPosition: .top, spring: .init(damping: 1, initialVelocity: 0)),
+        //                         scale: .init(from: 0.6, to: 1, duration: 0.7),
+        //                         fade: .init(from: 0.8, to: 1, duration: 0.3))
         attributes.lifecycleEvents.willAppear = { [self] in
             // Executed before the entry animates inside
             ratingView.rating = 3

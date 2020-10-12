@@ -9,6 +9,9 @@ import UIKit
 
 class MainTabController: UITabBarController, UITabBarControllerDelegate {
     
+    
+    var user: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
@@ -16,6 +19,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
     }
+    
     
     func configureViewControllers(){
         

@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileCellDelegate: class {
     func showGuidelines(_ cell: ProfileCell)
+//    func updateUserInfo(_ cell: ProfileCell, with textField: UITextField)
 }
 
 class ProfileCell: UITableViewCell {
@@ -19,32 +20,24 @@ class ProfileCell: UITableViewCell {
     
     weak var delegate: ProfileCellDelegate?
     
-    private lazy var tellFriendLabel: UILabel = {
-        let label = UILabel()
+     lazy var phoneNumberTextField: UITextField = {
+        let label = UITextField()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
         return label
     }()
     
-    private lazy var phoneNumberLabel: UILabel = {
-        let label = UILabel()
+     lazy var emailTextField: UITextField = {
+        let label = UITextField()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
         return label
     }()
     
-    private lazy var emailLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 20)
-        return label
-    }()
-    
-    private lazy var passwordLabel: UILabel = {
-        let label = UILabel()
+     lazy var passwordTextField: UITextField = {
+        let label = UITextField()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -71,9 +64,9 @@ class ProfileCell: UITableViewCell {
     
     private lazy var accessoryButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        button.setImage(UIImage(systemName: "pencil.and.outline"), for: .normal)
         button.setDimensions(height: 30, width: 30)
-        button.tintColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
+        button.tintColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1).withAlphaComponent(0.7)
         button.backgroundColor = .clear
         return button
     }()
@@ -86,8 +79,8 @@ class ProfileCell: UITableViewCell {
     }
     
     func configure(user: User){
-        phoneNumberLabel.text = user.phoneNumber
-        emailLabel.text = user.email
+        phoneNumberTextField.text = user.phoneNumber
+        emailTextField.text = user.email
     }
     
     func configureAccessory(){
@@ -100,16 +93,19 @@ class ProfileCell: UITableViewCell {
         guard let viewModel = viewModel else { return  }
         switch viewModel {
         case .section_1:
-            addSubview(phoneNumberLabel)
-            phoneNumberLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            addSubview(phoneNumberTextField)
+            phoneNumberTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            phoneNumberTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             configureAccessory()
         case .section_2:
-            addSubview(emailLabel)
-            emailLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            addSubview(emailTextField)
+            emailTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            emailTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             configureAccessory()
         case .section_3:
-            addSubview(passwordLabel)
-            passwordLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            addSubview(passwordTextField)
+            passwordTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            passwordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             configureAccessory()
         case .section_4:
             addSubview(appVersionLabel)
@@ -122,6 +118,11 @@ class ProfileCell: UITableViewCell {
             configureAccessory()
 
         }
+    }
+    
+    #warning("Please fix user update value")
+    @objc private func textFieldDidChange(_ textField: UITextField){
+//        delegate?.updateUserInfo(self, with: textField)
     }
     
     @objc func handleShowGuidelines(){
