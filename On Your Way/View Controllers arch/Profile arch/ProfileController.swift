@@ -104,6 +104,11 @@ class ProfileController: UIViewController {
     
     @objc func handleUserUpdates(){
         guard let user = user else { return }
+        guard let phoneNumber = user.phoneNumber else { return }
+        if !phoneNumber.isValidPhoneNumber {
+            self.showAlertMessage("Error", "Please enter your phone number correctly")
+            return
+        }
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we\nupdate your info...")
         UserServices.shared.saveUserToFirestore(user)
@@ -274,7 +279,28 @@ extension ProfileController: ProfileFooterDelegate {
 
 // MARK: - ProfileCellDelegate
 extension ProfileController: ProfileCellDelegate {
+    func updateUserInfo(_ cell: ProfileCell, value: String, viewModel: ProfileViewModel) {
+        guard var user = user else { return  }
+        switch viewModel {
+        case .section_1:
+            user.phoneNumber = value
+        case .section_2:
+            print("")
+        case .section_3:
+            print("")
+        case .section_4:
+            print("")
+        case .section_5:
+            print("")
+        }
+        self.user = user
+        configureNavBarButtons()
+    }
+    
 
+    
+    
+    
     func showGuidelines(_ cell: ProfileCell) {
         let safetyControllerGuidelines = SafetyControllerGuidelines()
         safetyControllerGuidelines.modalPresentationStyle = .custom

@@ -85,6 +85,8 @@ class ProfileHeader: UIView {
         view.settings.starMargin = 3.0
         view.text = "Reviews (5/4.2)"
         view.settings.textColor = .lightGray
+        view.settings.disablePanGestures = true
+        view.settings.updateOnTouch = false
         view.settings.textMargin = 10
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)

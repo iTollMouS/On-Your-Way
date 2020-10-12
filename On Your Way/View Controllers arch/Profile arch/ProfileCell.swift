@@ -9,7 +9,7 @@ import UIKit
 
 protocol ProfileCellDelegate: class {
     func showGuidelines(_ cell: ProfileCell)
-//    func updateUserInfo(_ cell: ProfileCell, with textField: UITextField)
+    func updateUserInfo(_ cell: ProfileCell, value: String, viewModel: ProfileViewModel)
 }
 
 class ProfileCell: UITableViewCell {
@@ -18,12 +18,14 @@ class ProfileCell: UITableViewCell {
         didSet{configureUI()}
     }
     
+    
     weak var delegate: ProfileCellDelegate?
     
      lazy var phoneNumberTextField: UITextField = {
         let label = UITextField()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
+        label.delegate = self
         label.font = UIFont.systemFont(ofSize: 20)
         return label
     }()
@@ -120,9 +122,11 @@ class ProfileCell: UITableViewCell {
         }
     }
     
-    #warning("Please fix user update value")
+    
     @objc private func textFieldDidChange(_ textField: UITextField){
-//        delegate?.updateUserInfo(self, with: textField)
+        guard let viewModel = viewModel else {return}
+        guard let value = textField.text else { return }
+        delegate?.updateUserInfo(self, value: value, viewModel: viewModel)
     }
     
     @objc func handleShowGuidelines(){
@@ -135,6 +139,21 @@ class ProfileCell: UITableViewCell {
     
 }
 
+extension ProfileCell: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        switch textField {
+        case phoneNumberTextField:
+            let newLength: Int = textField.text!.count + string.count - range.length
+            let numberOnly = NSCharacterSet.init(charactersIn: "0123456789").inverted
+            let strValid = string.rangeOfCharacter(from: numberOnly) == nil
+            return (strValid && (newLength <= 10))
+        default:
+            break
+        }
+        return false
+    }
+}
 
 
 enum ProfileViewModel: Int, CaseIterable {

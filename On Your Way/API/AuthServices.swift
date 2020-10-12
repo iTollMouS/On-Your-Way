@@ -45,7 +45,9 @@ struct AuthServices {
             guard let phoneNumber = authResult.user.phoneNumber else {return}
             let user = User(id: authResult.user.uid,
                             username: phoneNumber,
-                            email: phoneNumber, pushId: "", avatarLink: "", status: "", password: "")
+                            email: "", pushId: "", avatarLink: "", status: "", password: "",
+                            phoneNumber: phoneNumber,
+                            reviewsCount: 0)
             saveUserLocally(user)
             UserServices.shared.saveUserToFirestore(user)
             completion(error)
@@ -69,7 +71,9 @@ struct AuthServices {
             guard let profileImageUrl = authResult?.user.photoURL?.absoluteString else {return}
             guard let authResult = authResult else {return}
             let user = User(id: uid, username: firstName, email: email,
-                            pushId: "", avatarLink: profileImageUrl, status: "", password: "")
+                            pushId: "", avatarLink: profileImageUrl, status: "", password: "",
+                            phoneNumber: "",
+                            reviewsCount: 0)
             emailVerification(withEmail: email, userResult: authResult)
             UserServices.shared.saveUserToFirestore(user)
             saveUserLocally(user)
@@ -89,9 +93,8 @@ struct AuthServices {
             }
             guard let authResult = authResult?.user else {return}
             guard let email = authResult.email else {return}
-            let user = User(id: authResult.uid, username: fullname, email: email, pushId: "", avatarLink: "", status: "", password: "")
-            print("DEBUG: user info is \(user.id)")
-            print("DEBUG: user info is \(user.email)")
+            let user = User(id: authResult.uid, username: fullname, email: email, pushId: "", avatarLink: "", status: "", password: "" ,phoneNumber: "",
+                            reviewsCount: 0)
             UserServices.shared.saveUserToFirestore(user)
             saveUserLocally(user)
             completion(error)
@@ -131,8 +134,10 @@ struct AuthServices {
                 }
             }
             
-            let user = User(id: authResult.user.uid, username: credential.fullName,
-                            email: credential.email, pushId: "", avatarLink: credential.profileImageUrl, status: "", password: credential.password)
+            let user = User(id: authResult.user.uid, username: credential.fullName, 
+                            email: credential.email, pushId: "", avatarLink: credential.profileImageUrl, status: "", password: credential.password,
+                            phoneNumber: "",
+                            reviewsCount: 0)
             saveUserLocally(user)
             UserServices.shared.saveUserToFirestore(user)
             completion(error)
