@@ -42,4 +42,8 @@ class TripService {
             completion(trips)
         }
     }
+    
+    func deleteMyTrip(trip: Trip, completion: @escaping(Error?) -> Void){
+        Firestore.firestore().collection("trips").document(trip.tripID).delete(completion: completion)
+    }
 }

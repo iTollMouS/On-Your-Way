@@ -151,7 +151,7 @@ extension TripsTimelineController {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = deleteMyTrip(at: indexPath)
+        let delete = deleteMyTrip(trip: trips[indexPath.row])
         return UISwipeActionsConfiguration(actions: [delete])
     }
     
@@ -160,14 +160,20 @@ extension TripsTimelineController {
         return UISwipeActionsConfiguration(actions: [edit])
     }
     
-    func deleteMyTrip(at indexPath: IndexPath) -> UIContextualAction {
+    func deleteMyTrip(trip: Trip) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            //            self.myTrips.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            TripService.shared.deleteMyTrip(trip: trip) { error in
+                if let error = error {
+                    self.showAlertMessage("Error", "error with \(error.localizedDescription)")
+                }
+                return
+            }
+            self.fetchTrips()
             self.tableView.reloadData()
         }
-        action.image = #imageLiteral(resourceName: "RatingStarEmpty")
-        action.backgroundColor = .red
+        action.image = UIImage(systemName: "trash.circle.fill")
+        action.backgroundColor = .systemRed
         return action
     }
     
@@ -181,6 +187,16 @@ extension TripsTimelineController {
         action.image = #imageLiteral(resourceName: "RatingStarEmpty")
         action.backgroundColor = .blueLightFont
         return action
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let rotationTransform = CATransform3DTranslate(CATransform3DIdentity, 0, 50, 0)
+        cell.layer.transform = rotationTransform
+        cell.alpha = 0
+        UIView.animate(withDuration: 0.70) {
+            cell.layer.transform = CATransform3DIdentity
+            cell.alpha = 1
+        }
     }
     
 }
