@@ -13,6 +13,10 @@ class TripDetailsCell: UITableViewCell {
         didSet{configureUI()}
     }
     
+    var trip: Trip?{
+        didSet{configure()}
+    }
+    
     private lazy var fromCityDot: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
@@ -37,63 +41,109 @@ class TripDetailsCell: UITableViewCell {
         return view
     }()
     
-    private lazy var fromCityLabel: UILabel = {
+    private lazy var departureTime: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "Arrass\n", attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray,
-                                                                                        NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "09:12 PM, 12/22/2020", attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray,
-                                                                                                     NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
-        label.attributedText = attributedText
-        label.setHeight(height: 50)
-        label.numberOfLines = 0
-        label.textAlignment = .left
+        label.textColor = .white
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
-    private lazy var destinationLabel: UILabel = {
+    private lazy var currentLocation: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "Arrass\n", attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray,
-                                                                                        NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "09:12 PM, 12/22/2020", attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray,
-                                                                                                     NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
-        label.attributedText = attributedText
-        label.numberOfLines = 0
-        label.setHeight(height: 50)
         label.textAlignment = .left
-        return label
-    }()
-    
-    private lazy var wheretToMeetLabel: UILabel = {
-        let label = UILabel()
-        label.text = "in the south side of Michigan "
         label.numberOfLines = 0
         label.textColor = .white
-        label.textAlignment = .left
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
-    private lazy var citiesStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [fromCityLabel, destinationLabel])
-        stackView.axis = .vertical
-        stackView.spacing = 50
-        stackView.setDimensions(height: 200, width: 400)
+    
+    
+    private lazy var timestampLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    
+    private lazy var destinationLocation: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+  
+    private lazy var packagePickupLocationLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    private lazy var packagePickupTime: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+  
+    private lazy var meetingsInfoStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [packagePickupLocationLabel, packagePickupTime])
+        stackView.axis = .horizontal
+        stackView.spacing = 0
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
         return stackView
     }()
     
     
+    private lazy var citiesStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [currentLocation, destinationLocation])
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.setDimensions(height: 200, width: 400)
+        stackView.distribution = .fillEqually
+        stackView.alignment = .leading
+        return stackView
+    }()
+    
+    private lazy var priceBaseLabel = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
+                                                  detailsText: "", detailsTextSize: 18,
+                                                  detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 20)
+    
+    
+    private lazy var packagesTypes = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
+                                                 detailsText: "", detailsTextSize: 18,
+                                                 detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 50)
+    
+    
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    func configureUI(){
-        guard let viewModel = viewModel else { return  }
-        switch viewModel {
+     func configure(){
+        guard let trip = trip else { return }
+        let viewModel = TripViewModel(trip: trip)
+        packagePickupLocationLabel.text = viewModel.packagePickupLocation
+        packagePickupTime.text = viewModel.packagePickupTime
+        packagesTypes.text = viewModel.packageType
+        
+    }
+    
+     func configureUI(){
+        guard let cellViewModel = viewModel else { return  }
+        switch cellViewModel {
         case .fromCityToCity: configureSection_0()
         case .whereToMeet: configureSection_1()
-        case .whatCanITake:
-            print("")
+        case .whatCanITake: configureSection_2()
         case .WhenToMeet:
             print("")
         case .packageAllowance:
@@ -119,13 +169,46 @@ class TripDetailsCell: UITableViewCell {
     }
     
     func configureSection_1(){
-        addSubview(wheretToMeetLabel)
-        wheretToMeetLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        addSubview(meetingsInfoStackView)
+        meetingsInfoStackView.fillSuperview(padding: UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20))
         backgroundColor = #colorLiteral(red: 0.1098039216, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
+    }
+    
+    func configureSection_2(){
+        addSubview(packagesTypes)
+        packagesTypes.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate func tripInfoText(location: String, tripDepartureDate: String, tripDepartureTime: String ) -> NSMutableAttributedString{
+        let attributedText = NSMutableAttributedString(string: location,
+                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
+                                                                    .font: UIFont.systemFont(ofSize: 14)])
+        attributedText.append(NSMutableAttributedString(string: "\n\(tripDepartureDate)\n\(tripDepartureTime)",
+                                                        attributes: [.foregroundColor : UIColor.lightGray,
+                                                                     .font: UIFont.systemFont(ofSize: 12)]))
+        return attributedText
+    }
+    
+    fileprivate func createLabel(titleText: String, titleTextSize: CGFloat , titleColor: UIColor,
+                                 detailsText: String, detailsTextSize: CGFloat, detailsColor: UIColor,
+                                 textAlignment: NSTextAlignment, setHeight: CGFloat  ) -> UILabel {
+        let label = UILabel()
+        let attributedText = NSMutableAttributedString(string: titleText,
+                                                       attributes: [.foregroundColor : titleColor,
+                                                                    .font: UIFont.boldSystemFont(ofSize: titleTextSize)])
+        attributedText.append(NSMutableAttributedString(string: detailsText,
+                                                        attributes: [.foregroundColor : detailsColor,
+                                                                     .font: UIFont.systemFont(ofSize: detailsTextSize)]))
+        label.attributedText = attributedText
+        label.setHeight(height: setHeight)
+        label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = textAlignment
+        label.numberOfLines = 0
+        return label
     }
     
 }
@@ -161,7 +244,7 @@ enum TripDetailsViewModel: Int, CaseIterable {
         switch self {
         
         case .fromCityToCity: return "Trip Destination"
-        case .whereToMeet: return "Place to meet"
+        case .whereToMeet: return "Place and Place to meet"
         case .whatCanITake: return "What I can take with me"
         case .WhenToMeet: return "Where the place to meet to take packages"
         case .packageAllowance: return "Non of the times"

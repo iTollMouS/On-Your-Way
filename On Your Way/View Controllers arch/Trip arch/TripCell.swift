@@ -189,7 +189,7 @@ class TripCell: UITableViewCell {
             self.fullnameLable.text = user.username
         }
         timestampLabel.text = viewModel.timestamp
-        priceBaseLabel.text = "SR: \(viewModel.basePrice)"
+        priceBaseLabel.text = "\(viewModel.basePrice) SR"
         destinationLocation.text = viewModel.destinationLocation
         departureTime.text = viewModel.tripDepartureTime
         packagesTypes.text = viewModel.packageType
