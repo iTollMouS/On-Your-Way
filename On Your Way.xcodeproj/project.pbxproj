@@ -83,6 +83,8 @@
 		83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */; };
 		83D7D3F02534720500FA88F0 /* TripDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */; };
 		83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */; };
+		83D7D41E2534F55E00FA88F0 /* UpdateEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D41D2534F55E00FA88F0 /* UpdateEmailController.swift */; };
+		83D7D4202534F8F900FA88F0 /* emailConfirmation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -179,6 +181,8 @@
 		83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsHeaderView.swift; sourceTree = "<group>"; };
 		83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsFooterView.swift; sourceTree = "<group>"; };
 		83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripViewModel.swift; sourceTree = "<group>"; };
+		83D7D41D2534F55E00FA88F0 /* UpdateEmailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateEmailController.swift; sourceTree = "<group>"; };
+		83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emailConfirmation.json; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -295,6 +299,7 @@
 				834C98A125312C5700BE8691 /* 34548-5-estrellas.json */,
 				834C98AD25312C5700BE8691 /* chat.json */,
 				834C98A025312C5700BE8691 /* cleanPhones.json */,
+				83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */,
 				834C98A725312C5700BE8691 /* covid_19_protect.json */,
 				834C98AB25312C5700BE8691 /* delivery_address_green.json */,
 				834C98A925312C5700BE8691 /* delivery_home.json */,
@@ -380,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				834C988A25312A7600BE8691 /* ProfileController.swift */,
+				83D7D41D2534F55E00FA88F0 /* UpdateEmailController.swift */,
 				834C990E253233D200BE8691 /* ProfileHeader.swift */,
 				834C990F253233D300BE8691 /* ProfileCell.swift */,
 				834C9910253233D300BE8691 /* ProfileFooterView.swift */,
@@ -533,6 +539,7 @@
 				834C98B325312C5700BE8691 /* stay_home.json in Resources */,
 				834C98BD25312C5700BE8691 /* delivery_home.json in Resources */,
 				834C98BC25312C5700BE8691 /* safety.json in Resources */,
+				83D7D4202534F8F900FA88F0 /* emailConfirmation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +652,7 @@
 				834C98FE253231E000BE8691 /* TableHeaderView.swift in Sources */,
 				834C988B25312A7600BE8691 /* ProfileController.swift in Sources */,
 				834C990C253232D700BE8691 /* OnboardingCell.swift in Sources */,
+				83D7D41E2534F55E00FA88F0 /* UpdateEmailController.swift in Sources */,
 				834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */,
 				834C990B253232D700BE8691 /* Page.swift in Sources */,
 				834C98FD253231E000BE8691 /* SafetyCell.swift in Sources */,

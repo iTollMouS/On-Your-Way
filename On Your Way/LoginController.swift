@@ -229,14 +229,19 @@ class LoginController: UIViewController {
         self.showLoader(true, message: "Please wait...")
         guard let email = emailTextField.text else { return  }
         guard let password = passwordTextField.text else { return }
-        AuthServices.shared.logUserWitEmail(email: email, password: password) { [weak self] error in
+        AuthServices.shared.logUserWitEmail(withEmail: email, password: password) { [weak self] (authResult, error) in
             if let error = error {
                 self?.removeBlurView()
                 self?.showLoader(false)
                 self?.showAlertMessage("Error", error.localizedDescription)
                 return
             }
-            
+            guard let authResult = authResult else {return}
+            UserServices.shared.fetchUser(userId: authResult.user.uid) { user in
+                saveUserLocally(user)
+                
+                userDefaults.synchronize()
+            }
             self?.removeBlurView()
             self?.showLoader(false)
             self?.showBanner(message: "Successfully logged in", state: .success,
@@ -252,6 +257,7 @@ class LoginController: UIViewController {
                 self?.removeBlurView()
                 self?.showLoader(false)
                 self?.delegate?.handleLoggingControllerDismissal(self!)
+                print("DEBUG: delegate ")
             }
             
         }

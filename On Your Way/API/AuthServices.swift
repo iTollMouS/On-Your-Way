@@ -105,15 +105,8 @@ struct AuthServices {
     
     
     // MARK: - logUserWitEmail
-    func logUserWitEmail(email: String, password: String, completion: @escaping APICompletion) {
-        Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
-            if let error = error {
-                print("DEBUG: error while registering new user\(error)")
-                completion(error)
-                return
-            }
-            completion(error)
-        }
+    func logUserWitEmail(withEmail email: String, password: String, completion: AuthDataResultCallback?){
+        Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
     
     

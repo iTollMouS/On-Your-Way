@@ -30,8 +30,8 @@ class ProfileCell: UITableViewCell {
         return label
     }()
     
-     lazy var emailTextField: UITextField = {
-        let label = UITextField()
+     lazy var emailTextField: UILabel = {
+        let label = UILabel()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -102,7 +102,6 @@ class ProfileCell: UITableViewCell {
         case .section_2:
             addSubview(emailTextField)
             emailTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-            emailTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             configureAccessory()
         case .section_3:
             addSubview(passwordTextField)

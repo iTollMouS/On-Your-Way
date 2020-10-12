@@ -105,10 +105,12 @@ class ProfileController: UIViewController {
     @objc func handleUserUpdates(){
         guard let user = user else { return }
         guard let phoneNumber = user.phoneNumber else { return }
+        guard let email = user.email else { return }
         if !phoneNumber.isValidPhoneNumber {
             self.showAlertMessage("Error", "Please enter your phone number correctly")
             return
         }
+    
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we\nupdate your info...")
         UserServices.shared.saveUserToFirestore(user)
@@ -213,6 +215,7 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    
     // MARK: - Header cells
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let viewModel = ProfileViewModel(rawValue: section) else { return UIView() }
@@ -245,6 +248,12 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewModel = ProfileViewModel(rawValue: indexPath.section) else { return  }
+        guard let user = user else { return  }
+        if viewModel == .section_2 {
+            let updateEmailController = UpdateEmailController(user: user)
+            navigationController?.pushViewController(updateEmailController, animated: true)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -285,7 +294,7 @@ extension ProfileController: ProfileCellDelegate {
         case .section_1:
             user.phoneNumber = value
         case .section_2:
-            print("")
+           print("")
         case .section_3:
             print("")
         case .section_4:

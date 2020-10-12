@@ -26,7 +26,7 @@ class TripsTimelineController: UITableViewController {
         super.viewDidLoad()
         configureUI()
         configureRefreshController()
-        checkIfUserLoggedIn()
+//        checkIfUserLoggedIn()
         fetchTrips()
     }
     
@@ -94,14 +94,14 @@ class TripsTimelineController: UITableViewController {
     }
     
     
-    func checkIfUserLoggedIn(){
-        if Auth.auth().currentUser?.uid == nil {
-            presentLoggingController()
-        }  else {
-            self.tableView.reloadData()
-        }
-    }
-    
+//    func checkIfUserLoggedIn(){
+//        if Auth.auth().currentUser?.uid == nil {
+//            presentLoggingController()
+//        }  else {
+//            self.tableView.reloadData()
+//        }
+//    }
+//
     func presentLoggingController(){
         DispatchQueue.main.async { [weak self]  in
             let loginController = LoginController()
