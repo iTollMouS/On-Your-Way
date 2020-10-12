@@ -80,10 +80,13 @@ class ProfileController: UIViewController {
         if User.currentUser == nil {
             presentLoggingController()
         } else {
-            self.user = User.currentUser
-            title = user?.username
-            tableView.reloadData()
-            headerView.profileImageView.clipsToBounds = true
+            UserServices.shared.fetchUser(userId: User.currentId) { user in
+                self.user = user
+                self.title = user.username
+                self.tableView.reloadData()
+                self.headerView.profileImageView.clipsToBounds = true
+            }
+            
         }
     }
     

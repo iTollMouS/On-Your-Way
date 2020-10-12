@@ -114,19 +114,8 @@ class ProfileHeader: UIView {
     func configureUI(){
         guard let user = user else { return }
         fullNameTextField.text = user.username
-        FileStorage.downloadImage(imageUrl: user.avatarLink) { [weak self] image in
-            if let image = image  {
-                self?.profileImageView.image = image.circleMasked
-                self?.profileImageView.setDimensions(height: 100, width: 100)
-                self?.profileImageView.layer.cornerRadius = 100 / 2
-                self?.profileImageView.backgroundColor = .clear
-                self?.profileImageView.clipsToBounds = true
-                self?.profileImageView.layer.borderWidth = 1
-                self?.profileImageView.layer.borderColor = UIColor.white.cgColor
-                self?.profileImageView.layer.masksToBounds = true
-                self?.profileImageView.setupShadow(opacity: 0.4, radius: 10, offset: CGSize(width: 0.0, height: 0.4), color: .white)
-            }
-        }
+        guard let imageUrl = URL(string: user.avatarLink) else { return  }
+        profileImageView.sd_setImage(with: imageUrl)
         if user.avatarLink == "" {
             profileImageView.image = #imageLiteral(resourceName: "plus_photo")
             profileImageView.setDimensions(height: 100, width: 100)

@@ -17,9 +17,6 @@ class TripsTimelineController: UITableViewController {
     let searchController = UISearchController(searchResultsController: nil)
     let refreshController = UIRefreshControl()
     
-    
-    
-    var user: User?
     var trips: [Trip] = []
     var filteredTrips: [Trip] = []
     
@@ -52,7 +49,6 @@ class TripsTimelineController: UITableViewController {
     func configureTapBarController(){
         let newTripController = NewTripController()
         newTripController.delegate = self
-        newTripController.user = user
         newTripController.popupItem.title = "Design your trip"
         newTripController.popupBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         newTripController.popupItem.subtitle = "show people what packages you can take"
@@ -102,7 +98,6 @@ class TripsTimelineController: UITableViewController {
         if Auth.auth().currentUser?.uid == nil {
             presentLoggingController()
         }  else {
-            self.user = User.currentUser
             self.tableView.reloadData()
         }
     }
@@ -148,7 +143,6 @@ extension TripsTimelineController {
         let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
         let tripDetailsController = TripDetailsController()
         tripDetailsController.trip = trip
-        tripDetailsController.user = user
         navigationController?.pushViewController(tripDetailsController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }

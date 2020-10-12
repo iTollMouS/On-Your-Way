@@ -21,7 +21,6 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     private lazy var contentSizeView = CGSize(width: self.view.frame.width,
                                               height: self.view.frame.height + 10)
     
-    var user: User?
     
     // MARK: - NewTripControllerDelegate
     weak var delegate: NewTripControllerDelegate?
@@ -276,7 +275,6 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         let tripEstimateArrival = getEstimatedTimeArrivalWith(currentLocation: currentLocationCity,
                                                                destinationLocation: destinationLocationCity)
         
-        guard let user = user else { return  }
         guard let currentCity  = currentLocationTextField.text else {return}
         guard let destinationCity  = destinationTextField.text else { return }
         guard let pickupLocation  = meetingForPickupTextField.text else { return }
@@ -284,7 +282,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         guard let basePrice = basePriceTextField.text else {return}
 
 
-        let trip = Trip(userID: user.id,
+        let trip = Trip(userID: "",
                         tripID: UUID().uuidString,
                         tripDepartureTime: "",
                         tripDepartureDate: "",

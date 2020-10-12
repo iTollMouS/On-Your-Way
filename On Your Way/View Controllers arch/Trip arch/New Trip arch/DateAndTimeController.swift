@@ -306,7 +306,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         guard let departureTime = timeTextField.text else { return }
         guard let departureDate = dateTextField.text else { return }
         guard let packageType = packageInfoTextView.text else { return }
-        
+        trip.userID = User.currentId
         trip.tripDepartureTime = departureTime
         trip.packageType = packageType
         trip.tripDepartureDate = departureDate

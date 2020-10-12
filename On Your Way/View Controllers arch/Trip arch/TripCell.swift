@@ -7,6 +7,7 @@
 
 import UIKit
 import Cosmos
+import SDWebImage
 
 class TripCell: UITableViewCell {
     
@@ -14,7 +15,6 @@ class TripCell: UITableViewCell {
     var trip: Trip? {
         didSet{configure()}
     }
-    
     
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -175,19 +175,21 @@ class TripCell: UITableViewCell {
         citiesStackView.anchor(top: fromCityDot.topAnchor, bottom: destinationCityDot.bottomAnchor, paddingTop: -15, paddingBottom: -15)
         addSubview(containerInfoStackView)
         containerInfoStackView.anchor(top: fullnameLable.bottomAnchor, left: citiesStackView.rightAnchor, bottom: bottomAnchor,
-                             right: rightAnchor, paddingRight: 12)
+                                      right: rightAnchor, paddingRight: 12)
         
     }
     
     private func configure(){
         guard let trip = trip else { return }
-         let viewModel = TripViewModel(trip: trip)
-        UserServices.shared.fetchUser(userId: trip.userID) { user in
-            FileStorage.downloadImage(imageUrl: user.avatarLink) { imageView in
-                self.profileImageView.image = imageView
-            }
-            self.fullnameLable.text = user.username
+        let viewModel = TripViewModel(trip: trip)
+        
+        UserServices.shared.fetchUser(userId: trip.userID) { [weak self] user in
+            guard let imageUrl = URL(string: user.avatarLink) else { return }
+            self?.profileImageView.sd_setImage(with: imageUrl)
+            self?.fullnameLable.text = user.username
+            self?.ratingView.rating = user.reviewsCount
         }
+        
         timestampLabel.text = viewModel.timestamp
         priceBaseLabel.text = "\(viewModel.basePrice) SR"
         destinationLocation.text = viewModel.destinationLocation
@@ -195,7 +197,7 @@ class TripCell: UITableViewCell {
         packagesTypes.text = viewModel.packageType
         currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
         destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
-        
+
     }
     
     

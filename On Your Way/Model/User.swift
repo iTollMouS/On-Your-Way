@@ -19,7 +19,7 @@ struct User: Codable, Equatable{
     var status: String
     var password: String?
     var phoneNumber: String?
-    var reviewsCount: Int?
+    var reviewsCount: Double = 0.0
     
     static var currentId: String{
         guard let uid = Auth.auth().currentUser?.uid else { return "" }
