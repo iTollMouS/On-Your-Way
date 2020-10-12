@@ -349,9 +349,9 @@
 		834C98FF2532325D00BE8691 /* People Reviews arch */ = {
 			isa = PBXGroup;
 			children = (
+				834C99022532326800BE8691 /* PeopleReviewsController.swift */,
 				834C99002532326800BE8691 /* PeopleReviewHeader.swift */,
 				834C99012532326800BE8691 /* PeopleReviewsCell.swift */,
-				834C99022532326800BE8691 /* PeopleReviewsController.swift */,
 			);
 			path = "People Reviews arch";
 			sourceTree = "<group>";

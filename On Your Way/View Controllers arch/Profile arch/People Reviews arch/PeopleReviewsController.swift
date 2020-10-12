@@ -8,6 +8,7 @@
 import UIKit
 import SwiftEntryKit
 import Cosmos
+import Firebase
 
 private let reuseIdentifier = "PeopleReviewsCell"
 
@@ -164,6 +165,8 @@ class PeopleReviewsController: UIViewController {
     }()
     
     
+    var user: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -171,11 +174,22 @@ class PeopleReviewsController: UIViewController {
         configureTableView()
         configureReviewSheetPopOver()
         self.hideKeyboardWhenTouchOutsideTextField()
+        fetchUser()
         
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func fetchUser(){
+        guard let user = user else { return  }
+        if user.id == User.currentId {
+            buttonContainerView.isHidden = true
+            tableView.fillSuperview()
+            self.tableView.reloadData()
+        } 
+        
     }
     
     func updateReviewOnTouch(){

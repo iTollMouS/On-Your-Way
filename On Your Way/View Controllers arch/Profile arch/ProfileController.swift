@@ -55,14 +55,15 @@ class ProfileController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         checkUser()
-        let demoVC = PeopleReviewsController()
-        demoVC.popupItem.title = "People Reviews "
-        demoVC.popupItem.subtitle = "Tab here to see who wrote a review about you"
-        demoVC.popupItem.progress = 0.34
+        let peopleReviewsController = PeopleReviewsController()
+        peopleReviewsController.user = user
+        peopleReviewsController.popupItem.title = "People Reviews "
+        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
+        peopleReviewsController.popupItem.progress = 0.34
         tabBarController?.modalPresentationStyle = .custom
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
-        tabBarController?.presentPopupBar(withContentViewController: demoVC, animated: true, completion: nil)
+        tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
         headerView.profileImageView.clipsToBounds = true
         
     }
@@ -263,7 +264,7 @@ extension ProfileController: ProfileFooterDelegate {
             
             let alert = UIAlertController(title: nil, message: "Are you sure you want to logout ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "log out", style: .destructive, handler: { (alertAction) in
-                self.dismiss(animated: true) { [self] in logout()  }
+                self.dismiss(animated: true) { [weak self] in self?.logout()  }
             }))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)

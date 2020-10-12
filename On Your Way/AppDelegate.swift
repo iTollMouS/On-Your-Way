@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
         GIDSignIn.sharedInstance()?.clientID = FirebaseApp.app()?.options.clientID
-        
+        Messaging.messaging().delegate = self
+        application.registerForRemoteNotifications()
         return true
     }
 
@@ -37,6 +38,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        completionHandler(UIBackgroundFetchResult.newData)
+    }
+    
+    private func requestPushNotification(){
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (_, _) in
+            
+        }
+    }
+    
+    
+    
+    // MARK: - updateUserPushIdWith
+    private func updateUserPushIdWith(_ fcmToken: String){
+        if var user = User.currentUser {
+            user.pushId = fcmToken
+            saveUserLocally(user)
+            UserServices.shared.saveUserToFirestore(user)
+        }
+    }
 
 }
 
+
+// MARK: - UNUserNotificationCenterDelegate
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+}
+
+// MARK: - MessagingDelegate
+extension AppDelegate: MessagingDelegate {
+    
+    public func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("DEBUG: the fcm token is \(fcmToken)")
+        updateUserPushIdWith(fcmToken)
+    }
+    
+}

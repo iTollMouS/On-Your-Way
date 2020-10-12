@@ -9,6 +9,7 @@ import UIKit
 import LNPopupController
 import Firebase
 import FirebaseFirestoreSwift
+import CoreLocation
 
 protocol NewTripControllerDelegate: class {
     func dismissNewTripView(_ view: NewTripController)
@@ -101,7 +102,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                                                             placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     
-    private lazy var meetingForPickupDestinationContainerView = CustomContainerView(image: UIImage(systemName: "person.2.fill"),
+    private lazy var meetingForPickupDestinationContainerView = CustomContainerView(image: #imageLiteral(resourceName: "Untitled_Artwork_2-removebg-preview").withRenderingMode(.alwaysOriginal),
                                                                                     textField: meetingForPickupTextField, iconTintColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1),
                                                                                     dividerViewColor: .lightGray, dividerAlpa: 1 ,setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
@@ -177,6 +178,16 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         return toolBar
     }()
     
+    private lazy var timestampPickerView: UIDatePicker = {
+        let pickerView = UIDatePicker()
+        pickerView.datePickerMode = .time
+        pickerView.preferredDatePickerStyle = .wheels
+        pickerView.addTarget(self, action: #selector(handleTimeSelected(_ :)), for: .valueChanged)
+        return pickerView
+    }()
+    
+    private var currentLocationCity: Cities?
+    private var destinationLocationCity: Cities?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -230,21 +241,36 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         destinationTextField.inputView = destinationCityPickerView
         destinationTextField.inputAccessoryView = toolbar
         destinationTextField.delegate = self
+        timeToPickPackageTextField.inputView = timestampPickerView
+        
     }
     
     
     // MARK: - Actions
+    
+    @objc func handleTimeSelected(_ sender: UIDatePicker){
+        timeToPickPackageTextField.text = sender.date.convertDate(formattedString: .timeOnly)
+    }
+    
     @objc func handleDateAndTimeTapped(){
+        guard let currentLocationCity = currentLocationCity else { return }
+        guard let destinationLocationCity = destinationLocationCity else { return }
+        let tripEstimateArrival = getEstimatedTimeArrivalWith(currentLocation: currentLocationCity,
+                                                               destinationLocation: destinationLocationCity)
+        
         guard let user = user else { return  }
         guard let currentCity  = currentLocationTextField.text else { return }
         guard let destinationCity  = destinationTextField.text else { return }
         guard let pickupLocation  = meetingForPickupTextField.text else { return }
         guard let pickupTime  = timeToPickPackageTextField.text else { return }
-        
+
+
+
         let trip = Trip(userID: user.id,
                         tripID: UUID().uuidString,
                         tripDateAnnounced: Date().convertDate(formattedString: .formattedType3),
                         tripDepartureTime: "",
+                        tripEstimateArrival: tripEstimateArrival,
                         fromCity: currentCity,
                         destinationCity: destinationCity,
                         basePrice: "",
@@ -252,7 +278,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                         timestamp: nil,
                         pickupLocation: pickupLocation,
                         timeForPickingPackages: pickupTime)
-        
+
         print("DEBUG: user trip is \(trip)")
         let dateAndTimeController = DateAndTimeController()
         dateAndTimeController.delegate = self
@@ -264,6 +290,14 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     @objc func handlePickViewDismissal(){
         currentLocationTextField.endEditing(true)
         destinationTextField.endEditing(true)
+    }
+    
+    func getEstimatedTimeArrivalWith(currentLocation: Cities, destinationLocation: Cities) -> String {
+        let currentLocation = CLLocation(latitude: currentLocation.locationCoordinates.0, longitude: currentLocation.locationCoordinates.1)
+        let destinationLocation = CLLocation(latitude: destinationLocation.locationCoordinates.0, longitude: destinationLocation.locationCoordinates.1)
+        let intervalDistance = (currentLocation.distance(from: destinationLocation)) / 1000
+        guard let estimateTimeArrival = Double((String(format: "%.00f", intervalDistance))) else {return ""}
+        return String(((estimateTimeArrival / 100.00).rounded(.awayFromZero)))
     }
     
 }
@@ -286,8 +320,10 @@ extension NewTripController : UIPickerViewDataSource, UIPickerViewDelegate {
         switch pickerView.tag {
         case 0:
             currentLocationTextField.text = Cities.allCases[row].rawValue
+            currentLocationCity = Cities.allCases[row]
         case 1:
             destinationTextField.text = Cities.allCases[row].rawValue
+            destinationLocationCity = Cities.allCases[row]
         default:
             break
         }
@@ -319,9 +355,8 @@ extension NewTripController: UITextFieldDelegate {
 // MARK: - DateAndTimeControllerDelegate
 extension NewTripController: DateAndTimeControllerDelegate {
     func dismissDateAndTimeController(_ view: DateAndTimeController) {
-        view.dismiss(animated: true) { [weak self]  in
-            self?.delegate?.dismissNewTripView(self!)
-        }
+    
+        view.dismiss(animated: true) { self.delegate?.dismissNewTripView(self) }
     }
 }
 
@@ -339,5 +374,35 @@ enum Cities: String, CaseIterable {
     case Hail = "Hail"
     case Najran = "Najran"
     case Sakaka = "Sakaka"
-    case ABaha = "ABaha"
+    
+    var locationCoordinates: ( Double,  Double) {
+        switch self {
+        case .Arrass: return (25.8517, 43.5222)
+            
+        case .Riyadh: return (24.7136, 46.6753)
+
+        case .Qassim: return (26.2078, 43.4837)
+            
+        case .Makkah: return (21.3891, 39.8579)
+            
+        case .Dammam: return (26.4207, 50.0888)
+
+        case .Abha: return (18.2465, 42.5117)
+
+        case .Jazan: return (16.8894, 42.5706)
+
+        case .Madinah: return (24.5247, 39.5692)
+
+        case .Buraidah: return (26.3592, 43.9818)
+
+        case .Tabuk: return (28.3835, 36.5662)
+
+        case .Hail: return (27.5114, 41.7208)
+
+        case .Najran: return (17.5656, 44.2289)
+
+        case .Sakaka: return (29.8780, 40.1043)
+               
+        }
+    }
 }

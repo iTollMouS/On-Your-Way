@@ -7,7 +7,7 @@
 
 import UIKit
 import FSCalendar
-
+import ProgressHUD
 
 protocol DateAndTimeControllerDelegate: class {
     func dismissDateAndTimeController(_ view: DateAndTimeController)
@@ -304,26 +304,25 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     @objc func handleSubmitNewTrip(){
         guard let trip = trip else { return  }
         self.showBlurView()
-        self.showLoader(true, message: "Please wait...")
+        self.showLoader(true, message: "Please whit while we verify ..")
         TripService.shared.saveTripToFirestore(trip) { [weak self] error in
+            
             if let error = error {
-                print("DEBUG: error while uplaoding a trip ")
+                self?.showBlurView()
+                self?.showLoader(false)
+                self?.showAlertMessage("Error", error.localizedDescription)
                 return
             }
-            self?.removeBlurView()
-            self?.showLoader(false)
-            self?.showBanner(message: "Successfully uploaded the trip", state: .success,
-                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
-                             sender: self!)
             
-            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
-                self?.showBlurView()
-                self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
-            }
-            
-            Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] timer in
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
                 self?.removeBlurView()
                 self?.showLoader(false)
+                self?.showBanner(message: "Successfully uploaded your trip", state: .success,
+                                 location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                                 sender: self!)
+            }
+            
+            Timer.scheduledTimer(withTimeInterval: 4, repeats: false) { [weak self] timer in
                 self?.delegate?.dismissDateAndTimeController(self!)
             }
         }

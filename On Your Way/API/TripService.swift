@@ -33,15 +33,9 @@ class TripService {
             
             guard let snapshot = snapshot else {return}
             
-            let allTrips = snapshot.documentChanges.compactMap { [weak self] (queryDocumentSnapshot) -> Trip? in
+            let allTrips = snapshot.documentChanges.compactMap {(queryDocumentSnapshot) -> Trip? in
                 
-                if queryDocumentSnapshot.type == .added {
-                    return try? queryDocumentSnapshot.document.data(as: Trip.self)
-                }
-                if queryDocumentSnapshot.type == .modified {
-                    return try? queryDocumentSnapshot.document.data(as: Trip.self)
-                }
-                return nil
+                return try? queryDocumentSnapshot.document.data(as: Trip.self)
             }
             for trip in allTrips {  trips.append(trip) }
             trips.sort(by: { $0.tripDateAnnounced > $1.tripDateAnnounced })

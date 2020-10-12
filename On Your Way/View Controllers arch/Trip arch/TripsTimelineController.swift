@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import LNPopupController
 
 private let reuseIdentifier = "TripCell"
 
@@ -34,11 +35,11 @@ class TripsTimelineController: UITableViewController {
         super.viewWillAppear(true)
         configureTapBarController()
         configureNavBar()
+        searchController.searchBar.becomeFirstResponder()
     }
     
     func fetchTrips(){
         TripService.shared.fetchAllTrips { [weak self] in
-            print("DEBUG: all trips \($0)")
             self?.trips = $0
             self?.tableView.reloadData()
             
@@ -141,15 +142,59 @@ extension TripsTimelineController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = deleteMyTrip(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let edit = editMyTrip(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [edit])
+    }
+    
+    func deleteMyTrip(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            //            self.myTrips.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadData()
+        }
+        action.image = #imageLiteral(resourceName: "Twitter_Logo_Blue")
+        action.backgroundColor = .red
+        return action
+    }
+    
+    
+    func editMyTrip(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Edit") { (action, view, completion) in
+            //            self.myTrips.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadData()
+        }
+        action.image = #imageLiteral(resourceName: "avatar")
+        action.backgroundColor = .blueLightFont
+        return action
+    }
+    
 }
 // MARK: -  NewTripControllerDelegate
 extension TripsTimelineController: NewTripControllerDelegate {
     func dismissNewTripView(_ view: NewTripController) {
+        fetchTrips()
         tabBarController?.closePopup(animated: true, completion: { [weak self] in
             let safetyControllerGuidelines = SafetyControllerGuidelines()
             safetyControllerGuidelines.modalPresentationStyle = .custom
-            self?.present(safetyControllerGuidelines, animated: true, completion: nil)
-            self?.fetchTrips()
+            self?.present(safetyControllerGuidelines, animated: true) { [weak self] in
+
+            }
+            
         })
     }
 }
