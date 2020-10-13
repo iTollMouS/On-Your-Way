@@ -11,6 +11,7 @@ import SDWebImage
 
 protocol TripDetailsHeaderViewDelegate: class {
     func handleStartToChat(_ view: TripDetailsHeaderView)
+    func handleReviewsTapped(_ view: TripDetailsHeaderView)
 }
 
 class TripDetailsHeaderView: UIView {
@@ -72,10 +73,13 @@ class TripDetailsHeaderView: UIView {
         view.settings.starSize = 24
         view.settings.totalStars = 5
         view.rating = 0
+        view.text = ""
         view.settings.starMargin = 3.0
         view.settings.updateOnTouch = false
         view.backgroundColor = .clear
         view.setHeight(height: 40)
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleReviewTapped)))
         return view
     }()
     
@@ -106,6 +110,7 @@ class TripDetailsHeaderView: UIView {
         profileImageView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 20)
         addSubview(userInfoStackView)
         userInfoStackView.centerX(inView: self, topAnchor: profileImageView.bottomAnchor, paddingTop: 6)
+        userInfoStackView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 20, paddingRight: 20)
         
     }
     
@@ -117,7 +122,10 @@ class TripDetailsHeaderView: UIView {
         fullnameLabel.text = user.username
         phoneNumberLabel.text = user.phoneNumber
         ratingView.rating = user.reviewsCount
-        
+    }
+    
+    @objc fileprivate func handleReviewTapped(){
+        delegate?.handleReviewsTapped(self)
     }
     
     @objc func handleStartToChat(){

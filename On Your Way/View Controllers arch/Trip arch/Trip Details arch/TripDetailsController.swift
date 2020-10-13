@@ -6,14 +6,23 @@
 //
 
 import UIKit
+import SwiftEntryKit
 
 private let reuseIdentifier = "TripDetailsCell"
+
+protocol TripDetailsControllerDelegate: class {
+    func handleShowRegistrationPageForNonusers(_ view: TripDetailsController)
+}
 
 class TripDetailsController: UIViewController {
     
     private lazy var headerView = TripDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
     private lazy var footerView = TripDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 100))
     
+    private lazy var reviewSheetPopOver = UIView()
+    var attributes = EKAttributes.bottomNote
+    
+    weak var delegate: TripDetailsControllerDelegate?
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -125,6 +134,10 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension TripDetailsController : TripDetailsHeaderViewDelegate {
+    func handleReviewsTapped(_ view: TripDetailsHeaderView) {
+        
+    }
+    
     func handleStartToChat(_ view: TripDetailsHeaderView) {
         
         // it is working , now you have to implement the functionality
@@ -139,10 +152,76 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
         guard let user = user else { return }
         guard let trip = trip else { return }
+        if User.currentUser?.id == nil {
+            showCustomAlertView()
+            return
+        }
         let sendPackageController = SendPackageController(user: user, trip: trip)
+        sendPackageController.delegate = self
         let navBar = UINavigationController(rootViewController: sendPackageController)
+        navBar.isModalInPresentation = true
         present(navBar, animated: true, completion: nil)
     }
     
     
 }
+
+extension TripDetailsController : SendPackageControllerDelegate {
+    func handleDismissalView(_ view: SendPackageController) {
+        view.dismiss(animated: true) { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    
+}
+
+extension TripDetailsController {
+    
+    func showCustomAlertView() {
+        
+        reviewSheetPopOver.backgroundColor = #colorLiteral(red: 0.2588235294, green: 0.2588235294, blue: 0.2588235294, alpha: 1)
+        reviewSheetPopOver.layer.cornerRadius = 10
+        reviewSheetPopOver.setDimensions(height: 300, width: view.frame.width - 50)
+        attributes.screenBackground = .visualEffect(style: .dark)
+        attributes.positionConstraints.safeArea = .overridden
+        
+        attributes.positionConstraints.verticalOffset = 250
+        //        let offset = EKAttributes.PositionConstraints.KeyboardRelation.Offset(bottom: 10, screenEdgeResistance: 20)
+        //        let keyboardRelation = EKAttributes.PositionConstraints.KeyboardRelation.bind(offset: offset)
+        //        attributes.positionConstraints.keyboardRelation = keyboardRelation
+        attributes.windowLevel = .normal
+        attributes.position = .bottom
+        attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
+        attributes.displayDuration = .infinity // do something when the user touch the card e.g .dismiss make the card dismisses on touch
+        attributes.screenInteraction = .dismiss // do something when the user touch the screen e.g .dismiss make the card dismisses on touch
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.statusBar = .light
+        //        attributes.entranceAnimation = .init(
+        //                         translate: .init(duration: 0.7, anchorPosition: .top, spring: .init(damping: 1, initialVelocity: 0)),
+        //                         scale: .init(from: 0.6, to: 1, duration: 0.7),
+        //                         fade: .init(from: 0.8, to: 1, duration: 0.3))
+//        attributes.lifecycleEvents.willAppear = { [self] in
+//
+//        }
+        
+//        attributes.lifecycleEvents.didAppear = { [self] in
+//            // Executed after the entry animates inside
+//
+//            print("didAppear")
+//        }
+        
+        attributes.lifecycleEvents.willDisappear = { [weak self] in
+            self?.delegate?.handleShowRegistrationPageForNonusers(self!)
+        }
+        
+        attributes.lifecycleEvents.didDisappear = {
+            // Executed after the entry animates outside
+            print("didDisappear")
+        }
+        attributes.entryBackground = .visualEffect(style: .dark)
+        SwiftEntryKit.display(entry: reviewSheetPopOver, using: attributes)
+    }
+    
+}
+

@@ -26,7 +26,7 @@ class TripsTimelineController: UITableViewController {
         super.viewDidLoad()
         configureUI()
         configureRefreshController()
-//        checkIfUserLoggedIn()
+        //        checkIfUserLoggedIn()
         fetchTrips()
     }
     
@@ -95,14 +95,14 @@ class TripsTimelineController: UITableViewController {
     }
     
     
-//    func checkIfUserLoggedIn(){
-//        if Auth.auth().currentUser?.uid == nil {
-//            presentLoggingController()
-//        }  else {
-//            self.tableView.reloadData()
-//        }
-//    }
-//
+    //    func checkIfUserLoggedIn(){
+    //        if Auth.auth().currentUser?.uid == nil {
+    //            presentLoggingController()
+    //        }  else {
+    //            self.tableView.reloadData()
+    //        }
+    //    }
+    //
     func presentLoggingController(){
         DispatchQueue.main.async { [weak self]  in
             let loginController = LoginController()
@@ -144,6 +144,7 @@ extension TripsTimelineController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
         let tripDetailsController = TripDetailsController()
+        tripDetailsController.delegate = self
         tripDetailsController.trip = trip
         navigationController?.pushViewController(tripDetailsController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
@@ -252,3 +253,11 @@ extension TripsTimelineController :  UISearchResultsUpdating {
     }
 }
 
+
+
+extension TripsTimelineController : TripDetailsControllerDelegate {
+    func handleShowRegistrationPageForNonusers(_ view: TripDetailsController) {
+        navigationController?.popViewController(animated: true)
+        presentLoggingController()
+    }
+}

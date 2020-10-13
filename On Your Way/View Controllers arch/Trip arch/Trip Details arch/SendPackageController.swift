@@ -10,7 +10,15 @@ import UIKit
 
 private let reuseIdentifier = "SendPackageCell"
 
+protocol SendPackageControllerDelegate: class {
+    func handleDismissalView(_ view: SendPackageController)
+}
+
+
 class SendPackageController: UIViewController {
+    
+    
+    weak var delegate: SendPackageControllerDelegate?
     
     private let user: User
     private let trip: Trip
@@ -18,9 +26,25 @@ class SendPackageController: UIViewController {
     private let imagePicker = UIImagePickerController()
     private lazy var packagesImage = SendPackageImagesStackView()
     private var packageImageUrls = [String]()
+    private var limitedLetter = 150
+    
+    private let packageTitleLabel: UILabel = {
+        let label = UILabel()
+        let attributedText = NSMutableAttributedString(string: "Write any additional info\n",
+                                                       attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        attributedText.append(NSMutableAttributedString(string: "You only have 150 letters",
+                                                        attributes: [NSAttributedString.Key.foregroundColor : UIColor.white]))
+        label.attributedText = attributedText
+        label.textColor = .white
+        label.textAlignment = .left
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.setDimensions(height: 40, width: 200)
+        return label
+    }()
     
     
-    private lazy var logoutButton: UIButton = {
+    private lazy var sendPackageButton: UIButton = {
         let button = UIButton(type: .system)
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.setTitle("Send package with  ", for: .normal)
@@ -30,13 +54,39 @@ class SendPackageController: UIViewController {
         button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(handleSubmittingShipment), for: .touchUpInside)
-        button.setDimensions(height: 50, width: 200)
+        button.setDimensions(height: 50, width: 360)
         button.layer.cornerRadius = 50 / 2
         button.clipsToBounds = true
         button.layer.masksToBounds = false
         button.setupShadow(opacity: 0.5, radius: 16, offset: CGSize(width: 0.0, height: 8.0), color: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1))
         return button
     }()
+    
+    
+    private lazy var packageInfoTextView: UITextView = {
+        let textView = UITextView()
+        textView.textAlignment = .left
+        textView.textColor = .blueLightFont
+        textView.setHeight(height: 100)
+        textView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
+        textView.layer.cornerRadius = 10
+        textView.keyboardAppearance = .dark
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.delegate = self
+        textView.clipsToBounds = true
+        return textView
+    }()
+    
+    private lazy var placeholderLabel: UILabel = {
+        let label = UILabel()
+        label.text = "write what stuff you can take \nfor example : Papers , bags , etc"
+        label.textAlignment = .left
+        label.textColor = .lightGray
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 16)
+        return label
+    }()
+    
     
     
     
@@ -54,53 +104,113 @@ class SendPackageController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        configureNavBar()
+    }
+    
+    func configureNavBar(){
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dismiss", style: .done, target: self, action: #selector(handleDismissal))
+        self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    @objc func handleDismissal(){
+        dismiss(animated: true, completion: nil)
     }
     
     func configureUI(){
         view.addSubview(packagesImage)
         packagesImage.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20 ,
                              paddingLeft: 20, paddingRight: 20)
-        view.addSubview(logoutButton)
-        logoutButton.centerX(inView: packagesImage, topAnchor: packagesImage.bottomAnchor, paddingTop: 30)
+     
         packagesImage.delegate = self
         title = user.username
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
+        
+        view.addSubview(packageTitleLabel)
+        packageTitleLabel.centerX(inView: packagesImage, topAnchor: packagesImage.bottomAnchor, paddingTop: 20)
+        
+        view.addSubview(packageInfoTextView)
+        packageInfoTextView.anchor(top: packageTitleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20 ,
+                                   paddingLeft: 30, paddingRight: 30)
+        
+        view.addSubview(sendPackageButton)
+        sendPackageButton.centerX(inView: packageInfoTextView, topAnchor: packageInfoTextView.bottomAnchor, paddingTop: 30)
+        
+        packageInfoTextView.addSubview(placeholderLabel)
+        placeholderLabel.anchor(top: packageInfoTextView.topAnchor, left: packageInfoTextView.leftAnchor,
+                                paddingTop: 8, paddingLeft: 8)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChanger), name: UITextView.textDidChangeNotification, object: nil)
     }
+    
+    
+    @objc func handleTextInputChanger(){
+        placeholderLabel.isHidden = !packageInfoTextView.text.isEmpty
+        let attributedText = NSMutableAttributedString(string: "Write any additional info\n",
+                                                       attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        attributedText.append(NSMutableAttributedString(string: "You only have \(limitedLetter - packageInfoTextView.text.count) letters",
+                                                        attributes: [NSAttributedString.Key.foregroundColor : UIColor.white]))
+        packageTitleLabel.attributedText = attributedText
+    }
+    
     
     fileprivate func uploadPackageImage(_ image: UIImage){
         let fileId = UUID().uuidString
         let fileDirectory = "Packages/" + "_\(fileId)/" + "\(User.currentId)" + ".jpg"
         FileStorage.uploadImage(image, directory: fileDirectory) { [weak self] imageUrl in
-            print("DEBUG: image url is \(imageUrl)")
             guard let imageUrl = imageUrl else {return}
             self?.packageImageUrls.append(imageUrl)
         }
     }
     
     @objc fileprivate func handleSubmittingShipment(){
-        print("DEBUG: current user is \(User.currentId)")
-        print("DEBUG: current traveler is \(trip.userID)")
+//        print("DEBUG: current user is \(User.currentId)")
+//        print("DEBUG: current traveler is \(trip.userID)")
+        view.isUserInteractionEnabled = false
+        self.showBlurView()
+        self.showLoader(true, message: "Please wait while we\nsend your request....")
+        guard let packageType = packageInfoTextView.text else { return }
         let packageId = UUID().uuidString
         let package = Package(userID: User.currentId,
                               tripID: trip.tripID,
-                              packageType: "", timestamp: Date(),
+                              packageType: packageType,
+                              timestamp: Date(),
                               packageImages: packageImageUrls.suffix(6),
                               packageID: packageId)
         TripService.shared.sendPackageToTraveler(trip: trip, userId: User.currentId,
-                                                 package: package) { error in
+                                                 package: package) { [weak self] error in
             if let error = error {
-                print("DEBUG: error in send package \(error.localizedDescription)")
+                self?.removeBlurView()
+                self?.showLoader(false)
                 return
             }
-            self.showAlertMessage("SUCCRSS!!", "Great!")
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.showBanner(message: "Success!", state: .success, location: .top,
+                                 presentingDirection: .vertical, dismissingDirection: .vertical,
+                                 sender: self!)
+            }
+            Timer.scheduledTimer(withTimeInterval: 7.0, repeats: false) { [weak self] timer in
+                self?.delegate?.handleDismissalView(self!)
+            }
         }
     }
     
     
 }
 
+
+extension SendPackageController: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars <= 150
+    }
+}
 
 
 

@@ -12,7 +12,7 @@ protocol OrderDetailsFooterViewDelegate: class {
 }
 
 class OrderDetailsFooterView: UIView {
-
+    
     weak var delegate: OrderDetailsFooterViewDelegate?
     
     lazy var rejectButton = createButton(tagNumber: 0, title: "Reject", backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6)
@@ -31,7 +31,7 @@ class OrderDetailsFooterView: UIView {
         super.init(frame: frame)
         addSubview(stackView)
         stackView.anchor(left: leftAnchor, right: rightAnchor,
-                            paddingLeft: 40, paddingRight: 40)
+                         paddingLeft: 40, paddingRight: 40)
         stackView.heightAnchor.constraint(equalToConstant: CGFloat(stackView.subviews.count * 80)).isActive = true
         stackView.centerY(inView: self)
     }
@@ -48,7 +48,7 @@ class OrderDetailsFooterView: UIView {
         
     }
     
-     func createButton(tagNumber: Int, title: String, backgroundColor: UIColor, colorAlpa: CGFloat ) -> UIButton {
+    func createButton(tagNumber: Int, title: String, backgroundColor: UIColor, colorAlpa: CGFloat ) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitleColor(.white, for: .normal)
         button.setTitle("\(title) order", for: .normal)
@@ -67,5 +67,5 @@ class OrderDetailsFooterView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
- 
+    
 }
