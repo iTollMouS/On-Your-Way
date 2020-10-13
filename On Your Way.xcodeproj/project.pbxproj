@@ -89,6 +89,8 @@
 		83D7D42625359DC400FA88F0 /* SendPackageImagesStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D42525359DC400FA88F0 /* SendPackageImagesStackView.swift */; };
 		83D7D4282535A49B00FA88F0 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D4272535A49B00FA88F0 /* Package.swift */; };
 		83D7D42A2535DC3E00FA88F0 /* OrderDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D4292535DC3E00FA88F0 /* OrderDetailsController.swift */; };
+		83D7D42C2535E68F00FA88F0 /* OrderDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */; };
+		83D7D42E2535E6F800FA88F0 /* OrderDetailHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -191,6 +193,8 @@
 		83D7D42525359DC400FA88F0 /* SendPackageImagesStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendPackageImagesStackView.swift; sourceTree = "<group>"; };
 		83D7D4272535A49B00FA88F0 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		83D7D4292535DC3E00FA88F0 /* OrderDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsController.swift; sourceTree = "<group>"; };
+		83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailHeader.swift; sourceTree = "<group>"; };
+		83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailHeaderCell.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -409,6 +413,8 @@
 			children = (
 				834C98802531288D00BE8691 /* OrdersController.swift */,
 				83D7D4292535DC3E00FA88F0 /* OrderDetailsController.swift */,
+				83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */,
+				83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */,
 				834C9914253237AC00BE8691 /* OrderCell.swift */,
 			);
 			path = "Orders arch";
@@ -626,6 +632,7 @@
 				834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */,
 				834C9938253382B400BE8691 /* FirebaseRecentService.swift in Sources */,
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
+				83D7D42E2535E6F800FA88F0 /* OrderDetailHeaderCell.swift in Sources */,
 				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
 				834C991D25323C3200BE8691 /* RecentCell.swift in Sources */,
 				83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */,
@@ -639,6 +646,7 @@
 				83D7D42A2535DC3E00FA88F0 /* OrderDetailsController.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
+				83D7D42C2535E68F00FA88F0 /* OrderDetailHeader.swift in Sources */,
 				834C99242532E61500BE8691 /* FileStorage.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
 				834C992B2533542B00BE8691 /* TripCell.swift in Sources */,

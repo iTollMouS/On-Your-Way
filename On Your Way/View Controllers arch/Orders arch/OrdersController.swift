@@ -144,6 +144,12 @@ extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
         cell.accessoryType = .disclosureIndicator
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let package = rowsToDisplay[indexPath.row]
+        let orderDetailsController = OrderDetailsController(package: package)
+        navigationController?.pushViewController(orderDetailsController, animated: true)
+    }
 }
 
 extension OrdersController: UISearchResultsUpdating {

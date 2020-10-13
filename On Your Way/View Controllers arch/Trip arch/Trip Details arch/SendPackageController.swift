@@ -70,7 +70,8 @@ class SendPackageController: UIViewController {
     }
     
     fileprivate func uploadPackageImage(_ image: UIImage){
-        let fileDirectory = "Packages/" + "_\(User.currentId)" + ".jpg"
+        let fileId = UUID().uuidString
+        let fileDirectory = "Packages/" + "_\(fileId)/" + "\(User.currentId)" + ".jpg"
         FileStorage.uploadImage(image, directory: fileDirectory) { [weak self] imageUrl in
             print("DEBUG: image url is \(imageUrl)")
             guard let imageUrl = imageUrl else {return}
@@ -107,7 +108,7 @@ extension SendPackageController : SendPackageImagesStackViewDelegate {
     
     
     func imagesStackView(_ view: SendPackageImagesStackView, index: Int) {
-
+        
         if !isConnectedToNetwork() {
             showBanner(message: "Please check your internet connection!", state: .error, location: .top,
                        presentingDirection: .vertical, dismissingDirection: .vertical, sender: self)
