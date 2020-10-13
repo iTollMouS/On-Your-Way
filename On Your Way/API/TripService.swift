@@ -48,6 +48,10 @@ class TripService {
             try Firestore.firestore().collection("users-requests")
                 .document(trip.userID).collection("shipping-request")
                 .document(package.packageID).setData(from: package, merge: true, completion: completion)
+            try Firestore.firestore().collection("users-send-packages")
+                .document(userId).collection("packages")
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+            
         } catch (let error) {
             print("DEBUG: error while uploading package\(error.localizedDescription)")
         }

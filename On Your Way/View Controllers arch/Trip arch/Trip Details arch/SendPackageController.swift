@@ -186,14 +186,14 @@ class SendPackageController: UIViewController {
                 self?.showLoader(false)
                 return
             }
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] timer in
                 self?.removeBlurView()
                 self?.showLoader(false)
                 self?.showBanner(message: "Success!", state: .success, location: .top,
                                  presentingDirection: .vertical, dismissingDirection: .vertical,
                                  sender: self!)
             }
-            Timer.scheduledTimer(withTimeInterval: 7.0, repeats: false) { [weak self] timer in
+            Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] timer in
                 self?.delegate?.handleDismissalView(self!)
             }
         }
