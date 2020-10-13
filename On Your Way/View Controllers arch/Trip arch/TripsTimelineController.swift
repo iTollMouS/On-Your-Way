@@ -135,6 +135,7 @@ extension TripsTimelineController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripCell
         cell.trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
+        cell.delegate = self
         return cell
     }
     
@@ -205,6 +206,20 @@ extension TripsTimelineController {
     }
     
 }
+
+// MARK: -  TripCellDelegate
+extension TripsTimelineController: TripCellDelegate {
+    func handleDisplayReviews(_ cell: UITableViewCell, selectedTrip: Trip) {
+        print("DEBUG: option is tapped")
+    }
+    
+}
+
+
+
+
+
+
 // MARK: -  NewTripControllerDelegate
 extension TripsTimelineController: NewTripControllerDelegate {
     func dismissNewTripView(_ view: NewTripController) {

@@ -50,6 +50,7 @@ class ProfileController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         checkUser()
+        tabBarController?.tabBar.isHidden = false
         let peopleReviewsController = PeopleReviewsController()
         peopleReviewsController.user = user
         peopleReviewsController.popupItem.title = "People Reviews "
@@ -105,7 +106,7 @@ class ProfileController: UIViewController {
     @objc func handleUserUpdates(){
         guard let user = user else { return }
         guard let phoneNumber = user.phoneNumber else { return }
-        guard let email = user.email else { return }
+        
         if !phoneNumber.isValidPhoneNumber {
             self.showAlertMessage("Error", "Please enter your phone number correctly")
             return
@@ -180,6 +181,16 @@ class ProfileController: UIViewController {
 
 
 
+extension ProfileController: UpdateEmailControllerDelegate {
+    func handleLoggingUserOut() {
+        navigationController?.popViewController(animated: true)
+        checkUser()
+    }
+    
+    
+}
+
+
 
 // MARK: - LoginControllerDelegate
 extension ProfileController: LoginControllerDelegate {
@@ -252,6 +263,7 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         guard let user = user else { return  }
         if viewModel == .section_2 {
             let updateEmailController = UpdateEmailController(user: user)
+            updateEmailController.delegate = self
             navigationController?.pushViewController(updateEmailController, animated: true)
         }
         tableView.deselectRow(at: indexPath, animated: true)

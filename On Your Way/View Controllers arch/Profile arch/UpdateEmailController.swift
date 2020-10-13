@@ -9,8 +9,13 @@ import UIKit
 import Lottie
 import Firebase
 
+protocol UpdateEmailControllerDelegate: class {
+    func handleLoggingUserOut()
+}
+
 class UpdateEmailController: UIViewController {
     
+    weak var delegate: UpdateEmailControllerDelegate?
     
     private lazy var animationView : AnimationView = {
         let animationView = AnimationView()
@@ -36,8 +41,6 @@ class UpdateEmailController: UIViewController {
                                                                  iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
                                                                  setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
     
-    
-
     private lazy var loggingButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Login", for: .normal)
@@ -80,6 +83,11 @@ class UpdateEmailController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        tabBarController?.tabBar.isHidden = true
+        tabBarController?.dismissPopupBar(animated: true, completion: nil)
+    }
     
     func configureUI(){
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -95,41 +103,36 @@ class UpdateEmailController: UIViewController {
     @objc private func handleUpdateInfo(){
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
-        Auth.auth().currentUser?.updateEmail(to: email, completion: { error in
+        self.showBlurView()
+        self.showLoader(true, message: "Please wait...")
+        AuthServices.shared.updateEmailAndPassword(email: email, password: password) { [weak self] error in
             if let error = error {
-                self.removeBlurView()
-                self.showLoader(false)
-                self.showAlertMessage( nil ,error.localizedDescription)
+                self?.showBlurView()
+                self?.showLoader(false)
+                self?.showAlertMessage("Error", error.localizedDescription)
                 return
             }
-            Auth.auth().currentUser?.updatePassword(to: password, completion: { error in
-                if let error = error {
-                    self.removeBlurView()
-                    self.showLoader(false)
-                    self.showAlertMessage( nil ,error.localizedDescription)
-                    return
-                }
-                self.user.email = email
-                saveUserLocally(self.user)
-                userDefaults.synchronize()
-                UserServices.shared.saveUserToFirestore(self.user)
-                self.view.isUserInteractionEnabled = false
-                self.removeBlurView()
-                self.showLoader(false)
-                self.showBanner(message: "تم حفظ التغيرات بنجاح\nسيتم تسجيل خروجك تلقائيا!",
-                                state: .success, location: .bottom, presentingDirection: .vertical, dismissingDirection: .vertical, sender: self)
-                Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { timer in
-                    self.showBlurView()
-                    self.showLoader(true, message: "تسجيل الخروج ...")
-                }
-                
-                Timer.scheduledTimer(withTimeInterval: 9.0, repeats: false) { (timer) in
-                    self.removeBlurView()
-                    self.showLoader(false)
-                   
-                }
-            })
-        })
+            
+            self?.removeBlurView()
+            self?.showLoader(false)
+            self?.showBanner(message: "Successfully verified your info", state: .success,
+                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                             sender: self!)
+            
+            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
+                self?.showBlurView()
+                self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+            }
+            
+            Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
+                self?.removeBlurView()
+                self?.showLoader(false)
+                self?.delegate?.handleLoggingUserOut()
+            }
+            
+        }
+        
+        
     }
     
     

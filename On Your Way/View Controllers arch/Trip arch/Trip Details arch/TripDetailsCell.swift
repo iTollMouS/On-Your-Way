@@ -77,7 +77,7 @@ class TripDetailsCell: UITableViewCell {
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
-  
+    
     private lazy var packagePickupLocationLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -93,7 +93,7 @@ class TripDetailsCell: UITableViewCell {
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
-  
+    
     private lazy var meetingsInfoStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [packagePickupLocationLabel, packagePickupTime])
         stackView.axis = .horizontal
@@ -129,30 +129,35 @@ class TripDetailsCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-     func configure(){
+    func configure(){
         guard let trip = trip else { return }
         let viewModel = TripViewModel(trip: trip)
+        
+        currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
+        destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
+        
+        
         packagePickupLocationLabel.text = viewModel.packagePickupLocation
         packagePickupTime.text = viewModel.packagePickupTime
-        packagesTypes.text = viewModel.packageType
         
+        
+        packagesTypes.text = viewModel.packageType
+        priceBaseLabel.text = viewModel.basePrice
     }
     
-     func configureUI(){
+    func configureUI(){
         guard let cellViewModel = viewModel else { return  }
         switch cellViewModel {
         case .fromCityToCity: configureSection_0()
         case .whereToMeet: configureSection_1()
-        case .whatCanITake: configureSection_2()
-        case .WhenToMeet:
-            print("")
-        case .packageAllowance:
-            print("")
+        case .packageAllowance: configureSection_2()
+        case .basePrice: configureSection_3()
         }
     }
     
     func configureSection_0(){
         addSubview(fromCityDot)
+        heightAnchor.constraint(equalToConstant: 150).isActive = true
         fromCityDot.anchor(top: topAnchor, left: leftAnchor, paddingTop: 20, paddingLeft: 50)
         
         addSubview(destinationCityDot)
@@ -177,6 +182,11 @@ class TripDetailsCell: UITableViewCell {
     func configureSection_2(){
         addSubview(packagesTypes)
         packagesTypes.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+    }
+    
+    func configureSection_3(){
+        addSubview(priceBaseLabel)
+        priceBaseLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
     
     required init?(coder: NSCoder) {
@@ -216,38 +226,24 @@ class TripDetailsCell: UITableViewCell {
 enum TripDetailsViewModel: Int, CaseIterable {
     case fromCityToCity
     case whereToMeet
-    case whatCanITake
-    case WhenToMeet
     case packageAllowance
-    
-    var cellHeight: CGFloat {
-        switch self {
-        case .fromCityToCity: return 160
-        case .whereToMeet: return 50
-        case .whatCanITake: return 50
-        case .WhenToMeet: return 50
-        case .packageAllowance: return 50
-        }
-    }
+    case basePrice
     
     var numberOfCell: Int {
         switch self {
         case .fromCityToCity: return 1
         case .whereToMeet: return 1
-        case .whatCanITake: return 1
-        case .WhenToMeet: return 1
         case .packageAllowance: return 1
+        case .basePrice: return 1
         }
     }
     
     var titleInSection: String {
         switch self {
-        
         case .fromCityToCity: return "Trip Destination"
-        case .whereToMeet: return "Place and Place to meet"
-        case .whatCanITake: return "What I can take with me"
-        case .WhenToMeet: return "Where the place to meet to take packages"
-        case .packageAllowance: return "Non of the times"
+        case .whereToMeet: return "Place and time to meet for picking a package"
+        case .packageAllowance: return "What I can take with me"
+        case .basePrice: return "the base price"
         }
     }
     
@@ -255,9 +251,8 @@ enum TripDetailsViewModel: Int, CaseIterable {
         switch self {
         case .fromCityToCity: return 40
         case .whereToMeet: return 60
-        case .whatCanITake: return 60
-        case .WhenToMeet: return 60
         case .packageAllowance: return 60
+        case .basePrice: return 60
         }
     }
     

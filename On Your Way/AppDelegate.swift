@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance()?.clientID = FirebaseApp.app()?.options.clientID
         Messaging.messaging().delegate = self
         application.registerForRemoteNotifications()
+        requestPushNotification()
         return true
     }
 

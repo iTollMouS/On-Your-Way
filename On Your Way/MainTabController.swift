@@ -24,17 +24,17 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()
-        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car.2")!,
+        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                                   rootViewController: tripsTimelineController,
                                                                   tabBarItemTitle: "Travelers")
         
         let ordersController = OrdersController()
-        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!,
+        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                            rootViewController: ordersController,
                                                            tabBarItemTitle: "Orders")
         
         let recentController = RecentController()
-        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
+        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                            rootViewController: recentController,
                                                            tabBarItemTitle: "Meesage")
         

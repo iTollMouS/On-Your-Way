@@ -74,7 +74,7 @@ struct AuthServices {
                             pushId: "", avatarLink: profileImageUrl, status: "", password: "",
                             phoneNumber: "",
                             reviewsCount: 0)
-            emailVerification(withEmail: email, userResult: authResult)
+            emailVerification(userResult: authResult)
             UserServices.shared.saveUserToFirestore(user)
             saveUserLocally(user)
             completion(error)
@@ -100,6 +100,28 @@ struct AuthServices {
             completion(error)
             
         }
+    }
+    
+    func updateEmailAndPassword(email: String, password: String, completion: @escaping APICompletion){
+        Auth.auth().currentUser?.updateEmail(to: email, completion: { error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            Auth.auth().currentUser?.updatePassword(to: password, completion: { error in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                guard var user = User.currentUser else {return}
+                user.email = email
+                saveUserLocally(user)
+                userDefaults.synchronize()
+                UserServices.shared.saveUserToFirestore(user)
+                completion(error)
+            })
+        })
     }
     
     
@@ -164,9 +186,9 @@ struct AuthServices {
         }
         
     }
-
+    
     // MARK: - emailVerification
-    func emailVerification(withEmail: String, userResult: AuthDataResult){
+    func emailVerification(userResult: AuthDataResult){
         userResult.user.sendEmailVerification { error in
             if let error = error {
                 print("DEBUG: error while verifying email\(error.localizedDescription)")

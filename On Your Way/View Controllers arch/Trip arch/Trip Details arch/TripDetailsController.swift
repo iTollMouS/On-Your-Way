@@ -21,7 +21,8 @@ class TripDetailsController: UIViewController {
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.tableHeaderView = headerView
         tableView.tableFooterView = footerView
-        tableView.rowHeight = 160
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.rowHeight = 800
         return tableView
     }()
     
@@ -96,8 +97,7 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let cellHeight = TripDetailsViewModel(rawValue: indexPath.section) else { return 0 }
-        return cellHeight.cellHeight
+        return UITableView.automaticDimension
     }
     
     

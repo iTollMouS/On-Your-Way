@@ -157,6 +157,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         textView.layer.cornerRadius = 10
         textView.keyboardAppearance = .dark
         textView.font = UIFont.systemFont(ofSize: 16)
+        textView.delegate = self
         textView.clipsToBounds = true
         return textView
     }()
@@ -258,7 +259,6 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         configureUI()
         self.hideKeyboardWhenTouchOutsideTextField()
-        print("DEBUG: trip is \(trip)")
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
@@ -371,5 +371,14 @@ extension DateAndTimeController: UITextFieldDelegate {
         if text.isEmpty {
             timeTextField.text = timestampPickerView.date.convertDate(formattedString: .timeOnly)
         }
+    }
+}
+
+extension DateAndTimeController: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars < 150
     }
 }

@@ -9,7 +9,16 @@ import UIKit
 import Cosmos
 import SDWebImage
 
+
+protocol TripCellDelegate: class {
+    func handleDisplayReviews(_ cell: UITableViewCell, selectedTrip: Trip)
+}
+
 class TripCell: UITableViewCell {
+    
+    
+    
+    weak var delegate: TripCellDelegate?
     
     
     var trip: Trip? {
@@ -114,9 +123,13 @@ class TripCell: UITableViewCell {
                                                   detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 20)
     
     
-    private lazy var packagesTypes = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
-                                                 detailsText: "", detailsTextSize: 18,
-                                                 detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 50)
+    private lazy var packagesTypes: UILabel = {
+        let label = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
+                                detailsText: "", detailsTextSize: 18,
+                                detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 50)
+        label.adjustsFontSizeToFitWidth = false
+        return label
+    }()
     
     private lazy var ratingView: CosmosView = {
         let view = CosmosView()
@@ -128,10 +141,16 @@ class TripCell: UITableViewCell {
         view.settings.starMargin = 3.0
         view.settings.textColor = .white
         view.rating = 0
+        view.settings.updateOnTouch = false
+        view.isUserInteractionEnabled = true
+        view.settings.textColor = .systemBlue
+        view.settings.textMargin = 10
+        view.text = "Reviews base on"
         view.settings.textMargin = 10
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
         view.backgroundColor = .clear
         view.setHeight(height: 70)
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleReviewTapped)))
         return view
     }()
     
@@ -203,7 +222,13 @@ class TripCell: UITableViewCell {
     
     
     @objc func handleOptionsTapped(){
-        print("DEBUG: option is tapped")
+        
+    }
+    
+    
+    @objc private func handleReviewTapped(){
+        guard let trip = trip else { return }
+        delegate?.handleDisplayReviews(self, selectedTrip: trip)
     }
     
     fileprivate func tripInfoText(location: String, tripDepartureDate: String, tripDepartureTime: String ) -> NSMutableAttributedString{
