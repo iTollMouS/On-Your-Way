@@ -136,7 +136,7 @@ class TripCell: UITableViewCell {
         view.settings.fillMode = .half
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = #imageLiteral(resourceName: "RatingStarEmpty").withRenderingMode(.alwaysOriginal)
-        view.settings.starSize = 18
+        view.settings.starSize = 14
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
         view.settings.textColor = .white
@@ -145,9 +145,9 @@ class TripCell: UITableViewCell {
         view.isUserInteractionEnabled = true
         view.settings.textColor = .systemBlue
         view.settings.textMargin = 10
-        view.text = "Reviews base on"
-        view.settings.textMargin = 10
+        view.text = "5/123"
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
+        
         view.backgroundColor = .clear
         view.setHeight(height: 70)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleReviewTapped)))
@@ -163,7 +163,6 @@ class TripCell: UITableViewCell {
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
         stackView.spacing = 12
-        stackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleOptionsTapped)))
         return stackView
     }()
     
@@ -219,13 +218,7 @@ class TripCell: UITableViewCell {
         destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
         
     }
-    
-    
-    @objc func handleOptionsTapped(){
-        
-    }
-    
-    
+
     @objc private func handleReviewTapped(){
         guard let trip = trip else { return }
         delegate?.handleDisplayReviews(self, selectedTrip: trip)

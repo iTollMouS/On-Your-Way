@@ -52,7 +52,7 @@ class PeopleReviewHeader: UIView {
         heightAnchor.constraint(equalToConstant: 300).isActive = true
         backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         addSubview(titleLabel)
-        titleLabel.centerX(inView: self, topAnchor: topAnchor, paddingTop: 80)
+        titleLabel.centerX(inView: self, topAnchor: topAnchor, paddingTop: 90)
         addSubview(reviewRate)
         reviewRate.centerX(inView: self, topAnchor: titleLabel.bottomAnchor, paddingTop: 12)
         reviewRate.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 20, paddingRight: 20)

@@ -47,6 +47,7 @@ class TripsTimelineController: UITableViewController {
     
     
     func configureTapBarController(){
+        tabBarController?.tabBar.isHidden = false
         let newTripController = NewTripController()
         newTripController.delegate = self
         newTripController.popupItem.title = "Design your trip"
@@ -210,7 +211,13 @@ extension TripsTimelineController {
 // MARK: -  TripCellDelegate
 extension TripsTimelineController: TripCellDelegate {
     func handleDisplayReviews(_ cell: UITableViewCell, selectedTrip: Trip) {
-        print("DEBUG: option is tapped")
+        
+        UserServices.shared.fetchUser(userId: selectedTrip.userID) { [weak self] user in
+            let peopleReviewsController = PeopleReviewsController()
+            peopleReviewsController.user = user
+            self?.navigationController?.pushViewController(peopleReviewsController, animated: true)
+        }
+        
     }
     
 }
