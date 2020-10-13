@@ -53,6 +53,20 @@ class TripService {
         }
     }
     
+    func fetchMyTrips(userId: String, completion: @escaping([Trip]) -> Void){
+        var trips: [Trip] = []
+        Firestore.firestore().collection("users-trips").document(userId).collection("trips").getDocuments { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            let allTrips = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Trip? in
+                return try? queryDocumentSnapshot.data(as: Trip.self)
+            }
+            for trip in allTrips {  trips.append(trip) }
+            trips.sort(by: { $0.timestamp! > $1.timestamp! })
+            completion(trips)
+        }
+    }
+    
     func deleteMyTrip(trip: Trip, completion: @escaping(Error?) -> Void){
         Firestore.firestore().collection("trips").document(trip.tripID).delete(completion: completion)
     }

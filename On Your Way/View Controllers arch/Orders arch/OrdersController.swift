@@ -45,13 +45,25 @@ class OrdersController: UIViewController {
         return stackView
     }()
     
+    var trips = [Trip]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavBar()
         configureUI()
         configureRefreshController()
+        fetchTrips()
     }
     
+    
+    func fetchTrips() {
+        
+        TripService.shared.fetchMyTrips(userId: User.currentId) { trips in
+            print("DEBUG: trips are \(trips)")
+            self.tableView.reloadData()
+        }
+        
+    }
     func configureRefreshController(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
