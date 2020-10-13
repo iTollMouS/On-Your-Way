@@ -12,9 +12,10 @@ private let reuseIdentifier = "OrderCell"
 
 class OrdersController: UIViewController {
     
-    private lazy var segmentedControl: UISegmentedControl = {
+    let segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["New Orders", "In progress" , "Done"])
         segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(handleOrderSectionChanges), for: .valueChanged)
         return segmentedControl
     }()
     
@@ -22,7 +23,7 @@ class OrdersController: UIViewController {
     let searchController = UISearchController(searchResultsController: nil)
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -45,7 +46,11 @@ class OrdersController: UIViewController {
         return stackView
     }()
     
-    var packages = [Package]()
+    var newPackageOrder = [Package]()
+    var inProcessPackageOrder = [Package]()
+    var donePackageOrder = [Package]()
+    
+    lazy var rowsToDisplay = newPackageOrder
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,10 +60,35 @@ class OrdersController: UIViewController {
         fetchTrips()
     }
     
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        tabBarController?.dismissPopupBar(animated: true, completion: nil)
+    }
+    
+    
+    @objc func handleOrderSectionChanges(){
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0 :
+            rowsToDisplay = newPackageOrder
+        case 1 :
+            rowsToDisplay = inProcessPackageOrder
+        case 2:
+            rowsToDisplay = donePackageOrder
+        default:
+            rowsToDisplay = newPackageOrder
+        }
+        
+        print("DEBUG: \(rowsToDisplay)")
+        
+        self.tableView.reloadData()
+    }
+    
     func fetchTrips() {
         TripService.shared.fetchMyTrips(userId: User.currentId) { packages in
-            self.packages = packages
+            self.newPackageOrder = packages
+            self.rowsToDisplay = packages
             self.tableView.reloadData()
         }
     }
@@ -90,10 +120,6 @@ class OrdersController: UIViewController {
         definesPresentationContext = true
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        tabBarController?.dismissPopupBar(animated: true, completion: nil)
-    }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if refreshController.isRefreshing {
@@ -105,12 +131,12 @@ class OrdersController: UIViewController {
 
 extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return packages.count
+        return rowsToDisplay.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! OrderCell
-        cell.textLabel?.text = packages[indexPath.row].packageID
+        cell.package = rowsToDisplay[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -121,3 +147,4 @@ extension OrdersController: UISearchResultsUpdating {
         print("DEBUG: \(searchController.searchBar.text ?? "" )")
     }
 }
+

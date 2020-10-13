@@ -54,16 +54,17 @@ class TripService {
     }
     
     func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){
-        var trips: [Package] = []
+        var packages: [Package] = []
         Firestore.firestore().collection("users-requests").document(userId).collection("shipping-request").addSnapshotListener { (snapshot, error) in
 
             guard let snapshot = snapshot else {return}
             let allTrips = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
                 return try? queryDocumentSnapshot.data(as: Package.self)
             }
-            for trip in allTrips {  trips.append(trip) }
-            trips.sort(by: { $0.timestamp! > $1.timestamp! })
-            completion(trips)
+            for trip in allTrips {  packages.append(trip) }
+            packages.sort(by: { $0.timestamp! > $1.timestamp! })
+            
+            completion(packages)
         }
     }
     

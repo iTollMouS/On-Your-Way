@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
  
-struct Package: Codable, Equatable {
+struct Package: Codable, Hashable {
     var userID = ""
     var tripID = ""
     var packageType = ""
