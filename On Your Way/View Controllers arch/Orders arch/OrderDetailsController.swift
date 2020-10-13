@@ -15,6 +15,7 @@ class OrderDetailsController: UIViewController {
     private var package: Package
     
     private lazy var headerView = OrderDetailHeader(package: package)
+    private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 200))
 
     
     private lazy var tableView: UITableView = {
@@ -24,7 +25,7 @@ class OrderDetailsController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableHeaderView = headerView
-//        tableView.tableFooterView = footerView
+        tableView.tableFooterView = footerView
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.rowHeight = 60
         return tableView
@@ -58,7 +59,7 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

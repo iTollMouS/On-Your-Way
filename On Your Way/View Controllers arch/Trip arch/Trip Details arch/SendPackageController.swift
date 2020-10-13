@@ -91,7 +91,7 @@ class SendPackageController: UIViewController {
         TripService.shared.sendPackageToTraveler(trip: trip, userId: User.currentId,
                                                  package: package) { error in
             if let error = error {
-                print("DEBUG: error in send package ")
+                print("DEBUG: error in send package \(error.localizedDescription)")
                 return
             }
             self.showAlertMessage("SUCCRSS!!", "Great!")
