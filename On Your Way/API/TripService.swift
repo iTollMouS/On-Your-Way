@@ -46,20 +46,20 @@ class TripService {
     func sendPackageToTraveler(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
         do {
             try Firestore.firestore().collection("users-requests")
-                .document(trip.tripID).collection(trip.userID)
+                .document(trip.userID).collection("shipping-request")
                 .document(package.packageID).setData(from: package, merge: true, completion: completion)
         } catch (let error) {
             print("DEBUG: error while uploading package\(error.localizedDescription)")
         }
     }
     
-    func fetchMyTrips(userId: String, completion: @escaping([Trip]) -> Void){
-        var trips: [Trip] = []
-        Firestore.firestore().collection("users-trips").document(userId).collection("trips").getDocuments { (snapshot, error) in
-            
+    func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){
+        var trips: [Package] = []
+        Firestore.firestore().collection("users-requests").document(userId).collection("shipping-request").addSnapshotListener { (snapshot, error) in
+
             guard let snapshot = snapshot else {return}
-            let allTrips = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Trip? in
-                return try? queryDocumentSnapshot.data(as: Trip.self)
+            let allTrips = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
+                return try? queryDocumentSnapshot.data(as: Package.self)
             }
             for trip in allTrips {  trips.append(trip) }
             trips.sort(by: { $0.timestamp! > $1.timestamp! })

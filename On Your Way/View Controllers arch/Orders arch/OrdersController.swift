@@ -45,7 +45,7 @@ class OrdersController: UIViewController {
         return stackView
     }()
     
-    var trips = [Trip]()
+    var packages = [Package]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,15 +55,14 @@ class OrdersController: UIViewController {
         fetchTrips()
     }
     
-    
+
     func fetchTrips() {
-        
-        TripService.shared.fetchMyTrips(userId: User.currentId) { trips in
-            print("DEBUG: trips are \(trips)")
+        TripService.shared.fetchMyTrips(userId: User.currentId) { packages in
+            self.packages = packages
             self.tableView.reloadData()
         }
-        
     }
+    
     func configureRefreshController(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
@@ -106,11 +105,12 @@ class OrdersController: UIViewController {
 
 extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 50
+        return packages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! OrderCell
+        cell.textLabel?.text = packages[indexPath.row].packageID
         cell.accessoryType = .disclosureIndicator
         return cell
     }
