@@ -39,10 +39,17 @@ class TripDetailsController: UIViewController {
     
     func fetchUser(){
         guard let trip = trip else { return  }
+        
         UserServices.shared.fetchUser(userId: trip.userID) { user in
             self.user = user
             self.headerView.user = user
             self.tableView.reloadData()
+        }
+        
+        if trip.userID == User.currentId {
+            footerView.isHidden = true
+            headerView.submitReviewButton.isHidden = true
+            
         }
         
     }
@@ -130,7 +137,11 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
 extension TripDetailsController: TripDetailsFooterViewDelegate {
     
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
-        print("DEBUG: handle pressed in view controller ")
+        guard let user = user else { return }
+        guard let trip = trip else { return }
+        let sendPackageController = SendPackageController(user: user, trip: trip)
+        let navBar = UINavigationController(rootViewController: sendPackageController)
+        present(navBar, animated: true, completion: nil)
     }
     
     

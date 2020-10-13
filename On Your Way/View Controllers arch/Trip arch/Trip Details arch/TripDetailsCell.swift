@@ -182,11 +182,13 @@ class TripDetailsCell: UITableViewCell {
     func configureSection_2(){
         addSubview(packagesTypes)
         packagesTypes.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        backgroundColor = #colorLiteral(red: 0.1098039216, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
     }
     
     func configureSection_3(){
         addSubview(priceBaseLabel)
         priceBaseLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        backgroundColor = #colorLiteral(red: 0.1098039216, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
     }
     
     required init?(coder: NSCoder) {

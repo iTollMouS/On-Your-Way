@@ -9,8 +9,7 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
  
-
-struct Trip: Codable {
+struct Trip: Codable, Equatable {
     var userID = ""
     var tripID = ""
     var tripDepartureTime = ""

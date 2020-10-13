@@ -21,6 +21,7 @@ struct User: Codable, Equatable{
     var phoneNumber: String?
     var reviewsCount: Double = 0.0
     
+    /// to access to the current user who use the iphone
     static var currentId: String{
         guard let uid = Auth.auth().currentUser?.uid else { return "" }
         return uid

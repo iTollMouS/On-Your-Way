@@ -43,6 +43,16 @@ class TripService {
         }
     }
     
+    func sendPackageToTraveler(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
+        do {
+            try Firestore.firestore().collection("users-requests")
+                .document(trip.tripID).collection(trip.userID)
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+        } catch (let error) {
+            print("DEBUG: error while uploading package\(error.localizedDescription)")
+        }
+    }
+    
     func deleteMyTrip(trip: Trip, completion: @escaping(Error?) -> Void){
         Firestore.firestore().collection("trips").document(trip.tripID).delete(completion: completion)
     }

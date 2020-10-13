@@ -85,6 +85,9 @@
 		83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */; };
 		83D7D41E2534F55E00FA88F0 /* UpdateEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D41D2534F55E00FA88F0 /* UpdateEmailController.swift */; };
 		83D7D4202534F8F900FA88F0 /* emailConfirmation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */; };
+		83D7D4222535913A00FA88F0 /* SendPackageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D4212535913A00FA88F0 /* SendPackageController.swift */; };
+		83D7D42625359DC400FA88F0 /* SendPackageImagesStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D42525359DC400FA88F0 /* SendPackageImagesStackView.swift */; };
+		83D7D4282535A49B00FA88F0 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D4272535A49B00FA88F0 /* Package.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -183,6 +186,9 @@
 		83D7D3F125347CEF00FA88F0 /* TripViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripViewModel.swift; sourceTree = "<group>"; };
 		83D7D41D2534F55E00FA88F0 /* UpdateEmailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateEmailController.swift; sourceTree = "<group>"; };
 		83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emailConfirmation.json; sourceTree = "<group>"; };
+		83D7D4212535913A00FA88F0 /* SendPackageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPackageController.swift; sourceTree = "<group>"; };
+		83D7D42525359DC400FA88F0 /* SendPackageImagesStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendPackageImagesStackView.swift; sourceTree = "<group>"; };
+		83D7D4272535A49B00FA88F0 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		D51A6E7133DD48B1B6FB0540 /* Pods-On Your Way.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.release.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -256,6 +262,7 @@
 			children = (
 				834C98C525312E3900BE8691 /* User.swift */,
 				834C993D25338D6800BE8691 /* Trip.swift */,
+				83D7D4272535A49B00FA88F0 /* Package.swift */,
 				834C993425337C0900BE8691 /* RecentChat.swift */,
 			);
 			path = Model;
@@ -438,6 +445,8 @@
 			isa = PBXGroup;
 			children = (
 				83D7D3E92534720400FA88F0 /* TripDetailsController.swift */,
+				83D7D4212535913A00FA88F0 /* SendPackageController.swift */,
+				83D7D42525359DC400FA88F0 /* SendPackageImagesStackView.swift */,
 				83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */,
 				83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */,
 				83D7D3EC2534720500FA88F0 /* TripDetailsFooterView.swift */,
@@ -621,6 +630,8 @@
 				83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */,
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
 				834C9915253237AC00BE8691 /* OrderCell.swift in Sources */,
+				83D7D4282535A49B00FA88F0 /* Package.swift in Sources */,
+				83D7D4222535913A00FA88F0 /* SendPackageController.swift in Sources */,
 				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
@@ -647,6 +658,7 @@
 				834C993A253384C700BE8691 /* StartChat.swift in Sources */,
 				834C9920253289C200BE8691 /* PushNotificationService.swift in Sources */,
 				834C99222532D7B900BE8691 /* UserServices.swift in Sources */,
+				83D7D42625359DC400FA88F0 /* SendPackageImagesStackView.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
 				834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */,
 				834C98FE253231E000BE8691 /* TableHeaderView.swift in Sources */,
