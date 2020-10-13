@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Firebase
 
 private let reuseIdentifier = "OrderCell"
 
@@ -86,11 +87,14 @@ class OrdersController: UIViewController {
     }
     
     func fetchTrips() {
-        TripService.shared.fetchMyTrips(userId: User.currentId) { packages in
-            self.newPackageOrder = packages
-            self.rowsToDisplay = packages
-            self.tableView.reloadData()
-        }
+        
+        if User.currentUser?.id == nil { return }
+        else {
+            TripService.shared.fetchMyTrips(userId: User.currentId) { packages in
+                self.newPackageOrder = packages
+                self.rowsToDisplay = packages
+                self.tableView.reloadData()}
+           }
     }
     
     func configureRefreshController(){

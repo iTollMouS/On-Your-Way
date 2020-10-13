@@ -184,7 +184,7 @@ class ProfileController: UIViewController {
 extension ProfileController: UpdateEmailControllerDelegate {
     func handleLoggingUserOut() {
         navigationController?.popViewController(animated: true)
-        checkUser()
+        logout()
     }
     
     

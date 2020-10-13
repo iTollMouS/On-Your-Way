@@ -107,7 +107,7 @@ class UpdateEmailController: UIViewController {
         self.showLoader(true, message: "Please wait...")
         AuthServices.shared.updateEmailAndPassword(email: email, password: password) { [weak self] error in
             if let error = error {
-                self?.showBlurView()
+                self?.removeBlurView()
                 self?.showLoader(false)
                 self?.showAlertMessage("Error", error.localizedDescription)
                 return

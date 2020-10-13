@@ -116,6 +116,7 @@ struct AuthServices {
                 }
                 guard var user = User.currentUser else {return}
                 user.email = email
+                user.password = password
                 saveUserLocally(user)
                 userDefaults.synchronize()
                 UserServices.shared.saveUserToFirestore(user)
