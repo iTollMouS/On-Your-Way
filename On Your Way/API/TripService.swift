@@ -27,6 +27,9 @@ class TripService {
         }
     }
     
+    
+    
+    
     func fetchAllTrips(completion: @escaping([Trip]) -> Void) {
         var trips: [Trip] = []
         Firestore.firestore().collection("trips").addSnapshotListener { (snapshot, error) in
@@ -42,6 +45,10 @@ class TripService {
             completion(trips)
         }
     }
+    
+    
+    
+    
     
     func fetchMyRequest(userId: String, completion: @escaping([Package]) -> Void){
         var packages: [Package] = []
