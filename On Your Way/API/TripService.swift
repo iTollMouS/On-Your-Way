@@ -28,6 +28,19 @@ class TripService {
     }
     
     
+    func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void) {
+        do {
+            try  Firestore.firestore().collection("users-requests")
+                .document(userId).collection("shipping-request")
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+            try Firestore.firestore().collection("users-send-packages")
+                .document(package.userID).collection("packages")
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+            
+        } catch (let error){
+            completion(error)
+        }
+    }
     
     
     func fetchAllTrips(completion: @escaping([Trip]) -> Void) {

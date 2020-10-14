@@ -17,4 +17,5 @@ struct Package: Codable {
     var packageImages = [String]()
     var packageID = ""
     var packageStatus = ""
+    var packageStatusTimestamp = ""
 }

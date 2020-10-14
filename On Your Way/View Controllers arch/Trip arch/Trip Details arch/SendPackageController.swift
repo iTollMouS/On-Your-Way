@@ -179,7 +179,8 @@ class SendPackageController: UIViewController {
                               timestamp: Date(),
                               packageImages: packageImageUrls.suffix(6),
                               packageID: packageId,
-                              packageStatus: packageIsPending)
+                              packageStatus: packageIsPending,
+                              packageStatusTimestamp: "")
         TripService.shared.sendPackageToTraveler(trip: trip, userId: User.currentId,
                                                  package: package) { [weak self] error in
             if let error = error {

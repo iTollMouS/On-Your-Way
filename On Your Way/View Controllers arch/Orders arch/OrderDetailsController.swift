@@ -72,6 +72,15 @@ class OrderDetailsController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureDelegates()
+        configurePackageStatus()
+    }
+    
+    fileprivate func configurePackageStatus(){
+        if package.packageStatus == packageIsRejected {
+            footerView.rejectButton.setTitle("Your order will be deleted in \(package.packageStatusTimestamp)", for: .normal)
+            footerView.rejectButton.setImage(nil, for: .normal)
+            footerView.rejectButton.isEnabled = false
+        }
     }
     
     fileprivate func configureDelegates(){
@@ -105,15 +114,24 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension OrderDetailsController: OrderDetailsFooterViewDelegate {
-    func assignPackageStatus(_ sender: UIButton) {
+    func assignPackageStatus(_ sender: UIButton, _ footer: OrderDetailsFooterView) {
         
         switch sender.tag {
         // reject
         case 0:
             let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
-                TripService.shared.rejectPackageOrderWith(userId: User.currentId, packageId: self!.package.packageID) { [weak self] error in
-                    self?.showCustomAlertView()
+                self?.package.packageStatusTimestamp = (Date() + 86400).convertDate(formattedString: .formattedType2)
+                footer.rejectButton.setTitle("Your order will be deleted in \(self?.package.packageStatusTimestamp ?? Date().convertDate(formattedString: .formattedType2))", for: .normal)
+                footer.rejectButton.isEnabled = false
+                self?.package.packageStatus = packageIsRejected
+                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { error in
+                    print("DEBUG:: success updating pachage ")
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 86400) { [unowned self] in
+                    TripService.shared.rejectPackageOrderWith(userId: User.currentId, packageId: self!.package.packageID) { [weak self] error in
+                        self?.showCustomAlertView()
+                    }
                 }
             }))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol OrderDetailsFooterViewDelegate: class {
-    func assignPackageStatus(_ sender: UIButton)
+    func assignPackageStatus(_ sender: UIButton, _ footer: OrderDetailsFooterView)
 }
 
 class OrderDetailsFooterView: UIView {
@@ -27,7 +27,7 @@ class OrderDetailsFooterView: UIView {
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.distribution = .fillEqually
-        stackView.setDimensions(height: 180, width: 200)
+        stackView.setDimensions(height: 180, width: 300)
         return stackView
     }()
     
@@ -41,7 +41,7 @@ class OrderDetailsFooterView: UIView {
     
     
     @objc fileprivate func handleActions(_ sender: UIButton){
-        delegate?.assignPackageStatus(sender)
+        delegate?.assignPackageStatus(sender, self)
     }
     
     func createButton(tagNumber: Int, title: String, backgroundColor: UIColor, colorAlpa: CGFloat, systemName: String  ) -> UIButton {
@@ -56,6 +56,7 @@ class OrderDetailsFooterView: UIView {
         button.addTarget(self, action: #selector(handleActions), for: .touchUpInside)
         button.layer.cornerRadius = 50 / 2
         button.tag = tagNumber
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.clipsToBounds = true
         button.layer.masksToBounds = false
         button.setupShadow(opacity: 0.5, radius: 16, offset: CGSize(width: 0.0, height: 8.0), color: backgroundColor)
