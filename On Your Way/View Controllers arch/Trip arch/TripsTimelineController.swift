@@ -27,12 +27,6 @@ class TripsTimelineController: UITableViewController {
         configureUI()
         configureRefreshController()
         fetchTrips()
-        
-        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
-            let onboardingController = OnboardingController()
-            onboardingController.modalPresentationStyle = .custom
-            self.present(onboardingController, animated: true, completion: nil)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +34,15 @@ class TripsTimelineController: UITableViewController {
         configureTapBarController()
         configureNavBar()
         searchController.searchBar.becomeFirstResponder()
+    }
+    
+    func shouldShowOnboarding(){
+        
+//        if !isAppAlreadyLaunchedOnce() {/* show onboarding in first launch*/}
+        
+        let onboardingController = OnboardingController()
+        onboardingController.modalPresentationStyle = .custom
+        self.present(onboardingController, animated: true, completion: nil)
     }
     
     func fetchTrips(){
@@ -99,15 +102,6 @@ class TripsTimelineController: UITableViewController {
         definesPresentationContext = true
     }
     
-    
-    //    func checkIfUserLoggedIn(){
-    //        if Auth.auth().currentUser?.uid == nil {
-    //            presentLoggingController()
-    //        }  else {
-    //            self.tableView.reloadData()
-    //        }
-    //    }
-    //
     func presentLoggingController(){
         DispatchQueue.main.async { [weak self]  in
             let loginController = LoginController()
