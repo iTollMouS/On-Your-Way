@@ -76,7 +76,7 @@ class OrderCell: UITableViewCell {
     fileprivate func configure(){
         guard let package = package else { return }
         let viewModel = PackageViewModel(package: package)
-        
+
         UserServices.shared.fetchUser(userId: viewModel.packageOwnerId) { [weak self] user in
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self?.packageOwnerImageView.sd_setImage(with: imageUrl)
@@ -101,7 +101,15 @@ struct PackageViewModel {
     let package: Package
     
     
+    var packageStatus : PackageStatus {
+        return package.packageStatus
+    }
+    var packageStatusTimestamp : String {
+        return package.packageStatusTimestamp
+    }
+    
     var packageOwnerId: String {
+        
         return package.userID
     }
     

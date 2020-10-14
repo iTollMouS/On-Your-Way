@@ -25,7 +25,10 @@ public let kLOCATION = "location"
 public let kDATE = "date"
 public let kREADDATE = "date"
 public let tripsCollection = "trips"
-public let packageIsPending = "packageIsPending"
-public let packageIsRejected = "packageIsRejected"
-public let packageIsAccepted = "packageIsAccepted"
-public let packageIsDelivered = "packageIsDelivered"
+
+enum PackageStatus: String, CaseIterable, Codable {
+    case packageIsPending = "package is pending"
+    case packageIsRejected = "package is rejected"
+    case packageIsAccepted = "package is accepted"
+    case packageIsDelivered = "package is delivered"
+}

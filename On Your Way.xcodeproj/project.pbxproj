@@ -434,11 +434,8 @@
 			isa = PBXGroup;
 			children = (
 				834C98802531288D00BE8691 /* OrdersController.swift */,
-				83D7D4292535DC3E00FA88F0 /* OrderDetailsController.swift */,
-				83D7D42F2535EB6200FA88F0 /* OrderDetailsFooterView.swift */,
-				83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */,
-				83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */,
 				834C9914253237AC00BE8691 /* OrderCell.swift */,
+				83B7637925378FB100503A9D /* Order Details arch */,
 			);
 			path = "Orders arch";
 			sourceTree = "<group>";
@@ -480,6 +477,17 @@
 				83B76372253715ED00503A9D /* NotificationCell.swift */,
 			);
 			path = "notification arch";
+			sourceTree = "<group>";
+		};
+		83B7637925378FB100503A9D /* Order Details arch */ = {
+			isa = PBXGroup;
+			children = (
+				83D7D4292535DC3E00FA88F0 /* OrderDetailsController.swift */,
+				83D7D42F2535EB6200FA88F0 /* OrderDetailsFooterView.swift */,
+				83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */,
+				83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */,
+			);
+			path = "Order Details arch";
 			sourceTree = "<group>";
 		};
 		83D7D3E8253471F700FA88F0 /* Trip Details arch */ = {

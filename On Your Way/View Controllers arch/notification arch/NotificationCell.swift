@@ -13,7 +13,7 @@ class NotificationCell: UITableViewCell {
         didSet{configure()}
     }
     
-    private lazy var packageType: UILabel = {
+    private lazy var packageStatusLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .white
@@ -61,13 +61,17 @@ class NotificationCell: UITableViewCell {
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         addSubview(travelerImageView)
         travelerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
+        
         addSubview(timestamp)
         timestamp.anchor(top: topAnchor, right: rightAnchor, paddingTop: 12, paddingRight: 12)
+        
         addSubview(packageImageView)
         packageImageView.centerX(inView: timestamp, topAnchor: timestamp.bottomAnchor, paddingTop: 12)
         packageImageView.anchor(right : rightAnchor, paddingRight: 40)
-        addSubview(packageType)
-        packageType.anchor(top: topAnchor, left: travelerImageView.rightAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
+        
+        
+        addSubview(packageStatusLabel)
+        packageStatusLabel.anchor(top: topAnchor, left: travelerImageView.rightAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
                            paddingTop: 20, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
         
     }
@@ -80,9 +84,21 @@ class NotificationCell: UITableViewCell {
             print("DEBUG: traveler is  \(user.username)")
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self.travelerImageView.sd_setImage(with: imageUrl)
-//            self.travelerName.text = user.username
+            self.travelerName.text = user.username
         }
-    
+        timestamp.text = viewModel.timestamp
+        
+        switch viewModel.packageStatus {
+      
+        case .packageIsPending:
+            backgroundColor = .systemYellow
+        case .packageIsRejected:
+            backgroundColor = .systemRed
+        case .packageIsAccepted:
+            backgroundColor = .systemGreen
+        case .packageIsDelivered:
+            print("")
+        }
     }
     
     

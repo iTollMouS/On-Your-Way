@@ -22,6 +22,8 @@ class OrderDetailsController: UIViewController {
     private lazy var headerView = OrderDetailHeader(package: package)
     private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
     
+    private var viewModel: PackageStatus?
+    
     private lazy var customAlertView = UIView()
     private lazy var dismissalLabel: UILabel = {
         let label = UILabel()
@@ -72,21 +74,14 @@ class OrderDetailsController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureDelegates()
-        configurePackageStatus()
-    }
-    
-    fileprivate func configurePackageStatus(){
-        if package.packageStatus == packageIsRejected {
-            footerView.rejectButton.setTitle("Your order will be deleted in \(package.packageStatusTimestamp)", for: .normal)
-            footerView.rejectButton.setImage(nil, for: .normal)
-            footerView.rejectButton.isEnabled = false
-        }
+        
     }
     
     fileprivate func configureDelegates(){
         tableView.delegate = self
         tableView.dataSource = self
         footerView.delegate = self
+        footerView.package = package
         
     }
     
@@ -124,7 +119,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
                 self?.package.packageStatusTimestamp = (Date() + 86400).convertDate(formattedString: .formattedType2)
                 footer.rejectButton.setTitle("Your order will be deleted in \(self?.package.packageStatusTimestamp ?? Date().convertDate(formattedString: .formattedType2))", for: .normal)
                 footer.rejectButton.isEnabled = false
-                self?.package.packageStatus = packageIsRejected
+                self?.package.packageStatus = .packageIsRejected
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { error in
                     print("DEBUG:: success updating pachage ")
                 }

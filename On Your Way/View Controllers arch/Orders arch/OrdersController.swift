@@ -52,6 +52,8 @@ class OrdersController: UIViewController {
     var donePackageOrder = [Package]()
     var packagesDictionary: [String: Package] = [:]
     
+    private var viewModel: PackageStatus?
+    
     lazy var rowsToDisplay = newPackageOrder
     
     override func viewDidLoad() {
@@ -88,6 +90,7 @@ class OrdersController: UIViewController {
     }
     
     func fetchTrips() {
+//        guard let viewModel = viewModel else { return }
         if User.currentUser?.id == nil { return }
         else {
             TripService.shared.fetchMyTrips(userId: User.currentId) { packages in
@@ -100,6 +103,7 @@ class OrdersController: UIViewController {
                 self.rowsToDisplay = self.newPackageOrder
                 self.tableView.reloadData()}
            }
+        
     }
     
     func configureRefreshController(){

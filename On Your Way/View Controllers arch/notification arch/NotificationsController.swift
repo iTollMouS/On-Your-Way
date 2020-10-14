@@ -12,6 +12,7 @@ private let reuseIdentifier = "NotificationCell"
 class NotificationsController: UITableViewController {
     
     let refreshController = UIRefreshControl()
+    var packagesDictionary = [String : Package]()
     var packages = [Package]()
     
     override func viewDidLoad() {
@@ -26,12 +27,18 @@ class NotificationsController: UITableViewController {
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
                                                                 [.foregroundColor: UIColor.white])
-        tableView.refreshControl = refreshControl
+        tableView.refreshControl = refreshController
     }
     
     fileprivate func fetchMyRequest(){
-        TripService.shared.fetchMyRequest(userId: User.currentId) {
-            self.packages = $0
+        TripService.shared.fetchMyRequest(userId: User.currentId) { packages in
+            
+            packages.forEach { package in
+                let tempPackage = package
+                self.packagesDictionary[tempPackage.packageID] = package
+            }
+
+            self.packages = Array(self.packagesDictionary.values)
             self.tableView.reloadData()
         }
     }

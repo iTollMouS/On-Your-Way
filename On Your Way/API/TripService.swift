@@ -69,7 +69,7 @@ class TripService {
     
     func fetchMyRequest(userId: String, completion: @escaping([Package]) -> Void){
         var packages: [Package] = []
-        Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").getDocuments { (snapshot, error) in
+        Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").addSnapshotListener { (snapshot, error) in
             
             guard let snapshot = snapshot else {return}
             let allPackages = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
