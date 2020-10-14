@@ -60,7 +60,7 @@ class NotificationCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         addSubview(travelerImageView)
-        travelerImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 14)
+        travelerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
         addSubview(timestamp)
         timestamp.anchor(top: topAnchor, right: rightAnchor, paddingTop: 12, paddingRight: 12)
         addSubview(packageImageView)
@@ -80,6 +80,7 @@ class NotificationCell: UITableViewCell {
             print("DEBUG: traveler is  \(user.username)")
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self.travelerImageView.sd_setImage(with: imageUrl)
+//            self.travelerName.text = user.username
         }
     
     }

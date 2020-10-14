@@ -21,6 +21,7 @@ class NotificationsController: UITableViewController {
         fetchMyRequest()
         configureRefreshController()
     }
+    
     func configureRefreshController(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
@@ -31,7 +32,6 @@ class NotificationsController: UITableViewController {
     fileprivate func fetchMyRequest(){
         TripService.shared.fetchMyRequest(userId: User.currentId) {
             self.packages = $0
-            
             self.tableView.reloadData()
         }
     }

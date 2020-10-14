@@ -58,11 +58,16 @@ class TripService {
         
     }
     
+    
+    func rejectPackageOrderWith(userId: String, packageId: String, completion: @escaping(Error?) -> Void){
+        Firestore.firestore().collection("users-requests").document(userId).collection("shipping-request").document(packageId).delete(completion: completion)
+    }
+    
     func fetchTrip(tripId: String, completion: @escaping(User) -> Void){
-        Firestore.firestore().collection("trips").document(tripId).getDocument { [weak self] (snapshot, error) in
+        Firestore.firestore().collection("trips").document(tripId).getDocument { (snapshot, error) in
             guard let snapshot = snapshot else {return}
             guard let trip = try? snapshot.data(as: Trip.self) else {return}
-            UserServices.shared.fetchUser(userId: trip.userID) { [weak self] user in
+            UserServices.shared.fetchUser(userId: trip.userID) {  user in
                 completion(user)
             }
         }

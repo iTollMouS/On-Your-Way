@@ -56,7 +56,7 @@ class TripDetailsHeaderView: UIView {
         let stackView = UIStackView(arrangedSubviews: [fullnameLabel,
                                                        phoneNumberLabel,
                                                        ratingView,
-                                                       submitReviewButton])
+                                                       startChatButton])
         stackView.axis = .vertical
         stackView.spacing = 6
         stackView.distribution = .fill
@@ -83,7 +83,7 @@ class TripDetailsHeaderView: UIView {
         return view
     }()
     
-     lazy var submitReviewButton: UIButton = {
+     lazy var startChatButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4745098039, blue: 0.4431372549, alpha: 1).withAlphaComponent(0.4)
         button.tintColor = #colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 0.9411764706, alpha: 1)

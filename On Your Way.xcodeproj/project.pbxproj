@@ -83,6 +83,8 @@
 		83B7635D2536DF9A00503A9D /* discount_icon.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635C2536DF9A00503A9D /* discount_icon.json */; };
 		83B763712537150300503A9D /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B763702537150300503A9D /* NotificationsController.swift */; };
 		83B76373253715ED00503A9D /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B76372253715ED00503A9D /* NotificationCell.swift */; };
+		83B763762537401D00503A9D /* success_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763752537401D00503A9D /* success_animation.json */; };
+		83B763782537409800503A9D /* failed.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763772537409800503A9D /* failed.json */; };
 		83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3E92534720400FA88F0 /* TripDetailsController.swift */; };
 		83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */; };
 		83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */; };
@@ -193,6 +195,8 @@
 		83B7635C2536DF9A00503A9D /* discount_icon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discount_icon.json; sourceTree = "<group>"; };
 		83B763702537150300503A9D /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		83B76372253715ED00503A9D /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		83B763752537401D00503A9D /* success_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = success_animation.json; sourceTree = "<group>"; };
+		83B763772537409800503A9D /* failed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = failed.json; sourceTree = "<group>"; };
 		83D7D3E92534720400FA88F0 /* TripDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsController.swift; sourceTree = "<group>"; };
 		83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsCell.swift; sourceTree = "<group>"; };
 		83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsHeaderView.swift; sourceTree = "<group>"; };
@@ -325,7 +329,9 @@
 				834C98AD25312C5700BE8691 /* chat.json */,
 				834C98A025312C5700BE8691 /* cleanPhones.json */,
 				83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */,
+				83B763772537409800503A9D /* failed.json */,
 				834C98A725312C5700BE8691 /* covid_19_protect.json */,
+				83B763752537401D00503A9D /* success_animation.json */,
 				83B7635C2536DF9A00503A9D /* discount_icon.json */,
 				83B7635A2536DEA900503A9D /* chat_messenger.json */,
 				834C98AB25312C5700BE8691 /* delivery_address_green.json */,
@@ -564,10 +570,12 @@
 				834C98B725312C5700BE8691 /* width_measure_tape.json in Resources */,
 				834C98B425312C5700BE8691 /* cleanPhones.json in Resources */,
 				834C98B125312C5700BE8691 /* height_measure_tape.json in Resources */,
+				83B763782537409800503A9D /* failed.json in Resources */,
 				834C982825311CCE00BE8691 /* LaunchScreen.storyboard in Resources */,
 				834C987025311EAD00BE8691 /* GoogleService-Info.plist in Resources */,
 				834C98BB25312C5700BE8691 /* covid_19_protect.json in Resources */,
 				834C98B525312C5700BE8691 /* 34548-5-estrellas.json in Resources */,
+				83B763762537401D00503A9D /* success_animation.json in Resources */,
 				83B763592536DB9100503A9D /* bell.json in Resources */,
 				83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */,
 				834C98B025312C5700BE8691 /* isTypingIndicator.json in Resources */,

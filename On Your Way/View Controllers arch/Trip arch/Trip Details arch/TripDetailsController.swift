@@ -57,7 +57,7 @@ class TripDetailsController: UIViewController {
         
         if trip.userID == User.currentId {
             footerView.isHidden = true
-            headerView.submitReviewButton.isHidden = true
+            headerView.startChatButton.isHidden = true
             
         }
         

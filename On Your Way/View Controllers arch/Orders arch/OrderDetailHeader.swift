@@ -23,6 +23,7 @@ class OrderDetailHeader: UIView {
         collectionView.isPagingEnabled = true
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         collectionView.showsHorizontalScrollIndicator = true
         collectionView.register(OrderDetailHeaderCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         return collectionView
@@ -33,7 +34,8 @@ class OrderDetailHeader: UIView {
         self.package = package
         super.init(frame: .zero)
         addSubview(collectionView)
-        collectionView.fillSuperview()
+        collectionView.fillSuperview(padding: UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0))
+        backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         
     }
     

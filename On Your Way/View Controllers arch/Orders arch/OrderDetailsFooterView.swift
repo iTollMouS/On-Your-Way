@@ -8,50 +8,49 @@
 import UIKit
 
 protocol OrderDetailsFooterViewDelegate: class {
-    func handleLogout(view: OrderDetailsFooterView)
+    func assignPackageStatus(_ sender: UIButton)
 }
 
 class OrderDetailsFooterView: UIView {
     
     weak var delegate: OrderDetailsFooterViewDelegate?
     
-    lazy var rejectButton = createButton(tagNumber: 0, title: "Reject", backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6)
-    lazy var acceptButton = createButton(tagNumber: 1, title: "Accept", backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6)
+    lazy var rejectButton = createButton(tagNumber: 0, title: "Reject", backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "xmark.circle.fill")
+    lazy var acceptButton = createButton(tagNumber: 1, title: "Accept", backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
+    lazy var startChatButton = createButton(tagNumber: 2, title: "Chat", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
+
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [acceptButton,
+                                                       startChatButton,
                                                        rejectButton])
         stackView.axis = .vertical
-        stackView.spacing = 30
+        stackView.spacing = 20
         stackView.distribution = .fillEqually
+        stackView.setDimensions(height: 180, width: 200)
         return stackView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         addSubview(stackView)
-        stackView.anchor(left: leftAnchor, right: rightAnchor,
-                         paddingLeft: 40, paddingRight: 40)
-        stackView.heightAnchor.constraint(equalToConstant: CGFloat(stackView.subviews.count * 80)).isActive = true
-        stackView.centerY(inView: self)
+        stackView.centerInSuperview()
+      
     }
     
     
     @objc fileprivate func handleActions(_ sender: UIButton){
-        switch sender.tag {
-        case 0:
-            print("DEBUG: tag 000")
-        case 1:
-            print("DEBUG: tag 111")
-        default: break
-        }
-        
+        delegate?.assignPackageStatus(sender)
     }
     
-    func createButton(tagNumber: Int, title: String, backgroundColor: UIColor, colorAlpa: CGFloat ) -> UIButton {
+    func createButton(tagNumber: Int, title: String, backgroundColor: UIColor, colorAlpa: CGFloat, systemName: String  ) -> UIButton {
         let button = UIButton(type: .system)
+        button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.setTitleColor(.white, for: .normal)
-        button.setTitle("\(title) order", for: .normal)
+        button.tintColor = .white
+        button.setTitle("\(title) order ", for: .normal)
+        button.setImage(UIImage(systemName: systemName), for: .normal)
         button.backgroundColor = backgroundColor.withAlphaComponent(alpha)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(handleActions), for: .touchUpInside)
