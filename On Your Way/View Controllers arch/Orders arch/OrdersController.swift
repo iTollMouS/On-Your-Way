@@ -50,6 +50,7 @@ class OrdersController: UIViewController {
     var newPackageOrder = [Package]()
     var inProcessPackageOrder = [Package]()
     var donePackageOrder = [Package]()
+    var packagesDictionary: [String: Package] = [:]
     
     lazy var rowsToDisplay = newPackageOrder
     
@@ -87,12 +88,16 @@ class OrdersController: UIViewController {
     }
     
     func fetchTrips() {
-        
         if User.currentUser?.id == nil { return }
         else {
             TripService.shared.fetchMyTrips(userId: User.currentId) { packages in
-                self.newPackageOrder = packages
-                self.rowsToDisplay = packages
+                packages.forEach { package in
+                    let tempPackage = package
+                    self.packagesDictionary[tempPackage.packageID] = package
+                }
+                self.newPackageOrder = Array(self.packagesDictionary.values)
+                self.newPackageOrder.sort(by: { $0.timestamp! > $1.timestamp! })
+                self.rowsToDisplay = self.newPackageOrder
                 self.tableView.reloadData()}
            }
     }

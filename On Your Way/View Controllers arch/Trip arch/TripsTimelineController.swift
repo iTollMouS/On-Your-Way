@@ -18,7 +18,6 @@ class TripsTimelineController: UITableViewController {
     let refreshController = UIRefreshControl()
     
     var trips: [Trip] = []
-    var tripsDictionary: [String : Trip] = [:]
     var filteredTrips: [Trip] = []
     
     
@@ -47,15 +46,9 @@ class TripsTimelineController: UITableViewController {
     }
     
     func fetchTrips(){
-        TripService.shared.fetchAllTrips {  trips in
-            
-            trips.forEach { trip in
-                let tempTrip = trip
-                self.tripsDictionary[tempTrip.tripID] = trip
-            }
-            self.trips = Array(self.tripsDictionary.values)
-            self.tableView.reloadData()
-            
+        TripService.shared.fetchAllTrips { [weak self] in
+            self?.trips = $0
+            self?.tableView.reloadData()
         }
     }
     

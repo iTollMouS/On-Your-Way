@@ -31,18 +31,25 @@ class TripService {
     
     
     func fetchAllTrips(completion: @escaping([Trip]) -> Void) {
-        var trips: [Trip] = []
+        var tripsDictionary: [String: Trip] = [:]
+        var trips = [Trip]()
         Firestore.firestore().collection("trips").addSnapshotListener { (snapshot, error) in
             
             guard let snapshot = snapshot else {return}
             
-            let allTrips = snapshot.documentChanges.compactMap {(queryDocumentSnapshot) -> Trip? in
+            trips = snapshot.documentChanges.compactMap {(queryDocumentSnapshot) -> Trip? in
                 
                 return try? queryDocumentSnapshot.document.data(as: Trip.self)
             }
-            for trip in allTrips {  trips.append(trip) }
+            
+            trips.forEach { trip in
+                let tempTrip = trip
+                tripsDictionary[tempTrip.tripID] = trip
+            }
+            trips = Array(tripsDictionary.values)
             trips.sort(by: { $0.timestamp! > $1.timestamp! })
             completion(trips)
+            
         }
     }
     
