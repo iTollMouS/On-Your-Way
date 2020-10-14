@@ -22,14 +22,19 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()
-        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
+        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car")!,
                                                                   rootViewController: tripsTimelineController,
                                                                   tabBarItemTitle: "Travelers")
         
         let ordersController = OrdersController()
-        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
+        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!,
                                                            rootViewController: ordersController,
                                                            tabBarItemTitle: "Orders")
+        
+        let notificationsController = NotificationsController()
+        let notificationsControllerNavBar = templateNavController(image: UIImage(systemName: "bell")!,
+                                                                  rootViewController: notificationsController,
+                                                                  tabBarItemTitle: "Notifications")
         
         let recentController = RecentController()
         let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
@@ -42,12 +47,12 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
                                                             rootViewController: profileController,
                                                             tabBarItemTitle: "Profile")
         
-        viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar, recentControllerNavBar, profileControllerNavBar]
+        viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar,notificationsControllerNavBar ,recentControllerNavBar, profileControllerNavBar]
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.firstIndex(of: viewController)
-        if index == 2 {
+        if index == 3 {
             let recentController = RecentController()
             let navController = UINavigationController(rootViewController: recentController)
             navController.modalPresentationStyle = .fullScreen

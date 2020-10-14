@@ -127,6 +127,7 @@ class OrdersController: UIViewController {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if refreshController.isRefreshing {
+            fetchTrips()
             self.refreshController.endRefreshing()
         }
     }

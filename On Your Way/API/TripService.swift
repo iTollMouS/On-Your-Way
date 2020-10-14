@@ -43,6 +43,32 @@ class TripService {
         }
     }
     
+    func fetchMyRequest(userId: String, completion: @escaping([Package]) -> Void){
+        var packages: [Package] = []
+        Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").getDocuments { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            let allPackages = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
+                return try? queryDocumentSnapshot.data(as: Package.self)
+            }
+            for trip in allPackages {  packages.append(trip) }
+            packages.sort(by: { $0.timestamp! > $1.timestamp! })
+            completion(packages)
+        }
+        
+    }
+    
+    func fetchTrip(tripId: String, completion: @escaping(User) -> Void){
+        Firestore.firestore().collection("trips").document(tripId).getDocument { [weak self] (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            guard let trip = try? snapshot.data(as: Trip.self) else {return}
+            UserServices.shared.fetchUser(userId: trip.userID) { [weak self] user in
+                completion(user)
+            }
+        }
+        
+    }
+    
     func sendPackageToTraveler(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
         do {
             try Firestore.firestore().collection("users-requests")
@@ -60,7 +86,7 @@ class TripService {
     func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){
         var packages: [Package] = []
         Firestore.firestore().collection("users-requests").document(userId).collection("shipping-request").addSnapshotListener { (snapshot, error) in
-
+            
             guard let snapshot = snapshot else {return}
             let allTrips = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
                 return try? queryDocumentSnapshot.data(as: Package.self)
