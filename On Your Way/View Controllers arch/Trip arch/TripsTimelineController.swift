@@ -172,12 +172,13 @@ extension TripsTimelineController {
             TripService.shared.deleteMyTrip(trip: trip) { error in
                 if let error = error {
                     self.showAlertMessage("Error", "error with \(error.localizedDescription)")
+                    return
                 }
-                return
+                self.fetchTrips()
+                self.tableView.reloadData()
             }
-            self.fetchTrips()
-            self.tableView.reloadData()
         }
+        
         action.image = UIImage(systemName: "trash.circle.fill")
         action.backgroundColor = .systemRed
         return action

@@ -41,7 +41,7 @@ class TripService {
                 
                 return try? queryDocumentSnapshot.document.data(as: Trip.self)
             }
-            
+
             trips.forEach { trip in
                 let tempTrip = trip
                 tripsDictionary[tempTrip.tripID] = trip
@@ -52,9 +52,6 @@ class TripService {
             
         }
     }
-    
-    
-    
     
     
     func fetchMyRequest(userId: String, completion: @escaping([Package]) -> Void){
