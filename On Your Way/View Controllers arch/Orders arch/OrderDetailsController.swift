@@ -17,12 +17,24 @@ class OrderDetailsController: UIViewController {
     private var package: Package
     
     
-//    failed
+    //    failed
     
     private lazy var headerView = OrderDetailHeader(package: package)
     private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
     
     private lazy var customAlertView = UIView()
+    private lazy var dismissalLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Okay"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.textColor = .white
+        label.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        label.clipsToBounds = true
+        label.setDimensions(height: 50, width: 200)
+        label.layer.cornerRadius = 50 / 2
+        return label
+    }()
     var attributes = EKAttributes.bottomNote
     
     private lazy var tableView: UITableView = {
@@ -36,10 +48,12 @@ class OrderDetailsController: UIViewController {
         return tableView
     }()
     
-    private lazy var animationView : AnimationView = {
+    private lazy var animationView: AnimationView = {
         let animationView = AnimationView()
-        animationView.setDimensions(height: 100, width: 100)
+        animationView.setDimensions(height: 200, width: 200)
         animationView.clipsToBounds = true
+        animationView.backgroundColor = .clear
+        animationView.contentMode = .scaleAspectFill
         animationView.animation = Animation.named("success_animation")
         return animationView
     }()
@@ -96,16 +110,15 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         switch sender.tag {
         // reject
         case 0:
-            showCustomAlertView()
-        //            let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
-        //            alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
-        //                TripService.shared.rejectPackageOrderWith(userId: User.currentId, packageId: self!.package.packageID) { [weak self] error in
-        //                    self?.showCustomAlertView()
-        //                }
-        //            }))
-        //            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
-        //            present(alert, animated: true, completion: nil)
-        
+            let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
+                TripService.shared.rejectPackageOrderWith(userId: User.currentId, packageId: self!.package.packageID) { [weak self] error in
+                    self?.showCustomAlertView()
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+            
         //accept
         case 1:
             print("")
@@ -129,6 +142,7 @@ extension OrderDetailsController {
         view.isUserInteractionEnabled = false
         customAlertView.layer.cornerRadius = 50
         customAlertView.clipsToBounds = true
+        customAlertView.backgroundColor = .clear
         customAlertView.setDimensions(height: 300, width: view.frame.width - 50)
         attributes.screenBackground = .visualEffect(style: .dark)
         attributes.positionConstraints.safeArea = .overridden
@@ -149,12 +163,17 @@ extension OrderDetailsController {
             self?.navigationController?.popViewController(animated: true)
         }
         
-        attributes.entryBackground = .visualEffect(style: .dark)
         SwiftEntryKit.display(entry: customAlertView, using: attributes)
     }
     
+    
     func configureCustomAlertViewUI(){
         customAlertView.addSubview(animationView)
-        animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor)
+        customAlertView.bringSubviewToFront(animationView)
+        animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
+        animationView.play()
+        animationView.loopMode = .loop
+        customAlertView.addSubview(dismissalLabel)
+        dismissalLabel.centerX(inView: animationView, topAnchor: animationView.bottomAnchor)
     }
 }
