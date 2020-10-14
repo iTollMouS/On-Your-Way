@@ -28,7 +28,6 @@ class SafetyCell: UITableViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "Test 1 2 3 "
         label.font = .boldSystemFont(ofSize: 14)
         label.numberOfLines = 0
         label.textColor = .lightGray
@@ -40,7 +39,6 @@ class SafetyCell: UITableViewCell {
     private lazy var detailsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "Test 1 2 3 "
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 0
         label.textColor = .gray
@@ -86,6 +84,7 @@ class SafetyCell: UITableViewCell {
 // MARK: - SafetyCellViewModel
 
 enum SafetyCellViewModel: Int, CaseIterable {
+    
     case socialDistancing
     case washHands
     case handSanitizer
