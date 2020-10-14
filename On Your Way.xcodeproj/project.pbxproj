@@ -79,6 +79,8 @@
 		834C99432533A92800BE8691 /* TripService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99422533A92800BE8691 /* TripService.swift */; };
 		83B763552536DA7E00503A9D /* cachAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763542536DA7E00503A9D /* cachAnimation.json */; };
 		83B763592536DB9100503A9D /* bell.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763582536DB9100503A9D /* bell.json */; };
+		83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635A2536DEA900503A9D /* chat_messenger.json */; };
+		83B7635D2536DF9A00503A9D /* discount_icon.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635C2536DF9A00503A9D /* discount_icon.json */; };
 		83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3E92534720400FA88F0 /* TripDetailsController.swift */; };
 		83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */; };
 		83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */; };
@@ -185,6 +187,8 @@
 		834C99422533A92800BE8691 /* TripService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripService.swift; sourceTree = "<group>"; };
 		83B763542536DA7E00503A9D /* cachAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cachAnimation.json; sourceTree = "<group>"; };
 		83B763582536DB9100503A9D /* bell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bell.json; sourceTree = "<group>"; };
+		83B7635A2536DEA900503A9D /* chat_messenger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chat_messenger.json; sourceTree = "<group>"; };
+		83B7635C2536DF9A00503A9D /* discount_icon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discount_icon.json; sourceTree = "<group>"; };
 		83D7D3E92534720400FA88F0 /* TripDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsController.swift; sourceTree = "<group>"; };
 		83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsCell.swift; sourceTree = "<group>"; };
 		83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsHeaderView.swift; sourceTree = "<group>"; };
@@ -317,6 +321,8 @@
 				834C98A025312C5700BE8691 /* cleanPhones.json */,
 				83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */,
 				834C98A725312C5700BE8691 /* covid_19_protect.json */,
+				83B7635C2536DF9A00503A9D /* discount_icon.json */,
+				83B7635A2536DEA900503A9D /* chat_messenger.json */,
 				834C98AB25312C5700BE8691 /* delivery_address_green.json */,
 				83B763582536DB9100503A9D /* bell.json */,
 				83B763542536DA7E00503A9D /* cachAnimation.json */,
@@ -549,6 +555,7 @@
 				834C98BB25312C5700BE8691 /* covid_19_protect.json in Resources */,
 				834C98B525312C5700BE8691 /* 34548-5-estrellas.json in Resources */,
 				83B763592536DB9100503A9D /* bell.json in Resources */,
+				83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */,
 				834C98B025312C5700BE8691 /* isTypingIndicator.json in Resources */,
 				83B763552536DA7E00503A9D /* cachAnimation.json in Resources */,
 				834C98C025312C5700BE8691 /* hand_sanitizer2.json in Resources */,
@@ -558,6 +565,7 @@
 				834C98C125312C5700BE8691 /* chat.json in Resources */,
 				834C98B225312C5700BE8691 /* social_distancing.json in Resources */,
 				834C98C325312C5700BE8691 /* wash_your_hands_regularly.json in Resources */,
+				83B7635D2536DF9A00503A9D /* discount_icon.json in Resources */,
 				834C98BE25312C5700BE8691 /* packageDelivery.json in Resources */,
 				834C98BF25312C5700BE8691 /* delivery_address_green.json in Resources */,
 				834C98B825312C5700BE8691 /* sendingemail.json in Resources */,

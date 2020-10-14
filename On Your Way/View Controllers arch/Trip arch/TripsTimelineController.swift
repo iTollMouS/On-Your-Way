@@ -26,8 +26,13 @@ class TripsTimelineController: UITableViewController {
         super.viewDidLoad()
         configureUI()
         configureRefreshController()
-        //        checkIfUserLoggedIn()
         fetchTrips()
+        
+        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
+            let onboardingController = OnboardingController()
+            onboardingController.modalPresentationStyle = .custom
+            self.present(onboardingController, animated: true, completion: nil)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

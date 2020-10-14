@@ -10,21 +10,21 @@ import UIKit
 
 enum OnboardingViewModel: Int, CaseIterable {
     
-    case socialDistancing
-    case washHands
-    case handSanitizer
-    case wearMask
-    case cleanPhones
+    case cashOnDelivery
+    case notifications
+    case covidProtections
+    case chatFeature
+    case discountPolicy
     case stayHome
     case packageDelivery
     
     var titleLabel: String {
         switch self {
-        case .socialDistancing: return "Keep 2m"
-        case .washHands: return "wash hands"
-        case .handSanitizer: return "Use hands sanitizer"
-        case .wearMask: return "wear mask"
-        case .cleanPhones: return "Clean Phones"
+        case .cashOnDelivery: return "Keep 2m"
+        case .notifications: return "wash hands"
+        case .covidProtections: return "Use hands sanitizer"
+        case .chatFeature: return "wear mask"
+        case .discountPolicy: return "Clean Phones"
         case .stayHome: return "Stay Home"
         case .packageDelivery: return "Wipe your packages"
         }
@@ -32,23 +32,23 @@ enum OnboardingViewModel: Int, CaseIterable {
     
     var detailsLabel: String {
         switch self {
-        case .socialDistancing: return "Keep 2m away from your closes person"
-        case .washHands: return "wash your hands regularly"
-        case .handSanitizer: return "Use good hand sanitizer before handling your package"
-        case .wearMask: return "Always wear a mask before going outside"
-        case .cleanPhones: return "Please clean your phone when someone uses it"
-        case .stayHome: return "Save yourself and other by spending your \ntime at home"
+        case .cashOnDelivery: return "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown"
+        case .notifications: return "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the u"
+        case .covidProtections: return "Use good hand sanitizer before handling your package"
+        case .chatFeature: return "Always wear a mask before going outside"
+        case .discountPolicy: return "Please clean your phone when someone uses it"
+        case .stayHome: return "it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through t"
         case .packageDelivery: return "Please wipe packages before receiving and/or handling it"
         }
     }
     
     var JSONStringName: String {
         switch self {
-        case .socialDistancing: return "cachAnimation"
-        case .washHands: return "bell"
-        case .handSanitizer: return "hand_sanitizer2"
-        case .wearMask: return "wearMask"
-        case .cleanPhones: return "cleanPhones"
+        case .cashOnDelivery: return "cachAnimation"
+        case .notifications: return "bell"
+        case .covidProtections: return "covid_19_protect"
+        case .chatFeature: return "chat_messenger"
+        case .discountPolicy: return "discount_icon"
         case .stayHome: return "stay_home"
         case .packageDelivery: return "packageDelivery"
         }
@@ -56,13 +56,13 @@ enum OnboardingViewModel: Int, CaseIterable {
     
     var animationViewDimension: (CGFloat, CGFloat) {
         switch self {
-        case .socialDistancing: return (300, 300)
-        case .washHands: return (250, 250)
-        case .handSanitizer: return (300, 300)
-        case .wearMask: return (300, 300)
-        case .cleanPhones: return (300, 300)
-        case .stayHome: return (300, 300)
-        case .packageDelivery: return (300, 300)
+        case .cashOnDelivery: return (200, 300)
+        case .notifications: return (200, 200)
+        case .covidProtections: return (200, 300)
+        case .chatFeature: return (200, 200)
+        case .discountPolicy: return (200, 300)
+        case .stayHome: return (200, 300)
+        case .packageDelivery: return (200, 300)
         }
     }
     
