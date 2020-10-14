@@ -155,6 +155,7 @@ extension OnboardingController:  UICollectionViewDelegateFlowLayout, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! OnboardingCell
         guard let viewModel = OnboardingViewModel(rawValue: indexPath.row) else { return cell }
+        print("DEBUG: section \(indexPath.section) \(indexPath.row) ")
         cell.viewModel = viewModel
         return cell
     }
