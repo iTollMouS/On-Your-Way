@@ -46,4 +46,40 @@ class UserServices {
             }
         }
     }
+    
+    func fetchAllUsers(completion: @escaping (_ allUsers: [User]) -> Void) {
+        Firestore.firestore().collection("users").getDocuments { (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            let users = snapshot.documents.compactMap { (queryDocumentSnapshot) -> User? in
+                return try? queryDocumentSnapshot.data(as: User.self)
+            }
+            completion(users)
+        }
+    }
+    
+    func downloadUsersFromFirebase(withIds: [String], completion: @escaping (_ allUsers: [User]) -> Void) {
+        
+        var count = 0
+        var usersArray: [User] = []
+        
+        for userId in withIds {
+            
+            Firestore.firestore().collection("users").document(userId).getDocument { (querySnapshot, error) in
+                
+                guard let document = querySnapshot else {
+                    print("no document for user")
+                    return
+                }
+                
+                let user = try? document.data(as: User.self)
+                
+                usersArray.append(user!)
+                count += 1
+                
+                if count == withIds.count {
+                    completion(usersArray)
+                }
+            }
+        }
+    }
 }

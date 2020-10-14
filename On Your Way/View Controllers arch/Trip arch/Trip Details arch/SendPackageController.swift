@@ -184,8 +184,10 @@ class SendPackageController: UIViewController {
             if let error = error {
                 self?.removeBlurView()
                 self?.showLoader(false)
+                self?.showAlertMessage("Error", error.localizedDescription)
                 return
             }
+            
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] timer in
                 self?.removeBlurView()
                 self?.showLoader(false)

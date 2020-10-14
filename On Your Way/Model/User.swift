@@ -51,6 +51,7 @@ func saveUserLocally(_ user: User) {
     do {
         let data = try encoder.encode(user)
         UserDefaults.standard.set(data, forKey: kCURRENTUSER)
+        userDefaults.synchronize()
     } catch (let error ) {
         print("DEBUG: error while daving user \(error.localizedDescription)")
     }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public let cloudMessagingKey = "AAAAUwmiLvA:APA91bHzWTAwuNV-F0zBcCygN-m7CPWIV1VrMV2hoUHX0boWHZpbOy-AulOoQ0_JBZoI8QxUgVBuDgyvLy8W2a8iG-gtAoAh70Nv66bBoWwS6hCFQmBAz2hM-85neX9pmNsI8WsTHOzW"
+public let kSERVERKEY = "AAAAUwmiLvA:APA91bHzWTAwuNV-F0zBcCygN-m7CPWIV1VrMV2hoUHX0boWHZpbOy-AulOoQ0_JBZoI8QxUgVBuDgyvLy8W2a8iG-gtAoAh70Nv66bBoWwS6hCFQmBAz2hM-85neX9pmNsI8WsTHOzW"
 let userDefaults = UserDefaults.standard
 public let storageReferenceKey = "gs://onyourwayappios.appspot.com"
 public let kNUMBEROFMESSAGES = 12

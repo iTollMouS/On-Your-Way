@@ -13,12 +13,7 @@ private let reuseIdentifier = "OnboardingCell"
 class OnboardingController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let pages = [
-        Page(imageName: "bear_first", headerText: "Join use today in our fun and games!", bodyText: "Are you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our stores soon."),
-        Page(imageName: "heart_second", headerText: "Subscribe and get coupons on our daily events", bodyText: "Get notified of the savings immediately when we announce them on our website. Make sure to also give us any feedback you have."),
-        Page(imageName: "leaf_third", headerText: "VIP members special services", bodyText: ""),
-        Page(imageName: "bear_first", headerText: "Join use today in our fun and games!", bodyText: "Are you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our stores soon."),
-        Page(imageName: "heart_second", headerText: "Subscribe and get coupons on our daily events", bodyText: "Get notified of the savings immediately when we announce them on our website. Make sure to also give us any feedback you have."),
-        Page(imageName: "leaf_third", headerText: "VIP members special services", bodyText: "")
+        Page(imageName: "tenor", headerText: "Join use today in our fun and games!", bodyText: "Are you ready for loads and loads of fun? Don't wait any longer! We hope to see you in our stores soon."),
     ]
     
     private let previousButton: UIButton = {
@@ -30,8 +25,6 @@ class OnboardingController: UICollectionViewController, UICollectionViewDelegate
         button.addTarget(self, action: #selector(handlePrev), for: .touchUpInside)
         return button
     }()
-    
-    
     
     private let nextButton: UIButton = {
         let button = UIButton(type: .system)
@@ -53,6 +46,18 @@ class OnboardingController: UICollectionViewController, UICollectionViewDelegate
         return pc
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupBottomControls()
+        
+        collectionView?.backgroundColor = .white
+        collectionView?.register(OnboardingCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView?.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+    }
+    
+    
     fileprivate func setupBottomControls() {
         let bottomControlsStackView = UIStackView(arrangedSubviews: [previousButton, pageControl, nextButton])
         bottomControlsStackView.distribution = .fillEqually
@@ -66,24 +71,6 @@ class OnboardingController: UICollectionViewController, UICollectionViewDelegate
         pageControl.currentPage = Int(x / view.frame.width)
     }
     
-    
-    
-    /*
-     let layout = UICollectionViewFlowLayout()
-     layout.scrollDirection = .horizontal
-     let swipingController = OnboardingController(collectionViewLayout: layout)
-     */
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setupBottomControls()
-        
-        collectionView?.backgroundColor = .white
-        collectionView?.register(OnboardingCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        collectionView?.isPagingEnabled = true
-        collectionView.showsHorizontalScrollIndicator = false
-    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
@@ -116,6 +103,5 @@ class OnboardingController: UICollectionViewController, UICollectionViewDelegate
         pageControl.currentPage = nextIndex
         collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
-    
     
 }

@@ -43,6 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler(UIBackgroundFetchResult.newData)
     }
     
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("DEBUG: unable to \(error.localizedDescription)")
+    }
+    
     private func requestPushNotification(){
         UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (_, _) in
@@ -50,8 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    
-    
+
     // MARK: - updateUserPushIdWith
     private func updateUserPushIdWith(_ fcmToken: String){
         if var user = User.currentUser {
