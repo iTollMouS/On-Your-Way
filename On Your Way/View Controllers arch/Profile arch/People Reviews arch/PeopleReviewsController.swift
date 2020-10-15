@@ -182,12 +182,29 @@ class PeopleReviewsController: UIViewController {
         super.viewWillAppear(true)
         navigationController?.navigationBar.prefersLargeTitles = false
         tabBarController?.tabBar.isHidden = true
+        canUserReview()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
     }
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func canUserReview(){
+        guard let user = user else { return  }
+        print("DEBUG:: user name is \(user.id)")
+        print("DEBUG:: user name is \(User.currentId)")
+        TripService.shared.fetchMyRequest(userId: User.currentId) { packages in
+            packages.forEach{
+                if $0.packageStatus == .packageIsAccepted {
+                    self.submitReviewButton.setTitle("Write a review", for: .normal)
+                } else {
+                    self.writeReviewButton.setTitle("You can not review \(user.username)", for: .normal)
+                    self.writeReviewButton.isEnabled = false
+                }
+            }
+        }
     }
     
     func fetchUser(){

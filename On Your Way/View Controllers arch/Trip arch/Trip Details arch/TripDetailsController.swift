@@ -188,11 +188,7 @@ extension TripDetailsController {
         reviewSheetPopOver.setDimensions(height: 300, width: view.frame.width - 50)
         attributes.screenBackground = .visualEffect(style: .dark)
         attributes.positionConstraints.safeArea = .overridden
-        
         attributes.positionConstraints.verticalOffset = 250
-        //        let offset = EKAttributes.PositionConstraints.KeyboardRelation.Offset(bottom: 10, screenEdgeResistance: 20)
-        //        let keyboardRelation = EKAttributes.PositionConstraints.KeyboardRelation.bind(offset: offset)
-        //        attributes.positionConstraints.keyboardRelation = keyboardRelation
         attributes.windowLevel = .normal
         attributes.position = .bottom
         attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
@@ -200,19 +196,6 @@ extension TripDetailsController {
         attributes.screenInteraction = .dismiss // do something when the user touch the screen e.g .dismiss make the card dismisses on touch
         attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
         attributes.statusBar = .light
-        //        attributes.entranceAnimation = .init(
-        //                         translate: .init(duration: 0.7, anchorPosition: .top, spring: .init(damping: 1, initialVelocity: 0)),
-        //                         scale: .init(from: 0.6, to: 1, duration: 0.7),
-        //                         fade: .init(from: 0.8, to: 1, duration: 0.3))
-        //        attributes.lifecycleEvents.willAppear = { [self] in
-        //
-        //        }
-        
-        //        attributes.lifecycleEvents.didAppear = { [self] in
-        //            // Executed after the entry animates inside
-        //
-        //            print("didAppear")
-        //        }
         
         attributes.lifecycleEvents.willDisappear = { [weak self] in
             self?.delegate?.handleShowRegistrationPageForNonusers(self!)
