@@ -104,11 +104,20 @@ class SendPackageController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         configureNavBar()
     }
     
     func configureNavBar(){
-
+        
+        configureNavigationBar(withTitle: user.username, largeTitleColor: .white, tintColor: .white,
+                               navBarColor: #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1), smallTitleColorWhenScrolling: .light,
+                               prefersLargeTitles: true)
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dismiss", style: .done, target: self, action: #selector(handleDismissal))
         self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -122,7 +131,7 @@ class SendPackageController: UIViewController {
         view.addSubview(packagesImage)
         packagesImage.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20 ,
                              paddingLeft: 20, paddingRight: 20)
-     
+        
         packagesImage.delegate = self
         title = user.username
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -166,8 +175,8 @@ class SendPackageController: UIViewController {
     }
     
     @objc fileprivate func handleSubmittingShipment(){
-//        print("DEBUG: current user is \(User.currentId)")
-//        print("DEBUG: current traveler is \(trip.userID)")
+        //        print("DEBUG: current user is \(User.currentId)")
+        //        print("DEBUG: current traveler is \(trip.userID)")
         view.isUserInteractionEnabled = false
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we\nsend your request....")
