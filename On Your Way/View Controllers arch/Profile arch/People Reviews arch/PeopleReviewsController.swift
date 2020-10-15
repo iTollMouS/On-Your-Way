@@ -133,7 +133,7 @@ class PeopleReviewsController: UIViewController {
     private lazy var reviewTextView: UITextView = {
         let textView = UITextView()
         textView.textAlignment = .left
-        textView.textColor = .systemRed
+        textView.textColor = .white
         textView.delegate = self
         textView.setHeight(height: 200)
         textView.backgroundColor = .clear
@@ -166,6 +166,7 @@ class PeopleReviewsController: UIViewController {
     
     
     var user: User?
+    private var reviews = [Review]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -331,7 +332,7 @@ extension PeopleReviewsController {
             // Executed before the entry animates inside
             ratingView.rating = 3
             ratingView.text = "\(3.0)"
-            print("willAppear")
+            
         }
         
         attributes.lifecycleEvents.didAppear = { [self] in
@@ -358,6 +359,14 @@ extension PeopleReviewsController {
     }
     
     @objc func handleDismissPopView(){
+        guard let reviewComment = reviewTextView.text else { return }
+         let rate = ratingView.rating
+        let reviewId = UUID().uuidString
+        let review = Review(userID: User.currentId,
+                            timestamp: Date(),
+                            reviewComment: reviewComment,
+                            rate: rate, reviewId: reviewId)
+        print("DEBUG:: review is \(review)")
         SwiftEntryKit.dismiss(.displayed) { [self] in reviewTextView.text = "" }
         
     }

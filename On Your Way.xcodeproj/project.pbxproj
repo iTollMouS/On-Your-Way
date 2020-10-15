@@ -85,6 +85,8 @@
 		83B76373253715ED00503A9D /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B76372253715ED00503A9D /* NotificationCell.swift */; };
 		83B763762537401D00503A9D /* success_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763752537401D00503A9D /* success_animation.json */; };
 		83B763782537409800503A9D /* failed.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763772537409800503A9D /* failed.json */; };
+		83B7637B2538192300503A9D /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7637A2538192300503A9D /* Review.swift */; };
+		83B7637D253819FF00503A9D /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7637C253819FF00503A9D /* ReviewService.swift */; };
 		83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3E92534720400FA88F0 /* TripDetailsController.swift */; };
 		83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */; };
 		83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */; };
@@ -197,6 +199,8 @@
 		83B76372253715ED00503A9D /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		83B763752537401D00503A9D /* success_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = success_animation.json; sourceTree = "<group>"; };
 		83B763772537409800503A9D /* failed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = failed.json; sourceTree = "<group>"; };
+		83B7637A2538192300503A9D /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		83B7637C253819FF00503A9D /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
 		83D7D3E92534720400FA88F0 /* TripDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsController.swift; sourceTree = "<group>"; };
 		83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsCell.swift; sourceTree = "<group>"; };
 		83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsHeaderView.swift; sourceTree = "<group>"; };
@@ -284,6 +288,7 @@
 			children = (
 				834C98C525312E3900BE8691 /* User.swift */,
 				834C993D25338D6800BE8691 /* Trip.swift */,
+				83B7637A2538192300503A9D /* Review.swift */,
 				83D7D4272535A49B00FA88F0 /* Package.swift */,
 				834C993425337C0900BE8691 /* RecentChat.swift */,
 			);
@@ -370,6 +375,7 @@
 				834C99232532E61500BE8691 /* FileStorage.swift */,
 				834C99212532D7B900BE8691 /* UserServices.swift */,
 				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
+				83B7637C253819FF00503A9D /* ReviewService.swift */,
 				834C9939253384C700BE8691 /* StartChat.swift */,
 				834C99422533A92800BE8691 /* TripService.swift */,
 			);
@@ -696,6 +702,7 @@
 				83D7D4302535EB6300FA88F0 /* OrderDetailsFooterView.swift in Sources */,
 				83D7D42C2535E68F00FA88F0 /* OrderDetailHeader.swift in Sources */,
 				834C99242532E61500BE8691 /* FileStorage.swift in Sources */,
+				83B7637B2538192300503A9D /* Review.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
 				834C992B2533542B00BE8691 /* TripCell.swift in Sources */,
 				834C9912253233D300BE8691 /* ProfileCell.swift in Sources */,
@@ -726,6 +733,7 @@
 				834C990C253232D700BE8691 /* OnboardingCell.swift in Sources */,
 				83D7D41E2534F55E00FA88F0 /* UpdateEmailController.swift in Sources */,
 				834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */,
+				83B7637D253819FF00503A9D /* ReviewService.swift in Sources */,
 				834C990B253232D700BE8691 /* OnboardingViewModel.swift in Sources */,
 				834C98FD253231E000BE8691 /* SafetyCell.swift in Sources */,
 				834C9911253233D300BE8691 /* ProfileHeader.swift in Sources */,
