@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "RecentCell"
 
-class RecentController: UITableViewController {
+class RecentController: UIViewController {
     
     
     // MARK: - Properties
@@ -19,6 +19,22 @@ class RecentController: UITableViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
     private let refreshController = UIRefreshControl()
+    
+    private let blurView : UIVisualEffectView = {
+        let blurView = UIBlurEffect(style: .dark)
+        let view = UIVisualEffectView(effect: blurView)
+        return view
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(RecentCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.backgroundColor = .clear
+        tableView.rowHeight = 100
+        return tableView
+    }()
     
     
     // MARK: - viewDidLoad()
@@ -65,12 +81,11 @@ class RecentController: UITableViewController {
     
     // MARK: - configureTableView
     func configureTableView(){
-        view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
-        tableView.register(RecentCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
-        tableView.rowHeight = 100
-        
-        
+        view.addSubview(blurView)
+        blurView.frame = view.frame
+        view.addSubview(tableView)
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,
+                         bottom: view.bottomAnchor, right: view.rightAnchor)
     }
     
     
@@ -88,23 +103,23 @@ class RecentController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
     
-   
+    
     
 }
 
 
 // MARK: - Table extensions
-extension RecentController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension RecentController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 50
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
         return cell
     }
     
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if self.refreshController.isRefreshing {
             // download user
             self.refreshController.endRefreshing()

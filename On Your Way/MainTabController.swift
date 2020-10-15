@@ -59,7 +59,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         if index == 3 {
             let recentController = RecentController()
             let navController = UINavigationController(rootViewController: recentController)
-            navController.modalPresentationStyle = .fullScreen
+            navController.modalPresentationStyle = .custom
             navController.navigationBar.barStyle = .black
             navController.navigationBar.isTranslucent = true
             present(navController, animated: true, completion: nil)

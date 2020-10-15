@@ -20,6 +20,6 @@ struct RecentChat: Codable {
     var memberIds = [""]
     var lastMessage = ""
     var unreadCounter = 0
-    var avatarLink = ""
+    var profileImageView = ""
 }
 

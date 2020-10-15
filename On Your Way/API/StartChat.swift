@@ -8,12 +8,16 @@
 import Foundation
 import Firebase
 
-//func startChat(currentUser: String, selectedUser: String) -> String {
-//    let chatRoomId = chatRoomIdMaker(currentUser: currentUser, selectedUser: selectedUser)
-//
-//
-//}
 
+
+func startChat(currentUser: User, selectedUser: User) -> String {
+    let chatRoomId = chatRoomIdMaker(currentUser: currentUser.id, selectedUser: selectedUser.id)
+    createRecentChat(chatRoomId: chatRoomId, users: [currentUser, selectedUser])
+    return chatRoomId
+    
+}
+
+// create chat room id by combine 2 users ids
 func createRecentChat(chatRoomId: String, users: [User]) {
     
     guard let currentUser = users.first?.id else { return  }
@@ -38,7 +42,14 @@ func createRecentChat(chatRoomId: String, users: [User]) {
                                     receiverName: selectedUser.username,
                                     date: Date(), memberIds: members,
                                     lastMessage: "", unreadCounter: 0,
-                                    avatarLink: selectedUser.avatarLink)
+                                    profileImageView: selectedUser.avatarLink)
+            FirebaseRecentService.shared.addRecent(recent) { error in
+                if let error = error {
+                    print("DEBUG: errir while maing chat \(error)")
+                    return
+                }
+            }
+            
         }
     }
     
@@ -68,7 +79,7 @@ func getReceiverFrom(users: [User]) -> User {
 }
 
 
-// whoseever tap on the selected user , the result will be always the same
+// whosoever tap on the selected user , the result will be always the same
 func chatRoomIdMaker(currentUser: String, selectedUser: String) -> String {
     var chatRoomId = ""
     let value = currentUser.compare(selectedUser).rawValue

@@ -11,9 +11,10 @@ class RecentCell: UITableViewCell {
     
     
     var recentChat: RecentChat?{
-        didSet{configure()}
+        didSet{}
     }
     
+//    configure()
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 50, width: 50)
@@ -47,7 +48,6 @@ class RecentCell: UITableViewCell {
     
     private lazy var timestampLabel: UILabel = {
         let label = UILabel()
-        label.text = "5 hours ago"
         label.textAlignment = .center
         label.numberOfLines = 0
         label.backgroundColor = .clear
@@ -102,8 +102,26 @@ class RecentCell: UITableViewCell {
         
     }
     
-    func configure(){
-        //                timestampLabel.text = recentChat?.date?.convertToTimeAgo(style: .abbreviated)
+    func configure(recent: RecentChat){
+        
+        timestampLabel.text = recent.date?.convertToTimeAgo(style: .abbreviated)
+        
+        if recent.unreadCounter != 0 {
+            self.recentMessageLabel.text = "\(recent.unreadCounter)"
+            self.recentMessageLabel.isHidden = false
+        } else {
+            self.recentMessageLabel.isHidden = true
+        }
+        
+        FileStorage.downloadImage(imageUrl: recent.profileImageView) { image in
+            guard let image = image else {
+                self.profileImageView.image = #imageLiteral(resourceName: "btn_google_light_pressed_ios")
+                return
+                
+            }
+            self.profileImageView.image = image
+        }
+        
         
     }
     

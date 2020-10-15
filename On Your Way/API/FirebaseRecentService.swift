@@ -14,6 +14,15 @@ class FirebaseRecentService {
     
     private init () {}
     
+    
+    func addRecent(_ recent: RecentChat, completion: ((Error?) -> Void)?){
+        do {
+            try Firestore.firestore().collection("recents").document(recent.id).setData(from: recent, merge: true, completion: completion)
+        } catch (let error){
+            print("DEBUG: error while making a char \(error.localizedDescription)")
+        }
+    }
+    
     func fetchRecentChatFromFirestore(completion: @escaping([RecentChat]) -> Void) {
         Firestore.firestore().collection("recent").whereField(kSENDERID, isEqualTo: User.currentId).addSnapshotListener { (snapshot, error) in
             var recents: [RecentChat] = []

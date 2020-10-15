@@ -267,12 +267,11 @@
 				834C981B25311CCC00BE8691 /* AppDelegate.swift */,
 				834C981D25311CCC00BE8691 /* SceneDelegate.swift */,
 				834C98742531227D00BE8691 /* Constants.swift */,
+				834C9906253232CD00BE8691 /* Onboarding arch */,
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
 				834C9883253128E700BE8691 /* View Controllers arch */,
-				834C9906253232CD00BE8691 /* Onboarding arch */,
-				834C98D92531A98200BE8691 /* API */,
-				834C98C82531308200BE8691 /* Firebase helpers */,
 				834C988E25312B2700BE8691 /* Auth Controller arch */,
+				834C98D92531A98200BE8691 /* API */,
 				834C98772531234600BE8691 /* Model */,
 				834C989625312BC100BE8691 /* Utilities */,
 				834C982425311CCE00BE8691 /* Assets.xcassets */,
@@ -359,13 +358,6 @@
 				834C98A325312C5700BE8691 /* width_measure_tape.json */,
 			);
 			path = "JSON files";
-			sourceTree = "<group>";
-		};
-		834C98C82531308200BE8691 /* Firebase helpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Firebase helpers";
 			sourceTree = "<group>";
 		};
 		834C98D92531A98200BE8691 /* API */ = {
