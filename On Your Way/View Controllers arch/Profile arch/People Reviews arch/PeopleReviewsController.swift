@@ -196,13 +196,11 @@ class PeopleReviewsController: UIViewController {
         print("DEBUG:: user name is \(user.id)")
         print("DEBUG:: user name is \(User.currentId)")
         TripService.shared.fetchMyRequest(userId: User.currentId) { packages in
-            packages.forEach{
-                if $0.packageStatus == .packageIsAccepted {
-                    self.submitReviewButton.setTitle("Write a review", for: .normal)
-                } else {
-                    self.writeReviewButton.setTitle("You can not review \(user.username)", for: .normal)
-                    self.writeReviewButton.isEnabled = false
-                }
+            if !packages.isEmpty {
+                self.submitReviewButton.setTitle("Write a review", for: .normal)
+            } else {
+                self.writeReviewButton.setTitle("You can not review \(user.username)", for: .normal)
+                self.writeReviewButton.isEnabled = false
             }
         }
     }

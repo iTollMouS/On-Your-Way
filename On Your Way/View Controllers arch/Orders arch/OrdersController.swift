@@ -85,8 +85,6 @@ class OrdersController: UIViewController {
             rowsToDisplay = newPackageOrder
         }
         
-        print("DEBUG: \(rowsToDisplay)")
-        
         self.tableView.reloadData()
     }
     

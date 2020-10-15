@@ -146,7 +146,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 self?.package.packageStatusTimestamp = (Date() + 86400).convertDate(formattedString: .formattedType2)
-                footer.rejectButton.setTitle("You accepted the order in \(self?.package.packageStatusTimestamp ?? Date().convertDate(formattedString: .formattedType2))", for: .normal)
+                footer.acceptButton.setTitle("You accepted the order in \(self?.package.packageStatusTimestamp ?? Date().convertDate(formattedString: .formattedType2))", for: .normal)
                 footer.rejectButton.isEnabled = false
                 self?.package.packageStatus = .packageIsAccepted
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { error in
