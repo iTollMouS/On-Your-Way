@@ -162,11 +162,13 @@ extension TripsTimelineController {
     // MARK: - didSelectRowAt
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
-        let tripDetailsController = TripDetailsController()
-        tripDetailsController.delegate = self
-        tripDetailsController.trip = trip
-        navigationController?.pushViewController(tripDetailsController, animated: true)
-        tableView.deselectRow(at: indexPath, animated: true)
+        UserServices.shared.fetchUser(userId: trip.userID) { [weak self] user in
+            let tripDetailsController = TripDetailsController(user: user, trip: trip)
+            tripDetailsController.delegate = self
+            self?.navigationController?.pushViewController(tripDetailsController, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+       
     }
     
     
@@ -228,10 +230,9 @@ extension TripsTimelineController {
 // MARK: -  TripCellDelegate
 extension TripsTimelineController: TripCellDelegate {
     func handleDisplayReviews(_ cell: UITableViewCell, selectedTrip: Trip) {
-        
+
         UserServices.shared.fetchUser(userId: selectedTrip.userID) { [weak self] user in
-            let peopleReviewsController = PeopleReviewsController()
-            peopleReviewsController.user = user
+            let peopleReviewsController = PeopleReviewsController(user: user)
             self?.navigationController?.pushViewController(peopleReviewsController, animated: true)
         }
         

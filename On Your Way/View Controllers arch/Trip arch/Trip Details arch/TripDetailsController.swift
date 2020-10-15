@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftEntryKit
+import Firebase
 
 private let reuseIdentifier = "TripDetailsCell"
 
@@ -37,8 +38,18 @@ class TripDetailsController: UIViewController {
         return tableView
     }()
     
-    var trip: Trip?
-    var user: User?
+    private var trip: Trip
+    private var user: User
+    
+    init(user: User, trip: Trip) {
+        self.user = user
+        self.trip = trip
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     // MARK: - Lifecycle
@@ -58,7 +69,7 @@ class TripDetailsController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        let peopleReviewsController = PeopleReviewsController()
+        let peopleReviewsController = PeopleReviewsController(user: user)
         peopleReviewsController.popupItem.title = "People Reviews "
         peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
         peopleReviewsController.popupItem.progress = 0.34
@@ -70,8 +81,6 @@ class TripDetailsController: UIViewController {
     
     // MARK: - fetchUser()
     func fetchUser(){
-        guard let trip = trip else { return  }
-        
         UserServices.shared.fetchUser(userId: trip.userID) { user in
             self.user = user
             self.headerView.user = user
@@ -149,18 +158,24 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Header Delegate
 extension TripDetailsController : TripDetailsHeaderViewDelegate {
     func handleReviewsTapped(_ view: TripDetailsHeaderView) {
-        let peopleReviewsController = PeopleReviewsController()
-        guard let trip = trip else { return  }
-        UserServices.shared.fetchUser(userId: trip.userID) { user in
-            peopleReviewsController.user = user
-            self.present(peopleReviewsController, animated: true, completion: nil)
-        }
+        
+        let peopleReviewsController = PeopleReviewsController(user: user)
+        present(peopleReviewsController, animated: true, completion: nil)
     }
     
     func handleStartToChat(_ view: TripDetailsHeaderView) {
+        //        guard let uid = User.currentUser?.id else { return  }
+        //        print("DEBUG: user name is \(uid)")
+        //        print("DEBUG: user name is \(User.currentId)")
         
-        // it is working , now you have to implement the functionality
-        print("DEBUG: ctart chat in veiw controller ")
+        print("DEBUG: other useer is \(User.currentId)")
+        print("DEBUG: other useer is \(user.id)")
+        
+        
+        
+        
+        //        let chatId = startChat(currentUser: <#T##User#>, selectedUser: <#T##User#>)
+        
     }
     
 }
@@ -171,8 +186,8 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
 extension TripDetailsController: TripDetailsFooterViewDelegate {
     
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
-        guard let user = user else { return }
-        guard let trip = trip else { return }
+        
+        
         if User.currentUser?.id == nil {
             showCustomAlertView()
             return

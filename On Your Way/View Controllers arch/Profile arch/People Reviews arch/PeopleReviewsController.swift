@@ -165,8 +165,17 @@ class PeopleReviewsController: UIViewController {
     }()
     
     
-    var user: User?
+    private var user: User
     private var reviews = [Review]()
+    
+    init(user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,13 +202,13 @@ class PeopleReviewsController: UIViewController {
     }
     
     func canUserReview(){
-        guard let user = user else { return  }
+        
         guard let reviewerId = User.currentUser?.id else { return }
         TripService.shared.fetchMyRequest(userId: reviewerId) { packages in
             if !packages.isEmpty {
                 self.submitReviewButton.setTitle("Write a review", for: .normal)
             } else {
-                self.writeReviewButton.setTitle("You can not review \(user.username)", for: .normal)
+                self.writeReviewButton.setTitle("You can not review \(self.user.username)", for: .normal)
                 self.writeReviewButton.isEnabled = false
             }
         }
@@ -208,8 +217,7 @@ class PeopleReviewsController: UIViewController {
     func fetchUser(){
         
         guard let uid = User.currentUser?.id else { return  }
-        print("DEBUG: user name is \(uid)")
-        print("DEBUG: user name is \(User.currentId)")
+        
         if User.currentId == uid {
             self.tableView.reloadData()
             self.tableView.fillSuperview()
@@ -335,7 +343,7 @@ extension PeopleReviewsController {
     }
     
     @objc func handleDismissPopView(){
-        guard let user = user else { return  }
+        
         guard let reviewComment = reviewTextView.text else { return }
         let rate = ratingView.rating
         let reviewId = UUID().uuidString

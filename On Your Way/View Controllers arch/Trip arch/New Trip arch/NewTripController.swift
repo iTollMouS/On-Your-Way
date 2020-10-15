@@ -299,7 +299,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                         packagePickupLocation: pickupLocation,
                         packagePickupTime: pickupTime)
         
-        print("DEBUG: user trip is \(trip)")
+        
         let dateAndTimeController = DateAndTimeController()
         dateAndTimeController.delegate = self
         dateAndTimeController.trip = trip

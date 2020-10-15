@@ -10,6 +10,10 @@ import UIKit
 class MainTabController: UITabBarController, UITabBarControllerDelegate {
     
     
+    
+    private var user: User?
+    
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +23,10 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.barStyle = .black
     }
     
+    
+    fileprivate func fetchUser(){
+        
+    }
     
     
     // MARK: - configureViewControllers

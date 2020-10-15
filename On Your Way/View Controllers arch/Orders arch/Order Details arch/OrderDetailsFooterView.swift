@@ -47,18 +47,14 @@ class OrderDetailsFooterView: UIView {
         guard let package = package else { return }
         
         switch package.packageStatus {
-        
         case .packageIsPending:
-            print("")
+            fallthrough
         case .packageIsRejected:
-            rejectButton.setTitle("Your order will be deleted in \(package.packageStatusTimestamp)", for: .normal)
-            rejectButton.setImage(nil, for: .normal)
-            rejectButton.isEnabled = false
+            fallthrough
         case .packageIsAccepted:
             acceptButton.setTitle("You have accepted order in \(package.packageStatusTimestamp)", for: .normal)
         case .packageIsDelivered:
             print("")
-            
         }
     }
     

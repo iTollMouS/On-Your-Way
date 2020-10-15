@@ -50,9 +50,9 @@ class ProfileController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         checkUser()
+        guard let user = user else { return }
         tabBarController?.tabBar.isHidden = false
-        let peopleReviewsController = PeopleReviewsController()
-        peopleReviewsController.user = user
+        let peopleReviewsController = PeopleReviewsController(user: user)
         peopleReviewsController.popupItem.title = "People Reviews "
         peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
         peopleReviewsController.popupItem.progress = 0.34
@@ -83,7 +83,6 @@ class ProfileController: UIViewController {
         } else {
             UserServices.shared.fetchUser(userId: User.currentId) { user in
                 self.user = user
-                print("DEBUG: user is \(user)")
                 self.title = user.username
                 self.tableView.reloadData()
                 self.headerView.user = user

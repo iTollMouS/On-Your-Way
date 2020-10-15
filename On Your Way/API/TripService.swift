@@ -29,19 +29,19 @@ class TripService {
     
     #warning("users-send-packages <-- , see why it crashes !!!has issue  ")
     
-    func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void) {
-        do {
-            try  Firestore.firestore().collection("users-requests")
-                .document(userId).collection("shipping-request")
-                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-            try Firestore.firestore().collection("users-send-packages")
-                .document(package.userID).collection("packages")
-                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-
-        } catch (let error){
-            completion(error)
-        }
-    }
+//    func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void) {
+//        do {
+//            try  Firestore.firestore().collection("users-requests")
+//                .document(userId).collection("shipping-request")
+//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+//            try Firestore.firestore().collection("users-send-packages")
+//                .document(package.userID).collection("packages")
+//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+//
+//        } catch (let error){
+//            completion(error)
+//        }
+//    }
     
     
     func fetchAllTrips(completion: @escaping([Trip]) -> Void) {
@@ -72,8 +72,8 @@ class TripService {
         var packages: [Package] = []
         Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").addSnapshotListener { (snapshot, error) in
             guard let snapshot = snapshot else {return}
-            let allPackages = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
-                return try? queryDocumentSnapshot.data(as: Package.self)
+            let allPackages = snapshot.documentChanges.compactMap { (queryDocumentSnapshot) -> Package? in
+                return try? queryDocumentSnapshot.document.data(as: Package.self)
             }
             for trip in allPackages {  packages.append(trip) }
             packages.sort(by: { $0.timestamp! > $1.timestamp! })
@@ -83,8 +83,41 @@ class TripService {
     }
     
     
-    func rejectPackageOrderWith(userId: String, packageId: String, completion: @escaping(Error?) -> Void){
-        Firestore.firestore().collection("users-requests").document(userId).collection("shipping-request").document(packageId).delete(completion: completion)
+    func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void){
+
+        switch package.packageStatus {
+       
+        case .packageIsPending:
+            fallthrough
+        case .packageIsRejected:
+            Firestore.firestore().collection("users-requests")
+                .document(userId).collection("shipping-request")
+                .document(package.packageID).delete(completion: completion)
+        case .packageIsAccepted:
+            do {
+                try  Firestore.firestore().collection("users-requests")
+                    .document(userId).collection("shipping-request")
+                    .document(package.packageID).setData(from: package, merge: true, completion: completion)
+                try Firestore.firestore().collection("users-send-packages")
+                    .document(package.userID).collection("packages")
+                    .document(package.packageID).setData(from: package, merge: true, completion: completion)
+
+            } catch (let error){
+                completion(error)
+            }
+        case .packageIsDelivered:
+            do {
+                try  Firestore.firestore().collection("users-requests")
+                    .document(userId).collection("shipping-request")
+                    .document(package.packageID).setData(from: package, merge: true, completion: completion)
+                try Firestore.firestore().collection("users-send-packages")
+                    .document(package.userID).collection("packages")
+                    .document(package.packageID).setData(from: package, merge: true, completion: completion)
+
+            } catch (let error){
+                completion(error)
+            }
+        }
     }
     
     func fetchTrip(tripId: String, completion: @escaping(User) -> Void){

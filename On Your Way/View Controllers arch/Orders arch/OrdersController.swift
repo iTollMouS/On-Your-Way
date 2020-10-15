@@ -19,6 +19,7 @@ class OrdersController: UIViewController {
         let normalTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         segmentedControl.setTitleTextAttributes(normalTitleTextAttributes, for: .normal)
         let selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.1960784314, green: 0.1960784314, blue: 0.1960784314, alpha: 1)]
+        segmentedControl.backgroundColor = .darkGray
         segmentedControl.setTitleTextAttributes(selectedTitleTextAttributes, for: .selected)
         segmentedControl.addTarget(self, action: #selector(handleOrderSectionChanges), for: .valueChanged)
         return segmentedControl
@@ -96,7 +97,7 @@ class OrdersController: UIViewController {
     
     
     func fetchTrips() {
-        //        guard let viewModel = viewModel else { return }
+        
         if User.currentUser?.id == nil { return }
         else {
             TripService.shared.fetchMyTrips(userId: User.currentId) { packages in

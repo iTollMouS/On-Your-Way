@@ -189,8 +189,7 @@ class SendPackageController: UIViewController {
     }
     
     @objc fileprivate func handleSubmittingShipment(){
-        //        print("DEBUG: current user is \(User.currentId)")
-        //        print("DEBUG: current traveler is \(trip.userID)")
+                
         view.isUserInteractionEnabled = false
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we\nsend your request....")

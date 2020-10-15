@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 private let reuseIdentifier = "NotificationCell"
 
@@ -37,9 +38,8 @@ class NotificationsController: UITableViewController {
     }
     
      func fetchMyRequest(){
-
-        guard let userId = User.currentUser?.id else { return }
-        TripService.shared.fetchMyRequest(userId: userId) { packages in
+        
+        TripService.shared.fetchMyRequest(userId: User.currentId) { packages in
             packages.forEach { package in
                 let tempPackage = package
                 self.packagesDictionary[tempPackage.packageID] = package

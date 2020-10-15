@@ -119,6 +119,10 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if self.refreshController.isRefreshing {
             // download user

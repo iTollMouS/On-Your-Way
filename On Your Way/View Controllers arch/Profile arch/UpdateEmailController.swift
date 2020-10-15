@@ -79,7 +79,6 @@ class UpdateEmailController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("DEBUG: user name is \(user)")
         configureUI()
     }
     

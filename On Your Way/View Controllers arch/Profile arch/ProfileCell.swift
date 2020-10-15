@@ -26,6 +26,8 @@ class ProfileCell: UITableViewCell {
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.delegate = self
+        label.placeholder = "Update your phone number here"
+        label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 20)
         return label
     }()
@@ -88,7 +90,7 @@ class ProfileCell: UITableViewCell {
         switch viewModel {
         case .section_1:
             addSubview(phoneNumberTextField)
-            phoneNumberTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            phoneNumberTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 30))
             phoneNumberTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             configureAccessory()
         case .section_2:

@@ -8,12 +8,21 @@
 import UIKit
 
 
+
 private let reuseIdentifier = "PetAdoptionProfileHeaderCell"
+
+protocol OrderDetailHeaderDelegate: class {
+    func handleShowImages(_ package: Package)
+}
 
 class OrderDetailHeader: UIView {
     
+    
+    weak var delegate: OrderDetailHeaderDelegate?
+    
     private var package: Package
     private lazy var viewModel = PackageViewModel(package: package)
+    
     
     private lazy var collectionView: UICollectionView = {
         let collectionViewFrame = CGRect(x: 0, y: 0, width: frame.width , height: frame.height)
@@ -55,6 +64,10 @@ extension OrderDetailHeader: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! OrderDetailHeaderCell
         cell.imageView.sd_setImage(with: viewModel.packageImages[indexPath.row])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.handleShowImages(package)
     }
     
 }

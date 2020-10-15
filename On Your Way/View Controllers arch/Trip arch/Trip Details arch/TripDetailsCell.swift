@@ -150,9 +150,6 @@ class TripDetailsCell: UITableViewCell {
         currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
         destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
         
-        print("DEBUG: \(viewModel.packagePickupTime)")
-        print("DEBUG: \(viewModel.packagePickupLocation)")
-        print("DEBUG: \(viewModel.packagePickupTime)")
         packagePickupLocationLabel.text = viewModel.packagePickupLocation
         packagePickupTime.text = viewModel.packagePickupTime
         
