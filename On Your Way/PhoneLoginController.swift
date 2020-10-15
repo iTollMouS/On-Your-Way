@@ -208,6 +208,10 @@ class PhoneLoginController: UIViewController {
             userDefaults.synchronize()
         }
         
+        UIView.animate(withDuration: 0.5) {
+            self.oneTimeCodeTextField.digitsStackView.alpha = 1
+        }
+        
         oneTimeCodeTextField.didEnterLastDigit = { [weak self] verificationCode in
             self?.showBlurView()
             self?.showLoader(true, message: "Please whit while we verify ..")

@@ -25,8 +25,14 @@ class PhoneOPTTextField: UITextField {
     
     var defaultCharacter = "-"
     
+    
+    
     private var isConfigured = false
     private var digitsLabel = [UILabel]()
+    
+    
+    lazy var digitsStackView = createLabelsStackView(with: 6)
+    
     
     private lazy var tap: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer()
@@ -34,14 +40,14 @@ class PhoneOPTTextField: UITextField {
         return tap
     }()
     
-    func configure(with slotCount: Int = 6){
+    func configure(){
         guard isConfigured == false else { return }
         isConfigured.toggle()
         configureTextField()
-        let labelsStackView = createLabelsStackView(with: slotCount)
-        addSubview(labelsStackView)
+        digitsStackView.alpha = 0
+        addSubview(digitsStackView)
         addGestureRecognizer(tap)
-        labelsStackView.fillSuperview()
+        digitsStackView.fillSuperview()
         setHeight(height: 50)
     }
     
