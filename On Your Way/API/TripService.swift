@@ -30,17 +30,17 @@ class TripService {
     #warning("users-send-packages <-- , see why it crashes !!!has issue  ")
     
     func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void) {
-//        do {
-//            try  Firestore.firestore().collection("users-requests")
-//                .document(userId).collection("shipping-request")
-//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-//            try Firestore.firestore().collection("users-send-packages")
-//                .document(package.userID).collection("packages")
-//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-//
-//        } catch (let error){
-//            completion(error)
-//        }
+        do {
+            try  Firestore.firestore().collection("users-requests")
+                .document(userId).collection("shipping-request")
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+            try Firestore.firestore().collection("users-send-packages")
+                .document(package.userID).collection("packages")
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+
+        } catch (let error){
+            completion(error)
+        }
     }
     
     
@@ -67,19 +67,18 @@ class TripService {
         }
     }
     
-    
+    #warning("issue us here !!!")
     func fetchMyRequest(userId: String, completion: @escaping([Package]) -> Void){
         var packages: [Package] = []
-//        Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").addSnapshotListener { (snapshot, error) in
-//
-//            guard let snapshot = snapshot else {return}
-//            let allPackages = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
-//                return try? queryDocumentSnapshot.data(as: Package.self)
-//            }
-//            for trip in allPackages {  packages.append(trip) }
-//            packages.sort(by: { $0.timestamp! > $1.timestamp! })
-//            completion(packages)
-//        }
+        Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").addSnapshotListener { (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            let allPackages = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
+                return try? queryDocumentSnapshot.data(as: Package.self)
+            }
+            for trip in allPackages {  packages.append(trip) }
+            packages.sort(by: { $0.timestamp! > $1.timestamp! })
+            completion(packages)
+        }
         
     }
     
@@ -100,17 +99,17 @@ class TripService {
     }
     
     func sendPackageToTraveler(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
-//        do {
-//            try Firestore.firestore().collection("users-requests")
-//                .document(trip.userID).collection("shipping-request")
-//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-//            try Firestore.firestore().collection("users-send-packages")
-//                .document(userId).collection("packages")
-//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-//
-//        } catch (let error) {
-//            print("DEBUG: error while uploading package\(error.localizedDescription)")
-//        }
+        do {
+            try Firestore.firestore().collection("users-requests")
+                .document(trip.userID).collection("shipping-request")
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+            try Firestore.firestore().collection("users-send-packages")
+                .document(userId).collection("packages")
+                .document(package.packageID).setData(from: package, merge: true, completion: completion)
+
+        } catch (let error) {
+            print("DEBUG: error while uploading package\(error.localizedDescription)")
+        }
     }
     
     func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){

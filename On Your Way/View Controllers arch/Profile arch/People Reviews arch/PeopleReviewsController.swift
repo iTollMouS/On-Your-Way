@@ -194,9 +194,8 @@ class PeopleReviewsController: UIViewController {
     
     func canUserReview(){
         guard let user = user else { return  }
-        print("DEBUG:: user name is \(user.id)")
-        print("DEBUG:: user name is \(User.currentId)")
-        TripService.shared.fetchMyRequest(userId: User.currentId) { packages in
+        guard let reviewerId = User.currentUser?.id else { return }
+        TripService.shared.fetchMyRequest(userId: reviewerId) { packages in
             if !packages.isEmpty {
                 self.submitReviewButton.setTitle("Write a review", for: .normal)
             } else {

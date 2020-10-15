@@ -30,9 +30,10 @@ class NotificationsController: UITableViewController {
         tableView.refreshControl = refreshController
     }
     
-    fileprivate func fetchMyRequest(){
-        TripService.shared.fetchMyRequest(userId: User.currentId) { packages in
-            
+     func fetchMyRequest(){
+        print("DEBUG: id is \(User.currentUser?.id)")
+        guard let userId = User.currentUser?.id else { return }
+        TripService.shared.fetchMyRequest(userId: userId) { packages in
             packages.forEach { package in
                 let tempPackage = package
                 self.packagesDictionary[tempPackage.packageID] = package
