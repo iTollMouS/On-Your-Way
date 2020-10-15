@@ -361,7 +361,7 @@ extension PeopleReviewsController {
     @objc func handleDismissPopView(){
         guard let user = user else { return  }
         guard let reviewComment = reviewTextView.text else { return }
-         let rate = ratingView.rating
+        let rate = ratingView.rating
         let reviewId = UUID().uuidString
         let review = Review(userID: User.currentId,
                             timestamp: Date(),

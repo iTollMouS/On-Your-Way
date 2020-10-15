@@ -22,7 +22,7 @@ protocol  RegistrationControllerDelegate: class {
 class RegistrationController: UIViewController {
     
     weak var delegate: RegistrationControllerDelegate?
-
+    
     // MARK: - Properties
     private var profileImage: UIImage?
     
@@ -160,12 +160,12 @@ class RegistrationController: UIViewController {
         dismissView.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 14, paddingRight: 20)
         
         view.addSubview(bottomContainerView)
-        bottomContainerView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        bottomContainerView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingBottom: -50)
         
         view.addSubview(topStackView)
         topStackView.centerX(inView: view)
         topStackView.anchor(left: view.leftAnchor, bottom: bottomContainerView.topAnchor, right: view.rightAnchor,
-                            paddingLeft: 40, paddingBottom: 40 , paddingRight: 40)
+                            paddingLeft: 40, paddingBottom: 30 , paddingRight: 40)
         
         bottomContainerView.addSubview(stackView)
         stackView.centerX(inView: bottomContainerView, topAnchor: bottomContainerView.topAnchor, paddingTop: 30)
