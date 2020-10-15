@@ -12,12 +12,16 @@ private let reuseIdentifier = "RecentCell"
 
 class RecentController: UITableViewController {
     
+    
+    // MARK: - Properties
     var allRecent: [RecentChat] = []
     var filteredAllRecent: [RecentChat] = []
     
     private let searchController = UISearchController(searchResultsController: nil)
     private let refreshController = UIRefreshControl()
     
+    
+    // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,6 +42,8 @@ class RecentController: UITableViewController {
     }
     
     
+    
+    // MARK: - configureRefreshControl
     func configureRefreshControl(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
@@ -45,6 +51,8 @@ class RecentController: UITableViewController {
         tableView.refreshControl = refreshController
         
     }
+    
+    // MARK: - configureSearchController(
     func configureSearchController(){
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
@@ -54,6 +62,8 @@ class RecentController: UITableViewController {
         definesPresentationContext = true
     }
     
+    
+    // MARK: - configureTableView
     func configureTableView(){
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.register(RecentCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -63,6 +73,8 @@ class RecentController: UITableViewController {
         
     }
     
+    
+    // MARK: - configureNavBar
     func configureNavBar(){
         self.title = "Messages"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dismiss", style: .done, target: self, action: #selector(handleDismissal))
@@ -70,19 +82,18 @@ class RecentController: UITableViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    
+    // MARK: - Actions
     @objc func handleDismissal(){
         dismiss(animated: true, completion: nil)
     }
     
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if self.refreshController.isRefreshing {
-            // download user
-            self.refreshController.endRefreshing()
-        }
-    }
+   
     
 }
 
+
+// MARK: - Table extensions
 extension RecentController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 50
@@ -92,8 +103,17 @@ extension RecentController {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
         return cell
     }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if self.refreshController.isRefreshing {
+            // download user
+            self.refreshController.endRefreshing()
+        }
+    }
 }
 
+
+// MARK: - UISearchResultsUpdating
 extension RecentController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {

@@ -9,7 +9,7 @@ import UIKit
 import Cosmos
 import SDWebImage
 
-
+// MARK: - Protocol
 protocol TripCellDelegate: class {
     func handleDisplayReviews(_ cell: UITableViewCell, selectedTrip: Trip)
 }
@@ -17,14 +17,19 @@ protocol TripCellDelegate: class {
 class TripCell: UITableViewCell {
     
     
-    
+    // MARK: - delegate
     weak var delegate: TripCellDelegate?
     
     
+    
+    
+    // MARK: - var trip
     var trip: Trip? {
         didSet{configure()}
     }
     
+    
+    // MARK: - Properties
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .lightGray
@@ -110,6 +115,8 @@ class TripCell: UITableViewCell {
         return view
     }()
     
+    
+    // MARK: - citiesStackView
     private lazy var citiesStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [currentLocation, destinationLocation])
         stackView.axis = .vertical
@@ -131,6 +138,9 @@ class TripCell: UITableViewCell {
         return label
     }()
     
+    
+    
+    // MARK: - ratingView
     private lazy var ratingView: CosmosView = {
         let view = CosmosView()
         view.settings.fillMode = .half
@@ -156,6 +166,7 @@ class TripCell: UITableViewCell {
     
     
     
+    // MARK: - containerInfoStackView
     private lazy var containerInfoStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [priceBaseLabel,
                                                        packagesTypes,
@@ -168,6 +179,8 @@ class TripCell: UITableViewCell {
     
     
     
+    
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -198,6 +211,7 @@ class TripCell: UITableViewCell {
         
     }
     
+    // MARK: - configure()
     private func configure(){
         guard let trip = trip else { return }
         let viewModel = TripViewModel(trip: trip)
@@ -218,11 +232,8 @@ class TripCell: UITableViewCell {
         destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
         
     }
-
-    @objc private func handleReviewTapped(){
-        guard let trip = trip else { return }
-        delegate?.handleDisplayReviews(self, selectedTrip: trip)
-    }
+    
+    
     
     fileprivate func tripInfoText(location: String, tripDepartureDate: String, tripDepartureTime: String ) -> NSMutableAttributedString{
         let attributedText = NSMutableAttributedString(string: location,
@@ -243,6 +254,14 @@ class TripCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }
+    
+    
+    // MARK: - Actions
+    @objc private func handleReviewTapped(){
+        guard let trip = trip else { return }
+        delegate?.handleDisplayReviews(self, selectedTrip: trip)
+    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

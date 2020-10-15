@@ -9,6 +9,11 @@ import UIKit
 
 class RecentCell: UITableViewCell {
     
+    
+    var recentChat: RecentChat?{
+        didSet{configure()}
+    }
+    
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 50, width: 50)
@@ -22,10 +27,10 @@ class RecentCell: UITableViewCell {
     
     private lazy var recentMessageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello there , could you please take it wit you ?"
+        label.text = "Hello there , could you please take it wit you wihukwhi;lwjduiheodiajicuhaljahugiugfyewuiuhwgfuywfgygckbycgyg"
         label.textAlignment = .left
         label.numberOfLines = 3
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .lightGray
         return label
     }()
@@ -35,8 +40,8 @@ class RecentCell: UITableViewCell {
         label.text = "Tariq Almazyad"
         label.textAlignment = .left
         label.numberOfLines = 0
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = .lightGray
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return label
     }()
     
@@ -60,20 +65,18 @@ class RecentCell: UITableViewCell {
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = .white
+        label.backgroundColor = .green
         label.backgroundColor = .blueLightIcon
         label.setDimensions(height: 40, width: 40)
         label.layer.cornerRadius = 40 / 2
         label.clipsToBounds = true
-        label.isHidden = true
         return label
     }()
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [fullnameLabel, recentMessageLabel])
-        stackView.axis = .horizontal
-        stackView.spacing = 12
-        stackView.distribution = .fill
-        stackView.alignment = .fill
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
         return stackView
     }()
     
@@ -81,15 +84,26 @@ class RecentCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        accessoryType = .disclosureIndicator
         addSubview(profileImageView)
         profileImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
+        
         addSubview(timestampLabel)
         timestampLabel.anchor(top: topAnchor, right: rightAnchor, paddingTop: 6, paddingRight: 12)
+        
+        
         addSubview(counterMessageLabel)
         counterMessageLabel.centerX(inView: timestampLabel)
         counterMessageLabel.centerY(inView: profileImageView)
-        accessoryType = .disclosureIndicator
-        //        timestampLabel.text = recentChat?.date?.convertToTimeAgo(style: .abbreviated)
+        
+        addSubview(stackView)
+        stackView.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: bottomAnchor,
+                         right: counterMessageLabel.leftAnchor, paddingTop: 16, paddingLeft: 20, paddingBottom: 20, paddingRight: 30)
+        
+    }
+    
+    func configure(){
+        //                timestampLabel.text = recentChat?.date?.convertToTimeAgo(style: .abbreviated)
         
     }
     

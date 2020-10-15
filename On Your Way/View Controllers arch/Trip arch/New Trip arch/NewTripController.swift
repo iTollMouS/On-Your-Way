@@ -115,13 +115,13 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                                                                           setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
     private let basePriceTextField = CustomTextField(textColor: .white, placeholder: "base price?",
-                                                             placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
+                                                     placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     
     private lazy var basePriceContainerView = CustomContainerView(image:  UIImage(systemName: "dollarsign.circle.fill"),
-                                                                          textField: basePriceTextField, iconTintColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1),
-                                                                          dividerViewColor: .lightGray, dividerAlpa: 1,
-                                                                          setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
+                                                                  textField: basePriceTextField, iconTintColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1),
+                                                                  dividerViewColor: .lightGray, dividerAlpa: 1,
+                                                                  setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
     
     // MARK: - stacks
@@ -267,7 +267,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func handleDateAndTimeTapped(){
-    
+        
         
         guard let currentLocationCity = currentLocationCity else {
             self.showAlertMessage("Error", "Please make sure you choose current city and destination")
@@ -278,15 +278,15 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
             return
         }
         let tripEstimateArrival = getEstimatedTimeArrivalWith(currentLocation: currentLocationCity,
-                                                               destinationLocation: destinationLocationCity)
+                                                              destinationLocation: destinationLocationCity)
         
         guard let currentCity  = currentLocationTextField.text else {return}
         guard let destinationCity  = destinationTextField.text else { return }
         guard let pickupLocation  = meetingForPickupTextField.text else { return }
         guard let pickupTime  = timeToPickPackageTextField.text else { return }
         guard let basePrice = basePriceTextField.text else {return}
-
-
+        
+        
         let trip = Trip(userID: "",
                         tripID: UUID().uuidString,
                         tripDepartureTime: "",
@@ -298,7 +298,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                         packageType: "", timestamp: Date(),
                         packagePickupLocation: pickupLocation,
                         packagePickupTime: pickupTime)
-
+        
         print("DEBUG: user trip is \(trip)")
         let dateAndTimeController = DateAndTimeController()
         dateAndTimeController.delegate = self
@@ -322,6 +322,8 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     
 }
 
+
+// MARK: - Picker time and
 extension NewTripController : UIPickerViewDataSource, UIPickerViewDelegate {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -352,6 +354,7 @@ extension NewTripController : UIPickerViewDataSource, UIPickerViewDelegate {
 }
 
 
+// MARK: - UITextFieldDelegate
 extension NewTripController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -375,11 +378,13 @@ extension NewTripController: UITextFieldDelegate {
 // MARK: - DateAndTimeControllerDelegate
 extension NewTripController: DateAndTimeControllerDelegate {
     func dismissDateAndTimeController(_ view: DateAndTimeController) {
-    
+        
         view.dismiss(animated: true) { self.delegate?.dismissNewTripView(self) }
     }
 }
 
+
+// MARK: - Cities enum
 enum Cities: String, CaseIterable {
     case Arrass = "Arrass"
     case Riyadh = "Riyadh"
@@ -400,29 +405,29 @@ enum Cities: String, CaseIterable {
         case .Arrass: return (25.8517, 43.5222)
             
         case .Riyadh: return (24.7136, 46.6753)
-
+            
         case .Qassim: return (26.2078, 43.4837)
             
         case .Makkah: return (21.3891, 39.8579)
             
         case .Dammam: return (26.4207, 50.0888)
-
+            
         case .Abha: return (18.2465, 42.5117)
-
+            
         case .Jazan: return (16.8894, 42.5706)
-
+            
         case .Madinah: return (24.5247, 39.5692)
-
+            
         case .Buraidah: return (26.3592, 43.9818)
-
+            
         case .Tabuk: return (28.3835, 36.5662)
-
+            
         case .Hail: return (27.5114, 41.7208)
-
+            
         case .Najran: return (17.5656, 44.2289)
-
+            
         case .Sakaka: return (29.8780, 40.1043)
-               
+            
         }
     }
 }

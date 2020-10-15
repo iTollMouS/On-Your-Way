@@ -37,7 +37,7 @@ class NotificationsController: UITableViewController {
     }
     
      func fetchMyRequest(){
-        print("DEBUG: id is \(User.currentUser?.id)")
+
         guard let userId = User.currentUser?.id else { return }
         TripService.shared.fetchMyRequest(userId: userId) { packages in
             packages.forEach { package in

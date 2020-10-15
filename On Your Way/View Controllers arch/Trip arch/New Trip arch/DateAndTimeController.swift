@@ -9,6 +9,7 @@ import UIKit
 import FSCalendar
 import ProgressHUD
 
+// MARK: - protocol
 protocol DateAndTimeControllerDelegate: class {
     func dismissDateAndTimeController(_ view: DateAndTimeController)
 }
@@ -17,6 +18,10 @@ protocol DateAndTimeControllerDelegate: class {
 class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     
     
+    // MARK: - Delegate
+    weak var delegate: DateAndTimeControllerDelegate?
+    
+    // MARK: - dynamicScreen
     var dynamicScreen: CGFloat {
         var height: CGFloat = 200
         switch UIScreen.main.bounds.height {
@@ -39,11 +44,13 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     }
     
     
+    
+    // MARK: - scrollView
     private lazy var contentSizeView = CGSize(width: self.view.frame.width,
                                               height: self.view.frame.height + dynamicScreen)
     
     
-    weak var delegate: DateAndTimeControllerDelegate?
+    
     
     var trip: Trip?
     
