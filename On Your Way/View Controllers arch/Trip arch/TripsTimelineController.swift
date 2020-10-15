@@ -13,7 +13,7 @@ private let reuseIdentifier = "TripCell"
 
 class TripsTimelineController: UITableViewController {
     
-    
+    // MARK: - Properties
     let searchController = UISearchController(searchResultsController: nil)
     let refreshController = UIRefreshControl()
     
@@ -36,6 +36,13 @@ class TripsTimelineController: UITableViewController {
         searchController.searchBar.becomeFirstResponder()
     }
     
+    
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
+    
     func shouldShowOnboarding(){
         
         //        if !isAppAlreadyLaunchedOnce() {/* show onboarding in first launch*/}
@@ -45,14 +52,18 @@ class TripsTimelineController: UITableViewController {
         self.present(onboardingController, animated: true, completion: nil)
     }
     
+    
+    // MARK: - fetchTrips()
     func fetchTrips(){
         TripService.shared.fetchAllTrips { [weak self] in
+            /*note that in the func we made some omitting duplicate methods*/
             self?.trips = $0
             self?.tableView.reloadData()
         }
     }
     
     
+    // MARK: - configureTapBarController()
     func configureTapBarController(){
         tabBarController?.tabBar.isHidden = false
         let newTripController = NewTripController()
@@ -67,6 +78,7 @@ class TripsTimelineController: UITableViewController {
     }
     
     
+    // MARK: - configureRefreshController()
     func configureRefreshController(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
@@ -74,11 +86,7 @@ class TripsTimelineController: UITableViewController {
         tableView.refreshControl = refreshController
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    
+    // MARK: - configureUI()
     func configureUI(){
         
         tableView.register(TripCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -90,6 +98,8 @@ class TripsTimelineController: UITableViewController {
         
     }
     
+    
+    // MARK: - configureNavBar()
     func configureNavBar(){
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "Trips"
@@ -101,6 +111,8 @@ class TripsTimelineController: UITableViewController {
         definesPresentationContext = true
     }
     
+    
+    // MARK: - presentLoggingController()
     func presentLoggingController(){
         DispatchQueue.main.async { [weak self]  in
             let loginController = LoginController()
@@ -111,6 +123,8 @@ class TripsTimelineController: UITableViewController {
         }
     }
     
+    
+    // MARK: - fetch when scroll
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if refreshController.isRefreshing {
             fetchTrips()
@@ -127,13 +141,15 @@ class TripsTimelineController: UITableViewController {
 
 
 
-// MARK: - UITableViewDataSource, UITableViewDelegate
+// MARK: - table extensions
 extension TripsTimelineController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchController.isActive ? filteredTrips.count : trips.count
     }
     
+    
+    // MARK: - cellForRowAt
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripCell
         cell.trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
@@ -142,6 +158,8 @@ extension TripsTimelineController {
     }
     
     
+    
+    // MARK: - didSelectRowAt
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
         let tripDetailsController = TripDetailsController()
@@ -156,6 +174,8 @@ extension TripsTimelineController {
         return UITableView.automaticDimension
     }
     
+    
+    // MARK: - allow current user edit trip
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return trips[indexPath.row].userID == User.currentId ? true : false
     }

@@ -46,6 +46,14 @@ class TripDetailsController: UIViewController {
         fetchUser()
     }
     
+    
+    
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
+    
     func fetchUser(){
         guard let trip = trip else { return  }
         

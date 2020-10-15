@@ -206,6 +206,11 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         
     }
     
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         

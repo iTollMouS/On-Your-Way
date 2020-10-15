@@ -70,6 +70,28 @@ struct TripViewModel {
                                                                      .font: UIFont.systemFont(ofSize: 12)]))
         return attributedText
     }
+  
+    
+    var basePriceAttributedText: NSMutableAttributedString {
+        let attributedText = NSMutableAttributedString(string: "Base price: ",
+                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
+                                                                    .font: UIFont.boldSystemFont(ofSize: 15)])
+        attributedText.append(NSMutableAttributedString(string:"\(trip.basePrice)" ,
+                                                        attributes: [.foregroundColor : #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1),
+                                                                     .font: UIFont.systemFont(ofSize: 16)]))
+        return attributedText
+    }
+    
+    
+    var packageTypeAttributedText: NSMutableAttributedString {
+        let attributedText = NSMutableAttributedString(string: "Package Allowance:\n",
+                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
+                                                                    .font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSMutableAttributedString(string:"\(trip.packageType)" ,
+                                                        attributes: [.foregroundColor : #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1),
+                                                                     .font: UIFont.systemFont(ofSize: 16)]))
+        return attributedText
+    }
     
     init(trip: Trip) { self.trip = trip }
 }

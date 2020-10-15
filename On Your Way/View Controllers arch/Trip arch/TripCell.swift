@@ -177,7 +177,7 @@ class TripCell: UITableViewCell {
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 32, paddingLeft: 8)
         addSubview(fullnameLable)
-        fullnameLable.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 4)
+        fullnameLable.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 12)
         addSubview(timestampLabel)
         timestampLabel.anchor(top: topAnchor, right: rightAnchor, paddingTop: 36, paddingRight: 8)
         
@@ -210,10 +210,10 @@ class TripCell: UITableViewCell {
         }
         
         timestampLabel.text = viewModel.timestamp
-        priceBaseLabel.text = "\(viewModel.basePrice) SR"
+        priceBaseLabel.attributedText = viewModel.basePriceAttributedText
         destinationLocation.text = viewModel.destinationLocation
         departureTime.text = viewModel.tripDepartureTime
-        packagesTypes.text = viewModel.packageType
+        packagesTypes.attributedText = viewModel.packageTypeAttributedText
         currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
         destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
         
@@ -238,15 +238,7 @@ class TripCell: UITableViewCell {
                                  detailsText: String, detailsTextSize: CGFloat, detailsColor: UIColor,
                                  textAlignment: NSTextAlignment, setHeight: CGFloat  ) -> UILabel {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: titleText,
-                                                       attributes: [.foregroundColor : titleColor,
-                                                                    .font: UIFont.boldSystemFont(ofSize: titleTextSize)])
-        attributedText.append(NSMutableAttributedString(string: detailsText,
-                                                        attributes: [.foregroundColor : detailsColor,
-                                                                     .font: UIFont.systemFont(ofSize: detailsTextSize)]))
-        label.attributedText = attributedText
         label.setHeight(height: setHeight)
-        label.adjustsFontSizeToFitWidth = true
         label.textAlignment = textAlignment
         label.numberOfLines = 0
         return label

@@ -125,6 +125,8 @@ class PhoneLoginController: UIViewController {
         oneTimeCodeTextField.configure()
     }
     
+    
+    // MARK: - configureUI
     func configureUI(){
         // create blur view
         view.addSubview(blurView)
@@ -213,6 +215,7 @@ class PhoneLoginController: UIViewController {
         }
         
         oneTimeCodeTextField.didEnterLastDigit = { [weak self] verificationCode in
+            
             self?.showBlurView()
             self?.showLoader(true, message: "Please whit while we verify ..")
             guard let verificationID = userDefaults.string(forKey: "verificationID") else { return }

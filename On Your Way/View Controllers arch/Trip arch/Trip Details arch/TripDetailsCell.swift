@@ -114,15 +114,27 @@ class TripDetailsCell: UITableViewCell {
         return stackView
     }()
     
-    private lazy var priceBaseLabel = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
-                                                  detailsText: "", detailsTextSize: 18,
-                                                  detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 20)
+    
+    private lazy var priceBaseLabel: UILabel = {
+        let label = UILabel()
+        label.adjustsFontSizeToFitWidth = true
+        label.font = .boldSystemFont(ofSize: 16)
+        label.textColor = .white
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
     
     
-    private lazy var packagesTypes = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
-                                                 detailsText: "", detailsTextSize: 18,
-                                                 detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 50)
-    
+    private lazy var packagesTypes: UILabel = {
+        let label = UILabel()
+        label.adjustsFontSizeToFitWidth = true
+        label.font = .boldSystemFont(ofSize: 16)
+        label.textColor = .white
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -136,7 +148,9 @@ class TripDetailsCell: UITableViewCell {
         currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
         destinationLocation.attributedText = viewModel.destinationLocationInfoAttributedText
         
-        
+        print("DEBUG: \(viewModel.packagePickupTime)")
+        print("DEBUG: \(viewModel.packagePickupLocation)")
+        print("DEBUG: \(viewModel.packagePickupTime)")
         packagePickupLocationLabel.text = viewModel.packagePickupLocation
         packagePickupTime.text = viewModel.packagePickupTime
         
@@ -203,24 +217,6 @@ class TripDetailsCell: UITableViewCell {
                                                         attributes: [.foregroundColor : UIColor.lightGray,
                                                                      .font: UIFont.systemFont(ofSize: 12)]))
         return attributedText
-    }
-    
-    fileprivate func createLabel(titleText: String, titleTextSize: CGFloat , titleColor: UIColor,
-                                 detailsText: String, detailsTextSize: CGFloat, detailsColor: UIColor,
-                                 textAlignment: NSTextAlignment, setHeight: CGFloat  ) -> UILabel {
-        let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: titleText,
-                                                       attributes: [.foregroundColor : titleColor,
-                                                                    .font: UIFont.boldSystemFont(ofSize: titleTextSize)])
-        attributedText.append(NSMutableAttributedString(string: detailsText,
-                                                        attributes: [.foregroundColor : detailsColor,
-                                                                     .font: UIFont.systemFont(ofSize: detailsTextSize)]))
-        label.attributedText = attributedText
-        label.setHeight(height: setHeight)
-        label.adjustsFontSizeToFitWidth = true
-        label.textAlignment = textAlignment
-        label.numberOfLines = 0
-        return label
     }
     
 }

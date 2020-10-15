@@ -34,7 +34,7 @@ class PhoneOPTTextField: UITextField {
     lazy var digitsStackView = createLabelsStackView(with: 6)
     
     
-    private lazy var tap: UITapGestureRecognizer = {
+     lazy var tap: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer()
         tap.addTarget(self, action: #selector(becomeFirstResponder))
         return tap

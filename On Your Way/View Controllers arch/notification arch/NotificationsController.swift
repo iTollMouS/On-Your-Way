@@ -23,6 +23,12 @@ class NotificationsController: UITableViewController {
         configureRefreshController()
     }
     
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
+    
     func configureRefreshController(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
