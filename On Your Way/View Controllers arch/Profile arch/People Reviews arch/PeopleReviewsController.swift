@@ -359,6 +359,7 @@ extension PeopleReviewsController {
     }
     
     @objc func handleDismissPopView(){
+        guard let user = user else { return  }
         guard let reviewComment = reviewTextView.text else { return }
          let rate = ratingView.rating
         let reviewId = UUID().uuidString
@@ -366,7 +367,13 @@ extension PeopleReviewsController {
                             timestamp: Date(),
                             reviewComment: reviewComment,
                             rate: rate, reviewId: reviewId)
-        print("DEBUG:: review is \(review)")
+        ReviewService.shared.uploadNewReview(userId: user.id, review: review) { error in
+            if let error = error {
+                print("DEBUG: error while \(error.localizedDescription)")
+                return
+            }
+            print("DEBUG:: success")
+        }
         SwiftEntryKit.dismiss(.displayed) { [self] in reviewTextView.text = "" }
         
     }
