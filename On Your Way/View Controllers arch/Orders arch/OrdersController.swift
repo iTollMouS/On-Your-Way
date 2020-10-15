@@ -68,6 +68,7 @@ class OrdersController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
+        
     }
     
     
@@ -89,6 +90,9 @@ class OrdersController: UIViewController {
         self.tableView.reloadData()
     }
     
+    
+
+    
     func fetchTrips() {
 //        guard let viewModel = viewModel else { return }
         if User.currentUser?.id == nil { return }
@@ -100,6 +104,7 @@ class OrdersController: UIViewController {
                 }
                 self.newPackageOrder = Array(self.packagesDictionary.values)
                 self.newPackageOrder.sort(by: { $0.timestamp! > $1.timestamp! })
+                
                 self.rowsToDisplay = self.newPackageOrder
                 self.tableView.reloadData()}
            }

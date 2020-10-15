@@ -135,7 +135,12 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
 
 extension TripDetailsController : TripDetailsHeaderViewDelegate {
     func handleReviewsTapped(_ view: TripDetailsHeaderView) {
-        
+        let peopleReviewsController = PeopleReviewsController()
+        guard let trip = trip else { return  }
+        UserServices.shared.fetchUser(userId: trip.userID) { user in
+            peopleReviewsController.user = user
+            self.present(peopleReviewsController, animated: true, completion: nil)
+        }
     }
     
     func handleStartToChat(_ view: TripDetailsHeaderView) {
@@ -143,7 +148,6 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
         // it is working , now you have to implement the functionality
         print("DEBUG: ctart chat in veiw controller ")
     }
-    
     
 }
 
@@ -162,7 +166,6 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
         navBar.isModalInPresentation = true
         present(navBar, animated: true, completion: nil)
     }
-    
     
 }
 
@@ -201,15 +204,15 @@ extension TripDetailsController {
         //                         translate: .init(duration: 0.7, anchorPosition: .top, spring: .init(damping: 1, initialVelocity: 0)),
         //                         scale: .init(from: 0.6, to: 1, duration: 0.7),
         //                         fade: .init(from: 0.8, to: 1, duration: 0.3))
-//        attributes.lifecycleEvents.willAppear = { [self] in
-//
-//        }
+        //        attributes.lifecycleEvents.willAppear = { [self] in
+        //
+        //        }
         
-//        attributes.lifecycleEvents.didAppear = { [self] in
-//            // Executed after the entry animates inside
-//
-//            print("didAppear")
-//        }
+        //        attributes.lifecycleEvents.didAppear = { [self] in
+        //            // Executed after the entry animates inside
+        //
+        //            print("didAppear")
+        //        }
         
         attributes.lifecycleEvents.willDisappear = { [weak self] in
             self?.delegate?.handleShowRegistrationPageForNonusers(self!)

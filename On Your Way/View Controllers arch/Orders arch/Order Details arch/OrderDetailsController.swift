@@ -116,6 +116,11 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         case 0:
             let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
+                
+                
+                #warning("Make sure to have an ability ti delete it after 24 hours.")
+                
+                
                 self?.package.packageStatusTimestamp = (Date() + 86400).convertDate(formattedString: .formattedType2)
                 footer.rejectButton.setTitle("Your order will be deleted in \(self?.package.packageStatusTimestamp ?? Date().convertDate(formattedString: .formattedType2))", for: .normal)
                 footer.rejectButton.isEnabled = false
@@ -123,18 +128,34 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { error in
                     print("DEBUG:: success updating pachage ")
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 86400) { [unowned self] in
+                Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { timer in
                     TripService.shared.rejectPackageOrderWith(userId: User.currentId, packageId: self!.package.packageID) { [weak self] error in
                         self?.showCustomAlertView()
                     }
+
                 }
+                
+        
+                
             }))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
             
         //accept
         case 1:
-            print("")
+            let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
+                self?.package.packageStatusTimestamp = (Date() + 86400).convertDate(formattedString: .formattedType2)
+                footer.rejectButton.setTitle("You accepted the order in \(self?.package.packageStatusTimestamp ?? Date().convertDate(formattedString: .formattedType2))", for: .normal)
+                footer.rejectButton.isEnabled = false
+                self?.package.packageStatus = .packageIsAccepted
+                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { error in
+                    print("DEBUG:: success updating pachage ")
+                }
+                
+            }))
+            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
         // chat
         case 2:
             print("")

@@ -37,8 +37,8 @@ class NotificationsController: UITableViewController {
                 let tempPackage = package
                 self.packagesDictionary[tempPackage.packageID] = package
             }
-
             self.packages = Array(self.packagesDictionary.values)
+            self.packages.sort(by: { $0.timestamp! > $1.timestamp! })
             self.tableView.reloadData()
         }
     }
