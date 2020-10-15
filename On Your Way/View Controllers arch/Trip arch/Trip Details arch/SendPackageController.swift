@@ -10,6 +10,8 @@ import UIKit
 
 private let reuseIdentifier = "SendPackageCell"
 
+
+// MARK: - Protocol
 protocol SendPackageControllerDelegate: class {
     func handleDismissalView(_ view: SendPackageController)
 }
@@ -17,16 +19,11 @@ protocol SendPackageControllerDelegate: class {
 
 class SendPackageController: UIViewController {
     
-    
+    // MARK: - delegate
     weak var delegate: SendPackageControllerDelegate?
     
-    private let user: User
-    private let trip: Trip
-    private var imageIndex = 0
-    private let imagePicker = UIImagePickerController()
-    private lazy var packagesImage = SendPackageImagesStackView()
-    private var packageImageUrls = [String]()
-    private var limitedLetter = 150
+    
+    // MARK: - Properties
     
     private let packageTitleLabel: UILabel = {
         let label = UILabel()
@@ -89,6 +86,14 @@ class SendPackageController: UIViewController {
     
     
     
+    // MARK: - initializers
+    private let user: User
+    private let trip: Trip
+    private var imageIndex = 0
+    private let imagePicker = UIImagePickerController()
+    private lazy var packagesImage = SendPackageImagesStackView()
+    private var packageImageUrls = [String]()
+    private var limitedLetter = 150
     
     init(user: User, trip: Trip) {
         self.user = user
@@ -100,6 +105,8 @@ class SendPackageController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,6 +119,8 @@ class SendPackageController: UIViewController {
         configureNavBar()
     }
     
+    
+    // MARK: - configureNavBar()
     func configureNavBar(){
         
         configureNavigationBar(withTitle: user.username, largeTitleColor: .white, tintColor: .white,
@@ -123,10 +132,8 @@ class SendPackageController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    @objc func handleDismissal(){
-        dismiss(animated: true, completion: nil)
-    }
     
+    // MARK: - configureUI()
     func configureUI(){
         view.addSubview(packagesImage)
         packagesImage.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20 ,
@@ -155,6 +162,13 @@ class SendPackageController: UIViewController {
     }
     
     
+    
+    // MARK: - Actions
+    @objc func handleDismissal(){
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     @objc func handleTextInputChanger(){
         placeholderLabel.isHidden = !packageInfoTextView.text.isEmpty
         let attributedText = NSMutableAttributedString(string: "Write any additional info\n",
@@ -164,7 +178,7 @@ class SendPackageController: UIViewController {
         packageTitleLabel.attributedText = attributedText
     }
     
-    
+    // MARK: - Upload Package image
     fileprivate func uploadPackageImage(_ image: UIImage){
         let fileId = UUID().uuidString
         let fileDirectory = "Packages/" + "_\(fileId)/" + "\(User.currentId)" + ".jpg"
@@ -215,7 +229,7 @@ class SendPackageController: UIViewController {
     
 }
 
-
+// MARK: - TextView delegate
 extension SendPackageController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -227,9 +241,8 @@ extension SendPackageController: UITextViewDelegate {
 
 
 
+// MARK: - Top stack images delegate
 extension SendPackageController : SendPackageImagesStackViewDelegate {
-    
-    
     func imagesStackView(_ view: SendPackageImagesStackView, index: Int) {
         
         if !isConnectedToNetwork() {
@@ -239,20 +252,20 @@ extension SendPackageController : SendPackageImagesStackViewDelegate {
         }
         
         self.imageIndex = index
-        let alert = UIAlertController(title: nil, message: "اختر مصدر الصور", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "الكامرا", style: .default, handler: { (alertAction) in
+        let alert = UIAlertController(title: nil, message: "Choose photo source", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alertAction) in
             self.imagePicker.sourceType = .camera
             self.imagePicker.cameraCaptureMode = .photo
             self.imagePicker.showsCameraControls = true
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
         
-        alert.addAction(UIAlertAction(title: "البوم الصور", style: .default, handler: { (alertAction) in
+        alert.addAction(UIAlertAction(title: "Album", style: .default, handler: { (alertAction) in
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
         
-        alert.addAction(UIAlertAction(title: "الغاء", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 }
