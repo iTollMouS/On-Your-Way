@@ -27,9 +27,16 @@ class OrderDetailsController: UIViewController {
     private var images = [SKPhoto]()
     
     private lazy var customAlertView = UIView()
+    
+    private lazy var rejectButton = createButton(tagNumber: 0, title: "Reject Order\nThis order will be removed",
+                                                 backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
+    
+    private lazy var acceptButton = createButton(tagNumber: 1, title: "Accept", backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
+    private lazy var startChatButton = createButton(tagNumber: 2, title: "Chat", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
+    
+    
     private lazy var dismissalLabel: UILabel = {
         let label = UILabel()
-        label.text = "Okay"
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 24)
         label.textColor = .white
@@ -37,6 +44,8 @@ class OrderDetailsController: UIViewController {
         label.clipsToBounds = true
         label.setDimensions(height: 50, width: 200)
         label.layer.cornerRadius = 50 / 2
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action:#selector(handleViewDismissal)))
         return label
     }()
     var attributes = EKAttributes.bottomNote
@@ -93,6 +102,17 @@ class OrderDetailsController: UIViewController {
         tableView.fillSuperview()
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
     }
+    
+    @objc fileprivate func handleViewDismissal(_ sender: UIButton){
+        switch sender.tag {
+        case 0:
+            SwiftEntryKit.dismiss(.displayed) { [weak self] in self!.navigationController?.popViewController(animated: true) }
+        case 1:
+            SwiftEntryKit.dismiss(.displayed)
+        default: break
+        }
+        
+    }
 }
 
 extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
@@ -113,7 +133,7 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
 
 extension OrderDetailsController : OrderDetailHeaderDelegate {
     func handleShowImages(_ package: Package) {
-                
+        
         package.packageImages.forEach {
             FileStorage.downloadImage(imageUrl: $0) { [weak self] image in
                 guard let image = image else {return}
@@ -138,6 +158,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
                     self?.showCustomAlertView()
+                    
                 }
             }
             
@@ -149,14 +170,15 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         case 1:
             let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Accept order", style: .default, handler: { [weak self] (alertAction) in
-                
-                footer.acceptButton.setTitle("You accepted the order in \(Date().convertDate(formattedString: .formattedType2))", for: .normal)
-                footer.rejectButton.isEnabled = false
-                self?.package.packageStatus = .packageIsAccepted
-                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
-                    self?.showCustomAlertView()
-                }
-                
+                self?.showCustomAlertView()
+                //
+                //                footer.acceptButton.setTitle("You accepted the order in \(Date().convertDate(formattedString: .formattedType2))", for: .normal)
+                //                footer.rejectButton.isEnabled = false
+                //                self?.package.packageStatus = .packageIsAccepted
+                //                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
+                //                    self?.showCustomAlertView()
+                //                }
+                //
             }))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
@@ -187,14 +209,9 @@ extension OrderDetailsController {
         attributes.position = .bottom
         attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
         attributes.displayDuration = .infinity
-        attributes.entryInteraction = .dismiss
-        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        //        attributes.entryInteraction = .dismiss
+        attributes.scroll = .enabled(swipeable: false, pullbackAnimation: .jolt)
         attributes.statusBar = .light
-        
-        attributes.lifecycleEvents.willDisappear = { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }
-        
         SwiftEntryKit.display(entry: customAlertView, using: attributes)
     }
     
@@ -205,21 +222,33 @@ extension OrderDetailsController {
         animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
         animationView.play()
         animationView.loopMode = .loop
-        customAlertView.addSubview(dismissalLabel)
-        dismissalLabel.centerX(inView: animationView, topAnchor: animationView.bottomAnchor)
+        customAlertView.addSubview(rejectButton)
+        rejectButton.centerX(inView: animationView, topAnchor: animationView.bottomAnchor)
     }
 }
-//
-//                #warning("Make sure to have an ability ti delete it after 24 hours.")
-//
-//
-//                self?.package.packageStatusTimestamp = (Date() + 86400).convertDate(formattedString: .formattedType2)
-//                footer.rejectButton.setTitle("Your order will be deleted in \(self?.package.packageStatusTimestamp ?? Date().convertDate(formattedString: .formattedType2))", for: .normal)
-//                footer.rejectButton.isEnabled = false
-//                self?.package.packageStatus = .packageIsRejected
-//                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { error in
-//                    print("DEBUG:: success updating pachage ")
-//                }
-//                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { error in
-//                    print("DEBUG:: success updating pachage ")
-//                }
+
+extension OrderDetailsController{
+    
+    fileprivate  func createButton(tagNumber: Int, title: String, backgroundColor: UIColor, colorAlpa: CGFloat, systemName: String  ) -> UIButton {
+        let button = UIButton(type: .system)
+        button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
+        button.setTitleColor(.white, for: .normal)
+        button.tintColor = .white
+        button.setTitle("\(title) order  ", for: .normal)
+        button.setImage(UIImage(systemName: systemName), for: .normal)
+        button.backgroundColor = backgroundColor.withAlphaComponent(colorAlpa)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.addTarget(self, action: #selector(handleViewDismissal), for: .touchUpInside)
+        button.setDimensions(height: 50, width: 200)
+        button.titleLabel?.numberOfLines = 0
+        button.layer.cornerRadius = 50 / 2
+        button.tag = tagNumber
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.clipsToBounds = true
+        button.layer.masksToBounds = false
+        button.setupShadow(opacity: 0.5, radius: 16, offset: CGSize(width: 0.0, height: 8.0), color: backgroundColor)
+        return button
+    }
+}
+
+
