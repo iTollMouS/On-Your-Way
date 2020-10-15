@@ -16,6 +16,8 @@ protocol TripDetailsControllerDelegate: class {
 
 class TripDetailsController: UIViewController {
     
+    
+    // MARK: - Properties
     private lazy var headerView = TripDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
     private lazy var footerView = TripDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 100))
     
@@ -38,6 +40,8 @@ class TripDetailsController: UIViewController {
     var trip: Trip?
     var user: User?
     
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,14 +50,25 @@ class TripDetailsController: UIViewController {
         fetchUser()
     }
     
-    
-    
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return darkMode ? .lightContent : .lightContent
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        let peopleReviewsController = PeopleReviewsController()
+        peopleReviewsController.popupItem.title = "People Reviews "
+        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
+        peopleReviewsController.popupItem.progress = 0.34
+        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
+        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
+        tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - fetchUser()
     func fetchUser(){
         guard let trip = trip else { return  }
         
@@ -70,18 +85,6 @@ class TripDetailsController: UIViewController {
         }
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        let peopleReviewsController = PeopleReviewsController()
-        peopleReviewsController.popupItem.title = "People Reviews "
-        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
-        peopleReviewsController.popupItem.progress = 0.34
-        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
-        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
-        tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
-    }
-    
     
     func configureDelegates(){
         headerView.delegate = self
@@ -100,6 +103,7 @@ class TripDetailsController: UIViewController {
     
 }
 
+// MARK: - Table Extensions
 extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -141,6 +145,8 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
+
+// MARK: - Header Delegate
 extension TripDetailsController : TripDetailsHeaderViewDelegate {
     func handleReviewsTapped(_ view: TripDetailsHeaderView) {
         let peopleReviewsController = PeopleReviewsController()
@@ -159,6 +165,9 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
     
 }
 
+
+
+// MARK: - Footer Delegate
 extension TripDetailsController: TripDetailsFooterViewDelegate {
     
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
@@ -177,6 +186,8 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
     
 }
 
+
+// MARK: - SendPackageControllerDelegate
 extension TripDetailsController : SendPackageControllerDelegate {
     func handleDismissalView(_ view: SendPackageController) {
         view.dismiss(animated: true) { [weak self] in
@@ -187,6 +198,8 @@ extension TripDetailsController : SendPackageControllerDelegate {
     
 }
 
+
+// MARK: - showCustomAlertView()
 extension TripDetailsController {
     
     func showCustomAlertView() {

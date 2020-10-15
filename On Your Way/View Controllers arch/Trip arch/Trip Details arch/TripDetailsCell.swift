@@ -81,6 +81,7 @@ class TripDetailsCell: UITableViewCell {
     private lazy var packagePickupLocationLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
+        label.textColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -89,6 +90,7 @@ class TripDetailsCell: UITableViewCell {
     private lazy var packagePickupTime: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
+        label.textColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -119,7 +121,7 @@ class TripDetailsCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontSizeToFitWidth = true
         label.font = .boldSystemFont(ofSize: 16)
-        label.textColor = .white
+        label.textColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
         label.textAlignment = .left
         label.numberOfLines = 0
         return label
@@ -130,7 +132,7 @@ class TripDetailsCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontSizeToFitWidth = true
         label.font = .boldSystemFont(ofSize: 16)
-        label.textColor = .white
+        label.textColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
         label.textAlignment = .left
         label.numberOfLines = 0
         return label
