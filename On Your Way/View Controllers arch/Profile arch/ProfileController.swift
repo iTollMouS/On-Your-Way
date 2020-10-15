@@ -307,8 +307,6 @@ extension ProfileController: ProfileCellDelegate {
             user.phoneNumber = value
         case .section_2:
            print("")
-        case .section_3:
-            print("")
         case .section_4:
             print("")
         case .section_5:

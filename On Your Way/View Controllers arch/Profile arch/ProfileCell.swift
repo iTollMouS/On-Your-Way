@@ -21,7 +21,7 @@ class ProfileCell: UITableViewCell {
     
     weak var delegate: ProfileCellDelegate?
     
-     lazy var phoneNumberTextField: UITextField = {
+    lazy var phoneNumberTextField: UITextField = {
         let label = UITextField()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
@@ -30,16 +30,8 @@ class ProfileCell: UITableViewCell {
         return label
     }()
     
-     lazy var emailTextField: UILabel = {
+    lazy var emailTextField: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 20)
-        return label
-    }()
-    
-     lazy var passwordTextField: UITextField = {
-        let label = UITextField()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -103,11 +95,6 @@ class ProfileCell: UITableViewCell {
             addSubview(emailTextField)
             emailTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
             configureAccessory()
-        case .section_3:
-            addSubview(passwordTextField)
-            passwordTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-            passwordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-            configureAccessory()
         case .section_4:
             addSubview(appVersionLabel)
             appVersionLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
@@ -117,7 +104,7 @@ class ProfileCell: UITableViewCell {
             addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShowGuidelines)))
             accessoryButton.addTarget(self, action: #selector(handleShowGuidelines), for: .touchUpInside)
             configureAccessory()
-
+            
         }
     }
     
@@ -146,7 +133,7 @@ extension ProfileCell: UITextFieldDelegate {
             let newLength: Int = textField.text!.count + string.count - range.length
             let numberOnly = NSCharacterSet.init(charactersIn: "0123456789").inverted
             let strValid = string.rangeOfCharacter(from: numberOnly) == nil
-            return (strValid && (newLength <= 10))
+            return (strValid && (newLength <= 16))
         default:
             break
         }
@@ -158,7 +145,6 @@ extension ProfileCell: UITextFieldDelegate {
 enum ProfileViewModel: Int, CaseIterable {
     case section_1
     case section_2
-    case section_3
     case section_4
     case section_5
     
@@ -166,7 +152,6 @@ enum ProfileViewModel: Int, CaseIterable {
         switch self {
         case .section_1: return 1
         case .section_2: return 1
-        case .section_3: return 1
         case .section_4: return 1
         case .section_5: return 1
         }
@@ -176,7 +161,6 @@ enum ProfileViewModel: Int, CaseIterable {
         switch self {
         case .section_1: return "Phone Number"
         case .section_2: return "Email"
-        case .section_3: return "Password"
         case .section_4: return "App Version"
         case .section_5: return "COVID-19 Guidelines"
         }
@@ -185,7 +169,6 @@ enum ProfileViewModel: Int, CaseIterable {
         switch self {
         case .section_1: return "iphone"
         case .section_2: return "envelope"
-        case .section_3: return "lock"
         case .section_4: return "apps.iphone"
         case .section_5: return "staroflife.fill"
             
@@ -196,7 +179,6 @@ enum ProfileViewModel: Int, CaseIterable {
         switch self {
         case .section_1: return (24, 24)
         case .section_2: return (24, 24)
-        case .section_3: return (24, 24)
         case .section_4: return (28, 24)
         case .section_5: return (30, 24)
         }

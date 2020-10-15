@@ -38,7 +38,7 @@ class TripsTimelineController: UITableViewController {
     
     func shouldShowOnboarding(){
         
-//        if !isAppAlreadyLaunchedOnce() {/* show onboarding in first launch*/}
+        //        if !isAppAlreadyLaunchedOnce() {/* show onboarding in first launch*/}
         
         let onboardingController = OnboardingController()
         onboardingController.modalPresentationStyle = .custom
@@ -124,6 +124,9 @@ class TripsTimelineController: UITableViewController {
 // MARK: - Extensions
 
 
+
+
+
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension TripsTimelineController {
     
@@ -167,6 +170,8 @@ extension TripsTimelineController {
         return UISwipeActionsConfiguration(actions: [edit])
     }
     
+    
+    // MARK: - deleteMyTrip
     func deleteMyTrip(trip: Trip) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
             TripService.shared.deleteMyTrip(trip: trip) { error in
@@ -185,6 +190,8 @@ extension TripsTimelineController {
     }
     
     
+    
+    // MARK: - editMyTrip
     func editMyTrip(at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: "Edit") { (action, view, completion) in
             //            self.myTrips.remove(at: indexPath.row)
@@ -212,11 +219,6 @@ extension TripsTimelineController: TripCellDelegate {
     
 }
 
-
-
-
-
-
 // MARK: -  NewTripControllerDelegate
 extension TripsTimelineController: NewTripControllerDelegate {
     func dismissNewTripView(_ view: NewTripController) {
@@ -236,14 +238,27 @@ extension TripsTimelineController: LoginControllerDelegate {
     }
 }
 
+
+// MARK: - UISearchResultsUpdating
 extension TripsTimelineController :  UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        print("DEBUG: \(searchController.searchBar.text ?? "" )")
+        guard let searchedText = searchController.searchBar.text else { return }
+        
+        filteredTrips = trips.filter({ (trip) -> Bool in
+            return trip.destinationLocation.lowercased().contains(searchedText.lowercased())
+                || trip.currentLocation.lowercased().contains(searchedText.lowercased())
+                || trip.basePrice.lowercased().contains(searchedText.lowercased())
+        })
+        
+        tableView.reloadData()
+        
     }
 }
 
 
 
+
+// MARK: - TripDetailsControllerDelegate
 extension TripsTimelineController : TripDetailsControllerDelegate {
     func handleShowRegistrationPageForNonusers(_ view: TripDetailsController) {
         navigationController?.popViewController(animated: true)
