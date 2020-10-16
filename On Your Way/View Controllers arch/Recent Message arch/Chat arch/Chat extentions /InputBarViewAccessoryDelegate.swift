@@ -13,7 +13,9 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     
     
     func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {
-        print("DEBUG: typing ...")
+        if text != "" {
+            print("DEBUG: typing ...")
+        }
     }
     
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
@@ -22,7 +24,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         
         for component in inputBar.inputTextView.components {
             if let text = component as? String {
-                print("DEBUG:\(text)")
+                print("DEBUG: \(text)")
             }
         }
         messageInputBar.inputTextView.text = ""

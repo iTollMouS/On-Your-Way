@@ -13,7 +13,6 @@ import RealmSwift
 
 class ChatViewController: MessagesViewController {
     
-    
     private var chatRoomId = ""
     private var recipientId = ""
     private var recipientName = ""
@@ -56,8 +55,6 @@ class ChatViewController: MessagesViewController {
         super.viewDidLoad()
         configureMessageCollectionView()
         configureMessageInputBar()
-        print("DEBUG: \(recipientId)")
-        print("DEBUG: \(recipientName)")
         
     }
     
@@ -76,10 +73,7 @@ class ChatViewController: MessagesViewController {
        
         configureNavigationBar(withTitle: recipientName, largeTitleColor: .white, tintColor: .white,
                                navBarColor: #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1), smallTitleColorWhenScrolling: .dark,
-                               prefersLargeTitles: true)
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.prefersLargeTitles = true
+                               prefersLargeTitles: false)        
     }
     
     // step 1 to configure the chat delegate s
