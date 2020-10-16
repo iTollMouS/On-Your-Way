@@ -74,9 +74,9 @@ struct AuthServices {
                             pushId: "", avatarLink: profileImageUrl, status: "", password: "",
                             phoneNumber: "",
                             reviewsCount: 0)
+            saveUserLocally(user)
             emailVerification(userResult: authResult)
             UserServices.shared.saveUserToFirestore(user)
-            saveUserLocally(user)
             completion(error)
             
         }
@@ -95,8 +95,8 @@ struct AuthServices {
             guard let email = authResult.email else {return}
             let user = User(id: authResult.uid, username: fullname, email: email, pushId: "", avatarLink: "", status: "", password: "" ,phoneNumber: "",
                             reviewsCount: 0)
-            UserServices.shared.saveUserToFirestore(user)
             saveUserLocally(user)
+            UserServices.shared.saveUserToFirestore(user)
             completion(error)
             
         }

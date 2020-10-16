@@ -24,7 +24,8 @@ struct User: Codable, Equatable{
     /// to access to the current user who use the iphone
     
     static var currentId: String {
-        return Auth.auth().currentUser!.uid
+        guard let uid = Auth.auth().currentUser?.uid else { return "" }
+        return uid
     }
     
     static var currentUser: User? {

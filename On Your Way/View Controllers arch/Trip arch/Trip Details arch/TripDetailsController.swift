@@ -156,7 +156,7 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-// MARK: - Header Delegate
+// MARK:- Header Delegate + start chat
 extension TripDetailsController : TripDetailsHeaderViewDelegate {
     func handleReviewsTapped(_ view: TripDetailsHeaderView) {
         

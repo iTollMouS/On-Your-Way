@@ -48,9 +48,9 @@ class OrderDetailsFooterView: UIView {
         
         switch package.packageStatus {
         case .packageIsPending:
-            fallthrough
+            print("")
         case .packageIsRejected:
-            fallthrough
+            print("")
         case .packageIsAccepted:
             acceptButton.setTitle("You have accepted order in \(package.packageStatusTimestamp)", for: .normal)
         case .packageIsDelivered:

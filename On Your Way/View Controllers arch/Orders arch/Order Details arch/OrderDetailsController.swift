@@ -15,7 +15,7 @@ private let reuseIdentifier = "OrderDetail"
 class OrderDetailsController: UIViewController {
     
     
-    private var package: Package
+    
     
     
     //    failed
@@ -71,9 +71,12 @@ class OrderDetailsController: UIViewController {
         return animationView
     }()
     
+    private var package: Package
+    private var user: User
     
-    init(package: Package) {
+    init(package: Package, user: User) {
         self.package = package
+        self.user = user
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -171,20 +174,19 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Accept order", style: .default, handler: { [weak self] (alertAction) in
                 self?.showCustomAlertView()
-                //
-                //                footer.acceptButton.setTitle("You accepted the order in \(Date().convertDate(formattedString: .formattedType2))", for: .normal)
-                //                footer.rejectButton.isEnabled = false
-                //                self?.package.packageStatus = .packageIsAccepted
-                //                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
-                //                    self?.showCustomAlertView()
-                //                }
-                //
             }))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
         // chat
         case 2:
-            print("")
+
+            UserServices.shared.fetchUser(userId: package.userID) { [weak self] packageOwner in
+                let chatId = startChat(currentUser: packageOwner, selectedUser: self!.user)
+                let chatViewController = ChatViewController(chatRoomId: chatId,
+                                                            recipientId: packageOwner.id,
+                                                            recipientName: packageOwner.username)
+                self?.navigationController?.pushViewController(chatViewController, animated: true)
+            }
             
         default:
             break

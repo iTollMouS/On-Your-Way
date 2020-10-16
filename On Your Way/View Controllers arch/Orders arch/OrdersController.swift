@@ -61,19 +61,21 @@ class OrdersController: UIViewController {
     
     lazy var rowsToDisplay = newPackageOrder
     
+    private var user: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavBar()
         configureUI()
         configureRefreshController()
         fetchTrips()
+        fetchUser()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
-        
     }
     
     
@@ -93,6 +95,11 @@ class OrdersController: UIViewController {
         self.tableView.reloadData()
     }
     
+    func fetchUser(){
+        UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
+            self?.user = user
+        }
+    }
     
     
     
@@ -165,7 +172,8 @@ extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let package = rowsToDisplay[indexPath.row]
-        let orderDetailsController = OrderDetailsController(package: package)
+        guard let user = user else { return  }
+        let orderDetailsController = OrderDetailsController(package: package, user: user)
         navigationController?.pushViewController(orderDetailsController, animated: true)
     }
 }
