@@ -168,11 +168,12 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
     
         // step 0  :
         UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
+            print("DEBUG: user name is \(user.username)")
             
             let chatId = startChat(currentUser: user, selectedUser: self!.user)
             let chatViewController = ChatViewController(chatRoomId: chatId,
                                                         recipientId: self!.trip.userID,
-                                                        recipientName: user.username)
+                                                        recipientName: self!.user.username)
             chatViewController.hidesBottomBarWhenPushed = true
             self?.navigationController?.pushViewController(chatViewController, animated: true)
         }

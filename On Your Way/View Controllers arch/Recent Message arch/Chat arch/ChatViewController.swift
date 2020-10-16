@@ -33,7 +33,7 @@ class ChatViewController: MessagesViewController {
         let attachmentButton = InputBarButtonItem(type: .system)
         attachmentButton.image = UIImage(systemName: "paperclip.circle")
         attachmentButton.setSize(CGSize(width: 30, height: 30), animated: false)
-        attachmentButton.tintColor = .red
+        attachmentButton.tintColor = #colorLiteral(red: 0.3019607843, green: 0.3019607843, blue: 0.3019607843, alpha: 1)
         return attachmentButton
     }()
     
@@ -57,11 +57,15 @@ class ChatViewController: MessagesViewController {
         
         configureMessageCollectionView()
         configureMessageInputBar()
+        print("DEBUG: \(recipientId)")
+        print("DEBUG: \(recipientName)")
+        
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        title = recipientName
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         
     }
