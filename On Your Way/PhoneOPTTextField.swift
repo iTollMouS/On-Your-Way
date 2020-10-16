@@ -8,24 +8,10 @@
 import UIKit
 
 class PhoneOPTTextField: UITextField {
-    
-    
-    /*
-     
-     // call this in the main controller
-     
-     oneTimeCodeTextField.configure()
-     oneTimeCodeTextField.didEnterLastDigit = { [weak self] code in
-         self?.showAlertMessage("Success!", "Success enter last digit \(code)")
-     }
-     
-     */
-    
+   
     var didEnterLastDigit: ((String) -> Void)?
     
     var defaultCharacter = "-"
-    
-    
     
     private var isConfigured = false
     private var digitsLabel = [UILabel]()

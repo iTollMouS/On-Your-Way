@@ -21,6 +21,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
+      
     }
     
     

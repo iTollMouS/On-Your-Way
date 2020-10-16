@@ -18,15 +18,11 @@ struct userCredential {
     let profileImageUrl: String
 }
 
-
-
-
 // MARK: -  AuthServices
 struct AuthServices {
     static let shared = AuthServices()
     
     private init() {}
-    
     
     // MARK: - typealias APICompletion
     typealias APICompletion = ((Error?) -> Void)
@@ -53,7 +49,6 @@ struct AuthServices {
             completion(error)
         }
     }
-    
     
     // MARK: - registerUserWithGoogle
     func registerUserWithGoogle(didSignInfo user: GIDGoogleUser, completion: @escaping APICompletion) {
@@ -199,5 +194,4 @@ struct AuthServices {
             }
         }
     }
-    
 }

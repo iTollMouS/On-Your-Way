@@ -13,6 +13,7 @@ import RealmSwift
 
 class ChatViewController: MessagesViewController {
     
+    // MARK: - Properties
     private var chatRoomId = ""
     private var recipientId = ""
     private var recipientName = ""
@@ -51,10 +52,14 @@ class ChatViewController: MessagesViewController {
     }
     
     
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMessageCollectionView()
         configureMessageInputBar()
+        
+        
         
     }
     
@@ -69,14 +74,18 @@ class ChatViewController: MessagesViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
+    
+    
+    // MARK: - configureNavBar
     fileprivate func configureNavBar(){
-       
+        
         configureNavigationBar(withTitle: recipientName, largeTitleColor: .white, tintColor: .white,
                                navBarColor: #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1), smallTitleColorWhenScrolling: .dark,
-                               prefersLargeTitles: false)        
+                               prefersLargeTitles: false)
     }
     
     // step 1 to configure the chat delegate s
+    // MARK: - configureMessageCollectionView
     fileprivate func configureMessageCollectionView(){
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messageCellDelegate = self
@@ -89,11 +98,13 @@ class ChatViewController: MessagesViewController {
         
     }
     
+    
+    // MARK: - configureMessageInputBar
     fileprivate func configureMessageInputBar(){
         messageInputBar.delegate = self
         messageInputBar.setStackViewItems([attachmentButton], forStack: .left, animated: false)
         attachmentButton.onTouchUpInside { [weak self ] action in
-            print("DEBUG: attach button pressed")
+            
         }
         messageInputBar.setLeftStackViewWidthConstant(to: 42, animated: false)
         messageInputBar.inputTextView.isImagePasteEnabled = true
@@ -101,6 +112,17 @@ class ChatViewController: MessagesViewController {
         messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         messageInputBar.inputTextView.backgroundColor = #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1)
         
+    }
+    
+    // MARK: - Actions
+    // we send any outgoing message
+    func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
+
+        print("DEBUG: then we get the text here \(text)")
+        
+        
+        OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
+                                    audio: audio, location: location, memberIds: [User.currentId, recipientId])
     }
     
     

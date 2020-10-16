@@ -86,6 +86,9 @@
 		835C88082539C2A100D49923 /* MKSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88072539C2A100D49923 /* MKSender.swift */; };
 		835C880A2539C3D400D49923 /* MKMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88092539C3D400D49923 /* MKMessage.swift */; };
 		835C880C2539CC3B00D49923 /* LocalMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C880B2539CC3B00D49923 /* LocalMessage.swift */; };
+		835C880F2539F58D00D49923 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C880E2539F58D00D49923 /* RealmService.swift */; };
+		835C88112539FB2F00D49923 /* OutgoingMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88102539FB2F00D49923 /* OutgoingMessageService.swift */; };
+		835C8813253A0D8A00D49923 /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C8812253A0D8A00D49923 /* MessageService.swift */; };
 		83B763552536DA7E00503A9D /* cachAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763542536DA7E00503A9D /* cachAnimation.json */; };
 		83B763592536DB9100503A9D /* bell.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763582536DB9100503A9D /* bell.json */; };
 		83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635A2536DEA900503A9D /* chat_messenger.json */; };
@@ -209,6 +212,9 @@
 		835C88072539C2A100D49923 /* MKSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKSender.swift; sourceTree = "<group>"; };
 		835C88092539C3D400D49923 /* MKMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMessage.swift; sourceTree = "<group>"; };
 		835C880B2539CC3B00D49923 /* LocalMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMessage.swift; sourceTree = "<group>"; };
+		835C880E2539F58D00D49923 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
+		835C88102539FB2F00D49923 /* OutgoingMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessageService.swift; sourceTree = "<group>"; };
+		835C8812253A0D8A00D49923 /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
 		83B763542536DA7E00503A9D /* cachAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cachAnimation.json; sourceTree = "<group>"; };
 		83B763582536DB9100503A9D /* bell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bell.json; sourceTree = "<group>"; };
 		83B7635A2536DEA900503A9D /* chat_messenger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chat_messenger.json; sourceTree = "<group>"; };
@@ -388,6 +394,8 @@
 				834C99232532E61500BE8691 /* FileStorage.swift */,
 				834C99212532D7B900BE8691 /* UserServices.swift */,
 				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
+				835C8812253A0D8A00D49923 /* MessageService.swift */,
+				835C88102539FB2F00D49923 /* OutgoingMessageService.swift */,
 				83B7637C253819FF00503A9D /* ReviewService.swift */,
 				834C9939253384C700BE8691 /* StartChat.swift */,
 				834C99422533A92800BE8691 /* TripService.swift */,
@@ -515,6 +523,7 @@
 			isa = PBXGroup;
 			children = (
 				835C880B2539CC3B00D49923 /* LocalMessage.swift */,
+				835C880E2539F58D00D49923 /* RealmService.swift */,
 			);
 			path = "Realm arch";
 			sourceTree = "<group>";
@@ -750,6 +759,7 @@
 				83D7D4302535EB6300FA88F0 /* OrderDetailsFooterView.swift in Sources */,
 				83D7D42C2535E68F00FA88F0 /* OrderDetailHeader.swift in Sources */,
 				834C99242532E61500BE8691 /* FileStorage.swift in Sources */,
+				835C880F2539F58D00D49923 /* RealmService.swift in Sources */,
 				83B7637B2538192300503A9D /* Review.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
 				834C992B2533542B00BE8691 /* TripCell.swift in Sources */,
@@ -773,6 +783,7 @@
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
 				834C993A253384C700BE8691 /* StartChat.swift in Sources */,
 				834C99222532D7B900BE8691 /* UserServices.swift in Sources */,
+				835C8813253A0D8A00D49923 /* MessageService.swift in Sources */,
 				83D7D42625359DC400FA88F0 /* SendPackageImagesStackView.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
 				835C88022539BD5100D49923 /* MessageDisplayDelegate.swift in Sources */,
@@ -782,6 +793,7 @@
 				834C98FE253231E000BE8691 /* TableHeaderView.swift in Sources */,
 				834C988B25312A7600BE8691 /* ProfileController.swift in Sources */,
 				834C990C253232D700BE8691 /* OnboardingCell.swift in Sources */,
+				835C88112539FB2F00D49923 /* OutgoingMessageService.swift in Sources */,
 				83D7D41E2534F55E00FA88F0 /* UpdateEmailController.swift in Sources */,
 				834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */,
 				83B7637D253819FF00503A9D /* ReviewService.swift in Sources */,
