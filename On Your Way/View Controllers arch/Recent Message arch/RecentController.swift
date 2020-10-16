@@ -131,6 +131,14 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let recent = searchController.isActive ?  filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
+        FirebaseRecentService.shared.clearUnreadCounter(recent: recent)
+            // show chat room
+    }
+    
+    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         true
     }
@@ -138,7 +146,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let recent = searchController.isActive ?  filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
-            FirebaseRecentService.shared.deleteRecent(recent) { [weak self] error in
+            FirebaseRecentService.shared.deleteRecent(recent) { error in
                 print("DEBUG: success deleting recent")
             }
             searchController.isActive ? self.filteredAllRecent.remove(at: indexPath.row) : self.allRecent.remove(at: indexPath.row)
@@ -146,9 +154,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
+  
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if self.refreshController.isRefreshing {

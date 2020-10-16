@@ -60,7 +60,7 @@ func createRecentChat(chatRoomId: String, users: [User]) {
                                     profileImageView: selectedUser.avatarLink)
             print("DEBUG: create new recent who doesn't have one ", currentUser.id, selectedUser.id)
             // step 7
-            FirebaseRecentService.shared.addRecent(recent) { error in
+            FirebaseRecentService.shared.saveRecent(recent) { error in
                 if let error = error {
                     print("DEBUG: errir while maing chat \(error)")
                     return

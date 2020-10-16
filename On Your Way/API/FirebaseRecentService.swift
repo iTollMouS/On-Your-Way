@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestoreSwift
 
 class FirebaseRecentService {
     
@@ -15,11 +16,33 @@ class FirebaseRecentService {
     private init () {}
     
     // step 6 
-    func addRecent(_ recent: RecentChat, completion: ((Error?) -> Void)?){
+    func saveRecent(_ recent: RecentChat, completion: ((Error?) -> Void)?){
         do {
             try Firestore.firestore().collection("recents").document(recent.id).setData(from: recent, merge: true, completion: completion)
         } catch (let error){
             print("DEBUG: error while making a char \(error.localizedDescription)")
+        }
+    }
+    
+    // step 9 + also you when you are in the chat room , you should make the recent zero
+    func clearUnreadCounter(recent: RecentChat){
+        var recentTemp = recent
+        recentTemp.unreadCounter = 0
+        saveRecent(recentTemp, completion: nil)
+    }
+    
+    // step 10 make the counter = 0 while inside chat , gets active when we only leave the chat room
+    func resetRecentCounter(chatRoomId: String){
+        Firestore.firestore().collection("recents").whereField(kCHATROOMID, isEqualTo: chatRoomId)
+            .whereField(kSENDERID, isEqualTo: User.currentId).getDocuments { (snapshot, error) in
+                guard let snapshot = snapshot?.documents else {return}
+                let allRecent = snapshot.compactMap { (queryDocumentSnapshot) -> RecentChat? in
+                    return try? queryDocumentSnapshot.data(as: RecentChat.self)
+                }
+                if allRecent.count > 0 {
+                    guard let firstRecent = allRecent.first else { return }
+                    self.clearUnreadCounter(recent: firstRecent)
+                }
         }
     }
     

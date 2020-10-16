@@ -160,12 +160,12 @@ extension TripsTimelineController {
     
     // MARK: - didSelectRowAt
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
         UserServices.shared.fetchUser(userId: trip.userID) { [weak self] user in
             let tripDetailsController = TripDetailsController(user: user, trip: trip)
             tripDetailsController.delegate = self
             self?.navigationController?.pushViewController(tripDetailsController, animated: true)
-            tableView.deselectRow(at: indexPath, animated: true)
         }
         
     }
@@ -174,11 +174,11 @@ extension TripsTimelineController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
-            TripService.shared.deleteMyTrip(trip: trip) { [weak self] error in
+            TripService.shared.deleteMyTrip(trip: trip) { error in
                 print("DEBUG: error while deleting trip")
-                self!.searchController.isActive ? self?.filteredTrips.remove(at: indexPath.row) : self?.trips.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
             }
+            searchController.isActive ? self.filteredTrips.remove(at: indexPath.row) : self.trips.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     
