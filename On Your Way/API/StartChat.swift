@@ -17,25 +17,36 @@ func startChat(currentUser: User, selectedUser: User) -> String {
     
 }
 
+// step 2 : whosoever tap on the selected user , the result will be always the same
+func chatRoomIdMaker(currentUser: String, selectedUser: String) -> String {
+    // we compare the 2 users id and combine them together
+    var chatRoomId = ""
+    let value = currentUser.compare(selectedUser).rawValue
+    chatRoomId = value < 0 ? (currentUser + selectedUser) : (selectedUser + currentUser)
+    return chatRoomId
+}
+
+
 // step 3   create chat room id by combine 2 users ids
 func createRecentChat(chatRoomId: String, users: [User]) {
     
     guard let currentUser = users.first?.id else { return  }
     guard let selectedUser = users.last?.id else { return }
-    var members = [ currentUser, selectedUser ]
+    var members = [ currentUser , selectedUser ]
     
     print("DEBUG: members to create cerent is \(members)")
     
-    Firestore.firestore().collection("recent").whereField(kCHATROOMID, isEqualTo: chatRoomId).getDocuments { (snapshot, error) in
+    Firestore.firestore().collection("recents").whereField(kCHATROOMID, isEqualTo: chatRoomId).getDocuments { (snapshot, error) in
         guard let snapshot = snapshot else {return}
         
         if !snapshot.isEmpty {
             members = removeMemberWhoHasRecent(snapshot: snapshot, members: members)
-            print("DEBUG: members to updates \(members)")
+            print("DEBUG: check who doesnr have the recent \(members)")
         }
         
         for user in members {
-            print("DEBUG: members to updates \(user)")
+            print("DEBUG: Creating recent for the user \(user)")
+            // only gets call when any user dont have recent
             let currentUser = user == User.currentId ? User.currentUser! : getReceiverFrom(users: users)
             let selectedUser = user == User.currentId ?  getReceiverFrom(users: users) : User.currentUser!
             let recent = RecentChat(id: UUID().uuidString,
@@ -44,9 +55,10 @@ func createRecentChat(chatRoomId: String, users: [User]) {
                                     senderName: currentUser.username,
                                     receiverId: selectedUser.id,
                                     receiverName: selectedUser.username,
-                                    date: Date(), memberIds: members,
+                                    date: Date(), memberIds: [currentUser.id, selectedUser.id],
                                     lastMessage: "", unreadCounter: 0,
                                     profileImageView: selectedUser.avatarLink)
+            print("DEBUG: create new recent who doesn't have one ", currentUser.id, selectedUser.id)
             // step 7
             FirebaseRecentService.shared.addRecent(recent) { error in
                 if let error = error {
@@ -64,7 +76,7 @@ func createRecentChat(chatRoomId: String, users: [User]) {
 func removeMemberWhoHasRecent(snapshot: QuerySnapshot, members: [String]) -> [String] {
     
     var members = members
-    
+    print("DEBUG: members are ", members)
     for recentData in snapshot.documents {
         let currentRecent = recentData.data() as Dictionary
         
@@ -74,6 +86,7 @@ func removeMemberWhoHasRecent(snapshot: QuerySnapshot, members: [String]) -> [St
             }
         }
     }
+    print("DEBUG: the person who needs update is \(members) ")
     
     return members
 }
@@ -85,12 +98,3 @@ func getReceiverFrom(users: [User]) -> User {
     return allUsers.first!
 }
 
-
-// step 2 : whosoever tap on the selected user , the result will be always the same
-func chatRoomIdMaker(currentUser: String, selectedUser: String) -> String {
-    // we compare the 2 users id and combine them together
-    var chatRoomId = ""
-    let value = currentUser.compare(selectedUser).rawValue
-    chatRoomId = value < 0 ? (currentUser + selectedUser) : (selectedUser + currentUser)
-    return chatRoomId
-}

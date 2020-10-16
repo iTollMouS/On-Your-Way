@@ -24,7 +24,7 @@ class FirebaseRecentService {
     }
     
     func fetchRecentChatFromFirestore(completion: @escaping([RecentChat]) -> Void) {
-        Firestore.firestore().collection("recent").whereField(kSENDERID, isEqualTo: User.currentId).addSnapshotListener { (snapshot, error) in
+        Firestore.firestore().collection("recents").whereField(kSENDERID, isEqualTo: User.currentId).addSnapshotListener { (snapshot, error) in
             var recents: [RecentChat] = []
             guard let snapshot = snapshot else {return}
             
