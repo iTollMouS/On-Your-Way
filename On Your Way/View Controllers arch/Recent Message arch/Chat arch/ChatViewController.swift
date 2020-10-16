@@ -37,6 +37,8 @@ class ChatViewController: MessagesViewController {
         return attachmentButton
     }()
     
+    var mkMessages: [MKMessage] = []
+    
     init(chatRoomId: String, recipientId: String, recipientName: String) {
         
         self.chatRoomId =  chatRoomId

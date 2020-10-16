@@ -8,6 +8,7 @@
 import Foundation
 import RealmSwift
 
+/// from Realm 
 class LocalMessage: Object, Codable {
     
     @objc dynamic var id = ""
@@ -26,7 +27,7 @@ class LocalMessage: Object, Codable {
     @objc dynamic var latitude = 0.0
     @objc dynamic var longitude = ""
     @objc dynamic var audioDuration = ""
-
+    
     
     
     override class func primaryKey() -> String? { return "id" }

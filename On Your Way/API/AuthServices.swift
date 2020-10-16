@@ -102,6 +102,8 @@ struct AuthServices {
         }
     }
     
+    
+    // MARK: - updateEmailAndPassword
     func updateEmailAndPassword(email: String, password: String, completion: @escaping APICompletion){
         Auth.auth().currentUser?.updateEmail(to: email, completion: { error in
             if let error = error {
