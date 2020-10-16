@@ -23,6 +23,9 @@ class FirebaseRecentService {
         }
     }
     
+    func deleteRecent(_ recent: RecentChat, completion: ((Error?) -> Void)?){
+        Firestore.firestore().collection("recents").document(recent.id).delete(completion: completion)
+    }
     
     // step 8 : after we get the user who are news / or who deleted the recent chat , we upload it under his id kSENDERID
     func fetchRecentChatFromFirestore(completion: @escaping([RecentChat]) -> Void) {

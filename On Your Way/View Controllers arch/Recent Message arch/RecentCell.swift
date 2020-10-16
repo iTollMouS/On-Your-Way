@@ -11,10 +11,9 @@ class RecentCell: UITableViewCell {
     
     
     var recentChat: RecentChat?{
-        didSet{}
+        didSet{ configure() }
     }
     
-//    configure()
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 50, width: 50)
@@ -101,8 +100,8 @@ class RecentCell: UITableViewCell {
         
     }
     
-    func configure(recent: RecentChat){
-        
+    func configure(){
+        guard let recent = recentChat else { return  }
         timestampLabel.text = recent.date?.convertToTimeAgo(style: .abbreviated)
         
         if recent.unreadCounter != 0 {

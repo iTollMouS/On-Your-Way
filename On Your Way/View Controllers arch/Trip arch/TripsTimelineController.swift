@@ -148,7 +148,6 @@ extension TripsTimelineController {
         return searchController.isActive ? filteredTrips.count : trips.count
     }
     
-    
     // MARK: - cellForRowAt
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripCell
@@ -168,9 +167,20 @@ extension TripsTimelineController {
             self?.navigationController?.pushViewController(tripDetailsController, animated: true)
             tableView.deselectRow(at: indexPath, animated: true)
         }
-       
+        
     }
     
+    // MARK: - Delete row
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
+            TripService.shared.deleteMyTrip(trip: trip) { [weak self] error in
+                print("DEBUG: error while deleting trip")
+                self!.searchController.isActive ? self?.filteredTrips.remove(at: indexPath.row) : self?.trips.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
@@ -182,55 +192,12 @@ extension TripsTimelineController {
         return trips[indexPath.row].userID == User.currentId ? true : false
     }
     
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = deleteMyTrip(trip: trips[indexPath.row])
-        return UISwipeActionsConfiguration(actions: [delete])
-    }
-    
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let edit = editMyTrip(at: indexPath)
-        return UISwipeActionsConfiguration(actions: [edit])
-    }
-    
-    
-    // MARK: - deleteMyTrip
-    func deleteMyTrip(trip: Trip) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            TripService.shared.deleteMyTrip(trip: trip) { error in
-                if let error = error {
-                    self.showAlertMessage("Error", "error with \(error.localizedDescription)")
-                    return
-                }
-                self.fetchTrips()
-                self.tableView.reloadData()
-            }
-        }
-        
-        action.image = UIImage(systemName: "trash.circle.fill")
-        action.backgroundColor = .systemRed
-        return action
-    }
-    
-    
-    
-    // MARK: - editMyTrip
-    func editMyTrip(at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: "Edit") { (action, view, completion) in
-            //            self.myTrips.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            self.tableView.reloadData()
-        }
-        action.image = #imageLiteral(resourceName: "RatingStarEmpty")
-        action.backgroundColor = .blueLightFont
-        return action
-    }
-    
 }
 
 // MARK: -  TripCellDelegate
 extension TripsTimelineController: TripCellDelegate {
     func handleDisplayReviews(_ cell: UITableViewCell, selectedTrip: Trip) {
-
+        
         UserServices.shared.fetchUser(userId: selectedTrip.userID) { [weak self] user in
             let peopleReviewsController = PeopleReviewsController(user: user)
             self?.navigationController?.pushViewController(peopleReviewsController, animated: true)
@@ -286,3 +253,48 @@ extension TripsTimelineController : TripDetailsControllerDelegate {
         presentLoggingController()
     }
 }
+
+
+/*
+ override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+ let delete = deleteMyTrip(at: indexPath)
+ return UISwipeActionsConfiguration(actions: [delete])
+ }
+ 
+ override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+ let edit = editMyTrip(at: indexPath)
+ return UISwipeActionsConfiguration(actions: [edit])
+ }
+ 
+ 
+ // MARK: - deleteMyTrip
+ func deleteMyTrip(at indexPath: IndexPath) -> UIContextualAction {
+ let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+ TripService.shared.deleteMyTrip(trip: trip) { error in
+ if let error = error {
+ self.showAlertMessage("Error", "error with \(error.localizedDescription)")
+ return
+ }
+ self.fetchTrips()
+ self.tableView.reloadData()
+ }
+ }
+ 
+ action.image = UIImage(systemName: "trash.circle.fill")
+ action.backgroundColor = .systemRed
+ return action
+ }
+ 
+ 
+ 
+ // MARK: - editMyTrip
+ func editMyTrip(at indexPath: IndexPath) -> UIContextualAction {
+ let action = UIContextualAction(style: .normal, title: "Edit") { (action, view, completion) in
+ //            self.myTrips.remove(at: indexPath.row)
+ self.tableView.deleteRows(at: [indexPath], with: .automatic)
+ self.tableView.reloadData()
+ }
+ action.image = #imageLiteral(resourceName: "RatingStarEmpty")
+ action.backgroundColor = .blueLightFont
+ return action
+ }*/

@@ -58,7 +58,7 @@ class RecentController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
     }
     
-    // step 10
+    
     fileprivate func fetchRecentChats(){
         FirebaseRecentService.shared.fetchRecentChatFromFirestore { allRecent in
             self.allRecent = allRecent
@@ -127,9 +127,23 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
-        let recent = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
-        cell.configure(recent: recent)
+        cell.recentChat = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let recent = searchController.isActive ?  filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
+            FirebaseRecentService.shared.deleteRecent(recent) { [weak self] error in
+                print("DEBUG: success deleting recent")
+            }
+            searchController.isActive ? self.filteredAllRecent.remove(at: indexPath.row) : self.allRecent.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -149,7 +163,10 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
 extension RecentController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        print("DEBUG: \(searchController.searchBar.text)")
+        guard let searchedText = searchController.searchBar.text else { return }
+        filteredAllRecent = allRecent.filter({ recent -> Bool in
+            return recent.receiverName.lowercased().contains(searchedText.lowercased())
+        })
     }
     
 }
