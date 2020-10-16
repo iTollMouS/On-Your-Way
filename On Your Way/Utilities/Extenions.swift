@@ -211,7 +211,7 @@ extension UIViewController {
     func configureNavigationBar(withTitle title: String,
                                 largeTitleColor: UIColor,
                                 tintColor: UIColor,
-                                navBarColor: UIColor,
+                                navBarColor: UIColor? = nil,
                                 titleView: UIView? = nil,
                                 smallTitleColorWhenScrolling: UIUserInterfaceStyle,
                                 prefersLargeTitles: Bool) {

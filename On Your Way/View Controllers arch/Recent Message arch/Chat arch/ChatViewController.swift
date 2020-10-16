@@ -32,8 +32,8 @@ class ChatViewController: MessagesViewController {
     private let attachmentButton: InputBarButtonItem = {
         let attachmentButton = InputBarButtonItem(type: .system)
         attachmentButton.image = UIImage(systemName: "paperclip.circle")
-        attachmentButton.setSize(CGSize(width: 30, height: 30), animated: false)
-        attachmentButton.tintColor = #colorLiteral(red: 0.3019607843, green: 0.3019607843, blue: 0.3019607843, alpha: 1)
+        attachmentButton.setSize(CGSize(width: 30, height: 40), animated: false)
+        attachmentButton.tintColor = .systemBlue
         return attachmentButton
     }()
     
@@ -54,7 +54,6 @@ class ChatViewController: MessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureMessageCollectionView()
         configureMessageInputBar()
         print("DEBUG: \(recipientId)")
@@ -62,17 +61,25 @@ class ChatViewController: MessagesViewController {
         
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        title = recipientName
+        configureNavBar()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    fileprivate func configureNavBar(){
+       
+        configureNavigationBar(withTitle: recipientName, largeTitleColor: .white, tintColor: .white,
+                               navBarColor: #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1), smallTitleColorWhenScrolling: .dark,
+                               prefersLargeTitles: true)
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // step 1 to configure the chat delegate s
@@ -81,6 +88,7 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messageCellDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messagesLayoutDelegate = self
+        messagesCollectionView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         scrollsToBottomOnKeyboardBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true
         messagesCollectionView.refreshControl = refreshController
@@ -93,8 +101,9 @@ class ChatViewController: MessagesViewController {
         attachmentButton.onTouchUpInside { [weak self ] action in
             print("DEBUG: attach button pressed")
         }
-        messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
+        messageInputBar.setLeftStackViewWidthConstant(to: 42, animated: false)
         messageInputBar.inputTextView.isImagePasteEnabled = true
+        messageInputBar.inputTextView.layer.cornerRadius = 20
         messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         messageInputBar.inputTextView.backgroundColor = #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1)
         
