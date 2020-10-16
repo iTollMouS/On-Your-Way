@@ -14,7 +14,7 @@ class FirebaseRecentService {
     
     private init () {}
     
-    
+    // step 6 
     func addRecent(_ recent: RecentChat, completion: ((Error?) -> Void)?){
         do {
             try Firestore.firestore().collection("recents").document(recent.id).setData(from: recent, merge: true, completion: completion)

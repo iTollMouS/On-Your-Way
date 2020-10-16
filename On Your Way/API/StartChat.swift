@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 
 
-
+// step 1
 func startChat(currentUser: User, selectedUser: User) -> String {
     let chatRoomId = chatRoomIdMaker(currentUser: currentUser.id, selectedUser: selectedUser.id)
     createRecentChat(chatRoomId: chatRoomId, users: [currentUser, selectedUser])
@@ -17,21 +17,25 @@ func startChat(currentUser: User, selectedUser: User) -> String {
     
 }
 
-// create chat room id by combine 2 users ids
+// step 3   create chat room id by combine 2 users ids
 func createRecentChat(chatRoomId: String, users: [User]) {
     
     guard let currentUser = users.first?.id else { return  }
     guard let selectedUser = users.last?.id else { return }
     var members = [ currentUser, selectedUser ]
     
+    print("DEBUG: members to create cerent is \(members)")
+    
     Firestore.firestore().collection("recent").whereField(kCHATROOMID, isEqualTo: chatRoomId).getDocuments { (snapshot, error) in
         guard let snapshot = snapshot else {return}
         
         if !snapshot.isEmpty {
             members = removeMemberWhoHasRecent(snapshot: snapshot, members: members)
+            print("DEBUG: members to updates \(members)")
         }
         
         for user in members {
+            print("DEBUG: members to updates \(user)")
             let currentUser = user == User.currentId ? User.currentUser! : getReceiverFrom(users: users)
             let selectedUser = user == User.currentId ?  getReceiverFrom(users: users) : User.currentUser!
             let recent = RecentChat(id: UUID().uuidString,
@@ -43,6 +47,7 @@ func createRecentChat(chatRoomId: String, users: [User]) {
                                     date: Date(), memberIds: members,
                                     lastMessage: "", unreadCounter: 0,
                                     profileImageView: selectedUser.avatarLink)
+            // step 7
             FirebaseRecentService.shared.addRecent(recent) { error in
                 if let error = error {
                     print("DEBUG: errir while maing chat \(error)")
@@ -55,6 +60,7 @@ func createRecentChat(chatRoomId: String, users: [User]) {
     
 }
 
+// step 4
 func removeMemberWhoHasRecent(snapshot: QuerySnapshot, members: [String]) -> [String] {
     
     var members = members
@@ -71,16 +77,18 @@ func removeMemberWhoHasRecent(snapshot: QuerySnapshot, members: [String]) -> [St
     
     return members
 }
-
+// step 5 which one is the receiver
 func getReceiverFrom(users: [User]) -> User {
     var allUsers = users
+    // since the user himself is tapping , we remove the first index of the users since we are the tapping
     allUsers.remove(at: allUsers.firstIndex(of: User.currentUser!)!)
     return allUsers.first!
 }
 
 
-// whosoever tap on the selected user , the result will be always the same
+// step 2 : whosoever tap on the selected user , the result will be always the same
 func chatRoomIdMaker(currentUser: String, selectedUser: String) -> String {
+    // we compare the 2 users id and combine them together
     var chatRoomId = ""
     let value = currentUser.compare(selectedUser).rawValue
     chatRoomId = value < 0 ? (currentUser + selectedUser) : (selectedUser + currentUser)

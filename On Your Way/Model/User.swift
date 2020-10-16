@@ -22,37 +22,44 @@ struct User: Codable, Equatable{
     var reviewsCount: Double = 0.0
     
     /// to access to the current user who use the iphone
-    static var currentId: String{
-        guard let uid = Auth.auth().currentUser?.uid else { return "" }
-        return uid
+    
+    static var currentId: String {
+        return Auth.auth().currentUser!.uid
     }
     
     static var currentUser: User? {
         if Auth.auth().currentUser != nil {
             if let dictionary = UserDefaults.standard.data(forKey: kCURRENTUSER) {
+                
                 let decoder = JSONDecoder()
+                
                 do {
                     let userObject = try decoder.decode(User.self, from: dictionary)
                     return userObject
-                } catch (let error ) {
-                    print("DEBUG: error while finding user \(error.localizedDescription) ")
+                } catch {
+                    print("Error decoding user from user defaults ", error.localizedDescription)
                 }
             }
         }
+        
         return nil
     }
     
-    static func == (lhs: User, rhs: User) -> Bool {  lhs.id == rhs.id  }
-    
+    static func == (lhs: User, rhs: User) -> Bool {
+        lhs.id == rhs.id
+    }
 }
- 
+
+
+
 func saveUserLocally(_ user: User) {
+    
     let encoder = JSONEncoder()
+    
     do {
         let data = try encoder.encode(user)
         UserDefaults.standard.set(data, forKey: kCURRENTUSER)
-        userDefaults.synchronize()
-    } catch (let error ) {
-        print("DEBUG: error while daving user \(error.localizedDescription)")
+    } catch {
+        print("error saving user locally ", error.localizedDescription)
     }
 }
