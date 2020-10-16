@@ -59,6 +59,8 @@ class RecentController: UIViewController {
     }
     
     
+    
+    // MARK: - fetchRecentChats
     fileprivate func fetchRecentChats(){
         FirebaseRecentService.shared.fetchRecentChatFromFirestore { allRecent in
             self.allRecent = allRecent
@@ -121,10 +123,15 @@ class RecentController: UIViewController {
 
 // MARK: - Table extensions
 extension RecentController: UITableViewDelegate, UITableViewDataSource {
+    
+    
+    // MARK: - numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchController.isActive ? filteredAllRecent.count : allRecent.count
     }
     
+    
+    // MARK: - cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
         cell.recentChat = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
@@ -132,10 +139,19 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    
+    // MARK: - didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recent = searchController.isActive ?  filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
+        
+        // make sure we have 2 recents 
+        reStartChat(charRoomId: recent.chatRoomId, memberIds: recent.memberIds)
+        
         FirebaseRecentService.shared.clearUnreadCounter(recent: recent)
-            // show chat room
+        let chatViewController = ChatViewController(chatRoomId: recent.chatRoomId,
+                                                    recipientId: recent.receiverId,
+                                                    recipientName: recent.receiverName)
+        navigationController?.pushViewController(chatViewController, animated: true)
     }
     
     
@@ -143,6 +159,8 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
         true
     }
     
+    
+    // MARK: - delete
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let recent = searchController.isActive ?  filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
@@ -154,7 +172,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-  
+    
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if self.refreshController.isRefreshing {

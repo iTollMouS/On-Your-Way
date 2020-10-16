@@ -14,6 +14,34 @@ class UserServices {
     
     private init() {}
     
+// MARK: - get users for Chat purposes
+    func downloadUsersFromFirebase(withIds: [String], completion: @escaping (_ allUsers: [User]) -> Void) {
+        
+        var count = 0
+        var usersArray: [User] = []
+        
+        for userId in withIds {
+            
+            Firestore.firestore().collection("users").document(userId).getDocument { (querySnapshot, error) in
+                
+                guard let document = querySnapshot else {
+                    print("no document for user")
+                    return
+                }
+                
+                let user = try? document.data(as: User.self)
+
+                usersArray.append(user!)
+                count += 1
+                
+                if count == withIds.count {
+                    completion(usersArray)
+                }
+            }
+        }
+    }
+    
+    
     // MARK: - saveUserToFirestore
     func saveUserToFirestore(_ user: User){
         do {
@@ -54,32 +82,6 @@ class UserServices {
                 return try? queryDocumentSnapshot.data(as: User.self)
             }
             completion(users)
-        }
-    }
-    
-    func downloadUsersFromFirebase(withIds: [String], completion: @escaping (_ allUsers: [User]) -> Void) {
-        
-        var count = 0
-        var usersArray: [User] = []
-        
-        for userId in withIds {
-            
-            Firestore.firestore().collection("users").document(userId).getDocument { (querySnapshot, error) in
-                
-                guard let document = querySnapshot else {
-                    print("no document for user")
-                    return
-                }
-                
-                let user = try? document.data(as: User.self)
-                
-                usersArray.append(user!)
-                count += 1
-                
-                if count == withIds.count {
-                    completion(usersArray)
-                }
-            }
         }
     }
     

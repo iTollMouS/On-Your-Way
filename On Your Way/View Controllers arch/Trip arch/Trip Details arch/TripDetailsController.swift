@@ -69,13 +69,14 @@ class TripDetailsController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        let peopleReviewsController = PeopleReviewsController(user: user)
-        peopleReviewsController.popupItem.title = "People Reviews "
-        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
-        peopleReviewsController.popupItem.progress = 0.34
-        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
-        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
-        tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
+        tabBarController?.dismissPopupBar(animated: true, completion: nil)
+//        let peopleReviewsController = PeopleReviewsController(user: user)
+//        peopleReviewsController.popupItem.title = "People Reviews "
+//        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
+//        peopleReviewsController.popupItem.progress = 0.34
+//        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
+//        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
+//        tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
     }
     
     
@@ -164,14 +165,16 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
     }
     
     func handleStartToChat(_ view: TripDetailsHeaderView) {
-      
-        print("DEBUG: other useer is \(User.currentId)")
-        print("DEBUG: other useer is \(user.id)")
-        
+    
         // step 0  :
-        UserServices.shared.fetchUser(userId: User.currentId) { user in
-            let chatId = startChat(currentUser: user, selectedUser: self.user)
-            print("DEBUG: start chatting ", chatId)
+        UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
+            
+            let chatId = startChat(currentUser: user, selectedUser: self!.user)
+            let chatViewController = ChatViewController(chatRoomId: chatId,
+                                                        recipientId: self!.trip.userID,
+                                                        recipientName: user.username)
+            chatViewController.hidesBottomBarWhenPushed = true
+            self?.navigationController?.pushViewController(chatViewController, animated: true)
         }
     }
     

@@ -27,7 +27,6 @@ class RecentCell: UITableViewCell {
     
     private lazy var recentMessageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello there , could you please take it wit you wihukwhi;lwjduiheodiajicuhaljahugiugfyewuiuhwgfuywfgygckbycgyg"
         label.textAlignment = .left
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 12)
@@ -103,7 +102,7 @@ class RecentCell: UITableViewCell {
     func configure(){
         guard let recent = recentChat else { return  }
         timestampLabel.text = recent.date?.convertToTimeAgo(style: .abbreviated)
-        
+        recentMessageLabel.text = recent.lastMessage
         if recent.unreadCounter != 0 {
             self.counterMessageLabel.text = "\(recent.unreadCounter)"
             self.counterMessageLabel.isHidden = false

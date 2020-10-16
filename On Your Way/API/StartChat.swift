@@ -98,3 +98,11 @@ func getReceiverFrom(users: [User]) -> User {
     return allUsers.first!
 }
 
+// step 11 to make sure we have 2 recents
+func reStartChat(charRoomId: String, memberIds: [String]){
+    UserServices.shared.downloadUsersFromFirebase(withIds: memberIds) { users in
+        if users.count > 0 {
+            createRecentChat(chatRoomId: charRoomId, users: users)
+        }
+    }
+}
