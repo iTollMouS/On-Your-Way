@@ -25,7 +25,8 @@ class ChatViewController: MessagesViewController {
     
     private let micButton: InputBarButtonItem = {
         let micButton = InputBarButtonItem(type: .system)
-        micButton.image = UIImage(systemName: "mic.circle")
+        micButton.image = UIImage(systemName: "mic.circle",
+                                  withConfiguration: UIImage.SymbolConfiguration(pointSize: 32))
         micButton.setSize(CGSize(width: 30, height: 30), animated: false)
         micButton.tintColor = .green
         return micButton
@@ -33,9 +34,10 @@ class ChatViewController: MessagesViewController {
     
     private let attachmentButton: InputBarButtonItem = {
         let attachmentButton = InputBarButtonItem(type: .system)
-        attachmentButton.image = UIImage(systemName: "paperclip.circle")
-        attachmentButton.setSize(CGSize(width: 30, height: 40), animated: false)
-        attachmentButton.tintColor = .systemBlue
+        attachmentButton.image = UIImage(systemName: "paperclip.circle",
+                                         withConfiguration: UIImage.SymbolConfiguration(pointSize: 38))
+        attachmentButton.setSize(CGSize(width: 30, height: 30), animated: false)
+        attachmentButton.tintColor = .init(white: 1, alpha: 0.7)
         return attachmentButton
     }()
     
@@ -60,7 +62,7 @@ class ChatViewController: MessagesViewController {
         super.viewDidLoad()
         configureMessageCollectionView()
         configureMessageInputBar()
-        
+        loadChats()
         
         
     }
@@ -118,11 +120,22 @@ class ChatViewController: MessagesViewController {
     
     // MARK: - Actions
     // we send any outgoing message
+    
+    fileprivate func loadChats(){
+        // we get the locam message from realm by providing the key remember chatRoomId <- is the key
+        let predicate = NSPredicate(format: "chatRoomId = %@", chatRoomId)
+        // get access to the database , declare type , then filter it .
+        allLocalMessages = realm.objects(LocalMessage.self).filter(predicate).sorted(byKeyPath: kDATE, ascending: true)
+        print("DEBUG: messages are \(allLocalMessages.count)")
+    }
+    
+    
+    
+    
+    
+    // MARK: - messageSend
     func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
-
-        
-        
-        
+    
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
     }
