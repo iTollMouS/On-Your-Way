@@ -17,6 +17,25 @@ class ChatViewController: MessagesViewController {
     private var chatRoomId = ""
     private var recipientId = ""
     private var recipientName = ""
+    private let refreshController = UIRefreshControl()
+    
+    let currentUser = MKSender(senderId: User.currentId, displayName: User.currentUser!.username)
+    
+    private let micButton: InputBarButtonItem = {
+        let micButton = InputBarButtonItem(type: .system)
+        micButton.image = UIImage(systemName: "mic.circle")
+        micButton.setSize(CGSize(width: 30, height: 30), animated: false)
+        micButton.tintColor = .green
+        return micButton
+    }()
+    
+    private let attachmentButton: InputBarButtonItem = {
+        let attachmentButton = InputBarButtonItem(type: .system)
+        attachmentButton.image = UIImage(systemName: "paperclip.circle")
+        attachmentButton.setSize(CGSize(width: 30, height: 30), animated: false)
+        attachmentButton.tintColor = .red
+        return attachmentButton
+    }()
     
     init(chatRoomId: String, recipientId: String, recipientName: String) {
         
@@ -34,7 +53,8 @@ class ChatViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        configureMessageCollectionView()
+        configureMessageInputBar()
     }
     
     
@@ -47,6 +67,31 @@ class ChatViewController: MessagesViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    // step 1 to configure the chat delegate s
+    fileprivate func configureMessageCollectionView(){
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messageCellDelegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        scrollsToBottomOnKeyboardBeginsEditing = true
+        maintainPositionOnKeyboardFrameChanged = true
+        messagesCollectionView.refreshControl = refreshController
+        
+    }
+    
+    fileprivate func configureMessageInputBar(){
+        messageInputBar.delegate = self
+        messageInputBar.setStackViewItems([attachmentButton], forStack: .left, animated: false)
+        attachmentButton.onTouchUpInside { [weak self ] action in
+            print("DEBUG: attach button pressed")
+        }
+        messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
+        messageInputBar.inputTextView.isImagePasteEnabled = true
+        messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
+        messageInputBar.inputTextView.backgroundColor = #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1)
+        
     }
     
     

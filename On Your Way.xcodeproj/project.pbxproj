@@ -78,6 +78,14 @@
 		834C993E25338D6800BE8691 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993D25338D6800BE8691 /* Trip.swift */; };
 		834C99432533A92800BE8691 /* TripService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99422533A92800BE8691 /* TripService.swift */; };
 		835C87FA25398BEC00D49923 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C87F925398BEB00D49923 /* ChatViewController.swift */; };
+		835C87FE2539BD1300D49923 /* MessageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C87FD2539BD1300D49923 /* MessageDataSource.swift */; };
+		835C88002539BD3E00D49923 /* MessageCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C87FF2539BD3E00D49923 /* MessageCellDelegate.swift */; };
+		835C88022539BD5100D49923 /* MessageDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88012539BD5100D49923 /* MessageDisplayDelegate.swift */; };
+		835C88042539BD6600D49923 /* MessageLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88032539BD6600D49923 /* MessageLayoutDelegate.swift */; };
+		835C88062539BD7500D49923 /* InputBarViewAccessoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88052539BD7500D49923 /* InputBarViewAccessoryDelegate.swift */; };
+		835C88082539C2A100D49923 /* MKSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88072539C2A100D49923 /* MKSender.swift */; };
+		835C880A2539C3D400D49923 /* MKMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88092539C3D400D49923 /* MKMessage.swift */; };
+		835C880C2539CC3B00D49923 /* LocalMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C880B2539CC3B00D49923 /* LocalMessage.swift */; };
 		83B763552536DA7E00503A9D /* cachAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763542536DA7E00503A9D /* cachAnimation.json */; };
 		83B763592536DB9100503A9D /* bell.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763582536DB9100503A9D /* bell.json */; };
 		83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635A2536DEA900503A9D /* chat_messenger.json */; };
@@ -193,6 +201,14 @@
 		834C993D25338D6800BE8691 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		834C99422533A92800BE8691 /* TripService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripService.swift; sourceTree = "<group>"; };
 		835C87F925398BEB00D49923 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		835C87FD2539BD1300D49923 /* MessageDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataSource.swift; sourceTree = "<group>"; };
+		835C87FF2539BD3E00D49923 /* MessageCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCellDelegate.swift; sourceTree = "<group>"; };
+		835C88012539BD5100D49923 /* MessageDisplayDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDisplayDelegate.swift; sourceTree = "<group>"; };
+		835C88032539BD6600D49923 /* MessageLayoutDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLayoutDelegate.swift; sourceTree = "<group>"; };
+		835C88052539BD7500D49923 /* InputBarViewAccessoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBarViewAccessoryDelegate.swift; sourceTree = "<group>"; };
+		835C88072539C2A100D49923 /* MKSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKSender.swift; sourceTree = "<group>"; };
+		835C88092539C3D400D49923 /* MKMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMessage.swift; sourceTree = "<group>"; };
+		835C880B2539CC3B00D49923 /* LocalMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMessage.swift; sourceTree = "<group>"; };
 		83B763542536DA7E00503A9D /* cachAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cachAnimation.json; sourceTree = "<group>"; };
 		83B763582536DB9100503A9D /* bell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bell.json; sourceTree = "<group>"; };
 		83B7635A2536DEA900503A9D /* chat_messenger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chat_messenger.json; sourceTree = "<group>"; };
@@ -288,10 +304,13 @@
 			isa = PBXGroup;
 			children = (
 				834C98C525312E3900BE8691 /* User.swift */,
+				835C88092539C3D400D49923 /* MKMessage.swift */,
+				835C88072539C2A100D49923 /* MKSender.swift */,
 				834C993D25338D6800BE8691 /* Trip.swift */,
 				83B7637A2538192300503A9D /* Review.swift */,
 				83D7D4272535A49B00FA88F0 /* Package.swift */,
 				834C993425337C0900BE8691 /* RecentChat.swift */,
+				835C880D2539CC4200D49923 /* Realm arch */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -475,8 +494,29 @@
 			isa = PBXGroup;
 			children = (
 				835C87F925398BEB00D49923 /* ChatViewController.swift */,
+				835C87FC2539BD0300D49923 /* Chat extentions  */,
 			);
 			path = "Chat arch";
+			sourceTree = "<group>";
+		};
+		835C87FC2539BD0300D49923 /* Chat extentions  */ = {
+			isa = PBXGroup;
+			children = (
+				835C87FD2539BD1300D49923 /* MessageDataSource.swift */,
+				835C87FF2539BD3E00D49923 /* MessageCellDelegate.swift */,
+				835C88012539BD5100D49923 /* MessageDisplayDelegate.swift */,
+				835C88032539BD6600D49923 /* MessageLayoutDelegate.swift */,
+				835C88052539BD7500D49923 /* InputBarViewAccessoryDelegate.swift */,
+			);
+			path = "Chat extentions ";
+			sourceTree = "<group>";
+		};
+		835C880D2539CC4200D49923 /* Realm arch */ = {
+			isa = PBXGroup;
+			children = (
+				835C880B2539CC3B00D49923 /* LocalMessage.swift */,
+			);
+			path = "Realm arch";
 			sourceTree = "<group>";
 		};
 		83B76374253715F600503A9D /* notification arch */ = {
@@ -686,7 +726,9 @@
 				834C99052532326800BE8691 /* PeopleReviewsController.swift in Sources */,
 				834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */,
 				834C9938253382B400BE8691 /* FirebaseRecentService.swift in Sources */,
+				835C88002539BD3E00D49923 /* MessageCellDelegate.swift in Sources */,
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
+				835C88062539BD7500D49923 /* InputBarViewAccessoryDelegate.swift in Sources */,
 				83D7D42E2535E6F800FA88F0 /* OrderDetailHeaderCell.swift in Sources */,
 				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
 				83B76373253715ED00503A9D /* NotificationCell.swift in Sources */,
@@ -696,10 +738,13 @@
 				83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */,
 				834C982025311CCC00BE8691 /* MainTabController.swift in Sources */,
 				834C9915253237AC00BE8691 /* OrderCell.swift in Sources */,
+				835C87FE2539BD1300D49923 /* MessageDataSource.swift in Sources */,
 				83D7D4282535A49B00FA88F0 /* Package.swift in Sources */,
 				83D7D4222535913A00FA88F0 /* SendPackageController.swift in Sources */,
 				834C99042532326800BE8691 /* PeopleReviewsCell.swift in Sources */,
 				83D7D42A2535DC3E00FA88F0 /* OrderDetailsController.swift in Sources */,
+				835C880C2539CC3B00D49923 /* LocalMessage.swift in Sources */,
+				835C88042539BD6600D49923 /* MessageLayoutDelegate.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
 				83D7D4302535EB6300FA88F0 /* OrderDetailsFooterView.swift in Sources */,
@@ -714,6 +759,7 @@
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,
 				834C989825312BCE00BE8691 /* Extenions.swift in Sources */,
 				834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */,
+				835C880A2539C3D400D49923 /* MKMessage.swift in Sources */,
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
 				83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */,
 				834C993525337C0A00BE8691 /* RecentChat.swift in Sources */,
@@ -729,8 +775,10 @@
 				834C99222532D7B900BE8691 /* UserServices.swift in Sources */,
 				83D7D42625359DC400FA88F0 /* SendPackageImagesStackView.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
+				835C88022539BD5100D49923 /* MessageDisplayDelegate.swift in Sources */,
 				834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */,
 				83B763712537150300503A9D /* NotificationsController.swift in Sources */,
+				835C88082539C2A100D49923 /* MKSender.swift in Sources */,
 				834C98FE253231E000BE8691 /* TableHeaderView.swift in Sources */,
 				834C988B25312A7600BE8691 /* ProfileController.swift in Sources */,
 				834C990C253232D700BE8691 /* OnboardingCell.swift in Sources */,

@@ -36,7 +36,6 @@ class RecentCell: UITableViewCell {
     
     private lazy var fullnameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tariq Almazyad"
         label.textAlignment = .left
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 12)
@@ -103,6 +102,7 @@ class RecentCell: UITableViewCell {
         guard let recent = recentChat else { return  }
         timestampLabel.text = recent.date?.convertToTimeAgo(style: .abbreviated)
         recentMessageLabel.text = recent.lastMessage
+        fullnameLabel.text = recent.receiverName
         if recent.unreadCounter != 0 {
             self.counterMessageLabel.text = "\(recent.unreadCounter)"
             self.counterMessageLabel.isHidden = false

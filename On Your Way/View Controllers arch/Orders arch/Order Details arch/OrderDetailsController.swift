@@ -179,7 +179,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             present(alert, animated: true, completion: nil)
         // chat
         case 2:
-
+            
             UserServices.shared.fetchUser(userId: package.userID) { [weak self] packageOwner in
                 let chatId = startChat(currentUser: packageOwner, selectedUser: self!.user)
                 let chatViewController = ChatViewController(chatRoomId: chatId,
