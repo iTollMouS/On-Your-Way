@@ -168,6 +168,7 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
         print("DEBUG: other useer is \(User.currentId)")
         print("DEBUG: other useer is \(user.id)")
         
+        // step 0  :
         UserServices.shared.fetchUser(userId: User.currentId) { user in
             let chatId = startChat(currentUser: user, selectedUser: self.user)
             print("DEBUG: start chatting ", chatId)

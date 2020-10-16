@@ -45,7 +45,7 @@ func createRecentChat(chatRoomId: String, users: [User]) {
         }
         
         for user in members {
-            print("DEBUG: Creating recent for the user \(user)")
+            print("DEBUG: Creating recent for the user who does not have it \(user)")
             // only gets call when any user dont have recent
             let currentUser = user == User.currentId ? User.currentUser! : getReceiverFrom(users: users)
             let selectedUser = user == User.currentId ?  getReceiverFrom(users: users) : User.currentUser!

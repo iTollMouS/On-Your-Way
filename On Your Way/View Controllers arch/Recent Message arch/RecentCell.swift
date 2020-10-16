@@ -60,7 +60,6 @@ class RecentCell: UITableViewCell {
     
     private lazy var counterMessageLabel: UILabel = {
         let label = UILabel()
-        label.text = "1000"
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 12)
@@ -83,7 +82,7 @@ class RecentCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        backgroundColor = .clear
         accessoryType = .disclosureIndicator
         addSubview(profileImageView)
         profileImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
@@ -107,19 +106,18 @@ class RecentCell: UITableViewCell {
         timestampLabel.text = recent.date?.convertToTimeAgo(style: .abbreviated)
         
         if recent.unreadCounter != 0 {
-            self.recentMessageLabel.text = "\(recent.unreadCounter)"
-            self.recentMessageLabel.isHidden = false
+            self.counterMessageLabel.text = "\(recent.unreadCounter)"
+            self.counterMessageLabel.isHidden = false
         } else {
-            self.recentMessageLabel.isHidden = true
+            self.counterMessageLabel.isHidden = true
         }
         
         FileStorage.downloadImage(imageUrl: recent.profileImageView) { image in
             guard let image = image else {
-                self.profileImageView.image = #imageLiteral(resourceName: "btn_google_light_pressed_ios")
+                self.profileImageView.image = #imageLiteral(resourceName: "btn_google_light_pressed_ios") // if image is empty
                 return
-                
             }
-            self.profileImageView.image = image
+            self.profileImageView.image = image.circleMasked
         }
         
         

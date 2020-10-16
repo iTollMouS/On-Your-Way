@@ -45,6 +45,7 @@ class RecentController: UIViewController {
         configureTableView()
         configureSearchController()
         configureRefreshControl()
+        fetchRecentChats()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -57,6 +58,16 @@ class RecentController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
     }
     
+    // step 10
+    fileprivate func fetchRecentChats(){
+        FirebaseRecentService.shared.fetchRecentChatFromFirestore { allRecent in
+            self.allRecent = allRecent
+            // check with all aip why this fucn worsk good and not duplicate stuff
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
     
     
     // MARK: - configureRefreshControl
@@ -111,11 +122,13 @@ class RecentController: UIViewController {
 // MARK: - Table extensions
 extension RecentController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 50
+        return searchController.isActive ? filteredAllRecent.count : allRecent.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
+        let recent = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
+        cell.configure(recent: recent)
         return cell
     }
     
