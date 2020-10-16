@@ -18,6 +18,8 @@ class ChatViewController: MessagesViewController {
     private var recipientId = ""
     private var recipientName = ""
     private let refreshController = UIRefreshControl()
+    private let realm = try! Realm()
+    private var allLocalMessages: Results<LocalMessage>!
     
     let currentUser = MKSender(senderId: User.currentId, displayName: User.currentUser!.username)
     
@@ -118,7 +120,7 @@ class ChatViewController: MessagesViewController {
     // we send any outgoing message
     func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
 
-        print("DEBUG: then we get the text here \(text)")
+        
         
         
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
