@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */; };
 		83375F4D253A8415008F2036 /* IncomingMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F4C253A8415008F2036 /* IncomingMessageService.swift */; };
+		83375F50253B1C95008F2036 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; };
+		83375F51253B1C95008F2036 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981B25311CCC00BE8691 /* AppDelegate.swift */; };
 		834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981D25311CCC00BE8691 /* SceneDelegate.swift */; };
 		834C982025311CCC00BE8691 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981F25311CCC00BE8691 /* MainTabController.swift */; };
@@ -49,10 +51,6 @@
 		834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DA2531AA2A00BE8691 /* PhoneLoginController.swift */; };
 		834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98DF2531AE0D00BE8691 /* PhoneOPTTextField.swift */; };
 		834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98E32531D0F800BE8691 /* AuthServices.swift */; };
-		834C98F02532304600BE8691 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; };
-		834C98F12532304600BE8691 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		834C98F42532307E00BE8691 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98F32532307E00BE8691 /* LNPopupController.framework */; };
-		834C98F52532307E00BE8691 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98F32532307E00BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98F7253231DF00BE8691 /* SafetyControllerGuidelines.swift */; };
 		834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98F8253231DF00BE8691 /* SafetyFooterView.swift */; };
 		834C98FD253231E000BE8691 /* SafetyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C98F9253231E000BE8691 /* SafetyCell.swift */; };
@@ -117,14 +115,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		834C98F22532304700BE8691 /* Embed Frameworks */ = {
+		83375F52253B1C95008F2036 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				834C98F12532304600BE8691 /* LNPopupController.framework in Embed Frameworks */,
-				834C98F52532307E00BE8691 /* LNPopupController.framework in Embed Frameworks */,
+				83375F51253B1C95008F2036 /* LNPopupController.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,8 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */,
-				834C98F02532304600BE8691 /* LNPopupController.framework in Frameworks */,
-				834C98F42532307E00BE8691 /* LNPopupController.framework in Frameworks */,
+				83375F50253B1C95008F2036 /* LNPopupController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,7 +583,7 @@
 				834C981625311CCC00BE8691 /* Resources */,
 				5E65AFD9FD3EF2DB2937D741 /* [CP] Embed Pods Frameworks */,
 				A4794056D0D2C5F2901D4B25 /* [CP] Copy Pods Resources */,
-				834C98F22532304700BE8691 /* Embed Frameworks */,
+				83375F52253B1C95008F2036 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

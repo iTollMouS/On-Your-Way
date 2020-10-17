@@ -7,7 +7,7 @@
 
 import UIKit
 import Firebase
-import LNPopupController
+//import LNPopupController
 
 private let reuseIdentifier = "TripCell"
 
@@ -51,7 +51,6 @@ class TripsTimelineController: UITableViewController {
         onboardingController.modalPresentationStyle = .custom
         self.present(onboardingController, animated: true, completion: nil)
     }
-    
     
     // MARK: - fetchTrips()
     func fetchTrips(){

@@ -18,7 +18,6 @@ class ProfileCell: UITableViewCell {
         didSet{configureUI()}
     }
     
-    
     weak var delegate: ProfileCellDelegate?
     
     lazy var phoneNumberTextField: UITextField = {

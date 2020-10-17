@@ -14,7 +14,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         if text != "" {
             self.messagesCollectionView.scrollToBottom(animated: true)
         }
-        print("DEBUG: beging editing ")
+        updateMicButtonStatus(show: text == "" )
     }
     
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {

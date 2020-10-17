@@ -115,7 +115,7 @@ class ProfileController: UIViewController {
             self.showAlertMessage("Error", "Please enter your phone number correctly")
             return
         }
-    
+        
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we\nupdate your info...")
         UserServices.shared.saveUserToFirestore(user)
@@ -245,7 +245,6 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         label.backgroundColor = .clear
         label.textAlignment = .left
         
-        
         let containerView = UIView()
         containerView.addSubview(iconImage)
         iconImage.centerY(inView: containerView, leftAnchor: containerView.leftAnchor, paddingLeft: 12)
@@ -310,7 +309,7 @@ extension ProfileController: ProfileCellDelegate {
         case .section_1:
             user.phoneNumber = value
         case .section_2:
-           print("")
+            print("")
         case .section_4:
             print("")
         case .section_5:
@@ -320,7 +319,7 @@ extension ProfileController: ProfileCellDelegate {
         configureNavBarButtons()
     }
     
-
+    
     
     
     

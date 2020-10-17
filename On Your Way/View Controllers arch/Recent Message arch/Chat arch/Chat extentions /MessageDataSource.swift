@@ -31,14 +31,14 @@ extension ChatViewController: MessagesDataSource {
             
             let showLoadMore = false
             let text = showLoadMore ? "Pull to load more" : MessageKitDateFormatter.shared.string(from: message.sentDate)
-            let font = showLoadMore ? UIFont.systemFont(ofSize: 13) : UIFont.boldSystemFont(ofSize: 10)
+            let font = showLoadMore ?  UIFont.systemFont(ofSize: 14) : UIFont.systemFont(ofSize: 10)
             let color = showLoadMore ? UIColor.systemBlue : UIColor.darkGray
-            
-            return NSAttributedString(string: text, attributes: [.font : font, .foregroundColor : color])
+            return NSAttributedString(string: text, attributes: [.font : font,
+                                                                 .foregroundColor: color])
         }
-        
         return nil
     }
+
     
     //Cell bottom label
     

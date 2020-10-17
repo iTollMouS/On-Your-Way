@@ -10,6 +10,11 @@ import Cosmos
 
 class PeopleReviewHeader: UIView {
     
+    
+    var user: User?{
+        didSet{configure()}
+    }
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Reviews"
@@ -41,6 +46,8 @@ class PeopleReviewHeader: UIView {
         view.settings.starSize = 24
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
+        view.rating = 0.0
+        view.settings.updateOnTouch = false
         view.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         view.setDimensions(height: 50, width: 130)
         return view
@@ -58,6 +65,12 @@ class PeopleReviewHeader: UIView {
         reviewRate.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 20, paddingRight: 20)
         addSubview(ratingView)
         ratingView.centerX(inView: self, topAnchor: reviewRate.bottomAnchor, paddingTop: 20)
+        
+    }
+    
+    fileprivate func configure(){
+        guard let user = user else { return }
+        
         
     }
     

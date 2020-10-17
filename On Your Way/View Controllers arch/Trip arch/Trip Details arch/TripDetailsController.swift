@@ -8,6 +8,7 @@
 import UIKit
 import SwiftEntryKit
 import Firebase
+import LNPopupController
 
 private let reuseIdentifier = "TripDetailsCell"
 

@@ -43,7 +43,7 @@ class FirebaseRecentService {
                     guard let firstRecent = allRecent.first else { return }
                     self.clearUnreadCounter(recent: firstRecent)
                 }
-        }
+            }
     }
     
     func deleteRecent(_ recent: RecentChat, completion: ((Error?) -> Void)?){

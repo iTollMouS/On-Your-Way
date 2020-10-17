@@ -7,8 +7,15 @@
 
 import UIKit
 import Cosmos
+import SDWebImage
 
 class PeopleReviewsCell: UITableViewCell {
+    
+    
+    
+    var reviews: Review?{
+        didSet{configure()}
+    }
     
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -68,8 +75,8 @@ class PeopleReviewsCell: UITableViewCell {
         return stackView
     }()
     
-
-     lazy var reviewLabel: UILabel = {
+    
+    lazy var reviewLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .white
@@ -97,14 +104,60 @@ class PeopleReviewsCell: UITableViewCell {
         
         addSubview(reviewLabel)
         reviewLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor,
-                              right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
-
+                           right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
+        
     }
     
-
+    fileprivate func configure(){
+        guard let reviews = reviews else { return }
+        let viewModel = ReviewViewModel(review: reviews)
+        UserServices.shared.fetchUser(userId: viewModel.userID) { [weak self] user in
+            guard let imageUrl = URL(string: user.avatarLink) else {return}
+            self?.fullname.text = user.username
+            self?.profileImageView.sd_setImage(with: imageUrl)
+        }
+        timestamp.text = viewModel.timestamp
+        reviewLabel.text = viewModel.reviewComment
+        ratingView.rating = viewModel.rate
+        
+        
+    }
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+}
 
+
+
+struct ReviewViewModel {
+    let review: Review
+    
+    var reviewComment: String {
+        return review.reviewComment
+    }
+    
+    var userID: String {
+        return review.userID
+    }
+    
+    var rate: Double {
+        return review.rate
+    }
+    
+    var reviewId: String {
+        return review.reviewId
+    }
+    
+    var timestamp: String {
+        guard let timestamp  = review.timestamp?.convertDate(formattedString: .formattedType1) else { return "" }
+        return timestamp
+    }
+    
+    init(review: Review) {
+        self.review = review
+    }
 }

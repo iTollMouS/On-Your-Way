@@ -10,6 +10,7 @@ import MessageKit
 import InputBarAccessoryView
 import Gallery
 import RealmSwift
+import Firebase
 
 class ChatViewController: MessagesViewController {
     
@@ -43,30 +44,14 @@ class ChatViewController: MessagesViewController {
     private let refreshController = UIRefreshControl()
     private let realm = try! Realm()
     private var allLocalMessages: Results<LocalMessage>!
+    private let micButton = InputBarButtonItem()
+
     
     let currentUser = MKSender(senderId: User.currentId, displayName: User.currentUser!.username)
     
     // for realm to listen to any changes
     var notificationToken: NotificationToken?
-    
-    private let micButton: InputBarButtonItem = {
-        let micButton = InputBarButtonItem(type: .system)
-        micButton.image = UIImage(systemName: "mic.circle",
-                                  withConfiguration: UIImage.SymbolConfiguration(pointSize: 32))
-        micButton.setSize(CGSize(width: 30, height: 30), animated: false)
-        micButton.tintColor = .green
-        return micButton
-    }()
-    
-    private let attachmentButton: InputBarButtonItem = {
-        let attachmentButton = InputBarButtonItem(type: .system)
-        attachmentButton.image = UIImage(systemName: "paperclip.circle",
-                                         withConfiguration: UIImage.SymbolConfiguration(pointSize: 38))
-        attachmentButton.setSize(CGSize(width: 30, height: 30), animated: false)
-        attachmentButton.tintColor = .init(white: 1, alpha: 0.7)
-        return attachmentButton
-    }()
-    
+
     
     // create an array
     var mkMessages: [MKMessage] = []
@@ -150,37 +135,41 @@ class ChatViewController: MessagesViewController {
     // MARK: - configureMessageInputBar
     fileprivate func configureMessageInputBar(){
         messageInputBar.delegate = self
-        messageInputBar.setStackViewItems([attachmentButton], forStack: .left, animated: false)
-        attachmentButton.onTouchUpInside { [weak self ] action in
-            
+        messageInputBar.delegate = self
+        let attachButton = InputBarButtonItem()
+        attachButton.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
+        attachButton.setSize(CGSize(width: 30, height: 30), animated: false)
+        attachButton.onTouchUpInside { item in
+//            self.actionAttachMessage()
         }
-        messageInputBar.setLeftStackViewWidthConstant(to: 42, animated: false)
+        
+        micButton.image = UIImage(systemName: "mic.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
+        micButton.setSize(CGSize(width: 30, height: 30), animated: false)
+        
+//        micButton.addGestureRecognizer(longPressGesture)
+        
+        messageInputBar.setStackViewItems([attachButton], forStack: .left, animated: false)
+        messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
         messageInputBar.inputTextView.isImagePasteEnabled = true
-        messageInputBar.inputTextView.layer.cornerRadius = 20
         messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         messageInputBar.inputTextView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
-        
+        messageInputBar.inputTextView.keyboardAppearance = .dark
+        messageInputBar.inputTextView.layer.cornerRadius = 20
+        updateMicButtonStatus(show: true)
     }
     
     // MARK: - Actions
     // we send any outgoing message
     // responsible to pop the messages
-    
-    
-    
-    fileprivate func updateMicButtonStatus(show: Bool){
+     func updateMicButtonStatus(show: Bool){
         if show {
-            
-        } else {
             messageInputBar.setStackViewItems([micButton], forStack: .right, animated: false)
             messageInputBar.setRightStackViewWidthConstant(to: 30, animated: false)
+        } else {
+            messageInputBar.setStackViewItems([messageInputBar.sendButton], forStack: .right, animated: false)
+            messageInputBar.setRightStackViewWidthConstant(to: 55, animated: false)
         }
     }
-    
-    
-    
-    
-    
     
     // MARK: - loadChats
     fileprivate func loadChats(){
@@ -188,26 +177,42 @@ class ChatViewController: MessagesViewController {
         let predicate = NSPredicate(format: "chatRoomId = %@", chatRoomId)
         // get access to the database , declare type , then filter it .
         allLocalMessages = realm.objects(LocalMessage.self).filter(predicate).sorted(byKeyPath: kDATE, ascending: true)
-        notificationToken = allLocalMessages.observe({ [weak self] (changes: RealmCollectionChange) in
+        
+        if allLocalMessages.isEmpty {
+            print("DEBUG: ")
+        }
+        notificationToken = allLocalMessages.observe({  (changes: RealmCollectionChange) in
             
             // MARK: - notificationToken
             switch changes {
             case .initial:
                 // to check all messages inside the database
-                self?.insertMessages()
-                self?.messagesCollectionView.reloadData()
+                self.insertMessages()
+                self.messagesCollectionView.reloadData()
+                self.messagesCollectionView.scrollToBottom(animated: true)
             case .update(_, _, let insertions, _):
                 // to insert new message in the database
                 for index in insertions {
-                    self?.insertMessage(self!.allLocalMessages[index])
-                    self?.messagesCollectionView.reloadData()
+                    self.insertMessage(self.allLocalMessages[index])
+                    self.messagesCollectionView.reloadData()
+                    self.messagesCollectionView.scrollToBottom(animated: true)
                 }
             case .error(let error):
                 print("DEBUG: error while get data in realm \(error)")
             }
-            self?.messagesCollectionView.reloadData()
+            self.messagesCollectionView.reloadData()
+            self.messagesCollectionView.scrollToBottom(animated: true)
         })
     }
+    
+    
+    
+    // MARK: - Check for old messages
+    private func listenForNewChats(){
+        guard let uid = Auth.auth().currentUser?.uid else { return  }
+        MessageService.shared.checkForOldChats(uid, collectionId: chatRoomId)
+    }
+    
     
     
     // MARK: - insertMessages

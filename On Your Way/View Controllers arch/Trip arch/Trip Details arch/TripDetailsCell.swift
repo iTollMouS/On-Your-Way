@@ -141,6 +141,9 @@ class TripDetailsCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
     }
     
     func configure(){
