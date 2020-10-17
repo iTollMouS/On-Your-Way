@@ -29,16 +29,16 @@ extension ChatViewController: MessagesDataSource {
         
         if indexPath.section % 3 == 0 {
             
-            let showLoadMore = false
+            let showLoadMore = (indexPath.section == 0) && (allLocalMessages.count > displayingMessagesCount)
             let text = showLoadMore ? "Pull to load more" : MessageKitDateFormatter.shared.string(from: message.sentDate)
-            let font = showLoadMore ?  UIFont.systemFont(ofSize: 14) : UIFont.systemFont(ofSize: 10)
-            let color = showLoadMore ? UIColor.systemBlue : UIColor.darkGray
-            return NSAttributedString(string: text, attributes: [.font : font,
-                                                                 .foregroundColor: color])
+            let font = showLoadMore ? UIFont.systemFont(ofSize: 13) : UIFont.boldSystemFont(ofSize: 10)
+            let color = showLoadMore ? UIColor.systemBlue : UIColor.white
+            
+            return NSAttributedString(string: text, attributes: [.font : font, .foregroundColor : color])
         }
+        
         return nil
     }
-
     
     //Cell bottom label
     
@@ -48,8 +48,7 @@ extension ChatViewController: MessagesDataSource {
             let message = mkMessages[indexPath.section]
             let status = indexPath.section == mkMessages.count - 1 ? message.status + " " + message.readDate.convertDate(formattedString: .formattedType4) : ""
             
-            return NSAttributedString(string: status, attributes: [.font : UIFont.boldSystemFont(ofSize: 10),
-                                                                   .foregroundColor: UIColor.white.withAlphaComponent(0.5)])
+            return NSAttributedString(string: status, attributes: [.font : UIFont.boldSystemFont(ofSize: 10), .foregroundColor: UIColor.darkGray])
         }
         
         return nil
@@ -57,14 +56,13 @@ extension ChatViewController: MessagesDataSource {
 
     //Message bottom Label
     func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        // we want to show the timestamp of the lst message in diff format
+        
         if indexPath.section != mkMessages.count - 1 {
                         
-            return NSAttributedString(string: message.sentDate.convertDate(formattedString: .formattedType4), attributes: [.font : UIFont.boldSystemFont(ofSize: 10), .foregroundColor: UIColor.darkGray])
+            return NSAttributedString(string: message.sentDate.convertDate(formattedString: .formattedType4),
+                                      attributes: [.font : UIFont.boldSystemFont(ofSize: 10), .foregroundColor: UIColor.darkGray])
         }
         
         return nil
     }
 }
-
-

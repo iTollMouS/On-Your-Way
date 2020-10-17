@@ -42,15 +42,18 @@ class ChatViewController: MessagesViewController {
     private var recipientName = ""
     private let refreshController = UIRefreshControl()
     private let realm = try! Realm()
-    private var allLocalMessages: Results<LocalMessage>!
+    var allLocalMessages: Results<LocalMessage>!
     private let micButton = InputBarButtonItem()
-
+    var displayingMessagesCount = 0
+    var maxMessageNumber = 0
+    var minMessageNumber = 0
+    
     
     let currentUser = MKSender(senderId: User.currentId, displayName: User.currentUser!.username)
     
     // for realm to listen to any changes
     var notificationToken: NotificationToken?
-
+    
     
     // create an array
     var mkMessages: [MKMessage] = []
@@ -77,6 +80,7 @@ class ChatViewController: MessagesViewController {
         configureMessageInputBar()
         configureLeftBarButton()
         listenToNewChats()
+        listenForOldChats()
         
     }
     
@@ -140,13 +144,13 @@ class ChatViewController: MessagesViewController {
         attachButton.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         attachButton.setSize(CGSize(width: 30, height: 30), animated: false)
         attachButton.onTouchUpInside { item in
-//            self.actionAttachMessage()
+            //            self.actionAttachMessage()
         }
         
         micButton.image = UIImage(systemName: "mic.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         micButton.setSize(CGSize(width: 30, height: 30), animated: false)
         
-//        micButton.addGestureRecognizer(longPressGesture)
+        //        micButton.addGestureRecognizer(longPressGesture)
         
         messageInputBar.setStackViewItems([attachButton], forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
@@ -161,7 +165,7 @@ class ChatViewController: MessagesViewController {
     // MARK: - Actions
     // we send any outgoing message
     // responsible to pop the messages
-     func updateMicButtonStatus(show: Bool){
+    func updateMicButtonStatus(show: Bool){
         if show {
             messageInputBar.setStackViewItems([micButton], forStack: .right, animated: false)
             messageInputBar.setRightStackViewWidthConstant(to: 30, animated: false)
@@ -198,7 +202,7 @@ class ChatViewController: MessagesViewController {
                     self.messagesCollectionView.scrollToBottom(animated: true)
                 }
             case .error(let error):
-                print("DEBUG: error while get data in realm \(error)")
+                print("")
             }
             self.messagesCollectionView.reloadData()
             
@@ -214,7 +218,7 @@ class ChatViewController: MessagesViewController {
     
     
     // MARK: - Check for old messages
-    private func listenForNewChats(){
+    private func listenForOldChats(){
         guard let uid = Auth.auth().currentUser?.uid else { return  }
         MessageService.shared.checkForOldChats(uid, collectionId: chatRoomId)
     }
@@ -224,15 +228,24 @@ class ChatViewController: MessagesViewController {
     // MARK: - insertMessages
     fileprivate func insertMessages(){
         
-        for message in allLocalMessages {
-            insertMessage(message)
+        maxMessageNumber = allLocalMessages.count - displayingMessagesCount
+        minMessageNumber = maxMessageNumber - kNUMBEROFMESSAGES
+        
+        if minMessageNumber < 0 {
+            minMessageNumber = 0
         }
+        
+        for i in minMessageNumber ..< maxMessageNumber {
+            insertMessage(allLocalMessages[i])
+        }
+
     }
     
     fileprivate func insertMessage(_ localMessage: LocalMessage){
         print("DEBUG: inserted message")
         let incoming  = IncomingMessageService(_collectionView: self)
         self.mkMessages.append(incoming.createMessage(localMessage: localMessage)!)
+        displayingMessagesCount += 1
     }
     
     

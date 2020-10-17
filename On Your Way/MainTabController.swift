@@ -21,7 +21,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
-      
+        
     }
     
     
@@ -62,7 +62,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar,notificationsControllerNavBar ,recentControllerNavBar, profileControllerNavBar]
     }
     
-// MARK: - tabBarController as modal
+    // MARK: - tabBarController as modal
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.firstIndex(of: viewController)
         if index == 3 {
@@ -81,7 +81,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     
-// MARK: - templateNavController
+    // MARK: - templateNavController
     func templateNavController(image: UIImage, rootViewController: UIViewController, tabBarItemTitle: String) -> UINavigationController {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = image

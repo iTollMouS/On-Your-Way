@@ -194,7 +194,7 @@ extension UIViewController {
     }
     
     
-    // Check new user , if yes ? then do X
+    /// Check new user , if yes ? then do X
     func isAppAlreadyLaunchedOnce() -> Bool {
         let defaults = UserDefaults.standard
         if let _ = defaults.string(forKey: "isAppAlreadyLaunchedOnce") {
@@ -207,7 +207,7 @@ extension UIViewController {
         }
     }
     
-    // to get full controller of the navigationBar , title , color , size
+    /// to get full controller of the navigationBar , title , color , size
     func configureNavigationBar(withTitle title: String,
                                 largeTitleColor: UIColor,
                                 tintColor: UIColor,
