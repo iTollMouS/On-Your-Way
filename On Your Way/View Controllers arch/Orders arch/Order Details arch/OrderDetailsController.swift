@@ -160,6 +160,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
+                    PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is rejected ", title: "Reject order")
                     self?.showCustomAlertView()
                     
                 }

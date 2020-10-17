@@ -21,7 +21,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
-        
+      
     }
     
     
@@ -34,22 +34,22 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()
-        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car")!,
+        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                                   rootViewController: tripsTimelineController,
                                                                   tabBarItemTitle: "Travelers")
         
         let ordersController = OrdersController()
-        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!,
+        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                            rootViewController: ordersController,
                                                            tabBarItemTitle: "Orders")
         
         let notificationsController = NotificationsController()
-        let notificationsControllerNavBar = templateNavController(image: UIImage(systemName: "bell")!,
+        let notificationsControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                                   rootViewController: notificationsController,
                                                                   tabBarItemTitle: "Notifications")
         
         let recentController = RecentController()
-        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
+        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                            rootViewController: recentController,
                                                            tabBarItemTitle: "Meesage")
         
@@ -62,7 +62,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar,notificationsControllerNavBar ,recentControllerNavBar, profileControllerNavBar]
     }
     
-    // MARK: - tabBarController as modal
+// MARK: - tabBarController as modal
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.firstIndex(of: viewController)
         if index == 3 {
@@ -81,7 +81,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     
-    // MARK: - templateNavController
+// MARK: - templateNavController
     func templateNavController(image: UIImage, rootViewController: UIViewController, tabBarItemTitle: String) -> UINavigationController {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = image

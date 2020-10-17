@@ -190,6 +190,7 @@ class SendPackageController: UIViewController {
     
     @objc fileprivate func handleSubmittingShipment(){
                 
+        PushNotificationService.shared.sendPushNotification(userIds: [trip.userID], body: "You have a new order", title: "New Order")
         view.isUserInteractionEnabled = false
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we\nsend your request....")

@@ -27,7 +27,7 @@ extension ChatViewController: MessagesDataSource {
     
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         
-        if indexPath.section % 3 == 0 {
+        if indexPath.section % 9 == 0 {
             
             let showLoadMore = (indexPath.section == 0) && (allLocalMessages.count > displayingMessagesCount)
             let text = showLoadMore ? "Pull to load more" : MessageKitDateFormatter.shared.string(from: message.sentDate)

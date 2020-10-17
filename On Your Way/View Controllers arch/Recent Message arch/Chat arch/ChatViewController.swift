@@ -48,6 +48,8 @@ class ChatViewController: MessagesViewController {
     var maxMessageNumber = 0
     var minMessageNumber = 0
     
+    var typingCounter = 0
+    
     
     let currentUser = MKSender(senderId: User.currentId, displayName: User.currentUser!.username)
     
@@ -76,11 +78,12 @@ class ChatViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadChats()
-        configureMessageCollectionView()
         configureMessageInputBar()
         configureLeftBarButton()
         listenToNewChats()
         listenForOldChats()
+        createTypingObserver()
+        configureMessageCollectionView()
         
     }
     
@@ -88,11 +91,16 @@ class ChatViewController: MessagesViewController {
         super.viewWillAppear(true)
         configureNavBar()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
+        tabBarController?.dismiss(animated: true, completion: nil)
+        tabBarController?.tabBar.isHidden = true
+        navigationItem.largeTitleDisplayMode = .always
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         tabBarController?.tabBar.isHidden = false
+        tabBarController?.dismissPopupBar(animated: false, completion: nil)
+        tabBarController?.dismiss(animated: false, completion: nil)
     }
     
     
@@ -107,6 +115,9 @@ class ChatViewController: MessagesViewController {
     }
     
     @objc fileprivate func handleDismissal(){
+        tabBarController?.tabBar.isHidden = false
+        tabBarController?.dismissPopupBar(animated: false, completion: nil)
+        tabBarController?.dismiss(animated: false, completion: nil)
         navigationController?.popViewController(animated: true)
     }
     
@@ -132,13 +143,12 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.refreshControl = refreshController
         scrollsToBottomOnKeyboardBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true
-        messagesCollectionView.scrollToBottom(animated: true)
+        
     }
     
     
     // MARK: - configureMessageInputBar
     fileprivate func configureMessageInputBar(){
-        messageInputBar.delegate = self
         messageInputBar.delegate = self
         let attachButton = InputBarButtonItem()
         attachButton.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
@@ -210,6 +220,8 @@ class ChatViewController: MessagesViewController {
     }
     
     
+    
+    // MARK: - listenToNewChats
     fileprivate func listenToNewChats(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
         MessageService.shared.listenForNewChats(uid, collectionId: chatRoomId, lastMessageDate: lastMessageDate())
@@ -238,11 +250,29 @@ class ChatViewController: MessagesViewController {
         for i in minMessageNumber ..< maxMessageNumber {
             insertMessage(allLocalMessages[i])
         }
-
+        
     }
     
+    fileprivate func loadMoreMessages(maxNumber: Int, minNumber: Int){
+        maxMessageNumber = minNumber - 1
+        minMessageNumber = maxMessageNumber - kNUMBEROFMESSAGES
+        if minMessageNumber < 0 {
+            minMessageNumber = 0
+        }
+        
+        for i in (minMessageNumber ... maxMessageNumber).reversed() {
+            insertOlderMessage(allLocalMessages[i])
+        }
+    }
+    
+    fileprivate func insertOlderMessage(_ localMessage: LocalMessage){
+        let incoming  = IncomingMessageService(_collectionView: self)
+        self.mkMessages.insert(incoming.createMessage(localMessage: localMessage)!, at: 0)
+        displayingMessagesCount += 1
+    }
+    
+    
     fileprivate func insertMessage(_ localMessage: LocalMessage){
-        print("DEBUG: inserted message")
         let incoming  = IncomingMessageService(_collectionView: self)
         self.mkMessages.append(incoming.createMessage(localMessage: localMessage)!)
         displayingMessagesCount += 1
@@ -253,14 +283,56 @@ class ChatViewController: MessagesViewController {
     // MARK: - messageSend
     func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
         
+        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: "Test", title: "Hello")
+        
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
     }
     
     
     // MARK: - updateTypingIndictor
+    
+    func createTypingObserver(){
+        TypingListenerService.shared.createTypingObserver(chatRoomId: chatRoomId) { [weak self] isTyping in
+            DispatchQueue.main.async {
+                self?.updateTypingIndictor(isTyping)
+            }
+        }
+    }
+    
+    
+    func typingIndicator(){
+        typingCounter += 1
+        TypingListenerService.saveTypingCounter(typing: true, chatRoomId: chatRoomId)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            self.typingCounterStop()
+        }
+    }
+    
+    func typingCounterStop(){
+        typingCounter -= 1
+        if typingCounter == 0 {
+            TypingListenerService.saveTypingCounter(typing: false, chatRoomId: chatRoomId)
+        }
+    }
+    
+    
+    
     func updateTypingIndictor(_ show: Bool){
         subTitleLabel.text = show ? "Typing ..." : ""
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        if refreshController.isRefreshing {
+            if displayingMessagesCount < allLocalMessages.count {
+                self.loadMoreMessages(maxNumber: maxMessageNumber, minNumber: minMessageNumber)
+                messagesCollectionView.reloadDataAndKeepOffset()
+            }
+            refreshController.endRefreshing()
+        }
+        
     }
     
     

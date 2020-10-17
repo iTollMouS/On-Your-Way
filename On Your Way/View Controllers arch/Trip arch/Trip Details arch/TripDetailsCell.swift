@@ -161,6 +161,7 @@ class TripDetailsCell: UITableViewCell {
         priceBaseLabel.text = viewModel.basePrice
     }
     
+    
     func configureUI(){
         guard let cellViewModel = viewModel else { return  }
         switch cellViewModel {

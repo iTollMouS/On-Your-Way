@@ -5,14 +5,14 @@
 //  Created by Tariq Almazyad on 10/16/20.
 //
 
-import Foundation
+import UIKit
 import InputBarAccessoryView
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
     
     func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {
         if text != "" {
-            
+            typingIndicator()
         }
         updateMicButtonStatus(show: text == "" )
     }
