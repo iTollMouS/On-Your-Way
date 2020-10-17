@@ -15,6 +15,6 @@ struct MKSender: SenderType, Equatable {
 
 enum MessageDefaults {
     
-    static let bubbleColorOutgoing: UIColor = #colorLiteral(red: 0.3921568627, green: 0.3921568627, blue: 0.3921568627, alpha: 1)
-    static let bubbleColorIncoming: UIColor = #colorLiteral(red: 0.5882352941, green: 0.5882352941, blue: 0.5882352941, alpha: 1)
+    static let bubbleColorOutgoing: UIColor = #colorLiteral(red: 0.1176470588, green: 0.2745098039, blue: 0.2509803922, alpha: 1)
+    static let bubbleColorIncoming: UIColor = .blueLightIcon
 }

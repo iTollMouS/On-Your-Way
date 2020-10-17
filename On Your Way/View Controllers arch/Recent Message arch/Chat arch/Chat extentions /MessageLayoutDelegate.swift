@@ -22,14 +22,14 @@ extension ChatViewController: MessagesLayoutDelegate {
     }
 
     func cellBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        return isFromCurrentSender(message: message) ? 17 : 0
+        return isFromCurrentSender(message: message) ? 25 : 10
     }
     
     
     //MARK: - Message Bottom Label
     func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         
-        return indexPath.section != mkMessages.count - 1 ? 10 : 0
+        return indexPath.section != mkMessages.count - 1 ? 15 : 0
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {

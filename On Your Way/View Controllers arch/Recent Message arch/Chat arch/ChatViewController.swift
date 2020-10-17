@@ -167,6 +167,21 @@ class ChatViewController: MessagesViewController {
     // responsible to pop the messages
     
     
+    
+    fileprivate func updateMicButtonStatus(show: Bool){
+        if show {
+            
+        } else {
+            messageInputBar.setStackViewItems([micButton], forStack: .right, animated: false)
+            messageInputBar.setRightStackViewWidthConstant(to: 30, animated: false)
+        }
+    }
+    
+    
+    
+    
+    
+    
     // MARK: - loadChats
     fileprivate func loadChats(){
         // we get the locam message from realm by providing the key remember chatRoomId <- is the key
@@ -221,6 +236,4 @@ class ChatViewController: MessagesViewController {
     func updateTypingIndictor(_ show: Bool){
         subTitleLabel.text = show ? "Typing ..." : ""
     }
-    
-    
 }
