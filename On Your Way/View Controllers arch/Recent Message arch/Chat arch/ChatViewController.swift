@@ -23,6 +23,9 @@ class ChatViewController: MessagesViewController {
     
     let currentUser = MKSender(senderId: User.currentId, displayName: User.currentUser!.username)
     
+    // for realm to listen to any changes
+    var notificationToken: NotificationToken?
+    
     private let micButton: InputBarButtonItem = {
         let micButton = InputBarButtonItem(type: .system)
         micButton.image = UIImage(systemName: "mic.circle",
@@ -126,16 +129,47 @@ class ChatViewController: MessagesViewController {
         let predicate = NSPredicate(format: "chatRoomId = %@", chatRoomId)
         // get access to the database , declare type , then filter it .
         allLocalMessages = realm.objects(LocalMessage.self).filter(predicate).sorted(byKeyPath: kDATE, ascending: true)
-        print("DEBUG: messages are \(allLocalMessages.count)")
+        notificationToken = allLocalMessages.observe({ (changes: RealmCollectionChange) in
+            
+            switch changes {
+            
+            case .initial:
+                // to check all messages inside the database
+                self.insertMessages()
+                self.messagesCollectionView.reloadData()
+            case .update(_, _, let insertions, _):
+                // to insert new message in the database
+                for index in insertions {
+                    print("DEBUG: new message \(self.allLocalMessages[index].message) messages")
+                }
+            case .error(let error):
+                print("DEBUG: error while get data in realm \(error)")
+            }
+            
+        })
     }
     
     
+    
+    fileprivate func insertMessages(){
+        
+        for message in allLocalMessages {
+            insertMessage(message)
+        }
+        
+    }
+    
+    fileprivate func insertMessage(_ localMessage: LocalMessage){
+        print("DEBUG: inserted message")
+        let incoming  = IncomingMessageService(_collectionView: self)
+        self.mkMessages.append(incoming.createMessage(localMessage: localMessage)!)
+    }
     
     
     
     // MARK: - messageSend
     func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
-    
+        
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
     }

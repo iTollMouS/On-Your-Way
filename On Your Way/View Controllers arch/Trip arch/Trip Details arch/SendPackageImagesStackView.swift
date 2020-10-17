@@ -7,15 +7,20 @@
 //
 
 import UIKit
-
+// MARK: - protocol
 protocol SendPackageImagesStackViewDelegate: class {
     func imagesStackView(_ view: SendPackageImagesStackView, index: Int)
 }
 
 class SendPackageImagesStackView: UIView {
     
+    
+    // MARK: - delegate
     weak var delegate: SendPackageImagesStackViewDelegate?
     
+    
+    
+    // MARK: - Properteis
     lazy var button0 = createButton(0)
     lazy var button1 = createButton(1)
     lazy var button2 = createButton(2)
@@ -52,7 +57,7 @@ class SendPackageImagesStackView: UIView {
         return stackView
     }()
     
-    
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(stackView)
@@ -62,6 +67,8 @@ class SendPackageImagesStackView: UIView {
         
     }
     
+    
+    // MARK: - Actions
     @objc func handleSelectPhoto(_ sender: UIButton){
         delegate?.imagesStackView(self, index: sender.tag)
         

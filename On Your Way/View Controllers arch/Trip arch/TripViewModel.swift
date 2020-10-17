@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+// MARK: - TripViewModel
 struct TripViewModel {
     let trip: Trip
     

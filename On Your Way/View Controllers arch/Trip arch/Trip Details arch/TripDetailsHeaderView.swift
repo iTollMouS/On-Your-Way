@@ -9,6 +9,8 @@ import UIKit
 import Cosmos
 import SDWebImage
 
+
+// MARK: - protocol
 protocol TripDetailsHeaderViewDelegate: class {
     func handleStartToChat(_ view: TripDetailsHeaderView)
     func handleReviewsTapped(_ view: TripDetailsHeaderView)
@@ -16,12 +18,18 @@ protocol TripDetailsHeaderViewDelegate: class {
 
 class TripDetailsHeaderView: UIView {
     
+    
+    // MARK: - delegate
     weak var delegate: TripDetailsHeaderViewDelegate?
     
+    
+    // MARK: - User
     var user: User?{
         didSet{configure()}
     }
     
+    
+    // MARK: - Properties
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 100, width: 100)

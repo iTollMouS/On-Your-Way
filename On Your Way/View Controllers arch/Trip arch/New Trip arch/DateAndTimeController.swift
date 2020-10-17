@@ -49,11 +49,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     private lazy var contentSizeView = CGSize(width: self.view.frame.width,
                                               height: self.view.frame.height + dynamicScreen)
     
-    
-    
-    
-    var trip: Trip?
-    
+
     private lazy var scrollView : UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -262,6 +258,12 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     }()
     
     
+    // MARK: - Properties
+    var trip: Trip?
+    
+    
+    
+    // MARK: - Lifecyce
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -269,19 +271,13 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     }
   
     
-    
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
     }
     
-    @objc func handlePickViewDismissal(){
-        timeTextField.endEditing(true)
-    }
     
-    @objc func handleTimeSelected(_ sender: UIDatePicker){
-        timeTextField.text = sender.date.convertDate(formattedString: .timeOnly)
-    }
     
+    // MARK: - configureUI()
     func configureUI(){
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         view.addSubview(scrollView)
@@ -309,6 +305,19 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChanger), name: UITextView.textDidChangeNotification, object: nil)
     }
+    
+    
+    
+    // MARK: - Actions
+    @objc func handlePickViewDismissal(){
+        timeTextField.endEditing(true)
+    }
+    
+    @objc func handleTimeSelected(_ sender: UIDatePicker){
+        timeTextField.text = sender.date.convertDate(formattedString: .timeOnly)
+    }
+    
+    
     
     @objc func handleSubmitNewTrip(){
         guard var trip = trip else { return  }
@@ -356,6 +365,12 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     
 }
 
+// MARK: - extension
+
+
+
+
+// MARK: - Show selected date in label
 extension DateAndTimeController: FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         dateTextField.text = date.convertDate(formattedString: .formattedType1)
@@ -367,13 +382,15 @@ extension DateAndTimeController: FSCalendarDelegate {
     }
     
 }
-// prevent user to select time in the past
+//MARK:-Prevent user choosing past date
 extension DateAndTimeController: FSCalendarDataSource {
     func minimumDate(for calendar: FSCalendar) -> Date {
         return Date()
     }
 }
 
+
+// MARK: - UITextFieldDelegate
 extension DateAndTimeController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         guard let text = textField.text else { return  }
@@ -383,6 +400,7 @@ extension DateAndTimeController: UITextFieldDelegate {
     }
 }
 
+// MARK: - UITextViewDelegate
 extension DateAndTimeController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

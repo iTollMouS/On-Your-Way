@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */; };
+		83375F4D253A8415008F2036 /* IncomingMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F4C253A8415008F2036 /* IncomingMessageService.swift */; };
 		834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981B25311CCC00BE8691 /* AppDelegate.swift */; };
 		834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981D25311CCC00BE8691 /* SceneDelegate.swift */; };
 		834C982025311CCC00BE8691 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981F25311CCC00BE8691 /* MainTabController.swift */; };
@@ -133,6 +134,7 @@
 /* Begin PBXFileReference section */
 		675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_On_Your_Way.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A55185440CDC76BE70C863 /* Pods-On Your Way.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.debug.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.debug.xcconfig"; sourceTree = "<group>"; };
+		83375F4C253A8415008F2036 /* IncomingMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingMessageService.swift; sourceTree = "<group>"; };
 		834C981825311CCC00BE8691 /* On Your Way.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On Your Way.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		834C981B25311CCC00BE8691 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		834C981D25311CCC00BE8691 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
 				835C8812253A0D8A00D49923 /* MessageService.swift */,
 				835C88102539FB2F00D49923 /* OutgoingMessageService.swift */,
+				83375F4C253A8415008F2036 /* IncomingMessageService.swift */,
 				83B7637C253819FF00503A9D /* ReviewService.swift */,
 				834C9939253384C700BE8691 /* StartChat.swift */,
 				834C99422533A92800BE8691 /* TripService.swift */,
@@ -772,6 +775,7 @@
 				835C880A2539C3D400D49923 /* MKMessage.swift in Sources */,
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
 				83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */,
+				83375F4D253A8415008F2036 /* IncomingMessageService.swift in Sources */,
 				834C993525337C0A00BE8691 /* RecentChat.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C991B2532391B00BE8691 /* DateAndTimeController.swift in Sources */,
