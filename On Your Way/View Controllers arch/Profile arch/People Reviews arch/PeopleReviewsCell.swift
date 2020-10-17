@@ -108,6 +108,8 @@ class PeopleReviewsCell: UITableViewCell {
         
     }
     
+    #warning("Make the review as delegate and calculate the rating in the mainView and the update the value + make the header accessable to the rating on the top to update the values .")
+    
     fileprivate func configure(){
         guard let reviews = reviews else { return }
         let viewModel = ReviewViewModel(review: reviews)
@@ -119,7 +121,6 @@ class PeopleReviewsCell: UITableViewCell {
         timestamp.text = viewModel.timestamp
         reviewLabel.text = viewModel.reviewComment
         ratingView.rating = viewModel.rate
-        
         
     }
     

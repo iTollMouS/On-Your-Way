@@ -156,6 +156,7 @@ class PeopleReviewsController: UIViewController {
     private var user: User{
         didSet{ headerView.user = user}
     }
+    
     private var reviews = [Review]()
     private lazy var headerView = PeopleReviewHeader(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
     

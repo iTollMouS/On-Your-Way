@@ -16,7 +16,6 @@ class ChatViewController: MessagesViewController {
     
     // MARK: - Properties
     
-    
     let leftBarButtonLeft: UIView = {
         return UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
     }()
@@ -77,6 +76,7 @@ class ChatViewController: MessagesViewController {
         configureMessageCollectionView()
         configureMessageInputBar()
         configureLeftBarButton()
+        listenToNewChats()
         
     }
     
@@ -201,8 +201,14 @@ class ChatViewController: MessagesViewController {
                 print("DEBUG: error while get data in realm \(error)")
             }
             self.messagesCollectionView.reloadData()
-            self.messagesCollectionView.scrollToBottom(animated: true)
+            
         })
+    }
+    
+    
+    fileprivate func listenToNewChats(){
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        MessageService.shared.listenForNewChats(uid, collectionId: chatRoomId, lastMessageDate: lastMessageDate())
     }
     
     
@@ -238,7 +244,15 @@ class ChatViewController: MessagesViewController {
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
     }
     
+    
+    // MARK: - updateTypingIndictor
     func updateTypingIndictor(_ show: Bool){
         subTitleLabel.text = show ? "Typing ..." : ""
+    }
+    
+    
+    fileprivate func lastMessageDate() -> Date {
+        guard let lastMessageDate = allLocalMessages.last?.date else {return  Date() }
+        return Calendar.current.date(byAdding: .second, value: 1, to: lastMessageDate) ?? lastMessageDate
     }
 }

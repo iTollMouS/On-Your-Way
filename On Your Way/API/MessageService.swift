@@ -19,10 +19,10 @@ class MessageService {
     
     
     // MARK: - listenForNewChats
-    func listenForNewChats(_ documentId: String, collectionId: String, lastMesssageDate: Date) {
+    func listenForNewChats(_ documentId: String, collectionId: String, lastMessageDate: Date) {
         newChatListener = Firestore.firestore().collection("messages")
             .document(documentId).collection(collectionId)
-            .whereField(kDATE, isGreaterThan: lastMesssageDate).addSnapshotListener({ (snapshot, error) in
+            .whereField(kDATE, isGreaterThan: lastMessageDate).addSnapshotListener({ (snapshot, error) in
                 guard let snapshot = snapshot else {return}
                 
                 for change in snapshot.documentChanges {
@@ -46,8 +46,6 @@ class MessageService {
                 }
                 
             })
-        
-        
     }
     
     

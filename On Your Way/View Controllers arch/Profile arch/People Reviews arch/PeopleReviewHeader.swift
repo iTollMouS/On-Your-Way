@@ -15,6 +15,8 @@ class PeopleReviewHeader: UIView {
         didSet{configure()}
     }
     
+    
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Reviews"
@@ -31,7 +33,7 @@ class PeopleReviewHeader: UIView {
         let attributedText = NSMutableAttributedString(string: "4.7", attributes: [.foregroundColor : UIColor.lightGray,
                                                                                    .font: UIFont.boldSystemFont(ofSize: 42)])
         attributedText.append(NSMutableAttributedString(string: "\n\nbased on 27 reviews", attributes: [.foregroundColor : UIColor.gray,
-                                                                                    .font: UIFont.systemFont(ofSize: 18)]))
+                                                                                                        .font: UIFont.systemFont(ofSize: 18)]))
         label.attributedText = attributedText
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -69,8 +71,7 @@ class PeopleReviewHeader: UIView {
     }
     
     fileprivate func configure(){
-        guard let user = user else { return }
-        
+       
         
     }
     
