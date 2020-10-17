@@ -14,6 +14,29 @@ import RealmSwift
 class ChatViewController: MessagesViewController {
     
     // MARK: - Properties
+    
+    
+    let leftBarButtonLeft: UIView = {
+        return UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+    }()
+    
+    let titleLabel: UILabel = {
+        let title = UILabel(frame: CGRect(x: 5, y: 0, width: 140, height: 25))
+        title.textAlignment = .left
+        title.font = UIFont.systemFont(ofSize: 12)
+        title.adjustsFontSizeToFitWidth = true
+        return title
+    }()
+    
+    
+    let subTitleLabel: UILabel = {
+        let title = UILabel(frame: CGRect(x: 5, y: 22, width: 140, height: 25))
+        title.textAlignment = .left
+        title.font = UIFont.systemFont(ofSize: 12)
+        title.adjustsFontSizeToFitWidth = true
+        return title
+    }()
+    
     private var chatRoomId = ""
     private var recipientId = ""
     private var recipientName = ""
@@ -44,6 +67,8 @@ class ChatViewController: MessagesViewController {
         return attachmentButton
     }()
     
+    
+    // create an array
     var mkMessages: [MKMessage] = []
     
     init(chatRoomId: String, recipientId: String, recipientName: String) {
@@ -63,10 +88,10 @@ class ChatViewController: MessagesViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadChats()
         configureMessageCollectionView()
         configureMessageInputBar()
-        loadChats()
-        
+        configureLeftBarButton()
         
     }
     
@@ -82,14 +107,30 @@ class ChatViewController: MessagesViewController {
     }
     
     
+    fileprivate func configureLeftBarButton(){
+        self.navigationItem.leftBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain,
+                                                                  target: self, action: #selector(handleDismissal))]
+        leftBarButtonLeft.addSubview(titleLabel)
+        leftBarButtonLeft.addSubview(subTitleLabel)
+        let leftBarButtonItem = UIBarButtonItem(customView: leftBarButtonLeft)
+        self.navigationItem.leftBarButtonItems?.append(leftBarButtonItem)
+        titleLabel.text = recipientName
+    }
+    
+    @objc fileprivate func handleDismissal(){
+        navigationController?.popViewController(animated: true)
+    }
+    
     
     // MARK: - configureNavBar
     fileprivate func configureNavBar(){
         
-        configureNavigationBar(withTitle: recipientName, largeTitleColor: .white, tintColor: .white,
+        configureNavigationBar(withTitle: "", largeTitleColor: .white, tintColor: .white,
                                navBarColor: #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1), smallTitleColorWhenScrolling: .dark,
                                prefersLargeTitles: false)
     }
+    
+    
     
     // step 1 to configure the chat delegate s
     // MARK: - configureMessageCollectionView
@@ -99,10 +140,10 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        messagesCollectionView.refreshControl = refreshController
         scrollsToBottomOnKeyboardBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true
-        messagesCollectionView.refreshControl = refreshController
-        
+        messagesCollectionView.scrollToBottom(animated: true)
     }
     
     
@@ -117,46 +158,49 @@ class ChatViewController: MessagesViewController {
         messageInputBar.inputTextView.isImagePasteEnabled = true
         messageInputBar.inputTextView.layer.cornerRadius = 20
         messageInputBar.backgroundView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
-        messageInputBar.inputTextView.backgroundColor = #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1)
+        messageInputBar.inputTextView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         
     }
     
     // MARK: - Actions
     // we send any outgoing message
+    // responsible to pop the messages
     
+    
+    // MARK: - loadChats
     fileprivate func loadChats(){
         // we get the locam message from realm by providing the key remember chatRoomId <- is the key
         let predicate = NSPredicate(format: "chatRoomId = %@", chatRoomId)
         // get access to the database , declare type , then filter it .
         allLocalMessages = realm.objects(LocalMessage.self).filter(predicate).sorted(byKeyPath: kDATE, ascending: true)
-        notificationToken = allLocalMessages.observe({ (changes: RealmCollectionChange) in
+        notificationToken = allLocalMessages.observe({ [weak self] (changes: RealmCollectionChange) in
             
+            // MARK: - notificationToken
             switch changes {
-            
             case .initial:
                 // to check all messages inside the database
-                self.insertMessages()
-                self.messagesCollectionView.reloadData()
+                self?.insertMessages()
+                self?.messagesCollectionView.reloadData()
             case .update(_, _, let insertions, _):
                 // to insert new message in the database
                 for index in insertions {
-                    print("DEBUG: new message \(self.allLocalMessages[index].message) messages")
+                    self?.insertMessage(self!.allLocalMessages[index])
+                    self?.messagesCollectionView.reloadData()
                 }
             case .error(let error):
                 print("DEBUG: error while get data in realm \(error)")
             }
-            
+            self?.messagesCollectionView.reloadData()
         })
     }
     
     
-    
+    // MARK: - insertMessages
     fileprivate func insertMessages(){
         
         for message in allLocalMessages {
             insertMessage(message)
         }
-        
     }
     
     fileprivate func insertMessage(_ localMessage: LocalMessage){
@@ -172,6 +216,10 @@ class ChatViewController: MessagesViewController {
         
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
+    }
+    
+    func updateTypingIndictor(_ show: Bool){
+        subTitleLabel.text = show ? "Typing ..." : ""
     }
     
     

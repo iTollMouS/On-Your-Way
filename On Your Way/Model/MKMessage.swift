@@ -9,6 +9,7 @@ import MessageKit
 import UIKit
 import CoreLocation
 
+
 class MKMessage: NSObject, MessageType {
     
     var messageId: String
@@ -18,8 +19,6 @@ class MKMessage: NSObject, MessageType {
     var mkSender: MKSender
     var sender: SenderType {return mkSender}
     var senderInitials: String
-    
-    
     var status: String
     var readDate: Date
     
@@ -29,7 +28,8 @@ class MKMessage: NSObject, MessageType {
         
         self.messageId = message.id
         self.mkSender = MKSender(senderId: message.senderId, displayName: message.senderName)
-        
+        print("DEBUG:: sender is is \(message.senderId)")
+        print("DEBUG:: sender is id \(message.senderName)")
         self.status = message.status
         self.kind = MessageKind.text(message.message)
         
@@ -37,6 +37,7 @@ class MKMessage: NSObject, MessageType {
         self.sentDate = message.date
         self.readDate = message.readDate
         self.incoming = User.currentId != mkSender.senderId
+        
         
         
         

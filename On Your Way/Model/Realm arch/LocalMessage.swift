@@ -28,8 +28,6 @@ class LocalMessage: Object, Codable {
     @objc dynamic var longitude = ""
     @objc dynamic var audioDuration = ""
     
-    
-    
     override class func primaryKey() -> String? { return "id" }
     
 }

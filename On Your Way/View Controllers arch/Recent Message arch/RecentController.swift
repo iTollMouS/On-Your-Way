@@ -33,6 +33,7 @@ class RecentController: UIViewController {
         tableView.register(RecentCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.backgroundColor = .clear
         tableView.rowHeight = 100
+        tableView.tableFooterView = UIView()
         return tableView
     }()
     
@@ -151,6 +152,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
         let chatViewController = ChatViewController(chatRoomId: recent.chatRoomId,
                                                     recipientId: recent.receiverId,
                                                     recipientName: recent.receiverName)
+        chatViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(chatViewController, animated: true)
     }
     

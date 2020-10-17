@@ -10,12 +10,11 @@ import InputBarAccessoryView
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
     
-    
-    
     func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {
         if text != "" {
-            
+            self.messagesCollectionView.scrollToBottom(animated: true)
         }
+        print("DEBUG: beging editing ")
     }
     
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {

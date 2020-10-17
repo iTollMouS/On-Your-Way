@@ -17,9 +17,7 @@ class MessageService {
     // MARK: - add message
     func addMessage(_ message: LocalMessage, memberId: String){
         do {
-            print("DEBUG: saved message success!!!! \(message)")
-            print("DEBUG: saved message success!!!! \(memberId)")
-            try Firestore.firestore().collection("messages")
+           let _ = try Firestore.firestore().collection("messages")
                 .document(memberId)
                 .collection(message.chatRoomId)
                 .document(message.id).setData(from: message)

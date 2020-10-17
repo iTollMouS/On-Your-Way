@@ -69,14 +69,14 @@ class TripDetailsController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        tabBarController?.dismissPopupBar(animated: true, completion: nil)
-//        let peopleReviewsController = PeopleReviewsController(user: user)
-//        peopleReviewsController.popupItem.title = "People Reviews "
-//        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
-//        peopleReviewsController.popupItem.progress = 0.34
-//        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
-//        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
-//        tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
+        
+        let peopleReviewsController = PeopleReviewsController(user: user)
+        peopleReviewsController.popupItem.title = "People Reviews "
+        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
+        peopleReviewsController.popupItem.progress = 0.34
+        tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
+        tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
+        tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
     }
     
     

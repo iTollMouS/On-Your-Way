@@ -68,6 +68,8 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         if index == 3 {
             let recentController = RecentController()
             let navController = UINavigationController(rootViewController: recentController)
+            navController.tabBarController?.hidesBottomBarWhenPushed = true
+            
             navController.modalPresentationStyle = .custom
             navController.navigationBar.barStyle = .black
             navController.navigationBar.isTranslucent = true

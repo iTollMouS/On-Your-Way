@@ -181,6 +181,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         case 2:
             
             UserServices.shared.fetchUser(userId: package.userID) { [weak self] packageOwner in
+                
                 let chatId = startChat(currentUser: packageOwner, selectedUser: self!.user)
                 let chatViewController = ChatViewController(chatRoomId: chatId,
                                                             recipientId: packageOwner.id,
