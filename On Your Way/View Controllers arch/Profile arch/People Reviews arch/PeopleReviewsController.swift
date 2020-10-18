@@ -180,11 +180,12 @@ class PeopleReviewsController: UIViewController {
         configureReviewSheetPopOver()
         self.hideKeyboardWhenTouchOutsideTextField()
         fetchUser()
-        fetchReviews()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        fetchReviews()
         navigationController?.navigationBar.prefersLargeTitles = false
         tabBarController?.tabBar.isHidden = true
         canUserReview()
@@ -204,13 +205,17 @@ class PeopleReviewsController: UIViewController {
             self?.reviews.forEach{
                 sumAllReviews += $0.rate
                 self?.headerView.ratingView.rating = (Double(self!.reviews.count) / sumAllReviews)
-                self?.headerView.ratingView.text = "5/\(String(format: "%.0f", (Double(self!.reviews.count) / sumAllReviews)))"
+                
+                let attributedText = NSMutableAttributedString(string: "\(self!.user.username) has\n", attributes: [.foregroundColor : UIColor.lightGray,
+                                                                                                  .font: UIFont.boldSystemFont(ofSize: 18)])
+                attributedText.append(NSMutableAttributedString(string: "\(self!.reviews.count) reviews", attributes: [.foregroundColor : UIColor.gray,
+                                                                                                                      .font: UIFont.systemFont(ofSize: 18)]))
+                self?.headerView.ratingView.rating = sumAllReviews / Double(self!.reviews.count)
+                self?.headerView.reviewRate.attributedText = attributedText
+                self?.headerView.ratingView.text = "5/\(String(format: "%.2f", sumAllReviews / (Double(self!.reviews.count))))"
             }
-            
             self?.tableView.reloadData()
         }
-        
-        
     }
     
     func canUserReview(){
@@ -239,7 +244,7 @@ class PeopleReviewsController: UIViewController {
     
     func fetchUser(){
         guard let uid = Auth.auth().currentUser?.uid else { return  }
-        if User.currentId == uid {
+        if user.id == uid {
             self.tableView.reloadData()
             self.tableView.fillSuperview()
             self.buttonContainerView.isHidden = true
@@ -380,6 +385,8 @@ extension PeopleReviewsController {
             print("DEBUG:: success")
         }
         SwiftEntryKit.dismiss(.displayed) { [self] in reviewTextView.text = "" }
+        self.fetchReviews()
+        self.tableView.reloadData()
         
     }
     

@@ -32,11 +32,6 @@ class PeopleReviewHeader: UIView {
     
      lazy var reviewRate: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0.0", attributes: [.foregroundColor : UIColor.lightGray,
-                                                                                   .font: UIFont.boldSystemFont(ofSize: 42)])
-        attributedText.append(NSMutableAttributedString(string: "\n\no reviews", attributes: [.foregroundColor : UIColor.gray,
-                                                                                                        .font: UIFont.systemFont(ofSize: 18)]))
-        label.attributedText = attributedText
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -48,6 +43,8 @@ class PeopleReviewHeader: UIView {
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = #imageLiteral(resourceName: "RatingStarEmpty").withRenderingMode(.alwaysOriginal)
         view.settings.starSize = 24
+        view.settings.textColor = .white
+        view.settings.textFont = UIFont.systemFont(ofSize: 16)
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
         view.rating = 0.0
