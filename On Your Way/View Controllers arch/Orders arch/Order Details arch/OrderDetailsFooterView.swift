@@ -25,9 +25,10 @@ class OrderDetailsFooterView: UIView {
     }
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [acceptButton,
+        let stackView = UIStackView(arrangedSubviews: [rejectButton,
+                                                       acceptButton,
                                                        startChatButton,
-                                                       rejectButton])
+                                                       ])
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.distribution = .fillEqually

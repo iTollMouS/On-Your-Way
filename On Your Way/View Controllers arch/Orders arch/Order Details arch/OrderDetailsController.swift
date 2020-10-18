@@ -157,6 +157,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         switch sender.tag {
         // reject
         case 0:
+            self.package.packageStatus = .packageIsRejected
             let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
@@ -171,15 +172,18 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             
         //accept
         case 1:
+            self.package.packageStatus = .packageIsAccepted
             let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Accept order", style: .default, handler: { [weak self] (alertAction) in
-                self?.showCustomAlertView()
+                TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
+                    PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is Accepted ", title: "Accepted order")
+                    self?.showCustomAlertView()
+                }
             }))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
         // chat
         case 2:
-            
             UserServices.shared.fetchUser(userId: package.userID) { [weak self] packageOwner in
                 
                 let chatId = startChat(currentUser: packageOwner, selectedUser: self!.user)
