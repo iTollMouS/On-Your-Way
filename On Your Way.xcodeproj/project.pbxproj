@@ -13,6 +13,7 @@
 		83375F51253B1C95008F2036 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		83375F79253B91CF008F2036 /* TypingListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F78253B91CF008F2036 /* TypingListenerService.swift */; };
 		83375F7B253BA231008F2036 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F7A253BA231008F2036 /* PushNotificationService.swift */; };
+		833E8E65253BF1CE007CCB2D /* ActiveListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */; };
 		834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981B25311CCC00BE8691 /* AppDelegate.swift */; };
 		834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981D25311CCC00BE8691 /* SceneDelegate.swift */; };
 		834C982025311CCC00BE8691 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981F25311CCC00BE8691 /* MainTabController.swift */; };
@@ -136,6 +137,7 @@
 		83375F4C253A8415008F2036 /* IncomingMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingMessageService.swift; sourceTree = "<group>"; };
 		83375F78253B91CF008F2036 /* TypingListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingListenerService.swift; sourceTree = "<group>"; };
 		83375F7A253BA231008F2036 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveListenerService.swift; sourceTree = "<group>"; };
 		834C981825311CCC00BE8691 /* On Your Way.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On Your Way.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		834C981B25311CCC00BE8691 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		834C981D25311CCC00BE8691 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
 				835C8812253A0D8A00D49923 /* MessageService.swift */,
 				83375F78253B91CF008F2036 /* TypingListenerService.swift */,
+				833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */,
 				835C88102539FB2F00D49923 /* OutgoingMessageService.swift */,
 				83375F4C253A8415008F2036 /* IncomingMessageService.swift */,
 				83375F7A253BA231008F2036 /* PushNotificationService.swift */,
@@ -748,6 +751,7 @@
 				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
 				83B76373253715ED00503A9D /* NotificationCell.swift in Sources */,
 				834C991D25323C3200BE8691 /* RecentCell.swift in Sources */,
+				833E8E65253BF1CE007CCB2D /* ActiveListenerService.swift in Sources */,
 				83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */,
 				834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */,
 				83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */,
