@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 
 private let reuseIdentifier = "SendPackageCell"
@@ -190,7 +191,14 @@ class SendPackageController: UIViewController {
     
     @objc fileprivate func handleSubmittingShipment(){
                 
-        PushNotificationService.shared.sendPushNotification(userIds: [trip.userID], body: "You have a new order", title: "New Order")
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        UserServices.shared.fetchUser(userId: uid) { [weak self] user in
+            PushNotificationService.shared.sendPushNotification(userIds: [self!.trip.userID],
+                                                                body: "You have a new order from \(user.username)",
+                                                                title: "New Order")
+        }
+        
         view.isUserInteractionEnabled = false
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we\nsend your request....")

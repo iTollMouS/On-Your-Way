@@ -15,8 +15,7 @@ class PushNotificationService {
         
         UserServices.shared.downloadUsersFromFirebase(withIds: userIds) { users in
             for user in users {
-                print("DEBUG: user puhs s \(user.pushId)")
-                self.sendNotificationToUser(to: user.pushId, title: user.username, body: body)
+                self.sendNotificationToUser(to: user.pushId, title: title, body: body)
             }
         }
         

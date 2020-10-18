@@ -372,6 +372,7 @@ extension PeopleReviewsController {
                             timestamp: Date(),
                             reviewComment: reviewComment,
                             rate: rate, reviewId: reviewId)
+        PushNotificationService.shared.sendPushNotification(userIds: [user.id], body: "Someone wrote a review 🤩 check it out", title: "Rating 5/\(rate)")
         ReviewService.shared.uploadNewReview(userId: user.id, review: review) { error in
             if let error = error {
                 print("DEBUG: error while \(error.localizedDescription)")

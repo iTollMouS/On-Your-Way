@@ -221,8 +221,8 @@ class TripCell: UITableViewCell {
             guard let imageUrl = URL(string: user.avatarLink) else { return }
             self?.profileImageView.sd_setImage(with: imageUrl)
             self?.fullnameLable.text = user.username
-            self?.ratingView.rating = (user.sumAllReviews / user.reviewsCount)
-            self?.ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount))"
+            self?.ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
+            self?.ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"
         }
         
         timestampLabel.text = viewModel.timestamp

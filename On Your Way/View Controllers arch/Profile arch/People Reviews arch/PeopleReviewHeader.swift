@@ -15,8 +15,6 @@ class PeopleReviewHeader: UIView {
         didSet{configure()}
     }
     
-    
-    
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 80, width: 80)
@@ -116,8 +114,6 @@ class PeopleReviewHeader: UIView {
         attributedText.append(NSMutableAttributedString(string: "\(user.reviewsCount) reviews", attributes: [.foregroundColor : UIColor.gray,
                                                                                                              .font: UIFont.systemFont(ofSize: 14)]))
         reviewRate.attributedText = attributedText
-        
-        
         
     }
     
