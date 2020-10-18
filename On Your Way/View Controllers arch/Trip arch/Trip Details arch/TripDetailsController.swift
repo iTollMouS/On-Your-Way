@@ -175,7 +175,7 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
             let chatViewController = ChatViewController(chatRoomId: chatId,
                                                         recipientId: self!.trip.userID,
                                                         recipientName: self!.user.username)
-            chatViewController.hidesBottomBarWhenPushed = true
+            
             self?.navigationController?.pushViewController(chatViewController, animated: true)
         }
     }
@@ -248,4 +248,3 @@ extension TripDetailsController {
     }
     
 }
-

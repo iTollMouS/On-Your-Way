@@ -12,10 +12,13 @@ import Gallery
 import RealmSwift
 import Firebase
 import IQKeyboardManagerSwift
+import LNPopupController
+
 
 class ChatViewController: MessagesViewController {
     
     // MARK: - Properties
+    
     
     let leftBarButtonLeft: UIView = {
         return UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
@@ -93,17 +96,9 @@ class ChatViewController: MessagesViewController {
         super.viewWillAppear(true)
         configureNavBar()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
-        tabBarController?.dismiss(animated: true, completion: nil)
-        tabBarController?.tabBar.isHidden = true
-        navigationItem.largeTitleDisplayMode = .always
+        
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        tabBarController?.tabBar.isHidden = false
-        tabBarController?.dismissPopupBar(animated: false, completion: nil)
-        tabBarController?.dismiss(animated: false, completion: nil)
-    }
     
     
     fileprivate func configureLeftBarButton(){
@@ -117,9 +112,8 @@ class ChatViewController: MessagesViewController {
     }
     
     @objc fileprivate func handleDismissal(){
-        tabBarController?.tabBar.isHidden = false
-        tabBarController?.dismissPopupBar(animated: false, completion: nil)
-        tabBarController?.dismiss(animated: false, completion: nil)
+        
+        
         navigationController?.popViewController(animated: true)
     }
     

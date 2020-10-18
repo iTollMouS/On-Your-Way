@@ -7,7 +7,7 @@
 
 import UIKit
 import Firebase
-//import LNPopupController
+import LNPopupController
 
 private let reuseIdentifier = "TripCell"
 
