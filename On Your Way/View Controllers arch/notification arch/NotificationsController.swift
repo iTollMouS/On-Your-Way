@@ -12,10 +12,16 @@ private let reuseIdentifier = "NotificationCell"
 
 class NotificationsController: UITableViewController {
     
+    
+    // MARK: - Properties
     let refreshController = UIRefreshControl()
     var packagesDictionary = [String : Package]()
     var packages = [Package]()
     
+    
+    
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +37,9 @@ class NotificationsController: UITableViewController {
     }
     
     
+    
+    
+    // MARK: - configureRefreshController
     func configureRefreshController(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
@@ -38,6 +47,9 @@ class NotificationsController: UITableViewController {
         tableView.refreshControl = refreshController
     }
     
+    
+    
+    // MARK: - fetchMyRequest
      func fetchMyRequest(){
         guard let uid = Auth.auth().currentUser?.uid else { return  }
         TripService.shared.fetchMyRequest(userId: uid ) { packages in
@@ -51,6 +63,9 @@ class NotificationsController: UITableViewController {
         }
     }
     
+    
+    
+    // MARK: - configureTableView
     fileprivate func configureTableView(){
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 150
@@ -69,6 +84,8 @@ class NotificationsController: UITableViewController {
         return cell
     }
     
+    
+    // MARK: - scrollViewDidEndDecelerating
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if refreshController.isRefreshing {
             fetchMyRequest()

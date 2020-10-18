@@ -9,6 +9,8 @@ import UIKit
 import SDWebImage
 class NotificationCell: UITableViewCell {
 
+    
+    // MARK: - Properties
     var package: Package?{
         didSet{configure()}
     }
@@ -56,6 +58,8 @@ class NotificationCell: UITableViewCell {
         return imageView
     }()
     
+    
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -76,6 +80,8 @@ class NotificationCell: UITableViewCell {
         
     }
     
+    
+    // MARK: - configure
     fileprivate func configure(){
         guard let package = package else { return }
         let viewModel = PackageViewModel(package: package)
@@ -88,6 +94,7 @@ class NotificationCell: UITableViewCell {
         }
         timestamp.text = viewModel.timestamp
         
+        // MARK: - switch viewModel
         switch viewModel.packageStatus {
       
         case .packageIsPending:
