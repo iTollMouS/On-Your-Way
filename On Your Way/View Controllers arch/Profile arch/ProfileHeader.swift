@@ -125,8 +125,8 @@ class ProfileHeader: UIView {
             profileImageView.layer.cornerRadius = 100 / 2
             profileImageView.backgroundColor = .clear
         }
-        ratingView.rating = user.sumAllReviews / user.reviewsCount
-        ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount))"
+        ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
+        ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"
         
     }
     
