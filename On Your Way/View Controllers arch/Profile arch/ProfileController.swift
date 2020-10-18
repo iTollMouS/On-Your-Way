@@ -182,19 +182,12 @@ class ProfileController: UIViewController {
 
 
 // MARK: - extension
-
-
-
 extension ProfileController: UpdateEmailControllerDelegate {
     func handleLoggingUserOut() {
         navigationController?.popViewController(animated: true)
         logout()
     }
-    
-    
 }
-
-
 
 // MARK: - LoginControllerDelegate
 extension ProfileController: LoginControllerDelegate {

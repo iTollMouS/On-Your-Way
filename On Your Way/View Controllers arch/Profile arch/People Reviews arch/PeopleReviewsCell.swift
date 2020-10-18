@@ -9,15 +9,21 @@ import UIKit
 import Cosmos
 import SDWebImage
 
+
+protocol PeopleReviewsCellDelegate: class {
+    func handleDisplayingReview(_ cell: PeopleReviewsCell)
+}
+
 class PeopleReviewsCell: UITableViewCell {
     
     
+    weak var delegate: PeopleReviewsCellDelegate?
     
     var reviews: Review?{
         didSet{configure()}
     }
     
-    private lazy var profileImageView: UIImageView = {
+     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 50, width: 50)
         imageView.layer.cornerRadius = 50 / 2
@@ -31,7 +37,6 @@ class PeopleReviewsCell: UITableViewCell {
     
     private lazy var fullname: UILabel = {
         let label = UILabel()
-        label.text = "Tariq Almazyad"
         label.textAlignment = .left
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 16)
@@ -41,15 +46,14 @@ class PeopleReviewsCell: UITableViewCell {
     
     private lazy var timestamp: UILabel = {
         let label = UILabel()
-        label.text = "5 days ago"
         label.textAlignment = .right
         label.numberOfLines = 0
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = .lightGray
         return label
     }()
     
-    private lazy var ratingView: CosmosView = {
+     lazy var ratingView: CosmosView = {
         let view = CosmosView()
         view.settings.fillMode = .half
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
@@ -57,8 +61,6 @@ class PeopleReviewsCell: UITableViewCell {
         view.settings.starSize = 18
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
-        view.text = "No reveiws"
-        view.rating = 0.0
         view.settings.textColor = .lightGray
         view.settings.textMargin = 10
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
@@ -118,10 +120,14 @@ class PeopleReviewsCell: UITableViewCell {
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self?.fullname.text = user.username
             self?.profileImageView.sd_setImage(with: imageUrl)
+            self?.profileImageView.layer.cornerRadius = 50 / 2
+            self?.profileImageView.clipsToBounds = true
         }
         timestamp.text = viewModel.timestamp
         reviewLabel.text = viewModel.reviewComment
         ratingView.rating = viewModel.rate
+        ratingView.text = "5/\(viewModel.rate)"
+        delegate?.handleDisplayingReview(self)
         
     }
     

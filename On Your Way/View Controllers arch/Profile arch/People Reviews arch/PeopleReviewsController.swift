@@ -179,6 +179,7 @@ class PeopleReviewsController: UIViewController {
         configureReviewSheetPopOver()
         self.hideKeyboardWhenTouchOutsideTextField()
         fetchUser()
+        fetchReviews()
         
     }
     
@@ -195,23 +196,39 @@ class PeopleReviewsController: UIViewController {
         return .lightContent
     }
     
+    func fetchReviews(){
+        ReviewService.shared.fetchPeopleReviews(userId: user.id) { [weak self]  in
+            self?.reviews = $0
+            self?.tableView.reloadData()
+        }
+    }
+    
     func canUserReview(){
         
-        guard let reviewerId = User.currentUser?.id else { return }
-        TripService.shared.fetchMyRequest(userId: reviewerId) { packages in
-            if !packages.isEmpty {
-                self.submitReviewButton.setTitle("Write a review", for: .normal)
+        guard let reviewerId = Auth.auth().currentUser?.uid else { return }
+        TripService.shared.fetchMyRequest(userId: reviewerId) { [weak self] packages in
+            
+            if packages.isEmpty{
+                self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
+                self?.writeReviewButton.isEnabled = false
             } else {
-                self.writeReviewButton.setTitle("You can not review \(self.user.username)", for: .normal)
-                self.writeReviewButton.isEnabled = false
+    
+                packages.forEach{
+                    if $0.packageStatus == .packageIsAccepted {
+                        self?.submitReviewButton.setTitle("Write a review for \(self!.user.username)", for: .normal)
+                        self?.updateReviewOnTouch()
+                    } else {
+                        self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
+                        self?.writeReviewButton.isEnabled = false
+                    }
+                    self?.tableView.reloadData()
+                }
             }
         }
     }
     
     func fetchUser(){
-        
-        guard let uid = User.currentUser?.id else { return  }
-        
+        guard let uid = Auth.auth().currentUser?.uid else { return  }
         if User.currentId == uid {
             self.tableView.reloadData()
             self.tableView.fillSuperview()
@@ -283,7 +300,7 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PeopleReviewsCell
-        
+        cell.reviews = reviews[indexPath.row]
         return cell
     }
     

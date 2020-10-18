@@ -72,15 +72,63 @@ class TripService {
         var packages: [Package] = []
         Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").addSnapshotListener { (snapshot, error) in
             guard let snapshot = snapshot else {return}
-            let allPackages = snapshot.documentChanges.compactMap { (queryDocumentSnapshot) -> Package? in
-                return try? queryDocumentSnapshot.document.data(as: Package.self)
+           
+            for packageChanged in snapshot.documentChanges {
+                if packageChanged.type == .added {
+                    let result = Result {
+                        try? packageChanged.document.data(as: Package.self)
+                    }
+                    switch result {
+                   
+                    case .success( let package):
+                        if let package = package {
+                            packages.append(package)
+                        }
+                    case .failure(let error ):
+                        print("DEBUG: error \(error.localizedDescription)")
+                    }
+                }
+                
+                if packageChanged.type == .modified {
+                    let result = Result {
+                        try? packageChanged.document.data(as: Package.self)
+                    }
+                    switch result {
+                    case .success( let package):
+                        if let package = package {
+                            packages.append(package)
+                        }
+                    case .failure(let error ):
+                        print("DEBUG: error \(error.localizedDescription)")
+                    }
+                }
             }
-            for trip in allPackages {  packages.append(trip) }
+            
             packages.sort(by: { $0.timestamp! > $1.timestamp! })
             completion(packages)
         }
         
     }
+    
+//    for change in snapshot.documentChanges {
+//        if change.type == .added {
+//            let result = Result {
+//                try? change.document.data(as: LocalMessage.self)
+//            }
+//
+//            switch result {
+//            case .success(let messageObject):
+//                if let message = messageObject {
+//                    RealmService.shared.saveToRealm(message)
+//                } else {
+//                    print("DEBUG: ducoment doesnt exists")
+//                }
+//
+//            case .failure(let error):
+//                print("DEBUG: error while getting \(error.localizedDescription)")
+//            }
+//        }
+//    }
     
     
     func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void){
