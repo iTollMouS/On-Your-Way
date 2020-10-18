@@ -63,26 +63,25 @@ class OnboardingCell: UICollectionViewCell {
     }()
 
     
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
     }
     
+    
+    
+    // MARK: - configure
     fileprivate func configure(){
         guard let viewModel = viewModel else { return  }
         
         addSubview(stackView)
         stackView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 60)
         stackView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 30, paddingRight: 30)
-//        stackView.fillSuperviewSafeAreaLayoutGuide(padding: UIEdgeInsets(top: 30, left: 30, bottom: 150, right: 30))
         animationView.animation = Animation.named(viewModel.JSONStringName)
         animationView.setDimensions(height: viewModel.animationViewDimension.0, width: viewModel.animationViewDimension.1)
         animationView.play()
         animationView.loopMode = .loop
-//
-//        addSubview(stackView)
-//        stackView.centerX(inView: animationView, topAnchor: animationView.bottomAnchor, paddingTop: 10)
-//        stackView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 50, paddingRight: 50)
         titleLabel.text =  viewModel.titleLabel
         detailsLabel.text = viewModel.detailsLabel
     }

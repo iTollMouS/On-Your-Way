@@ -14,6 +14,7 @@ private let reuseIdentifier = "OnboardingCell"
 
 class OnboardingController: UIViewController {
     
+    // MARK: - Properties
     private let previousButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("PREV", for: .normal)
@@ -49,7 +50,7 @@ class OnboardingController: UIViewController {
         return pc
     }()
     
-    // MARK: - Properties
+    
     private lazy var dismissalButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Okay", for: .normal)
@@ -90,6 +91,8 @@ class OnboardingController: UIViewController {
     
     
     
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
@@ -97,6 +100,8 @@ class OnboardingController: UIViewController {
         
     }
     
+    
+    // MARK: - configureCollectionView
     fileprivate func configureCollectionView(){
         
         view.addSubview(blurView)
@@ -106,6 +111,8 @@ class OnboardingController: UIViewController {
         
     }
     
+    
+    // MARK: - configureCollectionView
     fileprivate func configureUI() {
         view.addSubview(stackView)
         stackView.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor,
@@ -115,14 +122,18 @@ class OnboardingController: UIViewController {
         dismissalButton.anchor(bottom: pageControl.topAnchor, paddingBottom: 20)
     }
     
+    
+    
+    // MARK: -
     fileprivate func shouldShowDismissalButton(_ show: Bool){
-        
         UIView.animate(withDuration: 0.5) { [weak self] in
             self?.dismissalButton.alpha = show ? 1 : 0
         }
         
     }
     
+    
+    // MARK: - handlePrev
     @objc private func handlePrev() {
         let nextIndex = max(pageControl.currentPage - 1, 0)
         let indexPath = IndexPath(item: nextIndex, section: 0)
@@ -131,6 +142,8 @@ class OnboardingController: UIViewController {
         (indexPath.row + 1) == OnboardingViewModel.allCases.count ? shouldShowDismissalButton( true) : shouldShowDismissalButton(false)
     }
     
+    
+    // MARK: - handleNext
     @objc private func handleNext() {
         let nextIndex = min(pageControl.currentPage + 1, OnboardingViewModel.allCases.count - 1)
         let indexPath = IndexPath(item: nextIndex, section: 0)
@@ -140,13 +153,15 @@ class OnboardingController: UIViewController {
         (indexPath.row + 1) == OnboardingViewModel.allCases.count ? shouldShowDismissalButton(true) : shouldShowDismissalButton(false)
     }
     
+    
+    // MARK: - handleDismissalView
     @objc fileprivate func handleDismissalView(){
         dismiss(animated: true, completion: nil)
     }
 }
 
 
-
+// MARK: - Extension
 extension OnboardingController:  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return OnboardingViewModel.allCases.count
@@ -155,14 +170,12 @@ extension OnboardingController:  UICollectionViewDelegateFlowLayout, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! OnboardingCell
         guard let viewModel = OnboardingViewModel(rawValue: indexPath.row) else { return cell }
-        print("DEBUG: section \(indexPath.section) \(indexPath.row) ")
         cell.viewModel = viewModel
         return cell
     }
     
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
         let x = targetContentOffset.pointee.x
         pageControl.currentPage = Int(x / view.frame.width)
         Int(x / view.frame.width) + 1 == OnboardingViewModel.allCases.count ? shouldShowDismissalButton(true) : shouldShowDismissalButton(false)

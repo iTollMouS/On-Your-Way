@@ -223,6 +223,9 @@ class LoginController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    
+    
+    // MARK: - handleLogin
     @objc private func handleLogin(){
         
         self.showBlurView()
@@ -264,6 +267,8 @@ class LoginController: UIViewController {
         
     }
     
+    
+    // MARK: - handleLoggingWithPhoneNumber
     @objc private func handleLoggingWithPhoneNumber(){
         let phoneLoginController = PhoneLoginController()
         phoneLoginController.modalPresentationStyle = .custom
@@ -271,6 +276,8 @@ class LoginController: UIViewController {
         present(phoneLoginController, animated: true, completion: nil)
     }
     
+    
+    // MARK: - handleRegisterPressed
     @objc private func handleRegisterPressed(){
         let registrationController = RegistrationController()
         registrationController.modalPresentationStyle = .custom
@@ -422,7 +429,7 @@ extension LoginController {
     }
 }
 
-
+// MARK: - Apple log in
 extension LoginController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         
