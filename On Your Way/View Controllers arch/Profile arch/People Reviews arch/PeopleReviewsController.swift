@@ -54,6 +54,7 @@ class PeopleReviewsController: UIViewController {
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableHeaderView = headerView
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.rowHeight = 1000
         return tableView
@@ -180,7 +181,6 @@ class PeopleReviewsController: UIViewController {
         self.hideKeyboardWhenTouchOutsideTextField()
         fetchUser()
         fetchReviews()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -197,10 +197,20 @@ class PeopleReviewsController: UIViewController {
     }
     
     func fetchReviews(){
+        var sumAllReviews = 0.0
         ReviewService.shared.fetchPeopleReviews(userId: user.id) { [weak self]  in
             self?.reviews = $0
+            self?.headerView.reviewRate.text = "\(self!.reviews.count)"
+            self?.reviews.forEach{
+                sumAllReviews += $0.rate
+                self?.headerView.ratingView.rating = (Double(self!.reviews.count) / sumAllReviews)
+                self?.headerView.ratingView.text = "5/\(String(format: "%.0f", (Double(self!.reviews.count) / sumAllReviews)))"
+            }
+            
             self?.tableView.reloadData()
         }
+        
+        
     }
     
     func canUserReview(){
@@ -212,7 +222,7 @@ class PeopleReviewsController: UIViewController {
                 self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
                 self?.writeReviewButton.isEnabled = false
             } else {
-    
+                
                 packages.forEach{
                     if $0.packageStatus == .packageIsAccepted {
                         self?.submitReviewButton.setTitle("Write a review for \(self!.user.username)", for: .normal)
@@ -300,7 +310,8 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PeopleReviewsCell
-        cell.reviews = reviews[indexPath.row]
+        cell.review = reviews[indexPath.row]
+        
         return cell
     }
     
@@ -374,3 +385,7 @@ extension PeopleReviewsController {
     
 }
 
+//let attributedText = NSMutableAttributedString(string: "0.0", attributes: [.foregroundColor : UIColor.lightGray,
+//                                                                           .font: UIFont.boldSystemFont(ofSize: 42)])
+//attributedText.append(NSMutableAttributedString(string: "\n\no reviews", attributes: [.foregroundColor : UIColor.gray,
+//                                                                                                .font: UIFont.systemFont(ofSize: 18)]))

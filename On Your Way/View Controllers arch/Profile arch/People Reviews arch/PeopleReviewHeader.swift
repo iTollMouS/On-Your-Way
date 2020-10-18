@@ -17,7 +17,9 @@ class PeopleReviewHeader: UIView {
     
     
     
-    private lazy var titleLabel: UILabel = {
+    
+    
+     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Reviews"
         label.textAlignment = .center
@@ -28,7 +30,7 @@ class PeopleReviewHeader: UIView {
         return label
     }()
     
-    private lazy var reviewRate: UILabel = {
+     lazy var reviewRate: UILabel = {
         let label = UILabel()
         let attributedText = NSMutableAttributedString(string: "0.0", attributes: [.foregroundColor : UIColor.lightGray,
                                                                                    .font: UIFont.boldSystemFont(ofSize: 42)])
@@ -40,7 +42,7 @@ class PeopleReviewHeader: UIView {
         return label
     }()
     
-    private lazy var ratingView: CosmosView = {
+     lazy var ratingView: CosmosView = {
         let view = CosmosView()
         view.settings.fillMode = .half
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)

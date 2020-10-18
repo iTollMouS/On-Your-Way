@@ -10,16 +10,12 @@ import Cosmos
 import SDWebImage
 
 
-protocol PeopleReviewsCellDelegate: class {
-    func handleDisplayingReview(_ cell: PeopleReviewsCell)
-}
-
 class PeopleReviewsCell: UITableViewCell {
     
     
-    weak var delegate: PeopleReviewsCellDelegate?
     
-    var reviews: Review?{
+    
+    var review: Review?{
         didSet{configure()}
     }
     
@@ -114,8 +110,8 @@ class PeopleReviewsCell: UITableViewCell {
     #warning("Make the review as delegate and calculate the rating in the mainView and the update the value + make the header accessable to the rating on the top to update the values .")
     
     fileprivate func configure(){
-        guard let reviews = reviews else { return }
-        let viewModel = ReviewViewModel(review: reviews)
+        guard let review = review else { return }
+        let viewModel = ReviewViewModel(review: review)
         UserServices.shared.fetchUser(userId: viewModel.userID) { [weak self] user in
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self?.fullname.text = user.username
@@ -127,7 +123,7 @@ class PeopleReviewsCell: UITableViewCell {
         reviewLabel.text = viewModel.reviewComment
         ratingView.rating = viewModel.rate
         ratingView.text = "5/\(viewModel.rate)"
-        delegate?.handleDisplayingReview(self)
+        
         
     }
     
