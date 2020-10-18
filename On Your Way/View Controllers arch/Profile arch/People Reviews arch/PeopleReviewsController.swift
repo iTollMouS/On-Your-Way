@@ -207,12 +207,16 @@ class PeopleReviewsController: UIViewController {
                 self?.headerView.ratingView.rating = (Double(self!.reviews.count) / sumAllReviews)
                 
                 let attributedText = NSMutableAttributedString(string: "\(self!.user.username) has\n", attributes: [.foregroundColor : UIColor.lightGray,
-                                                                                                  .font: UIFont.boldSystemFont(ofSize: 18)])
+                                                                                                                    .font: UIFont.boldSystemFont(ofSize: 18)])
                 attributedText.append(NSMutableAttributedString(string: "\(self!.reviews.count) reviews", attributes: [.foregroundColor : UIColor.gray,
-                                                                                                                      .font: UIFont.systemFont(ofSize: 18)]))
+                                                                                                                       .font: UIFont.systemFont(ofSize: 18)]))
                 self?.headerView.ratingView.rating = sumAllReviews / Double(self!.reviews.count)
                 self?.headerView.reviewRate.attributedText = attributedText
                 self?.headerView.ratingView.text = "5/\(String(format: "%.2f", sumAllReviews / (Double(self!.reviews.count))))"
+                self?.user.reviewsCount = Double(self!.reviews.count)
+                self?.user.sumAllReviews = sumAllReviews
+                saveUserLocally(self!.user)
+                UserServices.shared.saveUserToFirestore(self!.user)
             }
             self?.tableView.reloadData()
         }
@@ -391,8 +395,3 @@ extension PeopleReviewsController {
     }
     
 }
-
-//let attributedText = NSMutableAttributedString(string: "0.0", attributes: [.foregroundColor : UIColor.lightGray,
-//                                                                           .font: UIFont.boldSystemFont(ofSize: 42)])
-//attributedText.append(NSMutableAttributedString(string: "\n\no reviews", attributes: [.foregroundColor : UIColor.gray,
-//                                                                                                .font: UIFont.systemFont(ofSize: 18)]))
