@@ -180,7 +180,7 @@ class PeopleReviewsController: UIViewController {
         configureReviewSheetPopOver()
         self.hideKeyboardWhenTouchOutsideTextField()
         fetchUser()
-        
+        headerView.user = user
     }
     
     override func viewWillAppear(_ animated: Bool) {

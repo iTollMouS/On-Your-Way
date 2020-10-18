@@ -18,19 +18,19 @@ class PeopleReviewHeader: UIView {
     
     
     lazy var profileImageView: UIImageView = {
-       let imageView = UIImageView()
-       imageView.setDimensions(height: 80, width: 80)
-       imageView.layer.cornerRadius = 80 / 2
-       imageView.backgroundColor = .gray
-       imageView.clipsToBounds = true
-       imageView.layer.masksToBounds = false
-       imageView.setupShadow(opacity: 0.4, radius: 10, offset: CGSize(width: 0.0, height: 0.4), color: .white)
-       imageView.layer.masksToBounds = false
-       imageView.isUserInteractionEnabled = true
-       return imageView
-   }()
+        let imageView = UIImageView()
+        imageView.setDimensions(height: 80, width: 80)
+        imageView.layer.cornerRadius = 80 / 2
+        imageView.backgroundColor = .gray
+        imageView.clipsToBounds = true
+        imageView.layer.masksToBounds = false
+        imageView.setupShadow(opacity: 0.4, radius: 10, offset: CGSize(width: 0.0, height: 0.4), color: .white)
+        imageView.layer.masksToBounds = false
+        imageView.isUserInteractionEnabled = true
+        return imageView
+    }()
     
-     lazy var titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Reviews"
         label.textAlignment = .center
@@ -41,7 +41,7 @@ class PeopleReviewHeader: UIView {
         return label
     }()
     
-     lazy var reviewRate: UILabel = {
+    lazy var reviewRate: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.setHeight(height: 60)
@@ -49,7 +49,7 @@ class PeopleReviewHeader: UIView {
         return label
     }()
     
-     lazy var ratingView: CosmosView = {
+    lazy var ratingView: CosmosView = {
         let view = CosmosView()
         view.settings.fillMode = .precise
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
@@ -107,15 +107,17 @@ class PeopleReviewHeader: UIView {
         profileImageView.sd_setImage(with: imageUrl)
         profileImageView.layer.cornerRadius = 80 / 2
         profileImageView.clipsToBounds = true
-        ratingView.rating = user.sumAllReviews / user.reviewsCount
-        let attributedText = NSMutableAttributedString(string: "\(user.username) has\n", attributes: [.foregroundColor : UIColor.lightGray,
-                                                                                                            .font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "\(user.reviewsCount) reviews", attributes: [.foregroundColor : UIColor.gray,
-                                                                                                               .font: UIFont.systemFont(ofSize: 14)]))
         
+        ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
+        ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"
+        
+        let attributedText = NSMutableAttributedString(string: "\(user.username) has\n", attributes: [.foregroundColor : UIColor.lightGray,
+                                                                                                      .font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSMutableAttributedString(string: "\(user.reviewsCount) reviews", attributes: [.foregroundColor : UIColor.gray,
+                                                                                                             .font: UIFont.systemFont(ofSize: 14)]))
         reviewRate.attributedText = attributedText
-        ratingView.text = "5/\(String(format: "%.2f", user.sumAllReviews / user.reviewsCount))"
-
+        
+        
         
     }
     
