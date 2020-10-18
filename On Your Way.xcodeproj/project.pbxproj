@@ -75,7 +75,7 @@
 		834C99242532E61500BE8691 /* FileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99232532E61500BE8691 /* FileStorage.swift */; };
 		834C992B2533542B00BE8691 /* TripCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C992A2533542B00BE8691 /* TripCell.swift */; };
 		834C993525337C0A00BE8691 /* RecentChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993425337C0900BE8691 /* RecentChat.swift */; };
-		834C9938253382B400BE8691 /* FirebaseRecentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9937253382B400BE8691 /* FirebaseRecentService.swift */; };
+		834C9938253382B400BE8691 /* RecentChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9937253382B400BE8691 /* RecentChatService.swift */; };
 		834C993A253384C700BE8691 /* StartChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C9939253384C700BE8691 /* StartChat.swift */; };
 		834C993E25338D6800BE8691 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C993D25338D6800BE8691 /* Trip.swift */; };
 		834C99432533A92800BE8691 /* TripService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C99422533A92800BE8691 /* TripService.swift */; };
@@ -204,7 +204,7 @@
 		834C99232532E61500BE8691 /* FileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStorage.swift; sourceTree = "<group>"; };
 		834C992A2533542B00BE8691 /* TripCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCell.swift; sourceTree = "<group>"; };
 		834C993425337C0900BE8691 /* RecentChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChat.swift; sourceTree = "<group>"; };
-		834C9937253382B400BE8691 /* FirebaseRecentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRecentService.swift; sourceTree = "<group>"; };
+		834C9937253382B400BE8691 /* RecentChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentChatService.swift; sourceTree = "<group>"; };
 		834C9939253384C700BE8691 /* StartChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartChat.swift; sourceTree = "<group>"; };
 		834C993D25338D6800BE8691 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		834C99422533A92800BE8691 /* TripService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripService.swift; sourceTree = "<group>"; };
@@ -397,7 +397,7 @@
 				834C98E32531D0F800BE8691 /* AuthServices.swift */,
 				834C99232532E61500BE8691 /* FileStorage.swift */,
 				834C99212532D7B900BE8691 /* UserServices.swift */,
-				834C9937253382B400BE8691 /* FirebaseRecentService.swift */,
+				834C9937253382B400BE8691 /* RecentChatService.swift */,
 				835C8812253A0D8A00D49923 /* MessageService.swift */,
 				83375F78253B91CF008F2036 /* TypingListenerService.swift */,
 				833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */,
@@ -743,7 +743,7 @@
 				834C993E25338D6800BE8691 /* Trip.swift in Sources */,
 				834C99052532326800BE8691 /* PeopleReviewsController.swift in Sources */,
 				834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */,
-				834C9938253382B400BE8691 /* FirebaseRecentService.swift in Sources */,
+				834C9938253382B400BE8691 /* RecentChatService.swift in Sources */,
 				835C88002539BD3E00D49923 /* MessageCellDelegate.swift in Sources */,
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
 				835C88062539BD7500D49923 /* InputBarViewAccessoryDelegate.swift in Sources */,
@@ -882,7 +882,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -937,7 +937,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -957,7 +957,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -979,7 +979,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

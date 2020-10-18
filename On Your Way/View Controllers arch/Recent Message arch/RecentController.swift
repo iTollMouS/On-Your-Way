@@ -63,7 +63,7 @@ class RecentController: UIViewController {
     
     // MARK: - fetchRecentChats
     fileprivate func fetchRecentChats(){
-        FirebaseRecentService.shared.fetchRecentChatFromFirestore { allRecent in
+        RecentChatService.shared.fetchRecentChatFromFirestore { allRecent in
             self.allRecent = allRecent
             // check with all aip why this fucn worsk good and not duplicate stuff
             DispatchQueue.main.async {
@@ -136,6 +136,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
         cell.recentChat = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
+        
         return cell
     }
     
@@ -148,7 +149,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
         // make sure we have 2 recents 
         reStartChat(charRoomId: recent.chatRoomId, memberIds: recent.memberIds)
         
-        FirebaseRecentService.shared.clearUnreadCounter(recent: recent)
+        RecentChatService.shared.clearUnreadCounter(recent: recent)
         let chatViewController = ChatViewController(chatRoomId: recent.chatRoomId,
                                                     recipientId: recent.receiverId,
                                                     recipientName: recent.receiverName)
@@ -166,7 +167,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let recent = searchController.isActive ?  filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
-            FirebaseRecentService.shared.deleteRecent(recent) { error in
+            RecentChatService.shared.deleteRecent(recent) { error in
                 print("DEBUG: success deleting recent")
             }
             searchController.isActive ? self.filteredAllRecent.remove(at: indexPath.row) : self.allRecent.remove(at: indexPath.row)
@@ -185,6 +186,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
+
 // MARK: - UISearchResultsUpdating
 extension RecentController: UISearchResultsUpdating {
     
@@ -196,3 +198,4 @@ extension RecentController: UISearchResultsUpdating {
     }
     
 }
+

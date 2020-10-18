@@ -30,9 +30,9 @@ class PeopleReviewHeader: UIView {
     
     private lazy var reviewRate: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "4.7", attributes: [.foregroundColor : UIColor.lightGray,
+        let attributedText = NSMutableAttributedString(string: "0.0", attributes: [.foregroundColor : UIColor.lightGray,
                                                                                    .font: UIFont.boldSystemFont(ofSize: 42)])
-        attributedText.append(NSMutableAttributedString(string: "\n\nbased on 27 reviews", attributes: [.foregroundColor : UIColor.gray,
+        attributedText.append(NSMutableAttributedString(string: "\n\no reviews", attributes: [.foregroundColor : UIColor.gray,
                                                                                                         .font: UIFont.systemFont(ofSize: 18)]))
         label.attributedText = attributedText
         label.textAlignment = .center
@@ -49,6 +49,7 @@ class PeopleReviewHeader: UIView {
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
         view.rating = 0.0
+        view.text = "No reviews"
         view.settings.updateOnTouch = false
         view.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         view.setDimensions(height: 50, width: 130)

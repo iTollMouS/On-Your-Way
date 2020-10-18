@@ -155,7 +155,7 @@ class TripCell: UITableViewCell {
         view.isUserInteractionEnabled = true
         view.settings.textColor = .systemBlue
         view.settings.textMargin = 10
-        view.text = "5/123"
+        view.text = "No reviews"
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
         
         view.backgroundColor = .clear

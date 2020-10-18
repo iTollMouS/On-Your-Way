@@ -103,6 +103,8 @@ class PeopleReviewsController: UIViewController {
         view.settings.textFont = .boldSystemFont(ofSize: 20)
         view.settings.textColor = .white
         view.settings.starMargin = 3.0
+        view.rating = 0
+        view.text = "No Reviews"
         view.backgroundColor = .clear
         view.setDimensions(height: 30, width: 180)
         return view

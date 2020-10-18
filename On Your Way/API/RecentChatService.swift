@@ -9,9 +9,9 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-class FirebaseRecentService {
+class RecentChatService {
     
-    static let shared = FirebaseRecentService()
+    static let shared = RecentChatService()
     
     private init () {}
     
@@ -70,6 +70,38 @@ class FirebaseRecentService {
             recents.sort(by: { $0.date! > $1.date! })
             completion(recents)
         }
+    }
+    
+    func updateRecent(chatRoomId: String, lastMessage: String){
+        // go and find all recent that belongs to the chat room
+        Firestore.firestore().collection("recents").whereField(kCHATROOMID, isEqualTo: chatRoomId).getDocuments { (snapshot, error) in
+            if let error = error {
+                print("DEBUG: error while finding \(error.localizedDescription)")
+                return
+            }
+            
+            
+            guard let snapshot = snapshot?.documents else {return}
+            let allRecent = snapshot.compactMap { (queryDocumentSnapshot) -> RecentChat? in
+                return try? queryDocumentSnapshot.data(as: RecentChat.self)
+            }
+            
+            for recent in allRecent {
+                self.updateRecentItemWithNewMessage(recent: recent, lastMessage: lastMessage)
+            }
+            
+        }
+    }
+    
+    func updateRecentItemWithNewMessage(recent: RecentChat, lastMessage: String){
+        var recent = recent
+        if recent.senderId != User.currentId {
+            recent.unreadCounter += 1
+        }
+        recent.lastMessage = lastMessage
+        recent.date = Date()
+        
+        saveRecent(recent, completion: nil)
     }
     
 }

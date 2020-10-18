@@ -18,26 +18,29 @@ class OutgoingMessageService {
         
         UserServices.shared.fetchUser(userId: uid) { currentUser in
             
-        print("DEBUG:: the user sender name is \(currentUser.username)")
-        let message = LocalMessage()
-        message.id = UUID().uuidString
-        message.chatRoomId = chatId
-        message.senderId = currentUser.id
-        message.senderinitials = String(currentUser.username.first!)
-        message.date = Date()
-        message.status = kSENT
-        /* when we send message , we do :
-         1- update recent message
-         2- send notification
-         3- re set read counter
-         */
-        
-        if text != nil {
-
-            sendTextMessage(message: message, text: text!, memberIds: memberIds)
+            print("DEBUG:: the user sender name is \(currentUser.username)")
+            let message = LocalMessage()
+            message.id = UUID().uuidString
+            message.chatRoomId = chatId
+            message.senderId = currentUser.id
+            message.senderinitials = String(currentUser.username.first!)
+            message.date = Date()
+            message.status = kSENT
+            /* when we send message , we do :
+             1- update recent message
+             2- send notification
+             3- re set read counter
+             */
+            
+            if text != nil {
+                
+                sendTextMessage(message: message, text: text!, memberIds: memberIds)
+            }
+            
+            RecentChatService.shared.updateRecent(chatRoomId: chatId, lastMessage: message.message)
+            
         }
         
-        }
     }
     
     class func sendMessage(message: LocalMessage, memberIds: [String]){

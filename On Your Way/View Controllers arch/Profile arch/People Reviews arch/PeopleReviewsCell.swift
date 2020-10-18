@@ -57,7 +57,8 @@ class PeopleReviewsCell: UITableViewCell {
         view.settings.starSize = 18
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
-        view.text = "4.3"
+        view.text = "No reveiws"
+        view.rating = 0.0
         view.settings.textColor = .lightGray
         view.settings.textMargin = 10
         view.settings.textFont = UIFont.systemFont(ofSize: 14)

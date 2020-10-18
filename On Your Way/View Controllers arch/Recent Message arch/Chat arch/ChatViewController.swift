@@ -111,9 +111,11 @@ class ChatViewController: MessagesViewController {
         titleLabel.text = recipientName
     }
     
+    
+    // MARK: - handleDismissal
     @objc fileprivate func handleDismissal(){
-        
-        
+         
+        removeListener()
         navigationController?.popViewController(animated: true)
     }
     
@@ -326,6 +328,12 @@ class ChatViewController: MessagesViewController {
             }
             refreshController.endRefreshing()
         }
+        
+    }
+    
+    fileprivate func removeListener(){
+        TypingListenerService.shared.removeTypingListener()
+        MessageService.shared.removeListener()
         
     }
     

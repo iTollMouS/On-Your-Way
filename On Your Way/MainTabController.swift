@@ -14,6 +14,8 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     private var user: User?
     
     
+    
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,33 +25,28 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.barStyle = .black
       
     }
-    
-    
-    fileprivate func fetchUser(){
-        
-    }
-    
+
     
     // MARK: - configureViewControllers
     func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()
-        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
+        let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car")!,
                                                                   rootViewController: tripsTimelineController,
                                                                   tabBarItemTitle: "Travelers")
         
         let ordersController = OrdersController()
-        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
+        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!,
                                                            rootViewController: ordersController,
                                                            tabBarItemTitle: "Orders")
         
         let notificationsController = NotificationsController()
-        let notificationsControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
+        let notificationsControllerNavBar = templateNavController(image: UIImage(systemName: "bell")!,
                                                                   rootViewController: notificationsController,
                                                                   tabBarItemTitle: "Notifications")
         
         let recentController = RecentController()
-        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
+        let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
                                                            rootViewController: recentController,
                                                            tabBarItemTitle: "Meesage")
         

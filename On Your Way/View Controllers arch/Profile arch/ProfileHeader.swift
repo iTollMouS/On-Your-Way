@@ -83,7 +83,8 @@ class ProfileHeader: UIView {
         view.settings.starSize = 24
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
-        view.text = "Reviews (5/4.2)"
+        view.text = "No reviews"
+        view.rating = 0
         view.settings.textColor = .lightGray
         view.settings.disablePanGestures = true
         view.settings.updateOnTouch = false

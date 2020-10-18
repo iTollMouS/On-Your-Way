@@ -81,7 +81,7 @@ class TripDetailsHeaderView: UIView {
         view.settings.starSize = 24
         view.settings.totalStars = 5
         view.rating = 0
-        view.text = ""
+        view.text = "No reviews"
         view.settings.starMargin = 3.0
         view.settings.updateOnTouch = false
         view.backgroundColor = .clear
