@@ -17,7 +17,18 @@ class PeopleReviewHeader: UIView {
     
     
     
-    
+    lazy var profileImageView: UIImageView = {
+       let imageView = UIImageView()
+       imageView.setDimensions(height: 80, width: 80)
+       imageView.layer.cornerRadius = 80 / 2
+       imageView.backgroundColor = .gray
+       imageView.clipsToBounds = true
+       imageView.layer.masksToBounds = false
+       imageView.setupShadow(opacity: 0.4, radius: 10, offset: CGSize(width: 0.0, height: 0.4), color: .white)
+       imageView.layer.masksToBounds = false
+       imageView.isUserInteractionEnabled = true
+       return imageView
+   }()
     
      lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -26,25 +37,26 @@ class PeopleReviewHeader: UIView {
         label.textColor = .lightGray
         label.setHeight(height: 30)
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 26)
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
      lazy var reviewRate: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.setHeight(height: 60)
         label.numberOfLines = 0
         return label
     }()
     
      lazy var ratingView: CosmosView = {
         let view = CosmosView()
-        view.settings.fillMode = .half
+        view.settings.fillMode = .precise
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = #imageLiteral(resourceName: "RatingStarEmpty").withRenderingMode(.alwaysOriginal)
-        view.settings.starSize = 24
+        view.settings.starSize = 16
         view.settings.textColor = .white
-        view.settings.textFont = UIFont.systemFont(ofSize: 16)
+        view.settings.textFont = UIFont.systemFont(ofSize: 14)
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
         view.rating = 0.0
@@ -55,6 +67,27 @@ class PeopleReviewHeader: UIView {
         return view
     }()
     
+    private lazy var reviewStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [reviewRate,
+                                                       ratingView])
+        stackView.axis = .vertical
+        stackView.spacing = 12
+        stackView.setHeight(height: 60)
+        return stackView
+    }()
+    
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [profileImageView,
+                                                       reviewStackView])
+        stackView.axis = .horizontal
+        stackView.spacing = 18
+        stackView.setDimensions(height: 80, width: 240)
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .fill
+        return stackView
+    }()
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,16 +95,27 @@ class PeopleReviewHeader: UIView {
         backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         addSubview(titleLabel)
         titleLabel.centerX(inView: self, topAnchor: topAnchor, paddingTop: 90)
-        addSubview(reviewRate)
-        reviewRate.centerX(inView: self, topAnchor: titleLabel.bottomAnchor, paddingTop: 12)
-        reviewRate.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 20, paddingRight: 20)
-        addSubview(ratingView)
-        ratingView.centerX(inView: self, topAnchor: reviewRate.bottomAnchor, paddingTop: 20)
+        addSubview(mainStackView)
+        mainStackView.centerX(inView: self, topAnchor: titleLabel.bottomAnchor, paddingTop: 40)
+        
         
     }
     
     fileprivate func configure(){
-       
+        guard let user = user else { return }
+        guard let imageUrl = URL(string: user.avatarLink) else { return }
+        profileImageView.sd_setImage(with: imageUrl)
+        profileImageView.layer.cornerRadius = 80 / 2
+        profileImageView.clipsToBounds = true
+        ratingView.rating = user.sumAllReviews / user.reviewsCount
+        let attributedText = NSMutableAttributedString(string: "\(user.username) has\n", attributes: [.foregroundColor : UIColor.lightGray,
+                                                                                                            .font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSMutableAttributedString(string: "\(user.reviewsCount) reviews", attributes: [.foregroundColor : UIColor.gray,
+                                                                                                               .font: UIFont.systemFont(ofSize: 14)]))
+        
+        reviewRate.attributedText = attributedText
+        ratingView.text = "5/\(String(format: "%.2f", user.sumAllReviews / user.reviewsCount))"
+
         
     }
     

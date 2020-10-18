@@ -143,10 +143,10 @@ class TripCell: UITableViewCell {
     // MARK: - ratingView
     private lazy var ratingView: CosmosView = {
         let view = CosmosView()
-        view.settings.fillMode = .half
+        view.settings.fillMode = .precise
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = #imageLiteral(resourceName: "RatingStarEmpty").withRenderingMode(.alwaysOriginal)
-        view.settings.starSize = 14
+        view.settings.starSize = 18
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
         view.settings.textColor = .white
@@ -157,9 +157,10 @@ class TripCell: UITableViewCell {
         view.settings.textMargin = 10
         view.text = "No reviews"
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
-        
         view.backgroundColor = .clear
         view.setHeight(height: 70)
+        view.layer.cornerRadius = 70 / 2
+        
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleReviewTapped)))
         return view
     }()
@@ -220,7 +221,8 @@ class TripCell: UITableViewCell {
             guard let imageUrl = URL(string: user.avatarLink) else { return }
             self?.profileImageView.sd_setImage(with: imageUrl)
             self?.fullnameLable.text = user.username
-            self?.ratingView.rating = user.reviewsCount
+            self?.ratingView.rating = (user.sumAllReviews / user.reviewsCount)
+            self?.ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount))"
         }
         
         timestampLabel.text = viewModel.timestamp

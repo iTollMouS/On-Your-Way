@@ -73,15 +73,13 @@ class TripDetailsHeaderView: UIView {
         return stackView
     }()
     
-    private lazy var ratingView: CosmosView = {
+    lazy var ratingView: CosmosView = {
         let view = CosmosView()
-        view.settings.fillMode = .half
+        view.settings.fillMode = .precise
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = #imageLiteral(resourceName: "RatingStarEmpty").withRenderingMode(.alwaysOriginal)
         view.settings.starSize = 24
         view.settings.totalStars = 5
-        view.rating = 0
-        view.text = "No reviews"
         view.settings.starMargin = 3.0
         view.settings.updateOnTouch = false
         view.backgroundColor = .clear
@@ -125,11 +123,13 @@ class TripDetailsHeaderView: UIView {
     func configure(){
         guard let user = user else { return }
         guard let imageUrl = URL(string: user.avatarLink) else { return }
+        ratingView.rating = user.sumAllReviews / user.reviewsCount
+        ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount))"
         profileImageView.sd_setImage(with: imageUrl)
         profileImageView.clipsToBounds = true
         fullnameLabel.text = user.username
         phoneNumberLabel.text = user.phoneNumber
-        ratingView.rating = user.reviewsCount
+        
     }
     
     @objc fileprivate func handleReviewTapped(){

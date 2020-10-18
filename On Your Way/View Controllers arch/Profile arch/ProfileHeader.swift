@@ -77,7 +77,7 @@ class ProfileHeader: UIView {
     
     private lazy var ratingView: CosmosView = {
         let view = CosmosView()
-        view.settings.fillMode = .half
+        view.settings.fillMode = .precise
         view.settings.filledImage = #imageLiteral(resourceName: "RatingStarFilled").withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = #imageLiteral(resourceName: "RatingStarEmpty").withRenderingMode(.alwaysOriginal)
         view.settings.starSize = 24
@@ -125,7 +125,11 @@ class ProfileHeader: UIView {
             profileImageView.layer.cornerRadius = 100 / 2
             profileImageView.backgroundColor = .clear
         }
+        ratingView.rating = user.sumAllReviews / user.reviewsCount
+        ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount))"
+        
     }
+    
     
     @objc private func textFieldDidChange(){
         delegate?.usernameChanges(self)

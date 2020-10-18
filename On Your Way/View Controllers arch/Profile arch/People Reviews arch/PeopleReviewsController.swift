@@ -204,15 +204,6 @@ class PeopleReviewsController: UIViewController {
             self?.headerView.reviewRate.text = "\(self!.reviews.count)"
             self?.reviews.forEach{
                 sumAllReviews += $0.rate
-                self?.headerView.ratingView.rating = (Double(self!.reviews.count) / sumAllReviews)
-                
-                let attributedText = NSMutableAttributedString(string: "\(self!.user.username) has\n", attributes: [.foregroundColor : UIColor.lightGray,
-                                                                                                                    .font: UIFont.boldSystemFont(ofSize: 18)])
-                attributedText.append(NSMutableAttributedString(string: "\(self!.reviews.count) reviews", attributes: [.foregroundColor : UIColor.gray,
-                                                                                                                       .font: UIFont.systemFont(ofSize: 18)]))
-                self?.headerView.ratingView.rating = sumAllReviews / Double(self!.reviews.count)
-                self?.headerView.reviewRate.attributedText = attributedText
-                self?.headerView.ratingView.text = "5/\(String(format: "%.2f", sumAllReviews / (Double(self!.reviews.count))))"
                 self?.user.reviewsCount = Double(self!.reviews.count)
                 self?.user.sumAllReviews = sumAllReviews
                 saveUserLocally(self!.user)
