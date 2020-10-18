@@ -11,6 +11,7 @@ import InputBarAccessoryView
 import Gallery
 import RealmSwift
 import Firebase
+import IQKeyboardManagerSwift
 
 class ChatViewController: MessagesViewController {
     
@@ -84,6 +85,7 @@ class ChatViewController: MessagesViewController {
         listenForOldChats()
         createTypingObserver()
         configureMessageCollectionView()
+        IQKeyboardManager.shared.enable = false
         
     }
     
@@ -282,8 +284,8 @@ class ChatViewController: MessagesViewController {
     
     // MARK: - messageSend
     func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
-        
-        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: "Test", title: "Hello")
+        guard let text = text else { return }
+        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: text , title: recipientName)
         
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
@@ -316,8 +318,6 @@ class ChatViewController: MessagesViewController {
             TypingListenerService.saveTypingCounter(typing: false, chatRoomId: chatRoomId)
         }
     }
-    
-    
     
     func updateTypingIndictor(_ show: Bool){
         subTitleLabel.text = show ? "Typing ..." : ""

@@ -162,7 +162,6 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
                     PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is rejected ", title: "Reject order")
                     self?.showCustomAlertView()
-                    
                 }
             }
             
