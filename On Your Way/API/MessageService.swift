@@ -115,7 +115,7 @@ class MessageService {
     
     func removeListener(){
         newChatListener.remove()
-        updatedChatListener.remove()
+//        updatedChatListener.remove()
     }
     
 }

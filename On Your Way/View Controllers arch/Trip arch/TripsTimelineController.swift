@@ -34,6 +34,7 @@ class TripsTimelineController: UITableViewController {
         configureTapBarController()
         configureNavBar()
         searchController.searchBar.becomeFirstResponder()
+        
     }
     
     

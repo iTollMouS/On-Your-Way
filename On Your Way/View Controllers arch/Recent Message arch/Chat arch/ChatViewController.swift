@@ -114,7 +114,7 @@ class ChatViewController: MessagesViewController {
     
     // MARK: - handleDismissal
     @objc fileprivate func handleDismissal(){
-         
+        IQKeyboardManager.shared.enable = true
         removeListener()
         navigationController?.popViewController(animated: true)
     }

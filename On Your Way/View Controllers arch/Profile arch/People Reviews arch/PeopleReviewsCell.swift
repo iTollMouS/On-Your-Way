@@ -37,6 +37,7 @@ class PeopleReviewsCell: UITableViewCell {
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .lightGray
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     

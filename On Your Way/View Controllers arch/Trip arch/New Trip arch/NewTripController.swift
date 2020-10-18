@@ -202,6 +202,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureTextFields()
         self.hideKeyboardWhenTouchOutsideTextField()
         
     }
@@ -248,6 +249,9 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         mainContentView.addSubview(setupDateAndTimeButton)
         setupDateAndTimeButton.anchor(left: mainContentView.leftAnchor, bottom: mainContentView.bottomAnchor ,right: mainContentView.rightAnchor,
                                       paddingLeft: 20, paddingBottom: 20 ,paddingRight: 20)
+    }
+    
+    func configureTextFields(){
         
         currentLocationTextField.inputView = fromCityPickerView
         currentLocationTextField.inputAccessoryView = toolbar
@@ -256,7 +260,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         destinationTextField.inputAccessoryView = toolbar
         destinationTextField.delegate = self
         timeToPickPackageTextField.inputView = timestampPickerView
-        
+        basePriceTextField.keyboardType = .asciiCapableNumberPad
     }
     
     
@@ -266,9 +270,10 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         timeToPickPackageTextField.text = sender.date.convertDate(formattedString: .timeOnly)
     }
     
+   
     @objc func handleDateAndTimeTapped(){
         
-        
+
         guard let currentLocationCity = currentLocationCity else {
             self.showAlertMessage("Error", "Please make sure you choose current city and destination")
             return
@@ -277,6 +282,8 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
             self.showAlertMessage("Error", "Please make sure you choose current city and destination")
             return
         }
+        
+        
         let tripEstimateArrival = getEstimatedTimeArrivalWith(currentLocation: currentLocationCity,
                                                               destinationLocation: destinationLocationCity)
         
@@ -285,6 +292,11 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         guard let pickupLocation  = meetingForPickupTextField.text else { return }
         guard let pickupTime  = timeToPickPackageTextField.text else { return }
         guard let basePrice = basePriceTextField.text else {return}
+        
+        [basePrice, pickupTime, pickupLocation].forEach{if $0.isEmpty{
+            self.showAlertMessage("Error", "Please make sure you fill out all the fields")
+            return
+        }}
         
         
         let trip = Trip(userID: "",
@@ -298,7 +310,6 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                         packageType: "", timestamp: Date(),
                         packagePickupLocation: pickupLocation,
                         packagePickupTime: pickupTime)
-        
         
         let dateAndTimeController = DateAndTimeController()
         dateAndTimeController.delegate = self

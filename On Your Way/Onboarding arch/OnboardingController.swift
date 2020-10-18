@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "OnboardingCell"
 
-//cachAnimation
+
 
 class OnboardingController: UIViewController {
     
@@ -132,7 +132,6 @@ class OnboardingController: UIViewController {
         
     }
     
-    
     // MARK: - handlePrev
     @objc private func handlePrev() {
         let nextIndex = max(pageControl.currentPage - 1, 0)
@@ -180,7 +179,6 @@ extension OnboardingController:  UICollectionViewDelegateFlowLayout, UICollectio
         pageControl.currentPage = Int(x / view.frame.width)
         Int(x / view.frame.width) + 1 == OnboardingViewModel.allCases.count ? shouldShowDismissalButton(true) : shouldShowDismissalButton(false)
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0

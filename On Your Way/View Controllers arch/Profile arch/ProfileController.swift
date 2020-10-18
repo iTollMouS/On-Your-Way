@@ -47,8 +47,20 @@ class ProfileController: UIViewController {
         configureRefreshController()
     }
     
+    
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        showPopItem()
+        
+    }
+
+    
+    func showPopItem(){
         checkUser()
         guard let user = user else { return }
         tabBarController?.tabBar.isHidden = false
@@ -60,14 +72,10 @@ class ProfileController: UIViewController {
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)
-        headerView.profileImageView.clipsToBounds = true
         
     }
     
-    var darkMode = false
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return darkMode ? .lightContent : .lightContent
-    }
+  
     
     func configureRefreshController(){
         refreshController.tintColor = .white
@@ -82,7 +90,6 @@ class ProfileController: UIViewController {
             presentLoggingController()
         } else {
             UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
-                
                 self?.user = user
                 self?.headerView.user = user
                 self?.title = user.username
