@@ -23,6 +23,7 @@ class NotificationsController: UITableViewController {
         fetchMyRequest()
         configureRefreshController()
     }
+
     
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -38,8 +39,8 @@ class NotificationsController: UITableViewController {
     }
     
      func fetchMyRequest(){
-        
-        TripService.shared.fetchMyRequest(userId: User.currentId) { packages in
+        guard let uid = Auth.auth().currentUser?.uid else { return  }
+        TripService.shared.fetchMyRequest(userId: uid ) { packages in
             packages.forEach { package in
                 let tempPackage = package
                 self.packagesDictionary[tempPackage.packageID] = package

@@ -60,6 +60,7 @@ class TripDetailsController: UIViewController {
         configureUI()
         configureDelegates()
         fetchUser()
+        print("DEBUG: the current user is \(User.currentId)")
     }
     
     var darkMode = false

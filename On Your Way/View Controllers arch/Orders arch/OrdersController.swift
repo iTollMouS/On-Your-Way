@@ -96,8 +96,10 @@ class OrdersController: UIViewController {
     }
     
     func fetchUser(){
-        UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        UserServices.shared.fetchUser(userId: uid) { [weak self] user in
             self?.user = user
+            self?.tableView.reloadData()
         }
     }
     
