@@ -48,6 +48,29 @@ class MessageService {
             })
     }
     
+    func listenForReadStatusChange(_ documentId: String, collectionId: String, completion: @escaping(_ updatedMessage: LocalMessage) -> Void){
+        updatedChatListener = Firestore.firestore().collection("messages").document(documentId).collection(collectionId).addSnapshotListener({ (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            
+            for change in snapshot.documentChanges {
+                if change.type == .modified {
+                    let result = Result {
+                        try? change.document.data(as: LocalMessage.self)
+                    }
+                    
+//                    switch result {
+//
+//                    case .success(let localMessage?):
+//
+//                    case .failure(let error):
+//
+//                    }
+                }
+            }
+            
+            
+        })
+    }
     
     // MARK: - checkForOldChats
     func checkForOldChats(_ documentId: String, collectionId: String) {
@@ -78,10 +101,21 @@ class MessageService {
         }
     }
     
+    func updateMessageInFirebase(_ message: LocalMessage, memberIds: [String]){
+        let values = [kSTATUS: kREAD,
+                      kREADDATE: Date()] as [String : Any]
+        for userId in memberIds {
+            Firestore.firestore().collection("messages")
+                .document(userId)
+                .collection(message.chatRoomId)
+                .document(message.id).updateData(values)
+        }
+    }
+    
     
     func removeListener(){
         newChatListener.remove()
-//        updatedChatListener.remove()
+        updatedChatListener.remove()
     }
     
 }

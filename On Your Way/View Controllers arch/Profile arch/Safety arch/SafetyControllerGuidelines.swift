@@ -62,6 +62,12 @@ class SafetyControllerGuidelines: UIViewController {
     }
     
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.footerView.dismissalButton.alpha = 1
+        }
+    }
+    
 }
 
 extension SafetyControllerGuidelines : UITableViewDelegate, UITableViewDataSource {

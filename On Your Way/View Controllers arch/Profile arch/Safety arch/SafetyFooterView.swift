@@ -18,29 +18,40 @@ class SafetyFooterView: UIView {
     
     
     // MARK: - Properties 
-    private lazy var reportButton: UIButton = {
+    lazy var dismissalButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Okay", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 0.9411764706, alpha: 1), for: .normal)
-        button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(handleReport), for: .touchUpInside)
+        button.setTitleColor(.white, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
         button.layer.cornerRadius = 50 / 2
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.clipsToBounds = true
+        button.alpha = 0
+        button.layer.masksToBounds = false
+        button.setupShadow(opacity: 0.4, radius: 20, offset: CGSize(width: 0.0, height: 3.0), color: .white)
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(reportButton)
-        reportButton.anchor(left: leftAnchor, right: rightAnchor,
+        addSubview(dismissalButton)
+        dismissalButton.anchor(left: leftAnchor, right: rightAnchor,
                             paddingLeft: 32, paddingRight: 32)
-        reportButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        reportButton.centerY(inView: self)
+        dismissalButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        dismissalButton.centerY(inView: self)
         backgroundColor = .clear
     }
     
     @objc func handleReport(){
         delegate?.handleDismissal(self)
+    }
+    
+    override func layoutSubviews() {
+        
     }
     
     required init?(coder: NSCoder) {
