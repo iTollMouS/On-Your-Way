@@ -53,7 +53,8 @@ class OrderDetailsFooterView: UIView {
         case .packageIsRejected:
             print("")
         case .packageIsAccepted:
-            acceptButton.setTitle("You have accepted order in \(package.packageStatusTimestamp)", for: .normal)
+            acceptButton.setTitle("You have accepted order in \n\(package.packageStatusTimestamp)", for: .normal)
+            acceptButton.isEnabled = false
         case .packageIsDelivered:
             print("")
         }
@@ -69,10 +70,11 @@ class OrderDetailsFooterView: UIView {
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
+        button.titleLabel?.numberOfLines = 0
         button.setTitle("\(title) order ", for: .normal)
         button.setImage(UIImage(systemName: systemName), for: .normal)
         button.backgroundColor = backgroundColor.withAlphaComponent(alpha)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.addTarget(self, action: #selector(handleActions), for: .touchUpInside)
         button.layer.cornerRadius = 50 / 2
         button.tag = tagNumber

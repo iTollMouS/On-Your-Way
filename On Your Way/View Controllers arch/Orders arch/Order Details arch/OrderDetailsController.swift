@@ -127,6 +127,7 @@ class OrderDetailsController: UIViewController {
     }
     
     @objc fileprivate func handleViewDismissal(_ sender: UIButton){
+        view.isUserInteractionEnabled = true
         switch sender.tag {
         case 0:
             SwiftEntryKit.dismiss(.displayed) { [weak self] in self?.delegate?.handleDismissalAndRefreshing(self!) }
@@ -178,6 +179,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         // reject
         case 0:
             self.package.packageStatus = .packageIsRejected
+            self.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
             let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
@@ -193,6 +195,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         //accept
         case 1:
             self.package.packageStatus = .packageIsAccepted
+            self.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
             let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Accept order", style: .default, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
@@ -262,7 +265,6 @@ extension OrderDetailsController {
     }
     
     func configureCustomAlertUI(){
-        view.isUserInteractionEnabled = false
         customAlertView.clipsToBounds = true
         customAlertView.addSubview(bottomContainerView)
         customAlertView.addSubview(animationView)

@@ -56,6 +56,8 @@ class OrdersController: UIViewController {
     var inProcessPackageOrder = [Package]()
     var donePackageOrder = [Package]()
     
+    var packageDictionary = [String: Package]()
+    
     private var viewModel: PackageStatus?
     
     lazy var rowsToDisplay = newPackageOrder
@@ -110,8 +112,8 @@ class OrdersController: UIViewController {
         if User.currentUser?.id == nil { return }
         else {
             TripService.shared.fetchMyTrips(userId: User.currentId) { [weak self]  packages in
-                self?.newPackageOrder = packages
                 DispatchQueue.main.async { [weak self] in
+                    self?.newPackageOrder = packages
                     self?.rowsToDisplay = packages
                     self?.tableView.reloadData()
                 }

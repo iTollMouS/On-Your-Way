@@ -194,9 +194,11 @@ class TripService {
     }
     
     func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){
+        var packagesDictionary: [String: Package] = [:]
         var packages: [Package] = []
         Firestore.firestore().collection("users-requests").document(userId).collection("shipping-request").addSnapshotListener { (snapshot, error) in
             guard let snapshot = snapshot else {return}
+            
             for packageChanged in snapshot.documentChanges {
                 if packageChanged.type == .added {
                     let result = Result {
@@ -243,6 +245,11 @@ class TripService {
                 
             }
             
+            packages.forEach { package in
+                let tempPackage = package
+                packagesDictionary[tempPackage.packageID] = package
+            }
+            packages = Array(packagesDictionary.values)
             packages.sort(by: { $0.timestamp! > $1.timestamp! })
             completion(packages)
         }
