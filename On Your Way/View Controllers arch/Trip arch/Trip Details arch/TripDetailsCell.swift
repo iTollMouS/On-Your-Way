@@ -9,9 +9,7 @@ import UIKit
 
 class TripDetailsCell: UITableViewCell {
     
-    var viewModel: TripDetailsViewModel?{
-        didSet{configureUI()}
-    }
+    var viewModel: TripDetailsViewModel?
     
     var trip: Trip?{
         didSet{configure()}
@@ -146,6 +144,11 @@ class TripDetailsCell: UITableViewCell {
         
     }
     
+    override func layoutSubviews() {
+        configure()
+        configureUI()
+    }
+    
     func configure(){
         guard let trip = trip else { return }
         let viewModel = TripViewModel(trip: trip)
@@ -194,18 +197,30 @@ class TripDetailsCell: UITableViewCell {
         addSubview(meetingsInfoStackView)
         meetingsInfoStackView.fillSuperview(padding: UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20))
         backgroundColor = #colorLiteral(red: 0.1098039216, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
+        // for iphone 8 fix
+        meetingsInfoStackView.isHidden = false
+        packagesTypes.isHidden = true
+        priceBaseLabel.isHidden = true
     }
     
     func configureSection_2(){
         addSubview(packagesTypes)
+        meetingsInfoStackView.isHidden = !packagesTypes.isHidden
         packagesTypes.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
         backgroundColor = #colorLiteral(red: 0.1098039216, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
+        packagesTypes.isHidden = false
+        meetingsInfoStackView.isHidden = true
+        priceBaseLabel.isHidden = true
     }
     
     func configureSection_3(){
         addSubview(priceBaseLabel)
         priceBaseLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
         backgroundColor = #colorLiteral(red: 0.1098039216, green: 0.1098039216, blue: 0.1176470588, alpha: 1)
+        packagesTypes.isHidden = true
+        meetingsInfoStackView.isHidden = true
+        priceBaseLabel.isHidden = false
+        
     }
     
     required init?(coder: NSCoder) {

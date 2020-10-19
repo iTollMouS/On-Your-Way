@@ -43,7 +43,7 @@ class TripDetailsController: UIViewController {
         let attributedText = NSMutableAttributedString(string: "Ops!\n",
                                                        attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
                                                                     .font: UIFont.boldSystemFont(ofSize: 18)])
-        attributedText.append(NSMutableAttributedString(string: "You can not ship packages without an account.\nPlease press Ok on the bottom to go back",
+        attributedText.append(NSMutableAttributedString(string: "You can not ship packages or chat without an account.\nPlease press Ok on the bottom to go back",
                                                         attributes: [.foregroundColor : UIColor.lightGray,
                                                                      .font: UIFont.systemFont(ofSize: 16)]))
         
@@ -117,6 +117,11 @@ class TripDetailsController: UIViewController {
         configureDelegates()
         fetchUser()
         print("DEBUG: the current user is \(User.currentId)")
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        tableView.layoutIfNeeded()
     }
     
     var darkMode = false
@@ -200,6 +205,7 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripDetailsCell
         guard let viewModel = TripDetailsViewModel(rawValue: indexPath.section) else { return cell }
         cell.viewModel = viewModel
+        print("DEBUG: the section \(indexPath.section), and the index row \(indexPath.row)")
         cell.trip = trip
         cell.selectionStyle = .none
         return cell
@@ -237,7 +243,10 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
     
     func handleStartToChat(_ view: TripDetailsHeaderView) {
         
-        // step 0  :
+        if User.currentUser?.id == nil {
+            showCustomAlertView(condition: .error)
+            return
+        }
         UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
             print("DEBUG: user name is \(user.username)")
             
@@ -258,7 +267,6 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
 extension TripDetailsController: TripDetailsFooterViewDelegate {
     
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
-        
         
         if User.currentUser?.id == nil {
             showCustomAlertView(condition: .warning)
@@ -335,8 +343,12 @@ extension TripDetailsController {
         attributes.displayDuration = .infinity
         attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
         attributes.statusBar = .light
+        attributes.lifecycleEvents.willDisappear = { [weak self] in
+            self?.delegate?.handleShowRegistrationPageForNonusers(self!)
+        }
         attributes.entryBackground = .clear
         SwiftEntryKit.display(entry: customAlertView, using: attributes)
+        
     }
     
 }
