@@ -27,6 +27,7 @@ class TripsTimelineController: UITableViewController {
         configureUI()
         configureRefreshController()
         fetchTrips()
+        configureWhenTableIsEmpty()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -254,6 +255,23 @@ extension TripsTimelineController : TripDetailsControllerDelegate {
         presentLoggingController()
     }
 }
+
+
+
+extension TripsTimelineController {
+    fileprivate func configureWhenTableIsEmpty(){
+        if trips.isEmpty {
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                
+                self?.tableView.setEmptyView(title: "No travelers",
+                                            titleColor: .white,
+                                            message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ")
+            }
+        } else {tableView.restore()}
+        
+    }
+}
+
 
 
 /*

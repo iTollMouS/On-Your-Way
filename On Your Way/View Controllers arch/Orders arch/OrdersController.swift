@@ -70,6 +70,7 @@ class OrdersController: UIViewController {
         configureRefreshController()
         fetchTrips()
         fetchUser()
+        configureWhenTableIsEmpty()
     }
     
     
@@ -183,6 +184,22 @@ extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
 extension OrdersController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         print("DEBUG: \(searchController.searchBar.text ?? "" )")
+    }
+}
+
+
+
+extension OrdersController {
+    fileprivate func configureWhenTableIsEmpty(){
+        if newPackageOrder.isEmpty {
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                
+                self?.tableView.setEmptyView(title: "No Orders",
+                                            titleColor: .white,
+                                            message: "You don't have any order.\nPeople usually request shipping order when people travel from to city")
+            }
+        } else {tableView.restore()}
+        
     }
 }
 

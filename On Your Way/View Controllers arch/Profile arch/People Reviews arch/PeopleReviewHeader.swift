@@ -35,7 +35,7 @@ class PeopleReviewHeader: UIView {
         label.textColor = .lightGray
         label.setHeight(height: 30)
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 26)
         return label
     }()
     
@@ -95,8 +95,6 @@ class PeopleReviewHeader: UIView {
         titleLabel.centerX(inView: self, topAnchor: topAnchor, paddingTop: 90)
         addSubview(mainStackView)
         mainStackView.centerX(inView: self, topAnchor: titleLabel.bottomAnchor, paddingTop: 40)
-        
-        
     }
     
     fileprivate func configure(){

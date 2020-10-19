@@ -399,7 +399,7 @@ extension PeopleReviewsController {
                 if User.currentId == self?.user.id {
                     self?.tableView.setEmptyView(title: "No Reviews",
                                                  titleColor: .white,
-                                                 message: "No one has wrote a review about you\nOnce you accept people packages , then they can submit reviews")
+                                                 message: "No one has wrote a review about you.\nOnce you accept people packages, people they can submit reviews")
                 } else if User.currentId != self?.user.id {
                     self?.tableView.setEmptyView(title: "No Reviews",
                                                  titleColor: .white,

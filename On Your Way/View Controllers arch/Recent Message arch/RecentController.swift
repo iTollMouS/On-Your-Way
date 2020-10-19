@@ -47,6 +47,7 @@ class RecentController: UIViewController {
         configureSearchController()
         configureRefreshControl()
         fetchRecentChats()
+        configureWhenTableIsEmpty()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -197,5 +198,22 @@ extension RecentController: UISearchResultsUpdating {
         })
     }
     
+}
+
+
+
+
+extension RecentController {
+    fileprivate func configureWhenTableIsEmpty(){
+        if allRecent.isEmpty {
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                
+                self?.tableView.setEmptyView(title: "No DMs",
+                                            titleColor: .white,
+                                            message: "People DM you when you announce your travel info for packaging shipping details and process")
+            }
+        } else {tableView.restore()}
+        
+    }
 }
 
