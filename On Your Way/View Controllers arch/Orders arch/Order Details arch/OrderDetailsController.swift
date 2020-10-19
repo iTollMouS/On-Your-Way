@@ -12,9 +12,16 @@ import SKPhotoBrowser
 
 private let reuseIdentifier = "OrderDetail"
 
+protocol OrderDetailsControllerDelegate: class {
+    func handleDismissalAndRefreshing(_ view: OrderDetailsController)
+}
+
+
 class OrderDetailsController: UIViewController {
     
     //    failed
+    
+    weak var delegate: OrderDetailsControllerDelegate?
     
     private lazy var headerView = OrderDetailHeader(package: package)
     private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
@@ -22,8 +29,8 @@ class OrderDetailsController: UIViewController {
     private var viewModel: PackageStatus?
     private var images = [SKPhoto]()
     
-    private lazy var customAlertView = UIView()
-
+    
+    
     
     private lazy var rejectButton = createButton(tagNumber: 0, title: "Reject Order\nThis order will be removed",
                                                  backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
@@ -31,21 +38,37 @@ class OrderDetailsController: UIViewController {
     private lazy var acceptButton = createButton(tagNumber: 1, title: "Accept", backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
     private lazy var startChatButton = createButton(tagNumber: 2, title: "Chat", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
     
+    private lazy var customAlertView = UIView()
+    var attributes = EKAttributes.bottomNote
     
-    private lazy var dismissalLabel: UILabel = {
+    private lazy var bottomContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.2156862745, green: 0.2156862745, blue: 0.2156862745, alpha: 1)
+        view.layer.cornerRadius = 30
+        return view
+    }()
+    
+    private lazy var messageLabel: UILabel = {
         let label = UILabel()
+        label.setHeight(height: 80)
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textColor = .white
-        label.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
-        label.clipsToBounds = true
-        label.setDimensions(height: 50, width: 200)
-        label.layer.cornerRadius = 50 / 2
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action:#selector(handleViewDismissal)))
+        label.numberOfLines = 0
         return label
     }()
-    var attributes = EKAttributes.bottomNote
+    
+    private lazy var dismissalButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Okay", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
+        button.setDimensions(height: 50, width: 300)
+        button.tintColor = .white
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(handleViewDismissal), for: .touchUpInside)
+        button.layer.cornerRadius = 50 / 2
+        button.backgroundColor = #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1)
+        return button
+    }()
+    
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -60,7 +83,7 @@ class OrderDetailsController: UIViewController {
     
     private lazy var animationView: AnimationView = {
         let animationView = AnimationView()
-        animationView.setDimensions(height: 200, width: 200)
+        animationView.setDimensions(height: 100, width: 100)
         animationView.clipsToBounds = true
         animationView.backgroundColor = .clear
         animationView.contentMode = .scaleAspectFill
@@ -106,7 +129,7 @@ class OrderDetailsController: UIViewController {
     @objc fileprivate func handleViewDismissal(_ sender: UIButton){
         switch sender.tag {
         case 0:
-            SwiftEntryKit.dismiss(.displayed) { [weak self] in self!.navigationController?.popViewController(animated: true) }
+            SwiftEntryKit.dismiss(.displayed) { [weak self] in self?.delegate?.handleDismissalAndRefreshing(self!) }
         case 1:
             SwiftEntryKit.dismiss(.displayed)
         default: break
@@ -159,7 +182,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
                     PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is rejected ", title: "Reject order")
-                    self?.showCustomAlertView()
+                    self?.showCustomAlertView(condition: .warning)
                 }
             }
             
@@ -174,7 +197,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             alert.addAction(UIAlertAction(title: "Accept order", style: .default, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
                     PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is Accepted ", title: "Accepted order")
-                    self?.showCustomAlertView()
+                    self?.showCustomAlertView(condition: .success)
                 }
             }))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
@@ -199,12 +222,63 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
 
 extension OrderDetailsController {
     
-    func showCustomAlertView() {
-        configureCustomAlertViewUI()
+    func showCustomAlertView(condition: Conditions) {
+        configureCustomAlertUI()
+        
+        switch condition {
+        case .success:
+            dismissalButton.tag = 1
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+            let attributedText = NSMutableAttributedString(string: "Success!\n",
+                                                           attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
+                                                                        .font: UIFont.boldSystemFont(ofSize: 18)])
+            attributedText.append(NSMutableAttributedString(string: "You can now chat with your customer and arrange place and time for \npicking up package",
+                                                            attributes: [.foregroundColor : UIColor.lightGray,
+                                                                         .font: UIFont.systemFont(ofSize: 16)]))
+            messageLabel.attributedText = attributedText
+        case .warning:
+            dismissalButton.tag = 0
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+            
+            let attributedText = NSMutableAttributedString(string: "Warning!\n",
+                                                           attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
+                                                                        .font: UIFont.boldSystemFont(ofSize: 18)])
+            attributedText.append(NSMutableAttributedString(string: "Please note that you can not undo this action\nif you have chatted before , you can still ask them to resubmit order ",
+                                                            attributes: [.foregroundColor : UIColor.lightGray,
+                                                                         .font: UIFont.systemFont(ofSize: 16)]))
+            
+            messageLabel.attributedText = attributedText
+        case .error:
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+        }
+        
+        
+    }
+    
+    func configureCustomAlertUI(){
         view.isUserInteractionEnabled = false
-        customAlertView.layer.cornerRadius = 50
         customAlertView.clipsToBounds = true
+        customAlertView.addSubview(bottomContainerView)
+        customAlertView.addSubview(animationView)
+        
+        animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
+        bottomContainerView.anchor(top: animationView.bottomAnchor, left: customAlertView.leftAnchor, bottom: customAlertView.bottomAnchor, right: customAlertView.rightAnchor, paddingTop: -50)
+        
+        bottomContainerView.addSubview(messageLabel)
+        messageLabel.anchor(top: bottomContainerView.topAnchor, left: bottomContainerView.leftAnchor,
+                            right: bottomContainerView.rightAnchor, paddingTop: 50, paddingLeft: 20, paddingRight: 20)
+        bottomContainerView.addSubview(dismissalButton)
+        dismissalButton.anchor(left: bottomContainerView.leftAnchor, bottom: bottomContainerView.bottomAnchor, right: bottomContainerView.rightAnchor,
+                               paddingLeft: 30, paddingBottom: 30, paddingRight: 30)
+        
         customAlertView.backgroundColor = .clear
+        customAlertView.layer.cornerRadius = 10
         customAlertView.setDimensions(height: 300, width: view.frame.width - 50)
         attributes.screenBackground = .visualEffect(style: .dark)
         attributes.positionConstraints.safeArea = .overridden
@@ -213,21 +287,10 @@ extension OrderDetailsController {
         attributes.position = .bottom
         attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
         attributes.displayDuration = .infinity
-        //        attributes.entryInteraction = .dismiss
-        attributes.scroll = .enabled(swipeable: false, pullbackAnimation: .jolt)
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
         attributes.statusBar = .light
+        attributes.entryBackground = .clear
         SwiftEntryKit.display(entry: customAlertView, using: attributes)
-    }
-    
-    
-    func configureCustomAlertViewUI(){
-        customAlertView.addSubview(animationView)
-        customAlertView.bringSubviewToFront(animationView)
-        animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
-        animationView.play()
-        animationView.loopMode = .loop
-        customAlertView.addSubview(rejectButton)
-        rejectButton.centerX(inView: animationView, topAnchor: animationView.bottomAnchor)
     }
 }
 

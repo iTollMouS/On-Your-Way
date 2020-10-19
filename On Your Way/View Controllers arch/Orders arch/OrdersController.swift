@@ -110,16 +110,13 @@ class OrdersController: UIViewController {
         
         if User.currentUser?.id == nil { return }
         else {
-            TripService.shared.fetchMyTrips(userId: User.currentId) { packages in
-                packages.forEach { package in
-                    let tempPackage = package
-                    self.packagesDictionary[tempPackage.packageID] = package
+            TripService.shared.fetchMyTrips(userId: User.currentId) { [weak self]  packages in
+                self?.newPackageOrder = packages
+                DispatchQueue.main.async { [weak self] in
+                    self?.rowsToDisplay = packages
+                    self?.tableView.reloadData()
                 }
-                self.newPackageOrder = Array(self.packagesDictionary.values)
-                self.newPackageOrder.sort(by: { $0.timestamp! > $1.timestamp! })
-                
-                self.rowsToDisplay = self.newPackageOrder
-                self.tableView.reloadData()}
+            }
         }
         
     }
@@ -177,6 +174,7 @@ extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
         let package = rowsToDisplay[indexPath.row]
         guard let user = user else { return  }
         let orderDetailsController = OrderDetailsController(package: package, user: user)
+        orderDetailsController.delegate = self
         navigationController?.pushViewController(orderDetailsController, animated: true)
     }
 }
@@ -188,6 +186,17 @@ extension OrdersController: UISearchResultsUpdating {
 }
 
 
+extension OrdersController : OrderDetailsControllerDelegate {
+    func handleDismissalAndRefreshing(_ view: OrderDetailsController) {
+        navigationController?.popViewController(animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.beginUpdates()
+            self?.fetchTrips()
+            self?.tableView.reloadData()
+            self?.tableView.endUpdates()
+        }
+    }
+}
 
 extension OrdersController {
     fileprivate func configureWhenTableIsEmpty(){

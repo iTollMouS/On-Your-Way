@@ -168,14 +168,40 @@ class TripService {
     func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){
         var packages: [Package] = []
         Firestore.firestore().collection("users-requests").document(userId).collection("shipping-request").addSnapshotListener { (snapshot, error) in
-            
             guard let snapshot = snapshot else {return}
-            let allTrips = snapshot.documents.compactMap { (queryDocumentSnapshot) -> Package? in
-                return try? queryDocumentSnapshot.data(as: Package.self)
+            for packageChanged in snapshot.documentChanges {
+                if packageChanged.type == .added {
+                    let result = Result {
+                        try? packageChanged.document.data(as: Package.self)
+                    }
+                    switch result {
+                    
+                    case .success( let package):
+                        if let package = package {
+                            packages.append(package)
+                        }
+                    case .failure(let error ):
+                        print("DEBUG: error \(error.localizedDescription)")
+                    }
+                }
+                
+                if packageChanged.type == .modified {
+                    let result = Result {
+                        try? packageChanged.document.data(as: Package.self)
+                    }
+                    switch result {
+                    case .success( let package):
+                        if let package = package {
+                            packages.append(package)
+                        }
+                    case .failure(let error ):
+                        print("DEBUG: error \(error.localizedDescription)")
+                    }
+                }
+                
             }
-            for trip in allTrips {  packages.append(trip) }
-            packages.sort(by: { $0.timestamp! > $1.timestamp! })
             
+            packages.sort(by: { $0.timestamp! > $1.timestamp! })
             completion(packages)
         }
     }

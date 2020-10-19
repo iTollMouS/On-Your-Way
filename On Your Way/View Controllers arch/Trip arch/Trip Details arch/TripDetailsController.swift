@@ -82,7 +82,7 @@ class TripDetailsController: UIViewController {
         tableView.rowHeight = 800
         return tableView
     }()
-
+    
     
     
     private var trip: Trip
@@ -92,6 +92,7 @@ class TripDetailsController: UIViewController {
         let animationView = AnimationView()
         animationView.setDimensions(height: 100, width: 100)
         animationView.clipsToBounds = true
+        animationView.layer.cornerRadius = 100 / 5
         animationView.backgroundColor = .clear
         animationView.contentMode = .scaleAspectFill
         return animationView
@@ -154,6 +155,7 @@ class TripDetailsController: UIViewController {
         
     }
     
+    // MARK: - configureDelegates
     func configureDelegates(){
         headerView.delegate = self
         footerView.delegate = self
@@ -162,12 +164,17 @@ class TripDetailsController: UIViewController {
         
     }
     
+    
+    // MARK: - configureUI
     func configureUI(){
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         view.addSubview(tableView)
         tableView.fillSuperview()
     }
     
+    
+    
+    // MARK: - handleAnonymousMode
     @objc fileprivate func handleAnonymousMode(){
         SwiftEntryKit.dismiss() { [weak self] in
             self?.view.isUserInteractionEnabled = true
