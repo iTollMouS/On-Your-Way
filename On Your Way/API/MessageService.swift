@@ -33,8 +33,12 @@ class MessageService {
                         
                         switch result {
                         case .success(let messageObject):
+                            
+                            
                             if let message = messageObject {
-                                RealmService.shared.saveToRealm(message)
+                                if message.senderId != User.currentId {
+                                    RealmService.shared.saveToRealm(message)
+                                }
                             } else {
                                 print("DEBUG: ducoment doesnt exists")
                             }
@@ -49,7 +53,10 @@ class MessageService {
     }
     
     func listenForReadStatusChange(_ documentId: String, collectionId: String, completion: @escaping(_ updatedMessage: LocalMessage) -> Void){
-        updatedChatListener = Firestore.firestore().collection("messages").document(documentId).collection(collectionId).addSnapshotListener({ (snapshot, error) in
+        updatedChatListener = Firestore.firestore().collection("messages")
+            .document(documentId).collection(collectionId)
+            .addSnapshotListener({ (snapshot, error) in
+                
             guard let snapshot = snapshot else {return}
             
             for change in snapshot.documentChanges {
@@ -58,13 +65,17 @@ class MessageService {
                         try? change.document.data(as: LocalMessage.self)
                     }
                     
-//                    switch result {
-//
-//                    case .success(let localMessage?):
-//
-//                    case .failure(let error):
-//
-//                    }
+                    switch result {
+                    case .success(let messageObject):
+                    
+                        if let message = messageObject {
+                            completion(message)
+                        } else {
+                            print("DEBUG: error while reading document")
+                        }
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
                 }
             }
             
@@ -115,7 +126,7 @@ class MessageService {
     
     func removeListener(){
         newChatListener.remove()
-//        updatedChatListener.remove()
+        updatedChatListener.remove()
     }
     
 }

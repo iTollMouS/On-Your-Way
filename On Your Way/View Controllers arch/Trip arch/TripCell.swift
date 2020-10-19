@@ -158,7 +158,6 @@ class TripCell: UITableViewCell {
         view.text = "No reviews"
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
         view.backgroundColor = .clear
-        view.setHeight(height: 50)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleReviewTapped)))
         return view
     }()
@@ -171,7 +170,7 @@ class TripCell: UITableViewCell {
                                                        packagesTypes,
                                                        ratingView])
         stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fillEqually
         stackView.spacing = 12
         return stackView
     }()
@@ -184,7 +183,7 @@ class TripCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
-        heightAnchor.constraint(equalToConstant: 251.30).isActive = true
+        heightAnchor.constraint(equalToConstant: 250).isActive = true
         
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 32, paddingLeft: 8)
@@ -249,7 +248,6 @@ class TripCell: UITableViewCell {
                                  detailsText: String, detailsTextSize: CGFloat, detailsColor: UIColor,
                                  textAlignment: NSTextAlignment, setHeight: CGFloat  ) -> UILabel {
         let label = UILabel()
-        label.setHeight(height: setHeight)
         label.textAlignment = textAlignment
         label.numberOfLines = 0
         return label

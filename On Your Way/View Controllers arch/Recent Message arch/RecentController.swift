@@ -58,6 +58,7 @@ class RecentController: UIViewController {
         super.viewWillAppear(true)
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     

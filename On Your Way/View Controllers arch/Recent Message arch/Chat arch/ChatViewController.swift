@@ -89,6 +89,7 @@ class ChatViewController: MessagesViewController {
         createTypingObserver()
         configureMessageCollectionView()
         IQKeyboardManager.shared.enable = false
+        listenForReadStatusChange()
         
     }
     
@@ -120,6 +121,7 @@ class ChatViewController: MessagesViewController {
     // MARK: - handleDismissal
     @objc fileprivate func handleDismissal(){
         IQKeyboardManager.shared.enable = true
+        RecentChatService.shared.resetRecentCounter(chatRoomId: chatRoomId)
         removeListener()
         navigationController?.popViewController(animated: true)
     }
@@ -276,19 +278,49 @@ class ChatViewController: MessagesViewController {
     
     private func markMessageAsRead(_ localMessage: LocalMessage){
         
-        if localMessage.senderId != User.currentId {
+        if localMessage.senderId != User.currentId && localMessage.status != kREAD {
             MessageService.shared.updateMessageInFirebase(localMessage, memberIds: [User.currentId, recipientId])
         }
     }
     
     
     fileprivate func insertMessage(_ localMessage: LocalMessage){
-        markMessageAsRead(localMessage)
+        
+        if localMessage.senderId != User.currentId{
+            markMessageAsRead(localMessage)
+        }
+        
         let incoming  = IncomingMessageService(_collectionView: self)
         self.mkMessages.append(incoming.createMessage(localMessage: localMessage)!)
+        
         displayingMessagesCount += 1
     }
     
+    
+    
+    private func listenForReadStatusChange(){
+        MessageService.shared.listenForReadStatusChange(User.currentId, collectionId: chatRoomId) { [weak self] updatedMessage in
+            if updatedMessage.status != kSENT {
+                self?.updateMessage(updatedMessage)
+            }
+        }
+    }
+    
+    fileprivate func updateMessage(_ localMessage: LocalMessage){
+        
+        for index in 0 ..< mkMessages.count {
+            let tempMessage = mkMessages[index]
+            if localMessage.id == tempMessage.messageId {
+                mkMessages[index].status = localMessage.status
+                mkMessages[index].readDate = localMessage.date
+                RealmService.shared.saveToRealm(localMessage)
+                if mkMessages[index].status == kREAD {
+                    self.messagesCollectionView.reloadData()
+                }
+            }
+        }
+        
+    }
     
     
     // MARK: - messageSend

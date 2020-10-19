@@ -101,7 +101,7 @@ class TripsTimelineController: UITableViewController {
         tableView.register(TripCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 220
+        tableView.rowHeight = 250
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.tableHeaderView = UIView()
         
@@ -325,8 +325,6 @@ extension TripsTimelineController {
  action.backgroundColor = .systemRed
  return action
  }
- 
- 
  
  // MARK: - editMyTrip
  func editMyTrip(at indexPath: IndexPath) -> UIContextualAction {

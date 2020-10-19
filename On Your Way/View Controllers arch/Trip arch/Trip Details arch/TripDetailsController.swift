@@ -238,6 +238,7 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
     func handleReviewsTapped(_ view: TripDetailsHeaderView) {
         
         let peopleReviewsController = PeopleReviewsController(user: user)
+        peopleReviewsController.delegate = self
         present(peopleReviewsController, animated: true, completion: nil)
     }
     
@@ -258,7 +259,6 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
             self?.navigationController?.pushViewController(chatViewController, animated: true)
         }
     }
-    
 }
 
 
@@ -278,6 +278,18 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
         navBar.isModalInPresentation = true
         present(navBar, animated: true, completion: nil)
     }
+    
+}
+
+
+// MARK: - PeopleReviewsControllerDelegate
+extension TripDetailsController: PeopleReviewsControllerDelegate {
+    func handleLoggingOutAnonymousUser(_ view: PeopleReviewsController) {
+        view.dismiss(animated: true) { [weak self] in
+            self?.delegate?.handleShowRegistrationPageForNonusers(self!)
+        }
+    }
+    
     
 }
 
