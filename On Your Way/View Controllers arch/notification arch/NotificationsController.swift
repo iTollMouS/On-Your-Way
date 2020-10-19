@@ -27,7 +27,7 @@ class NotificationsController: UITableViewController {
         fetchMyRequest()
         configureRefreshController()
     }
-
+    
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return darkMode ? .lightContent : .lightContent
@@ -44,7 +44,7 @@ class NotificationsController: UITableViewController {
     
     
     // MARK: - fetchMyRequest
-     func fetchMyRequest(){
+    func fetchMyRequest(){
         guard let uid = Auth.auth().currentUser?.uid else { return  }
         TripService.shared.fetchMyRequest(userId: uid ) { packages in
             packages.forEach { package in
@@ -94,15 +94,16 @@ class NotificationsController: UITableViewController {
             TripService.shared.fetchTrip(tripId: selectedPackage.tripID) { [weak self] trip in
                 TripService.shared.deleteMyOutgoingPackage(trip: trip, userId: selectedPackage.userID, package: selectedPackage) { [weak self] error in
                 }
+                self?.packages.remove(at: indexPath.row)
+                self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self?.tableView.reloadData()
             }
-            packages.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.reloadData()
+            
         }
         
     }
     
-
+    
     // MARK: - scrollViewDidEndDecelerating
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if refreshController.isRefreshing {

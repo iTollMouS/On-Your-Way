@@ -47,7 +47,7 @@ class RecentController: UIViewController {
         configureSearchController()
         configureRefreshControl()
         fetchRecentChats()
-        configureWhenTableIsEmpty()
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -64,11 +64,12 @@ class RecentController: UIViewController {
     
     // MARK: - fetchRecentChats
     fileprivate func fetchRecentChats(){
-        RecentChatService.shared.fetchRecentChatFromFirestore { allRecent in
-            self.allRecent = allRecent
+        RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] allRecent in
+            self?.allRecent = allRecent
             // check with all aip why this fucn worsk good and not duplicate stuff
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self?.configureWhenTableIsEmpty()
+                self?.tableView.reloadData()
             }
         }
     }

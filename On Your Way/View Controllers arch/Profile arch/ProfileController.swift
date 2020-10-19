@@ -56,7 +56,7 @@ class ProfileController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         showPopItem()
-        
+        checkUser()
     }
 
     
@@ -90,10 +90,13 @@ class ProfileController: UIViewController {
         } else {
             UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
                 self?.user = user
-                self?.headerView.user = user
-                self?.title = user.username
-                self?.tableView.reloadData()
-                self?.headerView.profileImageView.clipsToBounds = true
+                DispatchQueue.main.async {
+                    self?.headerView.user = user
+                    self?.title = user.username
+                    self?.showPopItem()
+                    self?.tableView.reloadData()
+                    self?.headerView.profileImageView.clipsToBounds = true
+                }
             }
         }
     }

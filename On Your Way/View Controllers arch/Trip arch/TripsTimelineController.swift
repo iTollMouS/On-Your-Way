@@ -27,7 +27,6 @@ class TripsTimelineController: UITableViewController {
         configureUI()
         configureRefreshController()
         fetchTrips()
-        configureWhenTableIsEmpty()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,10 +55,17 @@ class TripsTimelineController: UITableViewController {
     
     // MARK: - fetchTrips()
     func fetchTrips(){
-        TripService.shared.fetchAllTrips { [weak self] in
-            /*note that in the func we made some omitting duplicate methods*/
-            self?.trips = $0
-            self?.tableView.reloadData()
+        TripService.shared.fetchAllTrips { [weak self] trips in
+            /*note that in the func we made some omitting duplicate methods
+             best way to handle empty cases
+             */
+            self?.trips = trips
+            DispatchQueue.main.async {
+                self?.configureWhenTableIsEmpty()
+                self?.tableView.reloadData()
+            }
+            
+            
         }
     }
     
