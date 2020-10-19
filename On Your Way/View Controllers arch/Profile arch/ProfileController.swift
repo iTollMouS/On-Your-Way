@@ -58,7 +58,7 @@ class ProfileController: UIViewController {
         showPopItem()
         checkUser()
     }
-
+    
     
     func showPopItem(){
         guard let user = user else { return }
@@ -74,7 +74,7 @@ class ProfileController: UIViewController {
         
     }
     
-  
+    
     
     func configureRefreshController(){
         refreshController.tintColor = .white
@@ -95,7 +95,6 @@ class ProfileController: UIViewController {
                     self?.title = user.username
                     self?.showPopItem()
                     self?.tableView.reloadData()
-                    self?.headerView.profileImageView.clipsToBounds = true
                 }
             }
         }
