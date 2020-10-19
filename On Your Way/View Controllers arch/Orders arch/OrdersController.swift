@@ -55,7 +55,6 @@ class OrdersController: UIViewController {
     var newPackageOrder = [Package]()
     var inProcessPackageOrder = [Package]()
     var donePackageOrder = [Package]()
-    var packagesDictionary: [String: Package] = [:]
     
     private var viewModel: PackageStatus?
     

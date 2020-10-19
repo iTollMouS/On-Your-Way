@@ -15,7 +15,6 @@ class NotificationsController: UITableViewController {
     
     // MARK: - Properties
     let refreshController = UIRefreshControl()
-    var packagesDictionary = [String : Package]()
     var packages = [Package]()
     
     
@@ -46,14 +45,11 @@ class NotificationsController: UITableViewController {
     // MARK: - fetchMyRequest
     func fetchMyRequest(){
         guard let uid = Auth.auth().currentUser?.uid else { return  }
-        TripService.shared.fetchMyRequest(userId: uid ) { packages in
-            packages.forEach { package in
-                let tempPackage = package
-                self.packagesDictionary[tempPackage.packageID] = package
+        TripService.shared.fetchMyRequest(userId: uid ) { [weak self] packages in
+            self?.packages = packages
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
-            self.packages = Array(self.packagesDictionary.values)
-            self.packages.sort(by: { $0.timestamp! > $1.timestamp! })
-            self.tableView.reloadData()
         }
     }
     
@@ -90,17 +86,18 @@ class NotificationsController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            tableView.beginUpdates()
             let selectedPackage = packages[indexPath.row]
             TripService.shared.fetchTrip(tripId: selectedPackage.tripID) { [weak self] trip in
                 TripService.shared.deleteMyOutgoingPackage(trip: trip, userId: selectedPackage.userID, package: selectedPackage) { [weak self] error in
-                    DispatchQueue.main.async {
-                        self?.packages.remove(at: indexPath.row)
-                        self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    DispatchQueue.main.async { [weak self] in
+//                        self?.packages.remove(at: indexPath.row)
+//                        self?.tableView.deleteRows(at: [indexPath], with: .automatic)
                         self?.tableView.reloadData()
                     }
                 }
             }
-            
+            tableView.endUpdates()
         }
         
     }

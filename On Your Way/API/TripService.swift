@@ -50,8 +50,9 @@ class TripService {
         }
     }
     
-    #warning("issue us here !!!")
+    
     func fetchMyRequest(userId: String, completion: @escaping([Package]) -> Void){
+        var packagesDictionary: [String: Package] = [:]
         var packages: [Package] = []
         Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").addSnapshotListener { (snapshot, error) in
             guard let snapshot = snapshot else {return}
@@ -86,25 +87,52 @@ class TripService {
                     }
                 }
                 
+                if packageChanged.type == .removed {
+                    let result = Result {
+                        try? packageChanged.document.data(as: Package.self)
+                    }
+                    switch result {
+                    case .success( let package):
+                        if let package = package {
+                            packages.append(package)
+                        }
+                    case .failure(let error ):
+                        print("DEBUG: error \(error.localizedDescription)")
+                    }
+                }
+                
             }
             
+            packages.forEach { package in
+                let tempPackage = package
+                packagesDictionary[tempPackage.packageID] = package
+            }
+            packages = Array(packagesDictionary.values)
             packages.sort(by: { $0.timestamp! > $1.timestamp! })
             completion(packages)
         }
         
     }
-
-
+    
+    
     func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void){
-        
         switch package.packageStatus {
-        
         case .packageIsPending:
             fallthrough
         case .packageIsRejected:
             Firestore.firestore().collection("users-requests")
                 .document(userId).collection("shipping-request")
                 .document(package.packageID).delete(completion: completion)
+            
+            do {
+                try Firestore.firestore().collection("users-send-packages")
+                    .document(package.userID).collection("packages")
+                    .document(package.packageID).setData(from: package, merge: true, completion: completion)
+                
+            } catch (let error){
+                completion(error)
+            }
+            
         case .packageIsAccepted:
             do {
                 try  Firestore.firestore().collection("users-requests")
@@ -186,6 +214,20 @@ class TripService {
                 }
                 
                 if packageChanged.type == .modified {
+                    let result = Result {
+                        try? packageChanged.document.data(as: Package.self)
+                    }
+                    switch result {
+                    case .success( let package):
+                        if let package = package {
+                            packages.append(package)
+                        }
+                    case .failure(let error ):
+                        print("DEBUG: error \(error.localizedDescription)")
+                    }
+                }
+                
+                if packageChanged.type == .removed {
                     let result = Result {
                         try? packageChanged.document.data(as: Package.self)
                     }
