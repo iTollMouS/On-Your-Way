@@ -32,6 +32,7 @@ class TripsTimelineController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         configureTapBarController()
+        fetchTrips()
         configureNavBar()
         searchController.searchBar.becomeFirstResponder()
         
@@ -62,6 +63,7 @@ class TripsTimelineController: UITableViewController {
             self?.trips = trips
             DispatchQueue.main.async {
                 self?.configureWhenTableIsEmpty()
+                self?.configureTapBarController()
                 self?.tableView.reloadData()
             }
             
@@ -134,6 +136,7 @@ class TripsTimelineController: UITableViewController {
     // MARK: - fetch when scroll
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if refreshController.isRefreshing {
+            configureTapBarController()
             fetchTrips()
             refreshController.endRefreshing()
         }
@@ -219,6 +222,14 @@ extension TripsTimelineController: TripCellDelegate {
 
 // MARK: -  NewTripControllerDelegate
 extension TripsTimelineController: NewTripControllerDelegate {
+    func dismissLoggingAnonymousOut(_ view: NewTripController) {
+        DispatchQueue.main.async { [weak self] in
+            self?.tabBarController?.closePopup(animated: true, completion: { [weak self] in
+                self?.presentLoggingController()
+            })
+        }
+    }
+    
     func dismissNewTripView(_ view: NewTripController) {
         DispatchQueue.main.async { [weak self] in
             self?.fetchTrips()

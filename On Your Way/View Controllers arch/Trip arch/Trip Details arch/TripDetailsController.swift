@@ -348,7 +348,6 @@ extension TripDetailsController {
         }
         attributes.entryBackground = .clear
         SwiftEntryKit.display(entry: customAlertView, using: attributes)
-        
     }
     
 }

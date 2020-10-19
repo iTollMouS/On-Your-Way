@@ -158,9 +158,7 @@ class TripCell: UITableViewCell {
         view.text = "No reviews"
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
         view.backgroundColor = .clear
-        view.setHeight(height: 70)
-        view.layer.cornerRadius = 70 / 2
-        
+        view.setHeight(height: 50)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleReviewTapped)))
         return view
     }()
