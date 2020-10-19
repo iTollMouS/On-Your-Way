@@ -182,11 +182,13 @@ extension TripsTimelineController {
         if editingStyle == .delete {
             let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
             TripService.shared.deleteMyTrip(trip: trip) { [weak self] error in
-                print("DEBUG: error while deleting trip")
-                self?.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self!.searchController.isActive ? self?.filteredTrips.remove(at: indexPath.row) : self?.trips.remove(at: indexPath.row)
+                    self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    self?.tableView.reloadData()
+                }
+                
             }
-            searchController.isActive ? self.filteredTrips.remove(at: indexPath.row) : self.trips.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     
@@ -218,12 +220,14 @@ extension TripsTimelineController: TripCellDelegate {
 // MARK: -  NewTripControllerDelegate
 extension TripsTimelineController: NewTripControllerDelegate {
     func dismissNewTripView(_ view: NewTripController) {
-        fetchTrips()
-        tabBarController?.closePopup(animated: true, completion: { [weak self] in
-            let safetyControllerGuidelines = SafetyControllerGuidelines()
-            safetyControllerGuidelines.modalPresentationStyle = .custom
-            self?.present(safetyControllerGuidelines, animated: true, completion: nil)
-        })
+        DispatchQueue.main.async { [weak self] in
+            self?.fetchTrips()
+            self?.tabBarController?.closePopup(animated: true, completion: { [weak self] in
+                let safetyControllerGuidelines = SafetyControllerGuidelines()
+                safetyControllerGuidelines.modalPresentationStyle = .custom
+                self?.present(safetyControllerGuidelines, animated: true, completion: nil)
+            })
+        }
     }
 }
 
@@ -270,8 +274,9 @@ extension TripsTimelineController {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
                 
                 self?.tableView.setEmptyView(title: "No travelers",
-                                            titleColor: .white,
-                                            message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ")
+                                             titleColor: .white,
+                                             message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ",
+                                             paddingTop: 100)
             }
         } else {tableView.restore()}
         

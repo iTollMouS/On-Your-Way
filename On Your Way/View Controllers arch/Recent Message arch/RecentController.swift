@@ -211,7 +211,8 @@ extension RecentController {
                 
                 self?.tableView.setEmptyView(title: "No DMs",
                                             titleColor: .white,
-                                            message: "People DM you when you announce your travel info for packaging shipping details and process")
+                                            message: "People DM you when you announce your travel info for packaging shipping details and process",
+                                            paddingTop: 40)
             }
         } else {tableView.restore()}
         

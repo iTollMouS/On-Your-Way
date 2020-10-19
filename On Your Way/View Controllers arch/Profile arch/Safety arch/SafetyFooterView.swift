@@ -32,7 +32,7 @@ class SafetyFooterView: UIView {
         button.clipsToBounds = true
         button.alpha = 0
         button.layer.masksToBounds = false
-        button.setupShadow(opacity: 0.4, radius: 20, offset: CGSize(width: 0.0, height: 3.0), color: .white)
+        button.setupShadow(opacity: 0.5, radius: 16, offset: CGSize(width: 0.0, height: 8.0), color: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1))
         return button
     }()
     

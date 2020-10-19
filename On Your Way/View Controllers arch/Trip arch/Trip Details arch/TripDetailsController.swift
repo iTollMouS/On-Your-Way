@@ -9,6 +9,7 @@ import UIKit
 import SwiftEntryKit
 import Firebase
 import LNPopupController
+import Lottie
 
 private let reuseIdentifier = "TripDetailsCell"
 
@@ -19,14 +20,57 @@ protocol TripDetailsControllerDelegate: class {
 class TripDetailsController: UIViewController {
     
     
+    // MARK: - delegate
+    weak var delegate: TripDetailsControllerDelegate?
+    
+    
     // MARK: - Properties
     private lazy var headerView = TripDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
     private lazy var footerView = TripDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 100))
     
-    private lazy var reviewSheetPopOver = UIView()
+    private lazy var customAlertView = UIView()
     var attributes = EKAttributes.bottomNote
     
-    weak var delegate: TripDetailsControllerDelegate?
+    private lazy var bottomContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.2156862745, green: 0.2156862745, blue: 0.2156862745, alpha: 1)
+        view.layer.cornerRadius = 30
+        return view
+    }()
+    
+    private lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        let attributedText = NSMutableAttributedString(string: "Ops!\n",
+                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
+                                                                    .font: UIFont.boldSystemFont(ofSize: 18)])
+        attributedText.append(NSMutableAttributedString(string: "You can not ship packages without an account.\nPlease press Ok on the bottom to go back",
+                                                        attributes: [.foregroundColor : UIColor.lightGray,
+                                                                     .font: UIFont.systemFont(ofSize: 16)]))
+        
+        label.attributedText = attributedText
+        label.setHeight(height: 80)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private lazy var dismissalButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Okay", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
+        button.setDimensions(height: 50, width: 300)
+        button.tintColor = .white
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.layer.cornerRadius = 50 / 2
+        button.backgroundColor = #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1)
+        button.addTarget(self, action: #selector(handleAnonymousMode), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    
+    
+    
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -38,9 +82,20 @@ class TripDetailsController: UIViewController {
         tableView.rowHeight = 800
         return tableView
     }()
+
+    
     
     private var trip: Trip
     private var user: User
+    
+    private lazy var animationView: AnimationView = {
+        let animationView = AnimationView()
+        animationView.setDimensions(height: 100, width: 100)
+        animationView.clipsToBounds = true
+        animationView.backgroundColor = .clear
+        animationView.contentMode = .scaleAspectFill
+        return animationView
+    }()
     
     init(user: User, trip: Trip) {
         self.user = user
@@ -86,14 +141,15 @@ class TripDetailsController: UIViewController {
     func fetchUser(){
         UserServices.shared.fetchUser(userId: trip.userID) { user in
             self.user = user
-            self.headerView.user = user
-            self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self ] in
+                self?.headerView.user = user
+                self?.tableView.reloadData()
+            }
         }
         
         if trip.userID == User.currentId {
             footerView.isHidden = true
             headerView.startChatButton.isHidden = true
-            
         }
         
     }
@@ -112,6 +168,12 @@ class TripDetailsController: UIViewController {
         tableView.fillSuperview()
     }
     
+    @objc fileprivate func handleAnonymousMode(){
+        SwiftEntryKit.dismiss() { [weak self] in
+            self?.view.isUserInteractionEnabled = true
+            self?.delegate?.handleShowRegistrationPageForNonusers(self!)
+        }
+    }
     
 }
 
@@ -167,7 +229,7 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
     }
     
     func handleStartToChat(_ view: TripDetailsHeaderView) {
-    
+        
         // step 0  :
         UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
             print("DEBUG: user name is \(user.username)")
@@ -192,7 +254,7 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
         
         
         if User.currentUser?.id == nil {
-            showCustomAlertView()
+            showCustomAlertView(condition: .warning)
             return
         }
         let sendPackageController = SendPackageController(user: user, trip: trip)
@@ -220,32 +282,54 @@ extension TripDetailsController : SendPackageControllerDelegate {
 // MARK: - showCustomAlertView()
 extension TripDetailsController {
     
-    func showCustomAlertView() {
+    func showCustomAlertView(condition: Conditions) {
+        configureCustomAlertUI()
         
-        reviewSheetPopOver.backgroundColor = #colorLiteral(red: 0.2588235294, green: 0.2588235294, blue: 0.2588235294, alpha: 1)
-        reviewSheetPopOver.layer.cornerRadius = 10
-        reviewSheetPopOver.setDimensions(height: 300, width: view.frame.width - 50)
+        switch condition {
+        case .success:
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+        case .warning:
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+        case .error:
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+        }
+    }
+    
+    func configureCustomAlertUI(){
+        view.isUserInteractionEnabled = false
+        customAlertView.clipsToBounds = true
+        customAlertView.addSubview(bottomContainerView)
+        customAlertView.addSubview(animationView)
+        
+        animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
+        bottomContainerView.anchor(top: animationView.bottomAnchor, left: customAlertView.leftAnchor, bottom: customAlertView.bottomAnchor, right: customAlertView.rightAnchor, paddingTop: -50)
+        
+        bottomContainerView.addSubview(messageLabel)
+        messageLabel.anchor(top: bottomContainerView.topAnchor, left: bottomContainerView.leftAnchor, right: bottomContainerView.rightAnchor, paddingTop: 50)
+        bottomContainerView.addSubview(dismissalButton)
+        dismissalButton.anchor(left: bottomContainerView.leftAnchor, bottom: bottomContainerView.bottomAnchor, right: bottomContainerView.rightAnchor,
+                               paddingLeft: 30, paddingBottom: 30, paddingRight: 30)
+        
+        customAlertView.backgroundColor = .clear
+        customAlertView.layer.cornerRadius = 10
+        customAlertView.setDimensions(height: 300, width: view.frame.width - 50)
         attributes.screenBackground = .visualEffect(style: .dark)
         attributes.positionConstraints.safeArea = .overridden
         attributes.positionConstraints.verticalOffset = 250
         attributes.windowLevel = .normal
         attributes.position = .bottom
         attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
-        attributes.displayDuration = .infinity // do something when the user touch the card e.g .dismiss make the card dismisses on touch
-        attributes.screenInteraction = .dismiss // do something when the user touch the screen e.g .dismiss make the card dismisses on touch
+        attributes.displayDuration = .infinity
         attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
         attributes.statusBar = .light
-        
-        attributes.lifecycleEvents.willDisappear = { [weak self] in
-            self?.delegate?.handleShowRegistrationPageForNonusers(self!)
-        }
-        
-        attributes.lifecycleEvents.didDisappear = {
-            // Executed after the entry animates outside
-            print("didDisappear")
-        }
-        attributes.entryBackground = .visualEffect(style: .dark)
-        SwiftEntryKit.display(entry: reviewSheetPopOver, using: attributes)
+        attributes.entryBackground = .clear
+        SwiftEntryKit.display(entry: customAlertView, using: attributes)
     }
     
 }

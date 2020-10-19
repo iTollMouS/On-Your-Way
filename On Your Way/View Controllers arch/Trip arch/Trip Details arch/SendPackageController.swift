@@ -7,7 +7,7 @@
 
 import UIKit
 import Firebase
-
+import SwiftEntryKit
 
 private let reuseIdentifier = "SendPackageCell"
 
@@ -190,7 +190,12 @@ class SendPackageController: UIViewController {
     }
     
     @objc fileprivate func handleSubmittingShipment(){
-                
+        
+        if packageImageUrls.isEmpty {
+            self.showAlertMessage("Error", "Please upload at least one image")
+            return
+        }
+        
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         UserServices.shared.fetchUser(userId: uid) { [weak self] user in
@@ -293,4 +298,3 @@ extension SendPackageController : UIImagePickerControllerDelegate & UINavigation
         picker.dismiss(animated: true, completion: nil)
     }
 }
-

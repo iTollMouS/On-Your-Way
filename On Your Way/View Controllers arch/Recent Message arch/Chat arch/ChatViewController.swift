@@ -92,6 +92,11 @@ class ChatViewController: MessagesViewController {
         
     }
     
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         configureNavBar()
@@ -276,7 +281,7 @@ class ChatViewController: MessagesViewController {
         }
     }
     
-
+    
     fileprivate func insertMessage(_ localMessage: LocalMessage){
         markMessageAsRead(localMessage)
         let incoming  = IncomingMessageService(_collectionView: self)

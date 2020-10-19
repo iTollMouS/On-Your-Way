@@ -186,7 +186,7 @@ class TripCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
-        heightAnchor.constraint(equalToConstant: 250).isActive = true
+        heightAnchor.constraint(equalToConstant: 251.30).isActive = true
         
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 32, paddingLeft: 8)

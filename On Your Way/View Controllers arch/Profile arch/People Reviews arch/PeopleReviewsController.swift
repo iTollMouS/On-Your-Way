@@ -193,8 +193,9 @@ class PeopleReviewsController: UIViewController {
     }
     
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
     }
     
     func fetchReviews(){
@@ -399,11 +400,12 @@ extension PeopleReviewsController {
                 if User.currentId == self?.user.id {
                     self?.tableView.setEmptyView(title: "No Reviews",
                                                  titleColor: .white,
-                                                 message: "No one has wrote a review about you.\nOnce you accept people packages, people they can submit reviews")
+                                                 message: "No one has wrote a review about you.\nOnce you accept people packages, people they can submit reviews", paddingTop: 350)
                 } else if User.currentId != self?.user.id {
                     self?.tableView.setEmptyView(title: "No Reviews",
                                                  titleColor: .white,
-                                                 message: "No one has wrote a review about \(self!.user.username)")
+                                                 message: "No one has wrote a review about \(self!.user.username)",
+                                                 paddingTop: 350)
                 } else {self?.tableView.restore()}
             }
         }

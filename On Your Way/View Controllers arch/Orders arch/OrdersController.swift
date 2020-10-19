@@ -196,7 +196,8 @@ extension OrdersController {
                 
                 self?.tableView.setEmptyView(title: "No Orders",
                                             titleColor: .white,
-                                            message: "You don't have any order.\nPeople usually request shipping order when people travel from to city")
+                                            message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
+                                            paddingTop: 50)
             }
         } else {tableView.restore()}
         

@@ -14,10 +14,6 @@ private let reuseIdentifier = "OrderDetail"
 
 class OrderDetailsController: UIViewController {
     
-    
-    
-    
-    
     //    failed
     
     private lazy var headerView = OrderDetailHeader(package: package)
@@ -27,6 +23,7 @@ class OrderDetailsController: UIViewController {
     private var images = [SKPhoto]()
     
     private lazy var customAlertView = UIView()
+
     
     private lazy var rejectButton = createButton(tagNumber: 0, title: "Reject Order\nThis order will be removed",
                                                  backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")

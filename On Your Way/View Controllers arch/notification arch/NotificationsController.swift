@@ -87,16 +87,18 @@ class NotificationsController: UITableViewController {
     }
     
     
-    #warning("fix your table")
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let selectedPackage = packages[indexPath.row]
             TripService.shared.fetchTrip(tripId: selectedPackage.tripID) { [weak self] trip in
                 TripService.shared.deleteMyOutgoingPackage(trip: trip, userId: selectedPackage.userID, package: selectedPackage) { [weak self] error in
+                    DispatchQueue.main.async {
+                        self?.packages.remove(at: indexPath.row)
+                        self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        self?.tableView.reloadData()
+                    }
                 }
-                self?.packages.remove(at: indexPath.row)
-                self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                self?.tableView.reloadData()
             }
             
         }

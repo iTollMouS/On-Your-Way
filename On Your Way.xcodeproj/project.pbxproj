@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */; };
+		8335149C253D7025001C2C9E /* warning_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8335149B253D7025001C2C9E /* warning_animation.json */; };
+		8335149E253D705D001C2C9E /* Conditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8335149D253D705D001C2C9E /* Conditions.swift */; };
+		833514A0253D724B001C2C9E /* success_motion.json in Resources */ = {isa = PBXBuildFile; fileRef = 8335149F253D724B001C2C9E /* success_motion.json */; };
+		833514A2253D729F001C2C9E /* animation_error.json in Resources */ = {isa = PBXBuildFile; fileRef = 833514A1253D729F001C2C9E /* animation_error.json */; };
+		833514A4253D796B001C2C9E /* New_error.json in Resources */ = {isa = PBXBuildFile; fileRef = 833514A3253D796A001C2C9E /* New_error.json */; };
 		83375F4D253A8415008F2036 /* IncomingMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F4C253A8415008F2036 /* IncomingMessageService.swift */; };
 		83375F50253B1C95008F2036 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; };
 		83375F51253B1C95008F2036 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -134,6 +139,11 @@
 /* Begin PBXFileReference section */
 		675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_On_Your_Way.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A55185440CDC76BE70C863 /* Pods-On Your Way.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.debug.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.debug.xcconfig"; sourceTree = "<group>"; };
+		8335149B253D7025001C2C9E /* warning_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = warning_animation.json; sourceTree = "<group>"; };
+		8335149D253D705D001C2C9E /* Conditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conditions.swift; sourceTree = "<group>"; };
+		8335149F253D724B001C2C9E /* success_motion.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = success_motion.json; sourceTree = "<group>"; };
+		833514A1253D729F001C2C9E /* animation_error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = animation_error.json; sourceTree = "<group>"; };
+		833514A3253D796A001C2C9E /* New_error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = New_error.json; sourceTree = "<group>"; };
 		83375F4C253A8415008F2036 /* IncomingMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingMessageService.swift; sourceTree = "<group>"; };
 		83375F78253B91CF008F2036 /* TypingListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingListenerService.swift; sourceTree = "<group>"; };
 		83375F7A253BA231008F2036 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
@@ -316,6 +326,7 @@
 				834C98C525312E3900BE8691 /* User.swift */,
 				835C88092539C3D400D49923 /* MKMessage.swift */,
 				835C88072539C2A100D49923 /* MKSender.swift */,
+				8335149D253D705D001C2C9E /* Conditions.swift */,
 				834C993D25338D6800BE8691 /* Trip.swift */,
 				83B7637A2538192300503A9D /* Review.swift */,
 				83D7D4272535A49B00FA88F0 /* Package.swift */,
@@ -363,9 +374,13 @@
 				834C98A125312C5700BE8691 /* 34548-5-estrellas.json */,
 				834C98AD25312C5700BE8691 /* chat.json */,
 				834C98A025312C5700BE8691 /* cleanPhones.json */,
+				833514A3253D796A001C2C9E /* New_error.json */,
 				83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */,
+				833514A1253D729F001C2C9E /* animation_error.json */,
 				83B763772537409800503A9D /* failed.json */,
+				8335149F253D724B001C2C9E /* success_motion.json */,
 				834C98A725312C5700BE8691 /* covid_19_protect.json */,
+				8335149B253D7025001C2C9E /* warning_animation.json */,
 				83B763752537401D00503A9D /* success_animation.json */,
 				83B7635C2536DF9A00503A9D /* discount_icon.json */,
 				83B7635A2536DEA900503A9D /* chat_messenger.json */,
@@ -641,6 +656,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				834C98B925312C5700BE8691 /* hand_sanitizer.json in Resources */,
+				8335149C253D7025001C2C9E /* warning_animation.json in Resources */,
 				834C98B725312C5700BE8691 /* width_measure_tape.json in Resources */,
 				834C98B425312C5700BE8691 /* cleanPhones.json in Resources */,
 				834C98B125312C5700BE8691 /* height_measure_tape.json in Resources */,
@@ -648,7 +664,9 @@
 				834C982825311CCE00BE8691 /* LaunchScreen.storyboard in Resources */,
 				834C987025311EAD00BE8691 /* GoogleService-Info.plist in Resources */,
 				834C98BB25312C5700BE8691 /* covid_19_protect.json in Resources */,
+				833514A0253D724B001C2C9E /* success_motion.json in Resources */,
 				834C98B525312C5700BE8691 /* 34548-5-estrellas.json in Resources */,
+				833514A4253D796B001C2C9E /* New_error.json in Resources */,
 				83B763762537401D00503A9D /* success_animation.json in Resources */,
 				83B763592536DB9100503A9D /* bell.json in Resources */,
 				83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */,
@@ -659,6 +677,7 @@
 				834C98BA25312C5700BE8691 /* textMessage_SMS.json in Resources */,
 				834C98B625312C5700BE8691 /* package_delivery.json in Resources */,
 				834C98C125312C5700BE8691 /* chat.json in Resources */,
+				833514A2253D729F001C2C9E /* animation_error.json in Resources */,
 				834C98B225312C5700BE8691 /* social_distancing.json in Resources */,
 				834C98C325312C5700BE8691 /* wash_your_hands_regularly.json in Resources */,
 				83B7635D2536DF9A00503A9D /* discount_icon.json in Resources */,
@@ -752,6 +771,7 @@
 				83B76373253715ED00503A9D /* NotificationCell.swift in Sources */,
 				834C991D25323C3200BE8691 /* RecentCell.swift in Sources */,
 				833E8E65253BF1CE007CCB2D /* ActiveListenerService.swift in Sources */,
+				8335149E253D705D001C2C9E /* Conditions.swift in Sources */,
 				83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */,
 				834C98CF253192C000BE8691 /* CustomContainerView.swift in Sources */,
 				83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */,
