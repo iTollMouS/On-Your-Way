@@ -211,6 +211,7 @@ class PeopleReviewsController: UIViewController {
             }
             self?.tableView.reloadData()
         }
+        configureWhenTableIsEmpty()
     }
     
     func canUserReview(){
@@ -305,6 +306,7 @@ class PeopleReviewsController: UIViewController {
 
 extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return reviews.count
     }
     
@@ -386,4 +388,24 @@ extension PeopleReviewsController {
         
     }
     
+}
+
+
+// MARK: - show case table is empty
+extension PeopleReviewsController {
+    func configureWhenTableIsEmpty(){
+        if self.reviews.isEmpty {
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                if User.currentId == self?.user.id {
+                    self?.tableView.setEmptyView(title: "No Reviews",
+                                                 titleColor: .white,
+                                                 message: "No one has wrote a review about you\nOnce you accept people packages , then they can submit reviews")
+                } else if User.currentId != self?.user.id {
+                    self?.tableView.setEmptyView(title: "No Reviews",
+                                                 titleColor: .white,
+                                                 message: "No one has wrote a review about \(self!.user.username)")
+                } else {self?.tableView.restore()}
+            }
+        }
+    }
 }

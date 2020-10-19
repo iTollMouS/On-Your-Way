@@ -61,7 +61,6 @@ class ProfileController: UIViewController {
 
     
     func showPopItem(){
-        checkUser()
         guard let user = user else { return }
         tabBarController?.tabBar.isHidden = false
         let peopleReviewsController = PeopleReviewsController(user: user)

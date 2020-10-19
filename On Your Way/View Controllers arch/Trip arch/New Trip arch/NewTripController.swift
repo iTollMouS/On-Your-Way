@@ -270,10 +270,10 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         timeToPickPackageTextField.text = sender.date.convertDate(formattedString: .timeOnly)
     }
     
-   
+    
     @objc func handleDateAndTimeTapped(){
         
-
+        
         guard let currentLocationCity = currentLocationCity else {
             self.showAlertMessage("Error", "Please make sure you choose current city and destination")
             return

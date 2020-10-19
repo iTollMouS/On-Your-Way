@@ -86,7 +86,7 @@ class NotificationCell: UITableViewCell {
         guard let package = package else { return }
         let viewModel = PackageViewModel(package: package)
         print("DEBUG: package is \(viewModel.tripId)")
-        TripService.shared.fetchTrip(tripId: viewModel.tripId) { user in
+        TripService.shared.fetchUserFromTrip(tripId: viewModel.tripId) { user in
             print("DEBUG: traveler is  \(user.username)")
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self.travelerImageView.sd_setImage(with: imageUrl)

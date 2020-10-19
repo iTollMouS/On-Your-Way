@@ -19,8 +19,6 @@ class NotificationsController: UITableViewController {
     var packages = [Package]()
     
     
-    
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,14 +28,10 @@ class NotificationsController: UITableViewController {
         configureRefreshController()
     }
 
-    
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return darkMode ? .lightContent : .lightContent
     }
-    
-    
-    
     
     // MARK: - configureRefreshController
     func configureRefreshController(){
@@ -84,7 +78,31 @@ class NotificationsController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
     
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    
+    #warning("fix your table")
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let selectedPackage = packages[indexPath.row]
+            TripService.shared.fetchTrip(tripId: selectedPackage.tripID) { [weak self] trip in
+                TripService.shared.deleteMyOutgoingPackage(trip: trip, userId: selectedPackage.userID, package: selectedPackage) { [weak self] error in
+                }
+            }
+            packages.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.reloadData()
+        }
+        
+    }
+    
+
     // MARK: - scrollViewDidEndDecelerating
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if refreshController.isRefreshing {

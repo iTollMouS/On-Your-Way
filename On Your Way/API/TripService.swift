@@ -27,22 +27,6 @@ class TripService {
         }
     }
     
-    #warning("users-send-packages <-- , see why it crashes !!!has issue  ")
-    
-//    func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void) {
-//        do {
-//            try  Firestore.firestore().collection("users-requests")
-//                .document(userId).collection("shipping-request")
-//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-//            try Firestore.firestore().collection("users-send-packages")
-//                .document(package.userID).collection("packages")
-//                .document(package.packageID).setData(from: package, merge: true, completion: completion)
-//
-//        } catch (let error){
-//            completion(error)
-//        }
-//    }
-    
     
     func fetchAllTrips(completion: @escaping([Trip]) -> Void) {
         var tripsDictionary: [String: Trip] = [:]
@@ -55,7 +39,7 @@ class TripService {
                 
                 return try? queryDocumentSnapshot.document.data(as: Trip.self)
             }
-
+            
             trips.forEach { trip in
                 let tempTrip = trip
                 tripsDictionary[tempTrip.tripID] = trip
@@ -63,7 +47,6 @@ class TripService {
             trips = Array(tripsDictionary.values)
             trips.sort(by: { $0.timestamp! > $1.timestamp! })
             completion(trips)
-            
         }
     }
     
@@ -72,14 +55,14 @@ class TripService {
         var packages: [Package] = []
         Firestore.firestore().collection("users-send-packages").document(userId).collection("packages").addSnapshotListener { (snapshot, error) in
             guard let snapshot = snapshot else {return}
-           
+            
             for packageChanged in snapshot.documentChanges {
                 if packageChanged.type == .added {
                     let result = Result {
                         try? packageChanged.document.data(as: Package.self)
                     }
                     switch result {
-                   
+                    
                     case .success( let package):
                         if let package = package {
                             packages.append(package)
@@ -102,6 +85,7 @@ class TripService {
                         print("DEBUG: error \(error.localizedDescription)")
                     }
                 }
+                
             }
             
             packages.sort(by: { $0.timestamp! > $1.timestamp! })
@@ -109,32 +93,12 @@ class TripService {
         }
         
     }
-    
-//    for change in snapshot.documentChanges {
-//        if change.type == .added {
-//            let result = Result {
-//                try? change.document.data(as: LocalMessage.self)
-//            }
-//
-//            switch result {
-//            case .success(let messageObject):
-//                if let message = messageObject {
-//                    RealmService.shared.saveToRealm(message)
-//                } else {
-//                    print("DEBUG: ducoment doesnt exists")
-//                }
-//
-//            case .failure(let error):
-//                print("DEBUG: error while getting \(error.localizedDescription)")
-//            }
-//        }
-//    }
-    
-    
-    func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void){
 
+
+    func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void){
+        
         switch package.packageStatus {
-       
+        
         case .packageIsPending:
             fallthrough
         case .packageIsRejected:
@@ -149,7 +113,7 @@ class TripService {
                 try Firestore.firestore().collection("users-send-packages")
                     .document(package.userID).collection("packages")
                     .document(package.packageID).setData(from: package, merge: true, completion: completion)
-
+                
             } catch (let error){
                 completion(error)
             }
@@ -161,14 +125,14 @@ class TripService {
                 try Firestore.firestore().collection("users-send-packages")
                     .document(package.userID).collection("packages")
                     .document(package.packageID).setData(from: package, merge: true, completion: completion)
-
+                
             } catch (let error){
                 completion(error)
             }
         }
     }
     
-    func fetchTrip(tripId: String, completion: @escaping(User) -> Void){
+    func fetchUserFromTrip(tripId: String, completion: @escaping(User) -> Void){
         Firestore.firestore().collection("trips").document(tripId).getDocument { (snapshot, error) in
             guard let snapshot = snapshot else {return}
             guard let trip = try? snapshot.data(as: Trip.self) else {return}
@@ -176,7 +140,6 @@ class TripService {
                 completion(user)
             }
         }
-        
     }
     
     func sendPackageToTraveler(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
@@ -187,10 +150,19 @@ class TripService {
             try Firestore.firestore().collection("users-send-packages")
                 .document(userId).collection("packages")
                 .document(package.packageID).setData(from: package, merge: true, completion: completion)
-
+            
         } catch (let error) {
             print("DEBUG: error while uploading package\(error.localizedDescription)")
         }
+    }
+    
+    func deleteMyOutgoingPackage(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
+        Firestore.firestore().collection("users-requests")
+            .document(trip.userID).collection("shipping-request")
+            .document(package.packageID).delete(completion: completion)
+        Firestore.firestore().collection("users-send-packages")
+            .document(userId).collection("packages")
+            .document(package.packageID).delete(completion: completion)
     }
     
     func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){
@@ -205,6 +177,14 @@ class TripService {
             packages.sort(by: { $0.timestamp! > $1.timestamp! })
             
             completion(packages)
+        }
+    }
+    
+    func fetchTrip(tripId: String,  completion: @escaping(Trip) -> Void){
+        Firestore.firestore().collection("trips").document(tripId).getDocument { (snapshot, error) in
+            guard let snapshot = snapshot else {return}
+            guard let trip = try? snapshot.data(as: Trip.self) else {return}
+            completion(trip)
         }
     }
     

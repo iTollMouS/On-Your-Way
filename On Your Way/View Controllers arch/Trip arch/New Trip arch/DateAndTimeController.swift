@@ -325,7 +325,20 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         guard let departureDate = dateTextField.text else { return }
         guard let packageType = packageInfoTextView.text else { return }
         
-      
+        if departureDate.isEmpty {
+            self.showAlertMessage("Error", "Please make sure choose your date travel")
+            return
+        }
+        
+        if departureTime.isEmpty {
+            self.showAlertMessage("Error", "Please make sure choose your time travel")
+            return
+        }
+        
+        if packageType.isEmpty {
+            self.showAlertMessage("Error", "Please make sure choose to write package allowance")
+            return
+        }
         
         trip.userID = User.currentId
         trip.tripDepartureTime = departureTime

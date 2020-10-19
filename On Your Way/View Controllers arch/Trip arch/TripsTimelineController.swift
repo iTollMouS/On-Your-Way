@@ -174,8 +174,9 @@ extension TripsTimelineController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
-            TripService.shared.deleteMyTrip(trip: trip) { error in
+            TripService.shared.deleteMyTrip(trip: trip) { [weak self] error in
                 print("DEBUG: error while deleting trip")
+                self?.tableView.reloadData()
             }
             searchController.isActive ? self.filteredTrips.remove(at: indexPath.row) : self.trips.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
