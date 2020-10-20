@@ -96,6 +96,7 @@
 		835C880F2539F58D00D49923 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C880E2539F58D00D49923 /* RealmService.swift */; };
 		835C88112539FB2F00D49923 /* OutgoingMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C88102539FB2F00D49923 /* OutgoingMessageService.swift */; };
 		835C8813253A0D8A00D49923 /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C8812253A0D8A00D49923 /* MessageService.swift */; };
+		836837D2253ED7E4005FEFE4 /* OrderDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836837D1253ED7E4005FEFE4 /* OrderDetailsCell.swift */; };
 		83B763552536DA7E00503A9D /* cachAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763542536DA7E00503A9D /* cachAnimation.json */; };
 		83B763592536DB9100503A9D /* bell.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763582536DB9100503A9D /* bell.json */; };
 		83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635A2536DEA900503A9D /* chat_messenger.json */; };
@@ -230,6 +231,7 @@
 		835C880E2539F58D00D49923 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
 		835C88102539FB2F00D49923 /* OutgoingMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessageService.swift; sourceTree = "<group>"; };
 		835C8812253A0D8A00D49923 /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
+		836837D1253ED7E4005FEFE4 /* OrderDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsCell.swift; sourceTree = "<group>"; };
 		83B763542536DA7E00503A9D /* cachAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cachAnimation.json; sourceTree = "<group>"; };
 		83B763582536DB9100503A9D /* bell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bell.json; sourceTree = "<group>"; };
 		83B7635A2536DEA900503A9D /* chat_messenger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chat_messenger.json; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				83D7D4292535DC3E00FA88F0 /* OrderDetailsController.swift */,
+				836837D1253ED7E4005FEFE4 /* OrderDetailsCell.swift */,
 				83D7D42F2535EB6200FA88F0 /* OrderDetailsFooterView.swift */,
 				836837D0253ED763005FEFE4 /* Header view arch */,
 			);
@@ -826,6 +829,7 @@
 				835C8813253A0D8A00D49923 /* MessageService.swift in Sources */,
 				83D7D42625359DC400FA88F0 /* SendPackageImagesStackView.swift in Sources */,
 				834C989425312B6600BE8691 /* RegistrationController.swift in Sources */,
+				836837D2253ED7E4005FEFE4 /* OrderDetailsCell.swift in Sources */,
 				835C88022539BD5100D49923 /* MessageDisplayDelegate.swift in Sources */,
 				834C98DB2531AA2A00BE8691 /* PhoneLoginController.swift in Sources */,
 				83B763712537150300503A9D /* NotificationsController.swift in Sources */,

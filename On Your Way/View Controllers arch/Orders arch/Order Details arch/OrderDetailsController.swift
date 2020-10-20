@@ -10,7 +10,7 @@ import SwiftEntryKit
 import Lottie
 import SKPhotoBrowser
 
-private let reuseIdentifier = "OrderDetail"
+private let reuseIdentifier = "OrderDetailsCell"
 
 protocol OrderDetailsControllerDelegate: class {
     func handleDismissalAndRefreshing(_ view: OrderDetailsController)
@@ -19,8 +19,6 @@ protocol OrderDetailsControllerDelegate: class {
 
 class OrderDetailsController: UIViewController {
     
-    //    failed
-    
     weak var delegate: OrderDetailsControllerDelegate?
     
     private lazy var headerView = OrderDetailHeader(package: package)
@@ -28,9 +26,6 @@ class OrderDetailsController: UIViewController {
     
     private var viewModel: PackageStatus?
     private var images = [SKPhoto]()
-    
-    
-    
     
     private lazy var rejectButton = createButton(tagNumber: 0, title: "Reject Order\nThis order will be removed",
                                                  backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
@@ -93,6 +88,7 @@ class OrderDetailsController: UIViewController {
     
     private var package: Package
     private var user: User
+    private var packageOwner: User?
     
     init(package: Package, user: User) {
         self.package = package
@@ -108,7 +104,18 @@ class OrderDetailsController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureDelegates()
+        fetchPackageOwnerInfo()
         
+    }
+    
+    fileprivate func fetchPackageOwnerInfo(){
+        UserServices.shared.fetchUser(userId: package.userID) { [weak self] user in
+            self?.user = user
+            DispatchQueue.main.async { [weak self] in
+                self?.title = user.username
+                self?.footerView.startChatButton.setTitle("Chat with \(user.username)  ", for: .normal)
+            }
+        }
     }
     
     fileprivate func configureDelegates(){
@@ -123,6 +130,9 @@ class OrderDetailsController: UIViewController {
     fileprivate func configureUI(){
         view.addSubview(tableView)
         tableView.fillSuperview()
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(OrderDetailsCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.estimatedRowHeight = 400
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
     }
     
@@ -143,13 +153,26 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        cell.backgroundColor = .green
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! OrderDetailsCell
+        cell.package = package
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Package description"
+        label.textAlignment = .left
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 48
     }
     
     
@@ -180,7 +203,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         case 0:
             self.package.packageStatus = .packageIsRejected
             self.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
-            let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order ?", preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order \nYou can not undo this action if you reject it?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
                     PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is rejected ", title: "Reject order")
