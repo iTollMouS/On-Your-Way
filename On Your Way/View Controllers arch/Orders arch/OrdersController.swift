@@ -93,7 +93,6 @@ class OrdersController: UIViewController {
         default:
             rowsToDisplay = newPackageOrder
         }
-        
         self.tableView.reloadData()
     }
     
@@ -188,6 +187,7 @@ extension OrdersController: UISearchResultsUpdating {
 
 
 extension OrdersController : OrderDetailsControllerDelegate {
+    
     func handleDismissalAndRefreshing(_ view: OrderDetailsController) {
         navigationController?.popViewController(animated: true)
         DispatchQueue.main.async { [weak self] in
@@ -205,9 +205,9 @@ extension OrdersController {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
                 
                 self?.tableView.setEmptyView(title: "No Orders",
-                                            titleColor: .white,
-                                            message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
-                                            paddingTop: 50)
+                                             titleColor: .white,
+                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
+                                             paddingTop: 50)
             }
         } else {tableView.restore()}
         

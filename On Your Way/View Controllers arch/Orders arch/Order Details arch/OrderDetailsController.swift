@@ -90,6 +90,7 @@ class OrderDetailsController: UIViewController {
     private var user: User
     private var packageOwner: User?
     
+    
     init(package: Package, user: User) {
         self.package = package
         self.user = user
@@ -180,17 +181,16 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
 
 extension OrderDetailsController : OrderDetailHeaderDelegate {
     func handleShowImages(_ package: Package, indexPath: IndexPath) {
-        
-        package.packageImages.forEach {
-            FileStorage.downloadImage(imageUrl: $0) { [weak self] image in
+
+            FileStorage.downloadImage(imageUrl: package.packageImages[indexPath.row]) { [weak self] image in
                 guard let image = image else {return}
                 let photo = SKPhoto.photoWithImage(image)
                 self?.images.append(photo)
+                let browser = SKPhotoBrowser(photos: self!.images)
+                browser.initializePageIndex(0)
+                self?.present(browser, animated: true, completion: nil)
             }
-        }
-        let browser = SKPhotoBrowser(photos: images)
-        browser.initializePageIndex(indexPath.row)
-        present(browser, animated: true, completion: nil)
+        
         images.removeAll()
     }
 }

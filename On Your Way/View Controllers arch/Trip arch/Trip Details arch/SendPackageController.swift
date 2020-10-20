@@ -191,8 +191,8 @@ class SendPackageController: UIViewController {
     
     @objc fileprivate func handleSubmittingShipment(){
         
-        if packageImageUrls.isEmpty {
-            self.showAlertMessage("Error", "Please upload at least one image")
+        if packageImageUrls.count <= 1 {
+            self.showAlertMessage("Error", "Please upload at least 2 images")
             return
         }
         

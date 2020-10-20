@@ -65,7 +65,7 @@ class NotificationsDetailsController: UITableViewController {
         return cell
     }
     
-// MARK: - header View in section
+    // MARK: - header View in section
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.text = "Package description"
@@ -87,16 +87,15 @@ class NotificationsDetailsController: UITableViewController {
 extension NotificationsDetailsController : OrderDetailHeaderDelegate {
     func handleShowImages(_ package: Package, indexPath: IndexPath) {
         
-        package.packageImages.forEach {
-            FileStorage.downloadImage(imageUrl: $0) { [weak self] image in
-                guard let image = image else {return}
-                let photo = SKPhoto.photoWithImage(image)
-                self?.images.append(photo)
-            }
+        FileStorage.downloadImage(imageUrl: package.packageImages[indexPath.row]) { [weak self] image in
+            guard let image = image else {return}
+            let photo = SKPhoto.photoWithImage(image)
+            self?.images.append(photo)
+            let browser = SKPhotoBrowser(photos: self!.images)
+            browser.initializePageIndex(0)
+            self?.present(browser, animated: true, completion: nil)
         }
-        let browser = SKPhotoBrowser(photos: images)
-        browser.initializePageIndex(indexPath.row)
-        present(browser, animated: true, completion: nil)
+        
         images.removeAll()
     }
 }
