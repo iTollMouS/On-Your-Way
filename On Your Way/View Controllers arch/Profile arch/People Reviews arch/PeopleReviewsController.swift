@@ -461,59 +461,59 @@ extension PeopleReviewsController {
 
 extension PeopleReviewsController {
     
+    
+    func showCustomAlertView(condition: Conditions) {
+        configureCustomAlertUI()
         
-        func showCustomAlertView(condition: Conditions) {
-            configureCustomAlertUI()
-            
-            switch condition {
-            case .success:
-                animationView.animation = Animation.named(condition.JSONStringName)
-                animationView.play()
-                animationView.loopMode = .repeat(5)
-            case .warning:
-                animationView.animation = Animation.named(condition.JSONStringName)
-                animationView.play()
-                animationView.loopMode = .repeat(5)
-            case .error:
-                animationView.animation = Animation.named(condition.JSONStringName)
-                animationView.play()
-                animationView.loopMode = .repeat(5)
-            }
+        switch condition {
+        case .success:
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+        case .warning:
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
+        case .error:
+            animationView.animation = Animation.named(condition.JSONStringName)
+            animationView.play()
+            animationView.loopMode = .repeat(5)
         }
+    }
+    
+    func configureCustomAlertUI(){
+        view.isUserInteractionEnabled = false
+        customAlertView.clipsToBounds = true
+        customAlertView.addSubview(bottomContainerView)
+        customAlertView.addSubview(animationView)
         
-        func configureCustomAlertUI(){
-            view.isUserInteractionEnabled = false
-            customAlertView.clipsToBounds = true
-            customAlertView.addSubview(bottomContainerView)
-            customAlertView.addSubview(animationView)
-            
-            animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
-            bottomContainerView.anchor(top: animationView.bottomAnchor, left: customAlertView.leftAnchor, bottom: customAlertView.bottomAnchor, right: customAlertView.rightAnchor, paddingTop: -50)
-            
-            bottomContainerView.addSubview(messageLabel)
-            messageLabel.anchor(top: bottomContainerView.topAnchor, left: bottomContainerView.leftAnchor, right: bottomContainerView.rightAnchor, paddingTop: 50)
-            bottomContainerView.addSubview(dismissalButton)
-            dismissalButton.anchor(left: bottomContainerView.leftAnchor, bottom: bottomContainerView.bottomAnchor, right: bottomContainerView.rightAnchor,
-                                   paddingLeft: 30, paddingBottom: 30, paddingRight: 30)
-            
-            customAlertView.backgroundColor = .clear
-            customAlertView.layer.cornerRadius = 10
-            customAlertView.setDimensions(height: 300, width: view.frame.width - 50)
-            attributes.screenBackground = .visualEffect(style: .dark)
-            attributes.positionConstraints.safeArea = .overridden
-            attributes.positionConstraints.verticalOffset = 250
-            attributes.windowLevel = .normal
-            attributes.position = .bottom
-            attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
-            attributes.displayDuration = .infinity
-            attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
-            attributes.statusBar = .light
-            attributes.lifecycleEvents.willDisappear = { [weak self] in
-                self?.delegate?.handleLoggingOutAnonymousUser(self!)
-            }
-            attributes.entryBackground = .clear
-            SwiftEntryKit.display(entry: customAlertView, using: attributes)
+        animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
+        bottomContainerView.anchor(top: animationView.bottomAnchor, left: customAlertView.leftAnchor, bottom: customAlertView.bottomAnchor, right: customAlertView.rightAnchor, paddingTop: -50)
+        
+        bottomContainerView.addSubview(messageLabel)
+        messageLabel.anchor(top: bottomContainerView.topAnchor, left: bottomContainerView.leftAnchor, right: bottomContainerView.rightAnchor, paddingTop: 50)
+        bottomContainerView.addSubview(dismissalButton)
+        dismissalButton.anchor(left: bottomContainerView.leftAnchor, bottom: bottomContainerView.bottomAnchor, right: bottomContainerView.rightAnchor,
+                               paddingLeft: 30, paddingBottom: 30, paddingRight: 30)
+        
+        customAlertView.backgroundColor = .clear
+        customAlertView.layer.cornerRadius = 10
+        customAlertView.setDimensions(height: 300, width: view.frame.width - 50)
+        attributes.screenBackground = .visualEffect(style: .dark)
+        attributes.positionConstraints.safeArea = .overridden
+        attributes.positionConstraints.verticalOffset = 250
+        attributes.windowLevel = .normal
+        attributes.position = .bottom
+        attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
+        attributes.displayDuration = .infinity
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.statusBar = .light
+        attributes.lifecycleEvents.willDisappear = { [weak self] in
+            self?.delegate?.handleLoggingOutAnonymousUser(self!)
         }
+        attributes.entryBackground = .clear
+        SwiftEntryKit.display(entry: customAlertView, using: attributes)
+    }
 }
 
 // MARK: - show case table is empty

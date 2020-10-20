@@ -551,6 +551,15 @@
 			path = "Realm arch";
 			sourceTree = "<group>";
 		};
+		836837D0253ED763005FEFE4 /* Header view arch */ = {
+			isa = PBXGroup;
+			children = (
+				83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */,
+				83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */,
+			);
+			path = "Header view arch";
+			sourceTree = "<group>";
+		};
 		83B76374253715F600503A9D /* notification arch */ = {
 			isa = PBXGroup;
 			children = (
@@ -565,8 +574,7 @@
 			children = (
 				83D7D4292535DC3E00FA88F0 /* OrderDetailsController.swift */,
 				83D7D42F2535EB6200FA88F0 /* OrderDetailsFooterView.swift */,
-				83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */,
-				83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */,
+				836837D0253ED763005FEFE4 /* Header view arch */,
 			);
 			path = "Order Details arch";
 			sourceTree = "<group>";

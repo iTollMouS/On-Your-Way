@@ -60,16 +60,24 @@ class OrderCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        
         addSubview(packageOwnerImageView)
-        packageOwnerImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 14)
+        packageOwnerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+        addSubview(packageOwnerName)
+        packageOwnerName.centerY(inView: packageOwnerImageView, leftAnchor: packageOwnerImageView.rightAnchor, paddingLeft: 6)
+        
+        
         addSubview(timestamp)
         timestamp.anchor(top: topAnchor, right: rightAnchor, paddingTop: 12, paddingRight: 12)
+        
+        
         addSubview(packageImageView)
         packageImageView.centerX(inView: timestamp, topAnchor: timestamp.bottomAnchor, paddingTop: 12)
         packageImageView.anchor(right : rightAnchor, paddingRight: 40)
+        
         addSubview(packageType)
-        packageType.anchor(top: topAnchor, left: packageOwnerImageView.rightAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
-                           paddingTop: 20, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
+        packageType.anchor(top: packageOwnerImageView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
+                           paddingTop: 10, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
         
     }
     
@@ -80,6 +88,7 @@ class OrderCell: UITableViewCell {
         UserServices.shared.fetchUser(userId: viewModel.packageOwnerId) { [weak self] user in
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self?.packageOwnerImageView.sd_setImage(with: imageUrl)
+            self?.packageOwnerName.text = user.username
         }
         
         timestamp.text = viewModel.timestamp
