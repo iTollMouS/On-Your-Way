@@ -74,6 +74,12 @@ class NotificationsController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPackage = packages[indexPath.row]
+        let notificationsDetailsController = NotificationsDetailsController(package: selectedPackage)
+        navigationController?.pushViewController(notificationsDetailsController, animated: true)
+    }
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         true
     }

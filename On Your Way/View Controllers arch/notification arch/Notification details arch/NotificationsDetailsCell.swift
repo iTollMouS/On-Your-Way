@@ -1,5 +1,5 @@
 //
-//  OrderDetailsCell.swift
+//  NotificationsDetailsCell.swift
 //  On Your Way
 //
 //  Created by Tariq Almazyad on 10/20/20.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class OrderDetailsCell: UITableViewCell {
-    
+class NotificationsDetailsCell: UITableViewCell {
+
     
     var package: Package?{
         didSet{configure()}
@@ -42,5 +42,6 @@ class OrderDetailsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 
 }

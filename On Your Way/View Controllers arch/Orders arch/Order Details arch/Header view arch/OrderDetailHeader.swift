@@ -7,12 +7,10 @@
 
 import UIKit
 
-
-
 private let reuseIdentifier = "PetAdoptionProfileHeaderCell"
 
 protocol OrderDetailHeaderDelegate: class {
-    func handleShowImages(_ package: Package)
+    func handleShowImages(_ package: Package, indexPath: IndexPath)
 }
 
 class OrderDetailHeader: UIView {
@@ -24,7 +22,7 @@ class OrderDetailHeader: UIView {
     private lazy var viewModel = PackageViewModel(package: package)
     
     
-    private lazy var collectionView: UICollectionView = {
+     lazy var collectionView: UICollectionView = {
         let collectionViewFrame = CGRect(x: 0, y: 0, width: frame.width , height: frame.height)
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -67,7 +65,7 @@ extension OrderDetailHeader: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.handleShowImages(package)
+        delegate?.handleShowImages(package, indexPath: indexPath)
     }
     
 }

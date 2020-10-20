@@ -130,8 +130,8 @@ class OrderDetailsController: UIViewController {
     fileprivate func configureUI(){
         view.addSubview(tableView)
         tableView.fillSuperview()
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.register(OrderDetailsCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 400
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
     }
@@ -179,18 +179,18 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension OrderDetailsController : OrderDetailHeaderDelegate {
-    func handleShowImages(_ package: Package) {
+    func handleShowImages(_ package: Package, indexPath: IndexPath) {
         
         package.packageImages.forEach {
             FileStorage.downloadImage(imageUrl: $0) { [weak self] image in
                 guard let image = image else {return}
                 let photo = SKPhoto.photoWithImage(image)
                 self?.images.append(photo)
-                let browser = SKPhotoBrowser(photos: self!.images)
-                browser.initializePageIndex(0)
-                self?.present(browser, animated: true, completion: nil)
             }
         }
+        let browser = SKPhotoBrowser(photos: images)
+        browser.initializePageIndex(indexPath.row)
+        present(browser, animated: true, completion: nil)
         images.removeAll()
     }
 }
