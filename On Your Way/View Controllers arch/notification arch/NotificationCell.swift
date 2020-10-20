@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 class NotificationCell: UITableViewCell {
-
+    
     
     // MARK: - Properties
     var package: Package?{
@@ -76,7 +76,7 @@ class NotificationCell: UITableViewCell {
         
         addSubview(packageStatusLabel)
         packageStatusLabel.anchor(top: topAnchor, left: travelerImageView.rightAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
-                           paddingTop: 20, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
+                                  paddingTop: 20, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
         
     }
     

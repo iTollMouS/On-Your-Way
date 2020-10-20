@@ -12,6 +12,8 @@ private let reuseIdentifier = "NotificationsDetailsCell"
 
 class NotificationsDetailsController: UITableViewController {
     
+    
+    // MARK: - Propertes
     private var package: Package
     private lazy var headerView = OrderDetailHeader(package: package)
     private lazy var footerView = NotificationsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 120))
@@ -27,12 +29,16 @@ class NotificationsDetailsController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
         print("DEBUG: package is here with id \(package.packageID)")
     }
     
+    
+    // MARK: - configureTableView
     fileprivate func configureTableView(){
         tableView.register(NotificationsDetailsCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.estimatedRowHeight = UITableView.automaticDimension
@@ -51,12 +57,15 @@ class NotificationsDetailsController: UITableViewController {
         return 1
     }
     
+    
+    // MARK: - cellForRowAt
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationsDetailsCell
         cell.package = package
         return cell
     }
     
+// MARK: - header View in section
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.text = "Package description"
@@ -73,6 +82,8 @@ class NotificationsDetailsController: UITableViewController {
     
 }
 
+
+// MARK: - OrderDetailHeaderDelegate
 extension NotificationsDetailsController : OrderDetailHeaderDelegate {
     func handleShowImages(_ package: Package, indexPath: IndexPath) {
         
