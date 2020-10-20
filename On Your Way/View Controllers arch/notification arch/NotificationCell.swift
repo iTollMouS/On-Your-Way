@@ -85,31 +85,50 @@ class NotificationCell: UITableViewCell {
     fileprivate func configure(){
         guard let package = package else { return }
         let viewModel = PackageViewModel(package: package)
-        print("DEBUG: package is \(viewModel.tripId)")
-        TripService.shared.fetchUserFromTrip(tripId: viewModel.tripId) { user in
-            print("DEBUG: traveler is  \(user.username)")
-            guard let imageUrl = URL(string: user.avatarLink) else {return}
-            self.travelerImageView.sd_setImage(with: imageUrl)
-            self.travelerName.text = user.username
+        TripService.shared.fetchUserFromTrip(tripId: viewModel.tripId) { [weak self] user in
+            DispatchQueue.main.async { [weak self] in
+                guard let imageUrl = URL(string: user.avatarLink) else {return}
+                self?.travelerImageView.sd_setImage(with: imageUrl)
+                self?.travelerName.text = user.username
+            }
         }
+        packageImageView.sd_setImage(with: viewModel.packageImages.first)
         timestamp.text = viewModel.timestamp
+        
         
         // MARK: - switch viewModel
         switch viewModel.packageStatus {
-      
         case .packageIsPending:
-            backgroundColor = .systemYellow
+            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+                                                               details: viewModel.packageStatus.rawValue,
+                                                               textColor: .systemYellow)
         case .packageIsRejected:
-            backgroundColor = .systemRed
+            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+                                                               details: viewModel.packageStatus.rawValue,
+                                                               textColor: .systemRed)
         case .packageIsAccepted:
-            backgroundColor = .systemGreen
+            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+                                                               details: viewModel.packageStatus.rawValue,
+                                                               textColor: .systemGreen)
         case .packageIsDelivered:
-            print("")
+            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+                                                               details: viewModel.packageStatus.rawValue,
+                                                               textColor: .systemBlue)
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate func attributedText(title: String, details: String, textColor: UIColor) -> NSMutableAttributedString {
+        let attributedText = NSMutableAttributedString(string: title,
+                                                       attributes: [NSAttributedString.Key.foregroundColor : UIColor.white,
+                                                                    NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 12)])
+        attributedText.append(NSMutableAttributedString(string: "\n\(details)",
+                                                        attributes: [NSAttributedString.Key.foregroundColor : textColor,
+                                                                     NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
+        return attributedText
     }
     
 }

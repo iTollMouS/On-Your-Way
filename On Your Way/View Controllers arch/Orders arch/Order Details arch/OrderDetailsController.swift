@@ -342,5 +342,3 @@ extension OrderDetailsController{
         return button
     }
 }
-
-
