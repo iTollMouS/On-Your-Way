@@ -48,12 +48,12 @@ struct User: Codable, Equatable{
 }
  
 func saveUserLocally(_ user: User) {
-    print("DEBUG: WE SAVE USER SUCCESSFULLY !! \(user)")
+    
     let encoder = JSONEncoder()
     do {
         let data = try encoder.encode(user)
         UserDefaults.standard.set(data, forKey: kCURRENTUSER)
     } catch (let error ) {
-        print("DEBUG: error while daving user \(error.localizedDescription)")
+        
     }
 }

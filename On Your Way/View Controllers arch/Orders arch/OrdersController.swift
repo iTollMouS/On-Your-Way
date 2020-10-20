@@ -71,7 +71,6 @@ class OrdersController: UIViewController {
         configureRefreshController()
         fetchTrips()
         fetchUser()
-        configureWhenTableIsEmpty()
     }
     
     
@@ -88,11 +87,10 @@ class OrdersController: UIViewController {
             rowsToDisplay = newPackageOrder
         case 1 :
             rowsToDisplay = inProcessPackageOrder
-        case 2:
-            rowsToDisplay = donePackageOrder
         default:
-            rowsToDisplay = newPackageOrder
+            rowsToDisplay = donePackageOrder
         }
+        self.tableView.restore()
         self.tableView.reloadData()
     }
     
@@ -107,15 +105,30 @@ class OrdersController: UIViewController {
     
     
     func fetchTrips() {
-        
         if User.currentUser?.id == nil { return }
         else {
-            TripService.shared.fetchMyTrips(userId: User.currentId) { [weak self]  packages in
+            TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: pendingPackage) { [weak self]  packages in
                 DispatchQueue.main.async { [weak self] in
                     self?.newPackageOrder = packages
                     self?.tableView.reloadData()
                 }
             }
+            
+            TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: acceptedPackage) { [weak self]  packages in
+                DispatchQueue.main.async { [weak self] in
+                    self?.inProcessPackageOrder = packages
+                    self?.tableView.reloadData()
+                }
+            }
+            
+            TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: completedPackage) { [weak self]  packages in
+                DispatchQueue.main.async { [weak self] in
+                    self?.donePackageOrder = packages
+                    self?.tableView.reloadData()
+                }
+            }
+            
+            configureWhenTableIsEmpty()
         }
         
     }
@@ -200,15 +213,21 @@ extension OrdersController : OrderDetailsControllerDelegate {
 
 extension OrdersController {
     fileprivate func configureWhenTableIsEmpty(){
-        if newPackageOrder.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                
-                self?.tableView.setEmptyView(title: "No Orders",
-                                             titleColor: .white,
-                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
-                                             paddingTop: 50)
+        
+        [newPackageOrder, inProcessPackageOrder, donePackageOrder].forEach { packageArray in
+            if packageArray.isEmpty {
+                Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                    
+                    self?.tableView.setEmptyView(title: "No Orders",
+                                                 titleColor: .white,
+                                                 message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
+                                                 paddingTop: 50)
+                }
+            } else {
+                tableView.restore()
+                tableView.reloadData()
             }
-        } else {tableView.restore()}
+        }
         
     }
 }

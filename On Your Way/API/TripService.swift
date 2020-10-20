@@ -8,6 +8,11 @@
 import Foundation
 import Firebase
 
+
+public let pendingPackage = "pendingPackage"
+public let acceptedPackage = "acceptedPackage"
+public let completedPackage = "completedPackage"
+
 class TripService {
     static let shared = TripService()
     
@@ -114,17 +119,17 @@ class TripService {
         
     }
     
-    
+    /// when traveler decide to reject / accept
     func updatePackageStatus(userId: String, package: Package, completion: @escaping(Error?) -> Void){
         switch package.packageStatus {
         case .packageIsPending:
             fallthrough
         case .packageIsRejected:
             Firestore.firestore().collection("users-requests")
-                .document(userId).collection("pending-request")
+                .document(userId).collection(pendingPackage)
                 .document(package.packageID).delete(completion: completion)
             
-            do {
+            do {// when traveler rejects order , user will be notified
                 try Firestore.firestore().collection("users-send-packages")
                     .document(package.userID).collection("packages")
                     .document(package.packageID).setData(from: package, merge: true, completion: completion)
@@ -135,9 +140,15 @@ class TripService {
             
         case .packageIsAccepted:
             do {
-                try  Firestore.firestore().collection("users-requests")
-                    .document(userId).collection("pending-request")
-                    .document(package.packageID).setData(from: package, merge: true, completion: completion)
+                Firestore.firestore().collection("users-requests")
+                    .document(userId).collection(pendingPackage)
+                    .document(package.packageID).delete()
+                
+                try Firestore.firestore().collection("users-requests")
+                    .document(userId).collection(acceptedPackage)
+                    .document(package.packageID).setData(from: package, merge: true)
+                
+                
                 try Firestore.firestore().collection("users-send-packages")
                     .document(package.userID).collection("packages")
                     .document(package.packageID).setData(from: package, merge: true, completion: completion)
@@ -147,9 +158,14 @@ class TripService {
             }
         case .packageIsDelivered:
             do {
-                try  Firestore.firestore().collection("users-requests")
-                    .document(userId).collection("pending-request")
-                    .document(package.packageID).setData(from: package, merge: true, completion: completion)
+                Firestore.firestore().collection("users-requests")
+                    .document(userId).collection(acceptedPackage)
+                    .document(package.packageID).delete()
+                
+                try Firestore.firestore().collection("users-requests")
+                    .document(userId).collection(completedPackage)
+                    .document(package.packageID).setData(from: package, merge: true)
+                
                 try Firestore.firestore().collection("users-send-packages")
                     .document(package.userID).collection("packages")
                     .document(package.packageID).setData(from: package, merge: true, completion: completion)
@@ -170,11 +186,14 @@ class TripService {
         }
     }
     
+    
+    /// when user wants to send a package with traveler
     func sendPackageToTraveler(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
         do {
             try Firestore.firestore().collection("users-requests")
-                .document(trip.userID).collection("pending-request")
+                .document(trip.userID).collection(pendingPackage)
                 .document(package.packageID).setData(from: package, merge: true, completion: completion)
+            
             try Firestore.firestore().collection("users-send-packages")
                 .document(userId).collection("packages")
                 .document(package.packageID).setData(from: package, merge: true, completion: completion)
@@ -184,19 +203,22 @@ class TripService {
         }
     }
     
+    /// when user decides to delete his order (it will be deleted from his side and the traveler side))
     func deleteMyOutgoingPackage(trip: Trip, userId: String, package: Package , completion: @escaping(Error?) -> Void){
         Firestore.firestore().collection("users-requests")
-            .document(trip.userID).collection("pending-request")
+            .document(trip.userID).collection(pendingPackage)
             .document(package.packageID).delete(completion: completion)
         Firestore.firestore().collection("users-send-packages")
             .document(userId).collection("packages")
             .document(package.packageID).delete(completion: completion)
     }
     
-    func fetchMyTrips(userId: String,  completion: @escaping([Package]) -> Void){
+    
+    /// fetch traveler orders accordingly
+    func fetchMyTrips(userId: String, packageStatus: String , completion: @escaping([Package]) -> Void){
         var packagesDictionary: [String: Package] = [:]
         var packages: [Package] = []
-        Firestore.firestore().collection("users-requests").document(userId).collection("pending-request").addSnapshotListener { (snapshot, error) in
+        Firestore.firestore().collection("users-requests").document(userId).collection(packageStatus).addSnapshotListener { (snapshot, error) in
             guard let snapshot = snapshot else {return}
             
             for packageChanged in snapshot.documentChanges {
