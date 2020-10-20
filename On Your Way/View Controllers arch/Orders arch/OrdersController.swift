@@ -113,7 +113,6 @@ class OrdersController: UIViewController {
             TripService.shared.fetchMyTrips(userId: User.currentId) { [weak self]  packages in
                 DispatchQueue.main.async { [weak self] in
                     self?.newPackageOrder = packages
-                    self?.rowsToDisplay = packages
                     self?.tableView.reloadData()
                 }
             }
