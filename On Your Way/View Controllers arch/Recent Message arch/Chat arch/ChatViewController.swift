@@ -13,16 +13,50 @@ import RealmSwift
 import Firebase
 import IQKeyboardManagerSwift
 import LNPopupController
+import SwiftEntryKit
 
 
 class ChatViewController: MessagesViewController {
     
     // MARK: - Properties
     
+    lazy var cameraButton = createButton(tagNumber: 0, title: "Camera", backgroundColor: #colorLiteral(red: 0.337254902, green: 0.337254902, blue: 0.337254902, alpha: 1), colorAlpa: 0.6, systemName: "camera.fill")
+    lazy var libraryButton = createButton(tagNumber: 1, title: "Library", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.6, systemName: "photo")
+    lazy var locationButton = createButton(tagNumber: 2, title: "Location", backgroundColor: .blueLightIcon, colorAlpa: 0.6, systemName: "mappin.and.ellipse")
+    lazy var cancelButton = createButton(tagNumber: 3, title: "Cancel", backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "xmark")
+    
+    private lazy var customAlertView = UIView()
+    private lazy var topDividerCustomAlertView = UIView()
+    var attributes = EKAttributes.bottomNote
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [cameraButton,
+                                                       libraryButton,
+                                                       locationButton,
+                                                       cancelButton])
+        stackView.axis = .vertical
+        stackView.spacing = 30
+        stackView.distribution = .fillEqually
+        stackView.setHeight(height: 300)
+        return stackView
+    }()
     
     let leftBarButtonLeft: UIView = {
         return UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
     }()
+    
+    private lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Share Media"
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.setHeight(height: 20)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    
     
     let titleLabel: UILabel = {
         let title = UILabel(frame: CGRect(x: 5, y: 0, width: 140, height: 25))
@@ -158,14 +192,14 @@ class ChatViewController: MessagesViewController {
         let attachButton = InputBarButtonItem()
         attachButton.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         attachButton.setSize(CGSize(width: 30, height: 30), animated: false)
-        attachButton.onTouchUpInside { item in
-            //            self.actionAttachMessage()
+        attachButton.onTouchUpInside { [weak self] item in
+            self?.actionDisplayButtonAttachments()
         }
         
         micButton.image = UIImage(systemName: "mic.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         micButton.setSize(CGSize(width: 30, height: 30), animated: false)
         
-        //        micButton.addGestureRecognizer(longPressGesture)
+        
         
         messageInputBar.setStackViewItems([attachButton], forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
@@ -178,6 +212,68 @@ class ChatViewController: MessagesViewController {
     }
     
     // MARK: - Actions
+    
+    @objc fileprivate func handleActionAttachment(_ sender: UIButton){
+        
+        switch sender.tag {
+        // camera
+        case 0:
+            print("DEBUG: tag is \(sender.tag)")
+        // camera roll
+        case 1:
+            print("DEBUG: tag is \(sender.tag)")
+        // location
+        case 2:
+            print("DEBUG: tag is \(sender.tag)")
+        // cancel
+        case 3:
+            SwiftEntryKit.dismiss()
+        default:
+            break
+        }
+        
+    }
+    
+    fileprivate func actionDisplayButtonAttachments(){
+        messageInputBar.inputTextView.resignFirstResponder()
+        view.isUserInteractionEnabled = false
+        
+        customAlertView.addSubview(topDividerCustomAlertView)
+        topDividerCustomAlertView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 10)
+        topDividerCustomAlertView.setDimensions(height: 4, width: 100)
+        topDividerCustomAlertView.backgroundColor = .white
+        topDividerCustomAlertView.layer.cornerRadius = 4 / 2
+        
+        
+        customAlertView.addSubview(stackView)
+        stackView.anchor(top: topDividerCustomAlertView.bottomAnchor, left: customAlertView.leftAnchor, right: customAlertView.rightAnchor,
+                         paddingTop: 20, paddingLeft: 20, paddingRight: 20)
+        
+        
+        customAlertView.clipsToBounds = true
+        customAlertView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
+        customAlertView.layer.cornerRadius = 10
+        customAlertView.setDimensions(height: 430, width: view.frame.width)
+        attributes.screenBackground = .visualEffect(style: .dark)
+        attributes.positionConstraints.safeArea = .overridden
+        attributes.positionConstraints.verticalOffset = -50
+        attributes.windowLevel = .alerts
+        attributes.position = .bottom
+        attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
+        attributes.displayDuration = .infinity
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.statusBar = .light
+        attributes.lifecycleEvents.willDisappear = { [weak self] in
+            self?.view.isUserInteractionEnabled = true
+        }
+        attributes.entryBackground = .clear
+        SwiftEntryKit.display(entry: customAlertView, using: attributes)
+    }
+    
+    
+    
+    
+    
     // we send any outgoing message
     // responsible to pop the messages
     func updateMicButtonStatus(show: Bool){
@@ -386,5 +482,29 @@ class ChatViewController: MessagesViewController {
     fileprivate func lastMessageDate() -> Date {
         guard let lastMessageDate = allLocalMessages.last?.date else {return  Date() }
         return Calendar.current.date(byAdding: .second, value: 1, to: lastMessageDate) ?? lastMessageDate
+    }
+}
+
+extension ChatViewController {
+    
+    func createButton(tagNumber: Int, title: String?, backgroundColor: UIColor, colorAlpa: CGFloat, systemName: String) -> UIButton {
+        let button = UIButton(type: .system)
+        guard let title = title else { return UIButton() }
+        button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
+        button.setTitleColor(.white, for: .normal)
+        button.tintColor = .white
+        button.titleLabel?.numberOfLines = 0
+        button.setTitle("\(title)  ", for: .normal)
+        button.setImage(UIImage(systemName: systemName), for: .normal)
+        button.backgroundColor = backgroundColor.withAlphaComponent(colorAlpa)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(handleActionAttachment), for: .touchUpInside)
+        button.layer.cornerRadius = 50 / 2
+        button.tag = tagNumber
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.clipsToBounds = true
+        button.layer.masksToBounds = false
+        button.setupShadow(opacity: 0.5, radius: 16, offset: CGSize(width: 0.0, height: 8.0), color: backgroundColor)
+        return button
     }
 }
