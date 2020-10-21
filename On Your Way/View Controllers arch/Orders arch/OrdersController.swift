@@ -66,10 +66,10 @@ class OrdersController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchTrips()
         configureNavBar()
         configureUI()
         configureRefreshController()
-        fetchTrips()
         fetchUser()
     }
     
@@ -77,6 +77,11 @@ class OrdersController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        segmentedControl.selectedSegmentIndex = 0
     }
     
     
@@ -90,7 +95,8 @@ class OrdersController: UIViewController {
         default:
             rowsToDisplay = donePackageOrder
         }
-        self.tableView.restore()
+        configureWhenTableIsEmpty()
+        fetchTrips()
         self.tableView.reloadData()
     }
     
@@ -102,33 +108,30 @@ class OrdersController: UIViewController {
         }
     }
     
-    
-    
     func fetchTrips() {
         if User.currentUser?.id == nil { return }
         else {
+            
             TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: pendingPackage) { [weak self]  packages in
                 DispatchQueue.main.async { [weak self] in
                     self?.newPackageOrder = packages
-                    self?.tableView.reloadData()
+                    
                 }
             }
             
             TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: acceptedPackage) { [weak self]  packages in
                 DispatchQueue.main.async { [weak self] in
                     self?.inProcessPackageOrder = packages
-                    self?.tableView.reloadData()
+                    self?.inProcessPackageOrder.sort(by: {$0.timestamp! > $1.timestamp!})
                 }
             }
             
             TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: completedPackage) { [weak self]  packages in
                 DispatchQueue.main.async { [weak self] in
                     self?.donePackageOrder = packages
-                    self?.tableView.reloadData()
                 }
             }
-            
-            configureWhenTableIsEmpty()
+            tableView.reloadData()
         }
         
     }
@@ -214,18 +217,42 @@ extension OrdersController : OrderDetailsControllerDelegate {
 extension OrdersController {
     fileprivate func configureWhenTableIsEmpty(){
         
-        [newPackageOrder, inProcessPackageOrder, donePackageOrder].forEach { packageArray in
-            if packageArray.isEmpty {
+        
+        if newPackageOrder.isEmpty {
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                
+                self?.tableView.setEmptyView(title: "No Orders",
+                                             titleColor: .white,
+                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
+                                             paddingTop: 50)
+            }
+            
+            
+            if inProcessPackageOrder.isEmpty {
                 Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
                     
-                    self?.tableView.setEmptyView(title: "No Orders",
+                    self?.tableView.setEmptyView(title: "No Accepted Orders",
                                                  titleColor: .white,
-                                                 message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
+                                                 message: "You have not accepted any orders yet\nAccepted orders will be displayed here",
                                                  paddingTop: 50)
                 }
-            } else {
-                tableView.restore()
-                tableView.reloadData()
+                
+                
+                if donePackageOrder.isEmpty {
+                    Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                        
+                        self?.tableView.setEmptyView(title: "No Delivered Orders",
+                                                     titleColor: .white,
+                                                     message: "You have not delivered any orders yet\nOnce the order is completed , it will be displayed here",
+                                                     paddingTop: 50)
+                    }
+                    
+                    
+                    
+                } else {
+                    tableView.restore()
+                    tableView.reloadData()
+                }
             }
         }
         

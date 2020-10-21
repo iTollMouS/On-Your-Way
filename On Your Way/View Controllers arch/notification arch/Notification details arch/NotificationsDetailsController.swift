@@ -34,7 +34,13 @@ class NotificationsDetailsController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        print("DEBUG: package is here with id \(package.packageID)")
+    }
+    
+    
+    
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
     }
     
     

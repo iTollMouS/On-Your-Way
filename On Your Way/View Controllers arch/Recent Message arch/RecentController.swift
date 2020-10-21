@@ -50,9 +50,12 @@ class RecentController: UIViewController {
         
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -149,6 +152,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recent = searchController.isActive ?  filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
         
+        tableView.deselectRow(at: indexPath, animated: true)
         // make sure we have 2 recents 
         reStartChat(charRoomId: recent.chatRoomId, memberIds: recent.memberIds)
         
@@ -211,9 +215,9 @@ extension RecentController {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
                 
                 self?.tableView.setEmptyView(title: "No DMs",
-                                            titleColor: .white,
-                                            message: "People DM you when you announce your travel info for packaging shipping details and process",
-                                            paddingTop: 40)
+                                             titleColor: .white,
+                                             message: "People DM you when you announce your travel info for packaging shipping details and process",
+                                             paddingTop: 40)
             }
         } else {tableView.restore()}
         

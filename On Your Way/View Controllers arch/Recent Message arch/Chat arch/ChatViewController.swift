@@ -86,6 +86,8 @@ class ChatViewController: MessagesViewController {
     var maxMessageNumber = 0
     var minMessageNumber = 0
     
+    var gallery = GalleryController()
+    
     var typingCounter = 0
     
     
@@ -199,8 +201,6 @@ class ChatViewController: MessagesViewController {
         micButton.image = UIImage(systemName: "mic.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         micButton.setSize(CGSize(width: 30, height: 30), animated: false)
         
-        
-        
         messageInputBar.setStackViewItems([attachButton], forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
         messageInputBar.inputTextView.isImagePasteEnabled = true
@@ -218,10 +218,12 @@ class ChatViewController: MessagesViewController {
         switch sender.tag {
         // camera
         case 0:
-            print("DEBUG: tag is \(sender.tag)")
+            self.showImageGallery(camera: true)
+            SwiftEntryKit.dismiss()
         // camera roll
         case 1:
-            print("DEBUG: tag is \(sender.tag)")
+            self.showImageGallery(camera: false)
+            SwiftEntryKit.dismiss()
         // location
         case 2:
             print("DEBUG: tag is \(sender.tag)")
@@ -231,48 +233,7 @@ class ChatViewController: MessagesViewController {
         default:
             break
         }
-        
     }
-    
-    fileprivate func actionDisplayButtonAttachments(){
-        messageInputBar.inputTextView.resignFirstResponder()
-        view.isUserInteractionEnabled = false
-        
-        customAlertView.addSubview(topDividerCustomAlertView)
-        topDividerCustomAlertView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 10)
-        topDividerCustomAlertView.setDimensions(height: 4, width: 100)
-        topDividerCustomAlertView.backgroundColor = .white
-        topDividerCustomAlertView.layer.cornerRadius = 4 / 2
-        
-        
-        customAlertView.addSubview(stackView)
-        stackView.anchor(top: topDividerCustomAlertView.bottomAnchor, left: customAlertView.leftAnchor, right: customAlertView.rightAnchor,
-                         paddingTop: 20, paddingLeft: 20, paddingRight: 20)
-        
-        
-        customAlertView.clipsToBounds = true
-        customAlertView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
-        customAlertView.layer.cornerRadius = 10
-        customAlertView.setDimensions(height: 430, width: view.frame.width)
-        attributes.screenBackground = .visualEffect(style: .dark)
-        attributes.positionConstraints.safeArea = .overridden
-        attributes.positionConstraints.verticalOffset = -50
-        attributes.windowLevel = .alerts
-        attributes.position = .bottom
-        attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
-        attributes.displayDuration = .infinity
-        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
-        attributes.statusBar = .light
-        attributes.lifecycleEvents.willDisappear = { [weak self] in
-            self?.view.isUserInteractionEnabled = true
-        }
-        attributes.entryBackground = .clear
-        SwiftEntryKit.display(entry: customAlertView, using: attributes)
-    }
-    
-    
-    
-    
     
     // we send any outgoing message
     // responsible to pop the messages
@@ -313,7 +274,7 @@ class ChatViewController: MessagesViewController {
                     self.messagesCollectionView.scrollToBottom(animated: true)
                 }
             case .error(let error):
-                print("")
+                print("DEBUG: error while \(error.localizedDescription)")
             }
             self.messagesCollectionView.reloadData()
             
@@ -483,9 +444,94 @@ class ChatViewController: MessagesViewController {
         guard let lastMessageDate = allLocalMessages.last?.date else {return  Date() }
         return Calendar.current.date(byAdding: .second, value: 1, to: lastMessageDate) ?? lastMessageDate
     }
+    
+    
+    // MARK: - Gallery
+    fileprivate func showImageGallery(camera: Bool){
+        
+        self.gallery.delegate = self
+        Config.tabsToShow = camera ? [.cameraTab] : [.imageTab, .videoTab]
+        Config.Camera.imageLimit = 1
+        Config.initialTab = .imageTab
+        Config.VideoEditor.maximumDuration = 30
+        
+        self.present(gallery, animated: true, completion: nil)
+    }
+    
+}
+
+extension ChatViewController: GalleryControllerDelegate {
+    func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+                
+        if images.count > 0 {
+            
+        }
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func galleryControllerDidCancel(_ controller: GalleryController) {
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    
 }
 
 extension ChatViewController {
+    
+    
+    fileprivate func actionDisplayButtonAttachments(){
+        messageInputBar.inputTextView.resignFirstResponder()
+        view.isUserInteractionEnabled = false
+        
+        customAlertView.addSubview(topDividerCustomAlertView)
+        topDividerCustomAlertView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 10)
+        topDividerCustomAlertView.setDimensions(height: 4, width: 100)
+        topDividerCustomAlertView.backgroundColor = .white
+        topDividerCustomAlertView.layer.cornerRadius = 4 / 2
+        
+        
+        customAlertView.addSubview(stackView)
+        stackView.anchor(top: topDividerCustomAlertView.bottomAnchor, left: customAlertView.leftAnchor, right: customAlertView.rightAnchor,
+                         paddingTop: 20, paddingLeft: 20, paddingRight: 20)
+        
+        
+        customAlertView.clipsToBounds = true
+        customAlertView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
+        customAlertView.layer.cornerRadius = 10
+        customAlertView.setDimensions(height: 430, width: view.frame.width)
+        
+        
+        attributes.screenBackground = .visualEffect(style: .dark)
+        attributes.positionConstraints.safeArea = .overridden
+        attributes.positionConstraints.verticalOffset = -50
+        attributes.windowLevel = .alerts
+        attributes.position = .bottom
+        attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
+        attributes.displayDuration = .infinity
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.statusBar = .light
+        attributes.lifecycleEvents.willDisappear = { [weak self] in
+            self?.view.isUserInteractionEnabled = true
+        }
+        attributes.entryBackground = .clear
+        SwiftEntryKit.display(entry: customAlertView, using: attributes)
+    }
+    
+    
     
     func createButton(tagNumber: Int, title: String?, backgroundColor: UIColor, colorAlpa: CGFloat, systemName: String) -> UIButton {
         let button = UIButton(type: .system)

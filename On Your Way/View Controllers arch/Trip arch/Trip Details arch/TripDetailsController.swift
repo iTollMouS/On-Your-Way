@@ -117,6 +117,8 @@ class TripDetailsController: UIViewController {
         configureDelegates()
         fetchUser()
         print("DEBUG: the current user is \(User.currentId)")
+        
+        
     }
     
     

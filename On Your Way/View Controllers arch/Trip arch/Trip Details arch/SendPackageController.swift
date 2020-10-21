@@ -115,6 +115,14 @@ class SendPackageController: UIViewController {
         
     }
     
+    
+    
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         configureNavBar()
@@ -136,6 +144,8 @@ class SendPackageController: UIViewController {
     
     // MARK: - configureUI()
     func configureUI(){
+        
+        
         view.addSubview(packagesImage)
         packagesImage.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20 ,
                              paddingLeft: 20, paddingRight: 20)
