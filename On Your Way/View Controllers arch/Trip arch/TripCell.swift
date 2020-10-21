@@ -23,6 +23,7 @@ class TripCell: UITableViewCell {
     
     
     
+    
     // MARK: - var trip
     var trip: Trip? {
         didSet{configure()}

@@ -89,7 +89,6 @@ class NotificationsDetailsCell: UITableViewCell {
         
         guard let traveler = traveler else { return  }
         
-        
         addSubview(travelerImageView)
         travelerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
         addSubview(travelerName)
