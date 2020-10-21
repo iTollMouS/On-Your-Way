@@ -129,7 +129,7 @@ extension NotificationsDetailsController : OrderDetailHeaderDelegate {
 
 extension NotificationsDetailsController: NotificationsDetailsCellDelegate {
     func handleStartChat(_ cell: NotificationsDetailsCell) {
-
+        
         guard let selectedUser = traveler else { return  }
         let chatId = startChat(currentUser: user, selectedUser: selectedUser)
         let chatViewController = ChatViewController(chatRoomId: chatId,

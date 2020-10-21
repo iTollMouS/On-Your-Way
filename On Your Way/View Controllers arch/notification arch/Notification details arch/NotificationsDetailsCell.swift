@@ -75,7 +75,7 @@ class NotificationsDetailsCell: UITableViewCell {
         guard let packageStatus = packageStatus else { return }
         guard let traveler = traveler else { return  }
         if packageStatus == .packageIsAccepted {
-            startChatButton.setTitle("Start chat", for: .normal)
+            startChatButton.setTitle("Start chat  ", for: .normal)
             startChatButton.isEnabled = true
         } else {
             startChatButton.setTitle("Chat will be enable once \(traveler.username) accept your order", for: .normal)
