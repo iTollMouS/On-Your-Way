@@ -66,10 +66,7 @@ class TripDetailsController: UIViewController {
         button.addTarget(self, action: #selector(handleAnonymousMode), for: .touchUpInside)
         return button
     }()
-    
-    
-    
-    
+
     
     
     private lazy var tableView: UITableView = {

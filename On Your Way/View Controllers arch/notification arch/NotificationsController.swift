@@ -16,7 +16,7 @@ class NotificationsController: UITableViewController {
     // MARK: - Properties
     let refreshController = UIRefreshControl()
     var packages = [Package]()
-    
+    private var user: User?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -24,6 +24,7 @@ class NotificationsController: UITableViewController {
         
         configureTableView()
         fetchMyRequest()
+        fetchUser()
         configureRefreshController()
     }
     
@@ -40,6 +41,12 @@ class NotificationsController: UITableViewController {
         tableView.refreshControl = refreshController
     }
     
+    
+    func fetchUser(){
+        UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
+            self?.user = user
+        }
+    }
     
     
     // MARK: - fetchMyRequest
@@ -76,7 +83,8 @@ class NotificationsController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedPackage = packages[indexPath.row]
-        let notificationsDetailsController = NotificationsDetailsController(package: selectedPackage)
+        guard let user = user else { return  }
+        let notificationsDetailsController = NotificationsDetailsController(package: selectedPackage, user: user)
         navigationController?.pushViewController(notificationsDetailsController, animated: true)
     }
     

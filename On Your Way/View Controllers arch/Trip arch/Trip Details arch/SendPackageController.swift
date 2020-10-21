@@ -115,8 +115,6 @@ class SendPackageController: UIViewController {
         
     }
     
-    
-    
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return darkMode ? .lightContent : .lightContent
@@ -201,8 +199,8 @@ class SendPackageController: UIViewController {
     
     @objc fileprivate func handleSubmittingShipment(){
         
-        if packageImageUrls.count <= 1 {
-            self.showAlertMessage("Error", "Please upload at least 2 images")
+        if packageImageUrls.isEmpty {
+            self.showAlertMessage("Error", "Please upload at least 1 image")
             return
         }
         
