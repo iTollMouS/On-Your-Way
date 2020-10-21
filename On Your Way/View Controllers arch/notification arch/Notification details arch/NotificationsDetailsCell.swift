@@ -30,6 +30,20 @@ class NotificationsDetailsCell: UITableViewCell {
     
     lazy var startChatButton = createButton(backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
     
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 14, width: 14)
+        button.setDimensions(height: 14, width: 14)
+        button.layer.cornerRadius = 14 / 2
+        button.clipsToBounds = true
+        button.isHidden = true
+        return button
+    }()
+    
+    
     private lazy var travelerName: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -43,7 +57,11 @@ class NotificationsDetailsCell: UITableViewCell {
         imageView.backgroundColor = .gray
         imageView.setDimensions(height: 50, width: 50)
         imageView.layer.cornerRadius = 50 / 2
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     
@@ -74,6 +92,9 @@ class NotificationsDetailsCell: UITableViewCell {
     fileprivate func configurePackageStatus(){
         guard let packageStatus = packageStatus else { return }
         guard let traveler = traveler else { return  }
+        
+        
+        
         if packageStatus == .packageIsAccepted {
             startChatButton.setTitle("Start chat  ", for: .normal)
             startChatButton.isEnabled = true
@@ -89,8 +110,18 @@ class NotificationsDetailsCell: UITableViewCell {
         
         guard let traveler = traveler else { return  }
         
+        checkMarkButton.isHidden = !traveler.isUserVerified
+        
         addSubview(travelerImageView)
         travelerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+        
+        
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: travelerImageView.bottomAnchor, right: travelerImageView.rightAnchor,
+                               paddingTop: -14, paddingRight: -4)
+        
+        
+        
         addSubview(travelerName)
         travelerName.centerY(inView: travelerImageView, leftAnchor: travelerImageView.rightAnchor, paddingLeft: 12)
         addSubview(startChatButton)
@@ -117,7 +148,7 @@ class NotificationsDetailsCell: UITableViewCell {
         button.backgroundColor = backgroundColor.withAlphaComponent(alpha)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.addTarget(self, action: #selector(handleActions), for: .touchUpInside)
-        button.setDimensions(height: 50, width: 280)
+        button.setDimensions(height: 50, width: 320)
         button.layer.cornerRadius = 50 / 2
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.clipsToBounds = true

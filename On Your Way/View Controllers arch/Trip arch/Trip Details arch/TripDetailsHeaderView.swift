@@ -50,6 +50,8 @@ class TripDetailsHeaderView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = false
         imageView.backgroundColor = .white
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     

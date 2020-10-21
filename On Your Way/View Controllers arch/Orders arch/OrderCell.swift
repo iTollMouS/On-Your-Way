@@ -18,12 +18,13 @@ class OrderCell: UITableViewCell {
     private lazy var checkMarkButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
-        button.tintColor = .blueLightIcon
+        button.tintColor = .systemGreen
         button.backgroundColor = .white
         button.imageView?.setDimensions(height: 14, width: 14)
         button.setDimensions(height: 14, width: 14)
         button.layer.cornerRadius = 14 / 2
         button.clipsToBounds = true
+        button.isHidden = true
         return button
     }()
     
@@ -60,6 +61,8 @@ class OrderCell: UITableViewCell {
         imageView.setDimensions(height: 50, width: 50)
         imageView.layer.cornerRadius = 50 / 2
         imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     
@@ -110,6 +113,7 @@ class OrderCell: UITableViewCell {
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self?.packageOwnerImageView.sd_setImage(with: imageUrl)
             self?.packageOwnerName.text = user.username
+            self?.checkMarkButton.isHidden = !user.isUserVerified
         }
         
         timestamp.text = viewModel.timestamp

@@ -47,6 +47,8 @@ class ProfileHeader: UIView {
         imageView.layer.masksToBounds = false
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectPhoto)))
         imageView.isUserInteractionEnabled = true
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     

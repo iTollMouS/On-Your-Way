@@ -14,9 +14,6 @@ class RecentCell: UITableViewCell {
         didSet{ configure() }
     }
     
-    
-    
-    
     private lazy var checkMarkButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
@@ -26,6 +23,7 @@ class RecentCell: UITableViewCell {
         button.setDimensions(height: 14, width: 14)
         button.layer.cornerRadius = 14 / 2
         button.clipsToBounds = true
+        button.isHidden = true
         return button
     }()
     
@@ -38,6 +36,8 @@ class RecentCell: UITableViewCell {
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = false
         imageView.setupShadow(opacity: 0.3, radius: 10, offset: CGSize(width: 0, height: 0.8), color: .white)
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     
@@ -139,6 +139,10 @@ class RecentCell: UITableViewCell {
             }
             self.profileImageView.image = image.circleMasked
         }
+        UserServices.shared.fetchUser(userId: recent.receiverId) { [weak self] user in
+            self?.checkMarkButton.isHidden = !user.isUserVerified
+        }
+        
         
         
     }

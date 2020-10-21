@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - updateUserPushIdWith
     private func updateUserPushIdWith(_ fcmToken: String){
-        if var user = User.currentUser {
+        if var user = User.currentUser, user.pushId == "" {
             user.pushId = fcmToken
             saveUserLocally(user)
             UserServices.shared.saveUserToFirestore(user)

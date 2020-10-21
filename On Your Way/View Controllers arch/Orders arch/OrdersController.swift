@@ -106,29 +106,24 @@ class OrdersController: UIViewController {
     func fetchTrips() {
         if User.currentUser?.id == nil { return }
         else {
-            
-            TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: pendingPackage) { [weak self]  packages in
-                DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: pendingPackage) { [weak self]  packages in
                     self?.newPackageOrder = packages
                     self?.newPackageOrder.sort(by: {$0.timestamp! > $1.timestamp!})
                 }
-            }
-            
-            TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: acceptedPackage) { [weak self]  packages in
-                DispatchQueue.main.async { [weak self] in
+                
+                TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: acceptedPackage) { [weak self]  packages in
                     self?.inProcessPackageOrder = packages
                     self?.inProcessPackageOrder.sort(by: {$0.timestamp! > $1.timestamp!})
                 }
-            }
-            
-            TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: completedPackage) { [weak self]  packages in
-                DispatchQueue.main.async { [weak self] in
+                
+                TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: completedPackage) { [weak self]  packages in
                     self?.completedPackageOrder = packages
                 }
+                
             }
             tableView.reloadData()
         }
-        
     }
     
     func configureRefreshController(){

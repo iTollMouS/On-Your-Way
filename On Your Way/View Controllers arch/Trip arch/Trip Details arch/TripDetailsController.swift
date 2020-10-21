@@ -204,7 +204,6 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TripDetailsCell
         guard let viewModel = TripDetailsViewModel(rawValue: indexPath.section) else { return cell }
         cell.viewModel = viewModel
-        print("DEBUG: the section \(indexPath.section), and the index row \(indexPath.row)")
         cell.trip = trip
         cell.selectionStyle = .none
         return cell

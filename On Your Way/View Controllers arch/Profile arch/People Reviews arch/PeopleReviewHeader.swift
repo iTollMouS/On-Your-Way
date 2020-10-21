@@ -15,6 +15,22 @@ class PeopleReviewHeader: UIView {
         didSet{configure()}
     }
     
+    
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 18, width: 18)
+        button.setDimensions(height: 18, width: 18)
+        button.layer.cornerRadius = 18 / 2
+        button.clipsToBounds = true
+        button.isHidden = true
+        return button
+    }()
+    
+    
+    
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 80, width: 80)
@@ -25,6 +41,8 @@ class PeopleReviewHeader: UIView {
         imageView.setupShadow(opacity: 0.4, radius: 10, offset: CGSize(width: 0.0, height: 0.4), color: .white)
         imageView.layer.masksToBounds = false
         imageView.isUserInteractionEnabled = true
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     
@@ -99,10 +117,17 @@ class PeopleReviewHeader: UIView {
     
     fileprivate func configure(){
         guard let user = user else { return }
+        checkMarkButton.isHidden = !user.isUserVerified
         guard let imageUrl = URL(string: user.avatarLink) else { return }
         profileImageView.sd_setImage(with: imageUrl)
         profileImageView.layer.cornerRadius = 80 / 2
         profileImageView.clipsToBounds = true
+        
+        
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor,
+                               paddingTop: -24, paddingRight: -2)
+        
         
         ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
         ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"

@@ -59,6 +59,8 @@ class NotificationCell: UITableViewCell {
         imageView.setDimensions(height: 50, width: 50)
         imageView.layer.cornerRadius = 50 / 2
         imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 0.8
+        imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     
