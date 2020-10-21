@@ -286,8 +286,7 @@ extension TripsTimelineController {
                 
                 self?.tableView.setEmptyView(title: "No travelers",
                                              titleColor: .white,
-                                             message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ",
-                                             paddingTop: 100)
+                                             message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ")
             }
         } else {tableView.restore()}
         

@@ -41,6 +41,21 @@ class ChatViewController: MessagesViewController {
         return stackView
     }()
     
+    
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 14, width: 14)
+        button.setDimensions(height: 14, width: 14)
+        button.layer.cornerRadius = 14 / 2
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    
+    
     let leftBarButtonLeft: UIView = {
         return UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
     }()
@@ -146,11 +161,16 @@ class ChatViewController: MessagesViewController {
     fileprivate func configureLeftBarButton(){
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain,
                                                                   target: self, action: #selector(handleDismissal))]
-        leftBarButtonLeft.addSubview(titleLabel)
-        leftBarButtonLeft.addSubview(subTitleLabel)
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
+        stackView.axis = .vertical
+        leftBarButtonLeft.addSubview(checkMarkButton)
+        checkMarkButton.centerY(inView: leftBarButtonLeft)
+        leftBarButtonLeft.addSubview(stackView)
+        stackView.centerY(inView: checkMarkButton, leftAnchor: checkMarkButton.rightAnchor, paddingLeft: -6)
+        
         let leftBarButtonItem = UIBarButtonItem(customView: leftBarButtonLeft)
         self.navigationItem.leftBarButtonItems?.append(leftBarButtonItem)
-        titleLabel.text = recipientName
+        titleLabel.text = "    \(recipientName)"
     }
     
     
@@ -418,7 +438,7 @@ class ChatViewController: MessagesViewController {
     }
     
     func updateTypingIndictor(_ show: Bool){
-        subTitleLabel.text = show ? "Typing ..." : ""
+        subTitleLabel.text = show ? "   Typing ..." : ""
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

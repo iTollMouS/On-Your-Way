@@ -23,6 +23,19 @@ class ProfileHeader: UIView {
     
     weak var delegate: ProfileHeaderDelegate?
     
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 20, width: 20)
+        button.setDimensions(height: 20, width: 20)
+        button.layer.cornerRadius = 20 / 2
+        button.clipsToBounds = true
+        button.isHidden = true
+        return button
+    }()
+    
      lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 100, width: 100)
@@ -102,6 +115,10 @@ class ProfileHeader: UIView {
         heightAnchor.constraint(equalToConstant: 300).isActive = true
         addSubview(profileImageView)
         profileImageView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 20)
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -26)
+        
+        
         addSubview(userInfoStackView)
         userInfoStackView.centerX(inView: self, topAnchor: profileImageView.bottomAnchor, paddingTop: 20)
         userInfoStackView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 20, paddingRight: 20)
@@ -116,6 +133,7 @@ class ProfileHeader: UIView {
     
     func configureUI(){
         guard let user = user else { return }
+        checkMarkButton.isHidden = !user.isUserVerified
         fullNameTextField.text = user.username
         guard let imageUrl = URL(string: user.avatarLink) else { return  }
         profileImageView.sd_setImage(with: imageUrl)

@@ -14,6 +14,21 @@ class OrderCell: UITableViewCell {
         didSet{configure()}
     }
     
+    
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .blueLightIcon
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 14, width: 14)
+        button.setDimensions(height: 14, width: 14)
+        button.layer.cornerRadius = 14 / 2
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    
+    
     private lazy var packageType: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -63,6 +78,12 @@ class OrderCell: UITableViewCell {
         
         addSubview(packageOwnerImageView)
         packageOwnerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+        
+        
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: packageOwnerImageView.bottomAnchor, right: packageOwnerImageView.rightAnchor, paddingTop: -14)
+        
+        
         addSubview(packageOwnerName)
         packageOwnerName.centerY(inView: packageOwnerImageView, leftAnchor: packageOwnerImageView.rightAnchor, paddingLeft: 6)
         

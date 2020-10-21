@@ -15,6 +15,19 @@ class NotificationCell: UITableViewCell {
         didSet{configure()}
     }
     
+    
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 14, width: 14)
+        button.setDimensions(height: 14, width: 14)
+        button.layer.cornerRadius = 14 / 2
+        button.clipsToBounds = true
+        return button
+    }()
+    
     private lazy var packageStatusLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -65,6 +78,11 @@ class NotificationCell: UITableViewCell {
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         addSubview(travelerImageView)
         travelerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
+        
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: travelerImageView.bottomAnchor, right: travelerImageView.rightAnchor,
+                               paddingTop: -14, paddingRight: -4)
+        
         
         addSubview(timestamp)
         timestamp.anchor(top: topAnchor, right: rightAnchor, paddingTop: 12, paddingRight: 12)

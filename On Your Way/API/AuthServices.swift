@@ -45,7 +45,7 @@ struct AuthServices {
                             email: "", pushId: fcmToken,
                             avatarLink: "", status: "", password: "",
                             phoneNumber: phoneNumber,
-                            reviewsCount: 0)
+                            reviewsCount: 0, isUserVerified: false)
             saveUserLocally(user)
             UserServices.shared.saveUserToFirestore(user)
             completion(error)
@@ -71,7 +71,7 @@ struct AuthServices {
             let user = User(id: uid, username: firstName, email: email,
                             pushId: fcmToken, avatarLink: profileImageUrl, status: "", password: "",
                             phoneNumber: "",
-                            reviewsCount: 0)
+                            reviewsCount: 0, isUserVerified: false)
             saveUserLocally(user)
             emailVerification(userResult: authResult)
             UserServices.shared.saveUserToFirestore(user)
@@ -94,7 +94,7 @@ struct AuthServices {
             guard let fcmToken = Messaging.messaging().fcmToken else { return }
             let user = User(id: authResult.uid, username: fullname, email: email, pushId: fcmToken,
                             avatarLink: "", status: "", password: "" ,phoneNumber: "",
-                            reviewsCount: 0)
+                            reviewsCount: 0, isUserVerified: false)
             saveUserLocally(user)
             UserServices.shared.saveUserToFirestore(user)
             completion(error)
@@ -156,7 +156,7 @@ struct AuthServices {
             let user = User(id: authResult.user.uid, username: credential.fullName, 
                             email: credential.email, pushId: fcmToken, avatarLink: credential.profileImageUrl, status: "", password: credential.password,
                             phoneNumber: "",
-                            reviewsCount: 0)
+                            reviewsCount: 0, isUserVerified: false)
             saveUserLocally(user)
             UserServices.shared.saveUserToFirestore(user)
             completion(error)

@@ -636,11 +636,8 @@ extension UIView {
 extension UITableView {
     
     
-    func setEmptyView(title: String, titleColor: UIColor, message: String, paddingTop: CGFloat ) {
-        let emptyView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 400))
-        self.addSubview(emptyView)
-        emptyView.centerX(inView: self, topAnchor: topAnchor, paddingTop: paddingTop)
-        emptyView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 20, paddingRight: 20)
+    func setEmptyView(title: String, titleColor: UIColor, message: String) {
+        let emptyView = UIView(frame: CGRect(x: self.center.x, y: self.center.y, width: self.bounds.size.width, height: self.bounds.size.height))
         let titleLabel = UILabel()
         let messageLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false

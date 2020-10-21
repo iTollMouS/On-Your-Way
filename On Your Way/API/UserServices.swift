@@ -54,7 +54,7 @@ class UserServices {
     
     // MARK: - fetchUser
     func fetchUser(userId: String, completion: @escaping(User) -> Void){
-        Firestore.firestore().collection("users").document(userId).getDocument { (snapshot, error) in
+        Firestore.firestore().collection("users").document(userId).addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print("DEBUG: error while getting error \(error.localizedDescription) ")
                 return

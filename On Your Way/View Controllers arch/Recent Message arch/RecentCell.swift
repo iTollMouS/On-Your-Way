@@ -14,6 +14,22 @@ class RecentCell: UITableViewCell {
         didSet{ configure() }
     }
     
+    
+    
+    
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 14, width: 14)
+        button.setDimensions(height: 14, width: 14)
+        button.layer.cornerRadius = 14 / 2
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 50, width: 50)
@@ -83,6 +99,12 @@ class RecentCell: UITableViewCell {
         accessoryType = .disclosureIndicator
         addSubview(profileImageView)
         profileImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
+        
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor,
+                               paddingTop: -14, paddingRight: -4)
+        
+        
         
         addSubview(timestampLabel)
         timestampLabel.anchor(top: topAnchor, right: rightAnchor, paddingTop: 6, paddingRight: 12)

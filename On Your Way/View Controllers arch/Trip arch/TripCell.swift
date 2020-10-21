@@ -20,14 +20,24 @@ class TripCell: UITableViewCell {
     // MARK: - delegate
     weak var delegate: TripCellDelegate?
     
-    
-    
-    
-    
+
     // MARK: - var trip
     var trip: Trip? {
         didSet{configure()}
     }
+    
+    
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 14, width: 14)
+        button.setDimensions(height: 14, width: 14)
+        button.layer.cornerRadius = 14 / 2
+        button.clipsToBounds = true
+        return button
+    }()
     
     
     // MARK: - Properties
@@ -188,6 +198,11 @@ class TripCell: UITableViewCell {
         
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 32, paddingLeft: 8)
+        
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -14)
+        
+        
         addSubview(fullnameLable)
         fullnameLable.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 12)
         addSubview(timestampLabel)
@@ -221,6 +236,7 @@ class TripCell: UITableViewCell {
             self?.fullnameLable.text = user.username
             self?.ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
             self?.ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"
+            self?.checkMarkButton.isHidden = !user.isUserVerified
         }
         
         timestampLabel.text = viewModel.timestamp

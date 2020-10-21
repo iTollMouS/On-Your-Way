@@ -29,6 +29,19 @@ class TripDetailsHeaderView: UIView {
     }
     
     
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 20, width: 20)
+        button.setDimensions(height: 20, width: 20)
+        button.layer.cornerRadius = 20 / 2
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    
     // MARK: - Properties
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -114,6 +127,11 @@ class TripDetailsHeaderView: UIView {
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         addSubview(profileImageView)
         profileImageView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 20)
+        
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -26)
+        
+        
         addSubview(userInfoStackView)
         userInfoStackView.centerX(inView: self, topAnchor: profileImageView.bottomAnchor, paddingTop: 6)
         userInfoStackView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 20, paddingRight: 20)

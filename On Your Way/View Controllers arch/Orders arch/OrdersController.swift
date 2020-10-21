@@ -54,7 +54,7 @@ class OrdersController: UIViewController {
     
     var newPackageOrder = [Package]()
     var inProcessPackageOrder = [Package]()
-    var donePackageOrder = [Package]()
+    var completedPackageOrder = [Package]()
     
     var packageDictionary = [String: Package]()
     
@@ -79,11 +79,6 @@ class OrdersController: UIViewController {
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        segmentedControl.selectedSegmentIndex = 0
-    }
-    
     
     @objc func handleOrderSectionChanges(){
         
@@ -93,9 +88,9 @@ class OrdersController: UIViewController {
         case 1 :
             rowsToDisplay = inProcessPackageOrder
         default:
-            rowsToDisplay = donePackageOrder
+            rowsToDisplay = completedPackageOrder
         }
-        configureWhenTableIsEmpty()
+        tableView.restore()
         fetchTrips()
         self.tableView.reloadData()
     }
@@ -115,7 +110,7 @@ class OrdersController: UIViewController {
             TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: pendingPackage) { [weak self]  packages in
                 DispatchQueue.main.async { [weak self] in
                     self?.newPackageOrder = packages
-                    
+                    self?.newPackageOrder.sort(by: {$0.timestamp! > $1.timestamp!})
                 }
             }
             
@@ -128,7 +123,7 @@ class OrdersController: UIViewController {
             
             TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: completedPackage) { [weak self]  packages in
                 DispatchQueue.main.async { [weak self] in
-                    self?.donePackageOrder = packages
+                    self?.completedPackageOrder = packages
                 }
             }
             tableView.reloadData()
@@ -223,25 +218,22 @@ extension OrdersController {
                 
                 self?.tableView.setEmptyView(title: "No Orders",
                                              titleColor: .white,
-                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city",
-                                             paddingTop: 50)
+                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city")
             }
         }else if inProcessPackageOrder.isEmpty {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
                 
                 self?.tableView.setEmptyView(title: "No Accepted Orders",
                                              titleColor: .white,
-                                             message: "You have not accepted any orders yet\nAccepted orders will be displayed here",
-                                             paddingTop: 50)
+                                             message: "You have not accepted any orders yet\nAccepted orders will be displayed here")
             }
             
-        } else  if donePackageOrder.isEmpty {
+        } else  if completedPackageOrder.isEmpty {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
                 
                 self?.tableView.setEmptyView(title: "No Delivered Orders",
                                              titleColor: .white,
-                                             message: "You have not delivered any orders yet\nOnce the order is completed , it will be displayed here",
-                                             paddingTop: 50)
+                                             message: "You have not delivered any orders yet\nOnce the order is completed , it will be displayed here")
             }
             
         } else {
