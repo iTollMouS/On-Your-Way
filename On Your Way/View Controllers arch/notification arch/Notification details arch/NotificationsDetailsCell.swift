@@ -12,7 +12,7 @@ protocol NotificationsDetailsCellDelegate: class {
 }
 
 class NotificationsDetailsCell: UITableViewCell {
-
+    
     
     weak var delegate: NotificationsDetailsCellDelegate?
     
@@ -24,7 +24,11 @@ class NotificationsDetailsCell: UITableViewCell {
         didSet{configureTraveler()}
     }
     
-    lazy var startChatButton = createButton(title: "Chat with \(traveler?.username ?? "" )", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
+    var packageStatus: PackageStatus?{
+        didSet{configurePackageStatus()}
+    }
+    
+    lazy var startChatButton = createButton(backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
     
     private lazy var travelerName: UILabel = {
         let label = UILabel()
@@ -67,10 +71,25 @@ class NotificationsDetailsCell: UITableViewCell {
         backgroundColor = #colorLiteral(red: 0.1019607843, green: 0.1019607843, blue: 0.1019607843, alpha: 1)
     }
     
+    fileprivate func configurePackageStatus(){
+        guard let packageStatus = packageStatus else { return }
+        guard let traveler = traveler else { return  }
+        if packageStatus == .packageIsAccepted {
+            startChatButton.setTitle("Start chat", for: .normal)
+            startChatButton.isEnabled = true
+        } else {
+            startChatButton.setTitle("Chat will be enable once \(traveler.username) accept your order", for: .normal)
+            startChatButton.isEnabled = false
+        }
+    }
+    
     fileprivate func configureTraveler(){
         backgroundColor = .clear
         selectionStyle = .none
+        
         guard let traveler = traveler else { return  }
+        
+        
         addSubview(travelerImageView)
         travelerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
         addSubview(travelerName)
@@ -89,14 +108,12 @@ class NotificationsDetailsCell: UITableViewCell {
         delegate?.handleStartChat(self)
     }
     
-    fileprivate func createButton(title: String?, backgroundColor: UIColor, colorAlpa: CGFloat, systemName: String  ) -> UIButton {
+    fileprivate func createButton(backgroundColor: UIColor, colorAlpa: CGFloat, systemName: String  ) -> UIButton {
         let button = UIButton(type: .system)
-        guard let title = title else { return UIButton() }
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
         button.titleLabel?.numberOfLines = 0
-        button.setTitle("\(title) order ", for: .normal)
         button.setImage(UIImage(systemName: systemName), for: .normal)
         button.backgroundColor = backgroundColor.withAlphaComponent(alpha)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -105,6 +122,7 @@ class NotificationsDetailsCell: UITableViewCell {
         button.layer.cornerRadius = 50 / 2
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.clipsToBounds = true
+        button.isEnabled = false
         button.layer.masksToBounds = false
         button.setupShadow(opacity: 0.5, radius: 16, offset: CGSize(width: 0.0, height: 8.0), color: backgroundColor)
         return button
@@ -114,5 +132,5 @@ class NotificationsDetailsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-
+    
 }

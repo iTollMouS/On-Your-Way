@@ -86,6 +86,7 @@ class NotificationsDetailsController: UITableViewController {
             cell.package = package
         case 1:
             cell.traveler = traveler
+            cell.packageStatus = package.packageStatus
         default: break
         }
         return cell
@@ -122,7 +123,6 @@ extension NotificationsDetailsController : OrderDetailHeaderDelegate {
             browser.initializePageIndex(0)
             self?.present(browser, animated: true, completion: nil)
         }
-        
         images.removeAll()
     }
 }
