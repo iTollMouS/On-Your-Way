@@ -24,7 +24,14 @@ class IncomingMessageService {
         
         if localMessage.type == kPHOTO {
             let photoItem = PhotoMessage(path: localMessage.pictureUrl)
-            
+            mkMessage.photoItem = photoItem
+            mkMessage.kind = MessageKind.photo(photoItem)
+            FileStorage.downloadImage(imageUrl: localMessage.pictureUrl) { imageView in
+                guard let image = imageView else {return}
+                mkMessage.photoItem?.image = image
+                // once we download the image , we set it and reload the data
+                self.messageCollectionView.messagesCollectionView.reloadData()
+            }
         }
         
         return mkMessage
