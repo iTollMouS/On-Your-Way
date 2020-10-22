@@ -49,7 +49,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     private lazy var contentSizeView = CGSize(width: self.view.frame.width,
                                               height: self.view.frame.height + dynamicScreen)
     
-
+    
     private lazy var scrollView : UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -269,7 +269,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         configureUI()
         self.hideKeyboardWhenTouchOutsideTextField()
     }
-  
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent

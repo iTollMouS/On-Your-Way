@@ -306,6 +306,16 @@ extension ProfileController: ProfileFooterDelegate {
 
 // MARK: - ProfileCellDelegate
 extension ProfileController: ProfileCellDelegate {
+    
+    
+    func showAdminControl(_ cell: ProfileCell) {
+        let adminController = AdminController()
+        let navAdminController = UINavigationController(rootViewController: adminController)
+        adminController.modalPresentationStyle = .custom
+        present(navAdminController, animated: true, completion: nil)
+    }
+    
+    
     func updateUserInfo(_ cell: ProfileCell, value: String, viewModel: ProfileViewModel) {
         guard var user = user else { return  }
         switch viewModel {
@@ -316,6 +326,8 @@ extension ProfileController: ProfileCellDelegate {
         case .section_4:
             print("")
         case .section_5:
+            print("")
+        case .section_6:
             print("")
         }
         self.user = user

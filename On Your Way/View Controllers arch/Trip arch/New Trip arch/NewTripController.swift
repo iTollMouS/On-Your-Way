@@ -557,7 +557,7 @@ extension NewTripController {
         attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
         attributes.statusBar = .light
         attributes.lifecycleEvents.willDisappear = { [weak self] in
-            
+            self?.delegate?.dismissLoggingAnonymousOut(self!)
         }
         attributes.entryBackground = .clear
         SwiftEntryKit.display(entry: customAlertView, using: attributes)

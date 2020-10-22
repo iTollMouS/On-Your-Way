@@ -51,6 +51,7 @@ class ChatViewController: MessagesViewController {
         button.setDimensions(height: 14, width: 14)
         button.layer.cornerRadius = 14 / 2
         button.clipsToBounds = true
+        button.isHidden = true
         return button
     }()
     
@@ -88,6 +89,12 @@ class ChatViewController: MessagesViewController {
         title.font = UIFont.systemFont(ofSize: 12)
         title.adjustsFontSizeToFitWidth = true
         return title
+    }()
+    
+    private let blurView : UIVisualEffectView = {
+        let blurView = UIBlurEffect(style: .dark)
+        let view = UIVisualEffectView(effect: blurView)
+        return view
     }()
     
     private var chatRoomId = ""
@@ -144,6 +151,12 @@ class ChatViewController: MessagesViewController {
         
     }
     
+    fileprivate func fetchUser(){
+        UserServices.shared.fetchUser(userId: recipientId) { [weak self] user in
+            self?.checkMarkButton.isHidden = !user.isUserVerified
+        }
+    }
+    
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return darkMode ? .lightContent : .lightContent
@@ -152,6 +165,7 @@ class ChatViewController: MessagesViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         configureNavBar()
+        fetchUser()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         
     }
@@ -165,6 +179,7 @@ class ChatViewController: MessagesViewController {
         stackView.axis = .vertical
         leftBarButtonLeft.addSubview(checkMarkButton)
         checkMarkButton.centerY(inView: leftBarButtonLeft)
+        
         leftBarButtonLeft.addSubview(stackView)
         stackView.centerY(inView: checkMarkButton, leftAnchor: checkMarkButton.rightAnchor, paddingLeft: -6)
         
@@ -402,8 +417,8 @@ class ChatViewController: MessagesViewController {
     
     // MARK: - messageSend
     func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
-        guard let text = text else { return }
-        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: text , title: recipientName)
+        
+        //        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: text , title: recipientName)
         
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
@@ -469,7 +484,7 @@ class ChatViewController: MessagesViewController {
     // MARK: - Gallery
     fileprivate func showImageGallery(camera: Bool){
         
-        self.gallery.delegate = self
+        gallery.delegate = self
         Config.tabsToShow = camera ? [.cameraTab] : [.imageTab, .videoTab]
         Config.Camera.imageLimit = 1
         Config.initialTab = .imageTab
@@ -482,9 +497,11 @@ class ChatViewController: MessagesViewController {
 
 extension ChatViewController: GalleryControllerDelegate {
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
-                
+        
         if images.count > 0 {
-            
+            images.first?.resolve(completion: { image in
+                self.messageSend(text: nil, photo: image, video: nil, audio: nil, location: nil)
+            })
         }
         
         controller.dismiss(animated: true, completion: nil)

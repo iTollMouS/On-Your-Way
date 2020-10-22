@@ -16,7 +16,8 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
-      
+
+
     }
 
     
@@ -43,13 +44,16 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
                                                            rootViewController: recentController,
                                                            tabBarItemTitle: "Meesage")
         
-        
+
         let profileController = ProfileController()
         let profileControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                             rootViewController: profileController,
                                                             tabBarItemTitle: "Profile")
         
-        viewControllers = [tripsTimelineControllerNavBar, ordersControllerNavBar,notificationsControllerNavBar ,recentControllerNavBar, profileControllerNavBar]
+        viewControllers = [tripsTimelineControllerNavBar,
+                           ordersControllerNavBar, notificationsControllerNavBar,
+                           recentControllerNavBar, profileControllerNavBar]
+        
     }
     
 // MARK: - tabBarController as modal

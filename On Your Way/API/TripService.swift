@@ -91,21 +91,6 @@ class TripService {
                         print("DEBUG: error \(error.localizedDescription)")
                     }
                 }
-                
-                if packageChanged.type == .removed {
-                    let result = Result {
-                        try? packageChanged.document.data(as: Package.self)
-                    }
-                    switch result {
-                    case .success( let package):
-                        if let package = package {
-                            packages.append(package)
-                        }
-                    case .failure(let error ):
-                        print("DEBUG: error \(error.localizedDescription)")
-                    }
-                }
-                
             }
             
             packages.forEach { package in
@@ -127,9 +112,18 @@ class TripService {
         case .packageIsRejected:
             Firestore.firestore().collection("users-requests")
                 .document(userId).collection(pendingPackage)
-                .document(package.packageID).delete(completion: completion)
+                .document(package.packageID).delete()
+            
+            Firestore.firestore().collection("users-requests")
+                .document(userId).collection(acceptedPackage)
+                .document(package.packageID).delete()
+            
+            Firestore.firestore().collection("users-requests")
+                .document(userId).collection(completedPackage)
+                .document(package.packageID).delete()
             
             do {// when traveler rejects order , user will be notified
+                print("DEBUG: code came here.")
                 try Firestore.firestore().collection("users-send-packages")
                     .document(package.userID).collection("packages")
                     .document(package.packageID).setData(from: package, merge: true, completion: completion)

@@ -72,6 +72,11 @@ extension Bundle {
 
 
 extension String {
+    
+    func toDouble() -> Double {
+        Double(self)!
+    }
+    
     /// String as AttributedString
     var asAttributedString: NSAttributedString? {
         guard let data = self.data(using: .utf8) else { return nil }
@@ -167,7 +172,7 @@ extension UIColor {
 }
 
 extension UIViewController {
-        
+    
     func showAlertMessage( _ title: String? ,_ message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
@@ -366,20 +371,40 @@ extension UIStackView{
 
 extension UIView {
     
+    /// to round the desired corner NOTE: you must put it in the layoutSubviews() example corners: [.topLeft, .topRight], radius: 50)
+    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+        if #available(iOS 11, *) {
+            self.clipsToBounds = true
+            self.layer.cornerRadius = radius
+            var masked = CACornerMask()
+            if corners.contains(.topLeft) { masked.insert(.layerMinXMinYCorner) }
+            if corners.contains(.topRight) { masked.insert(.layerMaxXMinYCorner) }
+            if corners.contains(.bottomLeft) { masked.insert(.layerMinXMaxYCorner) }
+            if corners.contains(.bottomRight) { masked.insert(.layerMaxXMaxYCorner) }
+            self.layer.maskedCorners = masked
+        }
+        else {
+            let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+            let mask = CAShapeLayer()
+            mask.path = path.cgPath
+            layer.mask = mask
+        }
+    }
+    
     @discardableResult
-      func applyGradient(colours: [UIColor]) -> CAGradientLayer {
-          return self.applyGradient(colours: colours, locations: nil)
-      }
-
-      @discardableResult
-      func applyGradient(colours: [UIColor], locations: [NSNumber]?) -> CAGradientLayer {
-          let gradient: CAGradientLayer = CAGradientLayer()
-          gradient.frame = self.bounds
-          gradient.colors = colours.map { $0.cgColor }
-          gradient.locations = locations
-          self.layer.insertSublayer(gradient, at: 0)
-          return gradient
-      }
+    func applyGradient(colours: [UIColor]) -> CAGradientLayer {
+        return self.applyGradient(colours: colours, locations: nil)
+    }
+    
+    @discardableResult
+    func applyGradient(colours: [UIColor], locations: [NSNumber]?) -> CAGradientLayer {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = colours.map { $0.cgColor }
+        gradient.locations = locations
+        self.layer.insertSublayer(gradient, at: 0)
+        return gradient
+    }
     
     func setGradientBackground(colorTop: UIColor, colorBottom: UIColor){
         let gradientLayer = CAGradientLayer()
@@ -712,12 +737,12 @@ extension Date {
     }
     
     enum DateFormattedType: String, CaseIterable {
-        /// Date sample  Mon, 12 Oct 2020
-        case formattedType1 = "E, d MMM yyyy"
-        /// Date sample  2:45 AM  09/06/2020
-        case formattedType2 = "h:mm a MM/dd/yyyy"
-        /// Date sample  09-06-2020 02:45
-        case formattedType3 = "MM-dd-yyyy HH:mm"
+        /// Date sample  Sunday, Sep 6, 2020
+        case formattedType1 = "EEEE, MMM d, yyyy"
+        /// Date sample  09/24/2020
+        case formattedType2 = "MM/dd/yyyy"
+        /// Date sample  09-06-2020 02:45 AM
+        case formattedType3 = "MM-dd-yyyy h:mm a"
         /// Date sample  Sep 6, 2:45 AM
         case formattedType4 = "MMM d, h:mm a"
         /// Date sample  02:45:07.397
@@ -726,7 +751,11 @@ extension Date {
         case formattedType6 = "dd.MM.yy"
         /// Date sample  Sep 6, 2020
         case formattedType7 = "MMM d, yyyy"
-        /// Time sample  09:27 PM
+        /// Time sample  24/05/2020 ● 9:24:22 PM
+        case formattedType8 = "dd/MM/yyyy ● h:mm:ss a"
+        /// Time sample  Fri23/Oct/2020
+        case formattedType9 = "E d/MMM/yyy"
+        /// time only 9:24:22 PM
         case timeOnly = "h:mm a"
     }
 }

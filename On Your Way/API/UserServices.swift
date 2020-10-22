@@ -67,7 +67,7 @@ class UserServices {
             switch result {
             case .success(let userObject):
                 guard let user = userObject else { return }
-                saveUserLocally(user)
+//                saveUserLocally(user)
                 completion(user)
             case .failure(let error):
                 print("DEBUG: error while saving user info\(error.localizedDescription)")
@@ -75,11 +75,21 @@ class UserServices {
         }
     }
     
-    func fetchAllUsers(completion: @escaping (_ allUsers: [User]) -> Void) {
-        Firestore.firestore().collection("users").getDocuments { (snapshot, error) in
-            guard let snapshot = snapshot else {return}
-            let users = snapshot.documents.compactMap { (queryDocumentSnapshot) -> User? in
+    func downloadAllUsers(completion: @escaping([User]) -> Void){
+        var users = [User]()
+        Firestore.firestore().collection("users").addSnapshotListener { (snapshot, error) in
+            if let error = error {
+                print("DEBUG: could not get user info from firebase \(error.localizedDescription)")
+                return
+            }
+            guard let document = snapshot?.documents else {return}
+            let allUsers = document.compactMap{ (queryDocumentSnapshot) -> User? in
                 return try? queryDocumentSnapshot.data(as: User.self)
+            }
+            for user in allUsers {
+                if User.currentId != user.id{
+                    users.append(user)
+                }
             }
             completion(users)
         }

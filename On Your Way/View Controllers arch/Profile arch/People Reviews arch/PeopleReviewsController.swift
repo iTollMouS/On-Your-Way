@@ -281,21 +281,23 @@ class PeopleReviewsController: UIViewController {
             
         }
         
-        TripService.shared.fetchMyRequest(userId: reviewerId) { [weak self] packages in
-            
-            if packages.isEmpty{
-                self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
-                self?.writeReviewButton.isEnabled = false
-            } else {
-                packages.forEach{
-                    if $0.packageStatus == .packageIsAccepted {
-                        self?.submitReviewButton.setTitle("Write a review for \(self!.user.username)", for: .normal)
-                        self?.updateReviewOnTouch()
-                    } else {
-                        self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
-                        self?.writeReviewButton.isEnabled = false
+        DispatchQueue.main.async { 
+            TripService.shared.fetchMyRequest(userId: reviewerId) { [weak self] packages in
+                
+                if packages.isEmpty{
+                    self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
+                    self?.writeReviewButton.isEnabled = false
+                } else {
+                    packages.forEach{
+                        if $0.packageStatus == .packageIsAccepted {
+                            self?.submitReviewButton.setTitle("Write a review for \(self!.user.username)", for: .normal)
+                            self?.updateReviewOnTouch()
+                        } else {
+                            self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
+                            self?.writeReviewButton.isEnabled = false
+                        }
+                        self?.tableView.reloadData()
                     }
-                    self?.tableView.reloadData()
                 }
             }
         }

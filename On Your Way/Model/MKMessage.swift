@@ -18,6 +18,10 @@ class MKMessage: NSObject, MessageType {
     var incoming: Bool
     var mkSender: MKSender
     var sender: SenderType {return mkSender}
+    
+    var photoItem: PhotoMessage?
+    
+    
     var senderInitials: String
     var status: String
     var readDate: Date
@@ -28,10 +32,19 @@ class MKMessage: NSObject, MessageType {
         
         self.messageId = message.id
         self.mkSender = MKSender(senderId: message.senderId, displayName: message.senderName)
-        print("DEBUG:: sender is is \(message.senderId)")
-        print("DEBUG:: sender is id \(message.senderName)")
         self.status = message.status
         self.kind = MessageKind.text(message.message)
+        
+        switch message.type {
+        case kTEXT:
+            self.kind = MessageKind.text(message.message)
+        case kPHOTO:
+            let photoItem = PhotoMessage(path: message.pictureUrl)
+            self.kind = MessageKind.photo(photoItem)
+            self.photoItem = photoItem
+        default: break
+        }
+        
         
         self.senderInitials = message.senderinitials
         self.sentDate = message.date

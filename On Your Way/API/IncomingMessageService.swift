@@ -21,6 +21,12 @@ class IncomingMessageService {
     
     func createMessage(localMessage: LocalMessage) -> MKMessage? {
         let mkMessage = MKMessage(message: localMessage)
+        
+        if localMessage.type == kPHOTO {
+            let photoItem = PhotoMessage(path: localMessage.pictureUrl)
+            
+        }
+        
         return mkMessage
     }
     

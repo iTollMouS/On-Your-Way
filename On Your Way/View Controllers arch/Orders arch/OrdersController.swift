@@ -90,9 +90,9 @@ class OrdersController: UIViewController {
         default:
             rowsToDisplay = completedPackageOrder
         }
-        tableView.restore()
+        
         fetchTrips()
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     func fetchUser(){
@@ -122,6 +122,7 @@ class OrdersController: UIViewController {
                 }
                 
             }
+            
             tableView.reloadData()
         }
     }

@@ -138,16 +138,20 @@ class TripCell: UITableViewCell {
         return stackView
     }()
     
-    private lazy var priceBaseLabel = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
-                                                  detailsText: "", detailsTextSize: 18,
-                                                  detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 20)
+    private lazy var priceBaseLabel: UILabel = {
+        let label =  createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
+                                 detailsText: "", detailsTextSize: 18,
+                                 detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 20)
+        label.setHeight(height: 20)
+        return label
+    }()
     
     
     private lazy var packagesTypes: UILabel = {
         let label = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
                                 detailsText: "", detailsTextSize: 18,
                                 detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 50)
-        label.adjustsFontSizeToFitWidth = false
+        label.setHeight(height: 140)
         return label
     }()
     
@@ -183,8 +187,7 @@ class TripCell: UITableViewCell {
                                                        packagesTypes,
                                                        ratingView])
         stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 12
+        stackView.distribution = .fill
         return stackView
     }()
     
@@ -268,7 +271,7 @@ class TripCell: UITableViewCell {
                                  textAlignment: NSTextAlignment, setHeight: CGFloat  ) -> UILabel {
         let label = UILabel()
         label.textAlignment = textAlignment
-        label.numberOfLines = 0
+        label.numberOfLines = 4
         return label
     }
     

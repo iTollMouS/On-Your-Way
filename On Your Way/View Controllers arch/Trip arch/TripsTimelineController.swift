@@ -56,12 +56,12 @@ class TripsTimelineController: UITableViewController {
     
     // MARK: - fetchTrips()
     func fetchTrips(){
-        TripService.shared.fetchAllTrips { [weak self] trips in
-            /*note that in the func we made some omitting duplicate methods
-             best way to handle empty cases
-             */
-            self?.trips = trips
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            TripService.shared.fetchAllTrips { [weak self] trips in
+                /*note that in the func we made some omitting duplicate methods
+                 best way to handle empty cases
+                 */
+                self?.trips = trips
                 self?.configureWhenTableIsEmpty()
                 self?.configureTapBarController()
                 self?.tableView.reloadData()
@@ -184,8 +184,8 @@ extension TripsTimelineController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
+            DispatchQueue.main.async {
             TripService.shared.deleteMyTrip(trip: trip) { [weak self] error in
-                DispatchQueue.main.async {
                     self!.searchController.isActive ? self?.filteredTrips.remove(at: indexPath.row) : self?.trips.remove(at: indexPath.row)
                     self?.tableView.deleteRows(at: [indexPath], with: .automatic)
                     self?.tableView.reloadData()
@@ -281,15 +281,16 @@ extension TripsTimelineController : TripDetailsControllerDelegate {
 
 extension TripsTimelineController {
     fileprivate func configureWhenTableIsEmpty(){
-        if trips.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                
-                self?.tableView.setEmptyView(title: "No travelers",
-                                             titleColor: .white,
-                                             message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ")
-            }
-        } else {tableView.restore()}
-        
+        DispatchQueue.main.async { [weak self] in
+            if self!.trips.isEmpty {
+                Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                    self?.tableView.setEmptyView(title: "No travelers",
+                                                 titleColor: .white,
+                                                 message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ")
+                }
+            } else {self?.tableView.restore()}
+            
+        }
     }
 }
 

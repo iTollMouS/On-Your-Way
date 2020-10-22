@@ -68,10 +68,10 @@ class RecentController: UIViewController {
     
     // MARK: - fetchRecentChats
     fileprivate func fetchRecentChats(){
+        DispatchQueue.main.async {
         RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] allRecent in
             self?.allRecent = allRecent
             // check with all aip why this fucn worsk good and not duplicate stuff
-            DispatchQueue.main.async {
                 self?.configureWhenTableIsEmpty()
                 self?.tableView.reloadData()
             }

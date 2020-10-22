@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileCellDelegate: class {
     func showGuidelines(_ cell: ProfileCell)
+    func showAdminControl(_ cell: ProfileCell)
     func updateUserInfo(_ cell: ProfileCell, value: String, viewModel: ProfileViewModel)
 }
 
@@ -54,6 +55,15 @@ class ProfileCell: UITableViewCell {
         label.text = "View covid-19 guidelines "
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0, green: 0.4509803922, blue: 0.9294117647, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 20)
+        return label
+    }()
+    
+    private lazy var adminControl: UILabel = {
+        let label = UILabel()
+        label.text = "Access to admin "
+        label.textAlignment = .left
+        label.textColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
         return label
     }()
@@ -105,6 +115,11 @@ class ProfileCell: UITableViewCell {
             covid_19_GuidelinesLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
             addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShowGuidelines)))
             accessoryButton.addTarget(self, action: #selector(handleShowGuidelines), for: .touchUpInside)
+        case .section_6:
+            addSubview(adminControl)
+            adminControl.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShowAdminControl)))
+            accessoryButton.addTarget(self, action: #selector(handleShowGuidelines), for: .touchUpInside)
         }
     }
     
@@ -117,6 +132,10 @@ class ProfileCell: UITableViewCell {
     
     @objc func handleShowGuidelines(){
         delegate?.showGuidelines(self)
+    }
+    
+    @objc func handleShowAdminControl(){
+        delegate?.showAdminControl(self)
     }
     
     required init?(coder: NSCoder) {
@@ -147,6 +166,7 @@ enum ProfileViewModel: Int, CaseIterable {
     case section_2
     case section_4
     case section_5
+    case section_6
     
     var numberOfCells: Int {
         switch self {
@@ -154,6 +174,7 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return 1
         case .section_4: return 1
         case .section_5: return 1
+        case .section_6: return 1
         }
     }
     
@@ -163,6 +184,7 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return "Email"
         case .section_4: return "App Version"
         case .section_5: return "COVID-19 Guidelines"
+        case .section_6: return "Admin Control"
         }
     }
     var systemNameIcon: String {
@@ -171,7 +193,7 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return "envelope"
         case .section_4: return "apps.iphone"
         case .section_5: return "staroflife.fill"
-            
+        case .section_6: return "lock.shield.fill"
         }
     }
     
@@ -181,6 +203,7 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return (24, 24)
         case .section_4: return (28, 24)
         case .section_5: return (30, 24)
+        case .section_6: return (24, 24)
         }
     }
 }

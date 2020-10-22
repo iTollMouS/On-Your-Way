@@ -41,7 +41,7 @@ struct AuthServices {
             guard let phoneNumber = authResult.user.phoneNumber else {return}
             guard let fcmToken = Messaging.messaging().fcmToken else { return }
             let user = User(id: authResult.user.uid,
-                            username: phoneNumber,
+                            username: phoneNumber.lowercased(),
                             email: "", pushId: fcmToken,
                             avatarLink: "", status: "", password: "",
                             phoneNumber: phoneNumber,
@@ -68,8 +68,12 @@ struct AuthServices {
             guard let profileImageUrl = authResult?.user.photoURL?.absoluteString else {return}
             guard let fcmToken = Messaging.messaging().fcmToken else { return }
             guard let authResult = authResult else {return}
-            let user = User(id: uid, username: firstName, email: email,
-                            pushId: fcmToken, avatarLink: profileImageUrl, status: "", password: "",
+            let user = User(id: uid, username: firstName.lowercased(),
+                            email: email,
+                            pushId: fcmToken,
+                            avatarLink: profileImageUrl,
+                            status: "",
+                            password: "",
                             phoneNumber: "",
                             reviewsCount: 0, isUserVerified: false)
             saveUserLocally(user)
@@ -92,7 +96,8 @@ struct AuthServices {
             guard let authResult = authResult?.user else {return}
             guard let email = authResult.email else {return}
             guard let fcmToken = Messaging.messaging().fcmToken else { return }
-            let user = User(id: authResult.uid, username: fullname, email: email, pushId: fcmToken,
+            let user = User(id: authResult.uid, username: fullname.lowercased(),
+                            email: email, pushId: fcmToken,
                             avatarLink: "", status: "", password: "" ,phoneNumber: "",
                             reviewsCount: 0, isUserVerified: false)
             saveUserLocally(user)
@@ -153,8 +158,9 @@ struct AuthServices {
             }
             guard let fcmToken = Messaging.messaging().fcmToken else { return }
             
-            let user = User(id: authResult.user.uid, username: credential.fullName, 
-                            email: credential.email, pushId: fcmToken, avatarLink: credential.profileImageUrl, status: "", password: credential.password,
+            let user = User(id: authResult.user.uid, username: credential.fullName.lowercased(),
+                            email: credential.email, pushId: fcmToken, avatarLink: credential.profileImageUrl,
+                            status: "", password: credential.password,
                             phoneNumber: "",
                             reviewsCount: 0, isUserVerified: false)
             saveUserLocally(user)

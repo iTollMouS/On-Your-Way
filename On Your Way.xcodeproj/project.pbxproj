@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */; };
+		83145C772541831A00FF82A9 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83145C762541831A00FF82A9 /* AdminController.swift */; };
+		83145C7A2541A7A500FF82A9 /* AdminCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83145C792541A7A500FF82A9 /* AdminCell.swift */; };
 		8335149C253D7025001C2C9E /* warning_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8335149B253D7025001C2C9E /* warning_animation.json */; };
 		8335149E253D705D001C2C9E /* Conditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8335149D253D705D001C2C9E /* Conditions.swift */; };
 		833514A0253D724B001C2C9E /* success_motion.json in Resources */ = {isa = PBXBuildFile; fileRef = 8335149F253D724B001C2C9E /* success_motion.json */; };
@@ -100,6 +102,7 @@
 		836837D4253EDFC9005FEFE4 /* NotificationsDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836837D3253EDFC9005FEFE4 /* NotificationsDetailsController.swift */; };
 		836837D6253EE018005FEFE4 /* NotificationsDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836837D5253EE018005FEFE4 /* NotificationsDetailsCell.swift */; };
 		836837D9253EF2F9005FEFE4 /* NotificationsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836837D8253EF2F9005FEFE4 /* NotificationsFooterView.swift */; };
+		8368383E2540B073005FEFE4 /* PhotoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368383D2540B070005FEFE4 /* PhotoMessage.swift */; };
 		83B763552536DA7E00503A9D /* cachAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763542536DA7E00503A9D /* cachAnimation.json */; };
 		83B763592536DB9100503A9D /* bell.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763582536DB9100503A9D /* bell.json */; };
 		83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635A2536DEA900503A9D /* chat_messenger.json */; };
@@ -143,6 +146,8 @@
 /* Begin PBXFileReference section */
 		675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_On_Your_Way.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A55185440CDC76BE70C863 /* Pods-On Your Way.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.debug.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.debug.xcconfig"; sourceTree = "<group>"; };
+		83145C762541831A00FF82A9 /* AdminController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
+		83145C792541A7A500FF82A9 /* AdminCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminCell.swift; sourceTree = "<group>"; };
 		8335149B253D7025001C2C9E /* warning_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = warning_animation.json; sourceTree = "<group>"; };
 		8335149D253D705D001C2C9E /* Conditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conditions.swift; sourceTree = "<group>"; };
 		8335149F253D724B001C2C9E /* success_motion.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = success_motion.json; sourceTree = "<group>"; };
@@ -238,6 +243,7 @@
 		836837D3253EDFC9005FEFE4 /* NotificationsDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsDetailsController.swift; sourceTree = "<group>"; };
 		836837D5253EE018005FEFE4 /* NotificationsDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsDetailsCell.swift; sourceTree = "<group>"; };
 		836837D8253EF2F9005FEFE4 /* NotificationsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsFooterView.swift; sourceTree = "<group>"; };
+		8368383D2540B070005FEFE4 /* PhotoMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMessage.swift; sourceTree = "<group>"; };
 		83B763542536DA7E00503A9D /* cachAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cachAnimation.json; sourceTree = "<group>"; };
 		83B763582536DB9100503A9D /* bell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bell.json; sourceTree = "<group>"; };
 		83B7635A2536DEA900503A9D /* chat_messenger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chat_messenger.json; sourceTree = "<group>"; };
@@ -287,6 +293,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		83145C78254186AF00FF82A9 /* Admin arch */ = {
+			isa = PBXGroup;
+			children = (
+				83145C762541831A00FF82A9 /* AdminController.swift */,
+				83145C792541A7A500FF82A9 /* AdminCell.swift */,
+			);
+			path = "Admin arch";
+			sourceTree = "<group>";
+		};
 		834C980F25311CCC00BE8691 = {
 			isa = PBXGroup;
 			children = (
@@ -334,6 +349,7 @@
 				834C98C525312E3900BE8691 /* User.swift */,
 				835C88092539C3D400D49923 /* MKMessage.swift */,
 				835C88072539C2A100D49923 /* MKSender.swift */,
+				8368383D2540B070005FEFE4 /* PhotoMessage.swift */,
 				8335149D253D705D001C2C9E /* Conditions.swift */,
 				834C993D25338D6800BE8691 /* Trip.swift */,
 				83B7637A2538192300503A9D /* Review.swift */,
@@ -482,6 +498,7 @@
 				834C990E253233D200BE8691 /* ProfileHeader.swift */,
 				834C990F253233D300BE8691 /* ProfileCell.swift */,
 				834C9910253233D300BE8691 /* ProfileFooterView.swift */,
+				83145C78254186AF00FF82A9 /* Admin arch */,
 				834C98FF2532325D00BE8691 /* People Reviews arch */,
 				834C98F6253231CA00BE8691 /* Safety arch */,
 			);
@@ -815,6 +832,8 @@
 				83D7D42A2535DC3E00FA88F0 /* OrderDetailsController.swift in Sources */,
 				835C880C2539CC3B00D49923 /* LocalMessage.swift in Sources */,
 				835C88042539BD6600D49923 /* MessageLayoutDelegate.swift in Sources */,
+				83145C772541831A00FF82A9 /* AdminController.swift in Sources */,
+				83145C7A2541A7A500FF82A9 /* AdminCell.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
 				83D7D4302535EB6300FA88F0 /* OrderDetailsFooterView.swift in Sources */,
@@ -836,6 +855,7 @@
 				83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */,
 				83375F4D253A8415008F2036 /* IncomingMessageService.swift in Sources */,
 				834C993525337C0A00BE8691 /* RecentChat.swift in Sources */,
+				8368383E2540B073005FEFE4 /* PhotoMessage.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C991B2532391B00BE8691 /* DateAndTimeController.swift in Sources */,
 				83D7D3F02534720500FA88F0 /* TripDetailsFooterView.swift in Sources */,
