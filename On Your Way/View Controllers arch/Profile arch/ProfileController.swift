@@ -222,7 +222,6 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ProfileCell
-        
         guard let viewModel = ProfileViewModel(rawValue: indexPath.section) else { return cell }
         guard let user = user else { return cell }
         cell.viewModel = viewModel
@@ -312,6 +311,8 @@ extension ProfileController: ProfileCellDelegate {
         let adminController = AdminController()
         let navAdminController = UINavigationController(rootViewController: adminController)
         adminController.modalPresentationStyle = .custom
+        navAdminController.navigationBar.barStyle = .black
+        navAdminController.navigationBar.isTranslucent = true
         present(navAdminController, animated: true, completion: nil)
     }
     
