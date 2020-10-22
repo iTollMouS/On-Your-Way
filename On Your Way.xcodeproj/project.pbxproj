@@ -10,6 +10,7 @@
 		28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 675DCED79A5B42D98125C350 /* Pods_On_Your_Way.framework */; };
 		83145C772541831A00FF82A9 /* AdminController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83145C762541831A00FF82A9 /* AdminController.swift */; };
 		83145C7A2541A7A500FF82A9 /* AdminCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83145C792541A7A500FF82A9 /* AdminCell.swift */; };
+		83145C7C2541C59400FF82A9 /* AdminHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83145C7B2541C59400FF82A9 /* AdminHeaderView.swift */; };
 		8335149C253D7025001C2C9E /* warning_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8335149B253D7025001C2C9E /* warning_animation.json */; };
 		8335149E253D705D001C2C9E /* Conditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8335149D253D705D001C2C9E /* Conditions.swift */; };
 		833514A0253D724B001C2C9E /* success_motion.json in Resources */ = {isa = PBXBuildFile; fileRef = 8335149F253D724B001C2C9E /* success_motion.json */; };
@@ -148,6 +149,7 @@
 		71A55185440CDC76BE70C863 /* Pods-On Your Way.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On Your Way.debug.xcconfig"; path = "Target Support Files/Pods-On Your Way/Pods-On Your Way.debug.xcconfig"; sourceTree = "<group>"; };
 		83145C762541831A00FF82A9 /* AdminController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminController.swift; sourceTree = "<group>"; };
 		83145C792541A7A500FF82A9 /* AdminCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminCell.swift; sourceTree = "<group>"; };
+		83145C7B2541C59400FF82A9 /* AdminHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminHeaderView.swift; sourceTree = "<group>"; };
 		8335149B253D7025001C2C9E /* warning_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = warning_animation.json; sourceTree = "<group>"; };
 		8335149D253D705D001C2C9E /* Conditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conditions.swift; sourceTree = "<group>"; };
 		8335149F253D724B001C2C9E /* success_motion.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = success_motion.json; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				83145C762541831A00FF82A9 /* AdminController.swift */,
+				83145C7B2541C59400FF82A9 /* AdminHeaderView.swift */,
 				83145C792541A7A500FF82A9 /* AdminCell.swift */,
 			);
 			path = "Admin arch";
@@ -848,6 +851,7 @@
 				834C991A2532391B00BE8691 /* NewTripController.swift in Sources */,
 				834C99432533A92800BE8691 /* TripService.swift in Sources */,
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,
+				83145C7C2541C59400FF82A9 /* AdminHeaderView.swift in Sources */,
 				834C989825312BCE00BE8691 /* Extenions.swift in Sources */,
 				834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */,
 				835C880A2539C3D400D49923 /* MKMessage.swift in Sources */,

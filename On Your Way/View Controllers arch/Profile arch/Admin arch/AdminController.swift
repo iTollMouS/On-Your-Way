@@ -14,6 +14,9 @@ private let reuseIdentifier = "AdminCell"
 
 class AdminController: UIViewController {
     
+    
+    private lazy var headerView = AdminHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 150))
+    
     lazy var saveChangesButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitleColor(.white, for: .normal)
@@ -120,10 +123,9 @@ class AdminController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style:.insetGrouped)
-        tableView.delegate = self
-        tableView.dataSource = self
         tableView.backgroundColor = .clear
         tableView.rowHeight = 80
+        tableView.tableHeaderView = headerView
         tableView.register(AdminCell.self, forCellReuseIdentifier: reuseIdentifier)
         return tableView
     }()
@@ -136,7 +138,10 @@ class AdminController: UIViewController {
     let cellSelectionStyle = UIView()
     
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
     private var users = [User]()
+    private var filteredUsers = [User]()
     private var usersDictionary = [String: User]()
     private var selectedUser: User?
     private var isVerified: Bool = false
@@ -146,8 +151,15 @@ class AdminController: UIViewController {
         configureUI()
         configureNavBar()
         fetchUsers()
+        configureDelegates()
     }
     
+    
+    fileprivate func configureDelegates(){
+        tableView.delegate = self
+        tableView.dataSource = self
+        headerView.delegate = self
+    }
     
     fileprivate func fetchUsers(){
         DispatchQueue.main.async { [weak self] in
@@ -168,6 +180,12 @@ class AdminController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dismiss", style: .done, target: self, action: #selector(handleDismissal))
         self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for trip"
+        searchController.searchResultsUpdater = self
+        definesPresentationContext = true
     }
     
     
@@ -218,25 +236,52 @@ class AdminController: UIViewController {
 extension AdminController: UITableViewDataSource , UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return searchController.isActive ? filteredUsers.count : users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! AdminCell
-        cell.user = users[indexPath.row]
+        cell.user = searchController.isActive ? filteredUsers[indexPath.row] : users[indexPath.row]
         cellSelectionStyle.backgroundColor = UIColor.white.withAlphaComponent(0.2)
         cell.selectedBackgroundView = cellSelectionStyle
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedUser = users[indexPath.row]
+        selectedUser = searchController.isActive ? filteredUsers[indexPath.row] : users[indexPath.row]
         checkMarkButton.isHidden = !selectedUser!.isUserVerified
         showUserProfile()
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }
+
+extension AdminController: AdminHeaderViewDelegate{
+    func handleActionTapped(_ sender: UIButton) {
+        switch sender.tag {
+        case 1:
+            print("DEBUG: 0 is tapped")
+        case 2:
+            print("DEBUG: 0 is tapped")
+        default: break
+        }
+    }
+}
+
+extension AdminController :  UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchedText = searchController.searchBar.text else { return }
+        filteredUsers = users.filter({ (user) -> Bool in
+            guard let email = user.email else {return false}
+            return user.username.lowercased().contains(searchedText.lowercased())
+                || email.lowercased().contains(searchedText.lowercased())
+        })
+        
+        tableView.reloadData()
+    }
+}
+
+
 
 extension AdminController {
     
@@ -259,10 +304,10 @@ extension AdminController {
         customAlertView.addSubview(profileImageView)
         profileImageView.anchor(top: customAlertView.topAnchor, left: customAlertView.leftAnchor, paddingTop: 30, paddingLeft: 20)
         
-
+        
         customAlertView.addSubview(checkMarkButton)
         checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -14)
-
+        
         customAlertView.addSubview(stackView)
         stackView.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 12)
         customAlertView.addSubview(segmentedControl)
