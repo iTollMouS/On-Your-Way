@@ -17,7 +17,7 @@ class ProfileController: UIViewController {
     
     // MARK: - Properties
     private lazy var headerView = ProfileHeader(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
-    private lazy var footerView = ProfileFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 150))
+    private lazy var footerView = ProfileFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 180))
     private let gallery = GalleryController ()
     let cellSelectionStyle = UIView()
     

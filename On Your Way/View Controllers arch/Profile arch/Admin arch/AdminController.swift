@@ -334,6 +334,7 @@ extension AdminController {
         attributes.scroll = .enabled(swipeable: false, pullbackAnimation: .jolt)
         attributes.statusBar = .light
         attributes.lifecycleEvents.willDisappear = { [weak self] in
+            
             self?.view.isUserInteractionEnabled = true
         }
         attributes.entryBackground = .clear

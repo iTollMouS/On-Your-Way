@@ -53,6 +53,40 @@ class FileStorage {
         ProgressHUD.dismiss()
     }
     
+    class func uploadVideo(_ video: NSData, directory: String, completion: @escaping(_ videoLink: String?) -> Void) {
+        
+        let storageRef = storage.reference(forURL: storageReferenceKey).child(directory)
+        
+        
+        
+        var task: StorageUploadTask!
+        
+        task = storageRef.putData(video as Data, metadata: nil, completion: { (metadata, error) in
+            if let error = error {
+                ProgressHUD.show("Error while uploading image \(error.localizedDescription)")
+                return
+            }
+            
+            task.removeAllObservers()
+            ProgressHUD.dismiss()
+            
+            storageRef.downloadURL { (videoUrl, error) in
+                if let error = error {
+                    ProgressHUD.show("Error while uploading image \(error.localizedDescription)")
+                    return
+                }
+                guard let videoUrl =  videoUrl else {return}
+                completion(videoUrl.absoluteString)
+            }
+        })
+        
+        task.observe(StorageTaskStatus.progress) { (snapshot) in
+            let progress = snapshot.progress!.completedUnitCount / snapshot.progress!.totalUnitCount
+            ProgressHUD.showProgress(CGFloat(progress))
+        }
+        ProgressHUD.dismiss()
+    }
+    
     
     // MARK: - downloadImage
     /// download Image locally.

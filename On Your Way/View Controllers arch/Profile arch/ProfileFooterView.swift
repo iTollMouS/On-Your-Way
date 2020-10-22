@@ -61,17 +61,14 @@ class ProfileFooterView: UIView {
         let stackView = UIStackView(arrangedSubviews: [logoutButton,
                                                        adminButton])
         stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.setHeight(height: 140)
+        stackView.spacing = 40
+        stackView.setHeight(height: 150)
         stackView.distribution = .fillEqually
         return stackView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(stackView)
-        stackView.fillSuperview(padding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
         
     }
     
@@ -81,9 +78,16 @@ class ProfileFooterView: UIView {
             UserServices.shared.adminAuthentication(userId: user.id) { [weak self]isAuthenticate in
                 self?.adminButton.alpha = isAuthenticate ? 1 : 0
                 self?.adminButton.isEnabled = isAuthenticate ? true : false
-                
+                if isAuthenticate {
+                    self?.addSubview(self!.stackView)
+                    self?.stackView.fillSuperview(padding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
+                } else {
+                    self?.addSubview(self!.logoutButton)
+                    self?.logoutButton.centerInSuperview()
+                    self?.logoutButton.anchor(left: self!.leftAnchor, right: self!.rightAnchor, paddingLeft: 32, paddingRight: 32)
+                    self?.logoutButton.setHeight(height: 50)
+                }
             }
-            
         }
     }
     

@@ -146,8 +146,9 @@ class ChatViewController: MessagesViewController {
         listenForOldChats()
         createTypingObserver()
         configureMessageCollectionView()
-        IQKeyboardManager.shared.enable = false
         listenForReadStatusChange()
+        print("DEBUG:: user name is \(recipientName)")
+        print("DEBUG:: user name is \(User.currentUser?.username)")
         
     }
     
@@ -164,6 +165,7 @@ class ChatViewController: MessagesViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        IQKeyboardManager.shared.enable = false
         configureNavBar()
         fetchUser()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
@@ -416,12 +418,13 @@ class ChatViewController: MessagesViewController {
     
     
     // MARK: - messageSend
-    func messageSend(text: String?, photo: UIImage?, video: String?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
+    func messageSend(text: String?, photo: UIImage?, video: Video?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
         
-        //        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: text , title: recipientName)
+        
         
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
+        //        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: text , title: recipientName)
     }
     
     
@@ -509,6 +512,7 @@ extension ChatViewController: GalleryControllerDelegate {
     
     func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
         
+        self.messageSend(text: nil, photo: nil, video: video, audio: nil, location: nil)
         
         controller.dismiss(animated: true, completion: nil)
     }
