@@ -22,7 +22,6 @@ struct User: Codable, Equatable{
     var reviewsCount: Double = 0.0
     var sumAllReviews: Double = 0.0
     var isUserVerified: Bool = false
-    var accessKey = ""
     
     /// to access to the current user who use the iphone
     static var currentId: String{

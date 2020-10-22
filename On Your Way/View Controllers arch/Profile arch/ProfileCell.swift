@@ -9,7 +9,6 @@ import UIKit
 
 protocol ProfileCellDelegate: class {
     func showGuidelines(_ cell: ProfileCell)
-    func showAdminControl(_ cell: ProfileCell)
     func updateUserInfo(_ cell: ProfileCell, value: String, viewModel: ProfileViewModel)
 }
 
@@ -115,11 +114,6 @@ class ProfileCell: UITableViewCell {
             covid_19_GuidelinesLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
             addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShowGuidelines)))
             accessoryButton.addTarget(self, action: #selector(handleShowGuidelines), for: .touchUpInside)
-        case .section_6:
-            addSubview(adminControl)
-            adminControl.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-            addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShowAdminControl)))
-            accessoryButton.addTarget(self, action: #selector(handleShowGuidelines), for: .touchUpInside)
         }
     }
     
@@ -134,10 +128,7 @@ class ProfileCell: UITableViewCell {
         delegate?.showGuidelines(self)
     }
     
-    @objc func handleShowAdminControl(){
-        delegate?.showAdminControl(self)
-    }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -166,7 +157,6 @@ enum ProfileViewModel: Int, CaseIterable {
     case section_2
     case section_4
     case section_5
-    case section_6
     
     var numberOfCells: Int {
         switch self {
@@ -174,7 +164,6 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return 1
         case .section_4: return 1
         case .section_5: return 1
-        case .section_6: return 1
         }
     }
     
@@ -184,7 +173,6 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return "Email"
         case .section_4: return "App Version"
         case .section_5: return "COVID-19 Guidelines"
-        case .section_6: return "Admin Control"
         }
     }
     var systemNameIcon: String {
@@ -193,7 +181,6 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return "envelope"
         case .section_4: return "apps.iphone"
         case .section_5: return "staroflife.fill"
-        case .section_6: return "lock.shield.fill"
         }
     }
     
@@ -203,7 +190,6 @@ enum ProfileViewModel: Int, CaseIterable {
         case .section_2: return (24, 24)
         case .section_4: return (28, 24)
         case .section_5: return (30, 24)
-        case .section_6: return (24, 24)
         }
     }
 }

@@ -42,6 +42,15 @@ class UserServices {
     }
     
     
+    /// if user is the admin , we authenticate him
+    func adminAuthentication(userId: String, completion: @escaping(_ isAuthenticated: Bool) -> Void){
+        Firestore.firestore().collection("accessKey").addSnapshotListener { (snapshot, error) in
+            guard let snapshot = snapshot?.documents else {return}
+            for document in snapshot { document.documentID == userId ? completion(true) : completion(false) }
+        }
+    }
+    
+    
     // MARK: - saveUserToFirestore
     func saveUserToFirestore(_ user: User){
         do {
@@ -67,7 +76,6 @@ class UserServices {
             switch result {
             case .success(let userObject):
                 guard let user = userObject else { return }
-//                saveUserLocally(user)
                 completion(user)
             case .failure(let error):
                 print("DEBUG: error while saving user info\(error.localizedDescription)")

@@ -17,7 +17,7 @@ class ProfileController: UIViewController {
     
     // MARK: - Properties
     private lazy var headerView = ProfileHeader(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
-    private lazy var footerView = ProfileFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 100))
+    private lazy var footerView = ProfileFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 150))
     private let gallery = GalleryController ()
     let cellSelectionStyle = UIView()
     
@@ -58,7 +58,7 @@ class ProfileController: UIViewController {
         showPopItem()
         checkUser()
     }
-
+    
     
     func showPopItem(){
         guard let user = user else { return }
@@ -74,7 +74,7 @@ class ProfileController: UIViewController {
         
     }
     
-  
+    
     
     func configureRefreshController(){
         refreshController.tintColor = .white
@@ -92,6 +92,7 @@ class ProfileController: UIViewController {
                 self?.user = user
                 DispatchQueue.main.async {
                     self?.headerView.user = user
+                    self?.footerView.user = user
                     self?.title = user.username
                     self?.showPopItem()
                     self?.tableView.reloadData()
@@ -286,6 +287,15 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - ProfileFooterDelegate
 extension ProfileController: ProfileFooterDelegate {
+    func handleShowAdminPage(view: ProfileFooterView) {
+        let adminController = AdminController()
+        let navAdminController = UINavigationController(rootViewController: adminController)
+        adminController.modalPresentationStyle = .custom
+        navAdminController.navigationBar.barStyle = .black
+        navAdminController.navigationBar.isTranslucent = true
+        present(navAdminController, animated: true, completion: nil)
+    }
+    
     func handleLogout(view: ProfileFooterView) {
         
         if Auth.auth().currentUser?.uid == nil {
@@ -307,16 +317,6 @@ extension ProfileController: ProfileFooterDelegate {
 extension ProfileController: ProfileCellDelegate {
     
     
-    func showAdminControl(_ cell: ProfileCell) {
-        let adminController = AdminController()
-        let navAdminController = UINavigationController(rootViewController: adminController)
-        adminController.modalPresentationStyle = .custom
-        navAdminController.navigationBar.barStyle = .black
-        navAdminController.navigationBar.isTranslucent = true
-        present(navAdminController, animated: true, completion: nil)
-    }
-    
-    
     func updateUserInfo(_ cell: ProfileCell, value: String, viewModel: ProfileViewModel) {
         guard var user = user else { return  }
         switch viewModel {
@@ -328,15 +328,10 @@ extension ProfileController: ProfileCellDelegate {
             print("")
         case .section_5:
             print("")
-        case .section_6:
-            print("")
         }
         self.user = user
         configureNavBarButtons()
     }
-    
-    
-    
     
     
     func showGuidelines(_ cell: ProfileCell) {
