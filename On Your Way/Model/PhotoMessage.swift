@@ -17,7 +17,7 @@ class PhotoMessage: NSObject, MediaItem {
     
     init(path: String){
         self.url = URL(fileURLWithPath: path)
-        self.placeholderImage = UIImage(systemName: "photo.on.rectangle.angled")!
+        self.placeholderImage = #imageLiteral(resourceName: "gallery_placeholder@2x.png")
         self.size = CGSize(width: 240, height: 240)
     }
     

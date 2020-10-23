@@ -49,6 +49,7 @@ class NotificationCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .white
+        label.setDimensions(height: 40, width: 200)
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -93,6 +94,9 @@ class NotificationCell: UITableViewCell {
         packageImageView.centerX(inView: timestamp, topAnchor: timestamp.bottomAnchor, paddingTop: 12)
         packageImageView.anchor(right : rightAnchor, paddingRight: 40)
         
+        addSubview(travelerName)
+        travelerName.centerY(inView: travelerImageView, leftAnchor: travelerImageView.rightAnchor, paddingLeft: 12)
+        
         
         addSubview(packageStatusLabel)
         packageStatusLabel.anchor(top: topAnchor, left: travelerImageView.rightAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
@@ -110,6 +114,7 @@ class NotificationCell: UITableViewCell {
                 guard let imageUrl = URL(string: user.avatarLink) else {return}
                 self?.travelerImageView.sd_setImage(with: imageUrl)
                 self?.travelerName.text = user.username
+                
             }
         }
         packageImageView.sd_setImage(with: viewModel.packageImages.first)
@@ -119,19 +124,19 @@ class NotificationCell: UITableViewCell {
         // MARK: - switch viewModel
         switch viewModel.packageStatus {
         case .packageIsPending:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemYellow)
         case .packageIsRejected:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemRed)
         case .packageIsAccepted:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemGreen)
         case .packageIsDelivered:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status:",
+            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemBlue)
         }

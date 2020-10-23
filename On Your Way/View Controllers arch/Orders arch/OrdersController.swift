@@ -77,6 +77,8 @@ class OrdersController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
+        print("DEBUG: user info is \(User.currentUser?.id)")
+        print("DEBUG: user info is \(User.currentUser?.username)")
     }
     
     

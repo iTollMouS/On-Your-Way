@@ -113,8 +113,8 @@ class TripDetailsController: UIViewController {
         configureUI()
         configureDelegates()
         fetchUser()
-        print("DEBUG: the current user is \(User.currentId)")
-        
+        print("DEBUG: user info is \(User.currentUser?.id)")
+        print("DEBUG: user info is \(User.currentUser?.username)")
         
     }
     

@@ -165,6 +165,8 @@ class ChatViewController: MessagesViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        print("DEBUG: user info is \(User.currentUser?.id)")
+        print("DEBUG: user info is \(User.currentUser?.username)")
         IQKeyboardManager.shared.enable = false
         configureNavBar()
         fetchUser()
@@ -286,7 +288,7 @@ class ChatViewController: MessagesViewController {
     
     // MARK: - loadChats
     fileprivate func loadChats(){
-        // we get the locam message from realm by providing the key remember chatRoomId <- is the key
+        // we get the local message from realm by providing the key remember chatRoomId <- is the key
         let predicate = NSPredicate(format: "chatRoomId = %@", chatRoomId)
         // get access to the database , declare type , then filter it .
         allLocalMessages = realm.objects(LocalMessage.self).filter(predicate).sorted(byKeyPath: kDATE, ascending: true)

@@ -48,6 +48,7 @@ class RecentController: UIViewController {
         configureRefreshControl()
         fetchRecentChats()
         
+        
     }
     
     
@@ -59,6 +60,8 @@ class RecentController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        print("DEBUG: user info is \(User.currentUser?.id)")
+        print("DEBUG: user info is \(User.currentUser?.username)")
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true

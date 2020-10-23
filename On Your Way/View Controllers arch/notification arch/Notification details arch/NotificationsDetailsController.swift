@@ -122,6 +122,7 @@ extension NotificationsDetailsController : OrderDetailHeaderDelegate {
             let browser = SKPhotoBrowser(photos: self!.images)
             browser.initializePageIndex(0)
             self?.present(browser, animated: true, completion: nil)
+            self?.images.removeAll()
         }
         images.removeAll()
     }

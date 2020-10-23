@@ -21,6 +21,7 @@ class ProfileController: UIViewController {
     private let gallery = GalleryController ()
     let cellSelectionStyle = UIView()
     
+    private var isVerified: Bool = false
     private var user: User?
     
     let refreshController = UIRefreshControl()
@@ -93,6 +94,7 @@ class ProfileController: UIViewController {
                 DispatchQueue.main.async {
                     self?.headerView.user = user
                     self?.footerView.user = user
+                    self?.isVerified = user.isUserVerified
                     self?.title = user.username
                     self?.showPopItem()
                     self?.tableView.reloadData()
@@ -150,8 +152,9 @@ class ProfileController: UIViewController {
             if var user = User.currentUser {
                 // we assign the profile url to user so that we save it to firebase
                 user.avatarLink = imageUrl
-                saveUserLocally(user)
+                user.isUserVerified = self!.isVerified
                 UserServices.shared.saveUserToFirestore(user)
+                saveUserLocally(user)
                 self?.user = user
             }
             self?.headerView.profileImageView.image = image

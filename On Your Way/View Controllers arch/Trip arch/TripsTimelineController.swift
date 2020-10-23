@@ -27,6 +27,8 @@ class TripsTimelineController: UITableViewController {
         configureUI()
         configureRefreshController()
         fetchTrips()
+        print("DEBUG: user info is \(User.currentUser?.id)")
+        print("DEBUG: user info is \(User.currentUser?.username)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
