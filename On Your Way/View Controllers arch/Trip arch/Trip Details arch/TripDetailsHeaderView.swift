@@ -24,7 +24,7 @@ class TripDetailsHeaderView: UIView {
     
     
     // MARK: - User
-    var user: User?{
+    var traveler: User?{
         didSet{configure()}
     }
     
@@ -141,15 +141,15 @@ class TripDetailsHeaderView: UIView {
     }
     
     func configure(){
-        guard let user = user else { return }
-        guard let imageUrl = URL(string: user.avatarLink) else { return }
-        checkMarkButton.isHidden = !user.isUserVerified
-        ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
-        ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"
+        guard let traveler = traveler else { return }
+        guard let imageUrl = URL(string: traveler.avatarLink) else { return }
+        checkMarkButton.isHidden = !traveler.isUserVerified
+        ratingView.rating = Double(traveler.sumAllReviews / traveler.reviewsCount).isNaN ? 0.0 : Double(traveler.sumAllReviews / traveler.reviewsCount)
+        ratingView.text = "5/\((traveler.sumAllReviews / traveler.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(traveler.sumAllReviews / traveler.reviewsCount))" )"
         profileImageView.sd_setImage(with: imageUrl)
         profileImageView.clipsToBounds = true
-        fullnameLabel.text = user.username
-        phoneNumberLabel.text = user.phoneNumber
+        fullnameLabel.text = traveler.username
+        phoneNumberLabel.text = traveler.phoneNumber
         
     }
     

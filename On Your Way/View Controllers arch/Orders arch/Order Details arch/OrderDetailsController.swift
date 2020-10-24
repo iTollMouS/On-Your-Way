@@ -181,15 +181,15 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
 
 extension OrderDetailsController : OrderDetailHeaderDelegate {
     func handleShowImages(_ package: Package, indexPath: IndexPath) {
-
-            FileStorage.downloadImage(imageUrl: package.packageImages[indexPath.row]) { [weak self] image in
-                guard let image = image else {return}
-                let photo = SKPhoto.photoWithImage(image)
-                self?.images.append(photo)
-                let browser = SKPhotoBrowser(photos: self!.images)
-                browser.initializePageIndex(0)
-                self?.present(browser, animated: true, completion: nil)
-            }
+        
+        FileStorage.downloadImage(imageUrl: package.packageImages[indexPath.row]) { [weak self] image in
+            guard let image = image else {return}
+            let photo = SKPhoto.photoWithImage(image)
+            self?.images.append(photo)
+            let browser = SKPhotoBrowser(photos: self!.images)
+            browser.initializePageIndex(0)
+            self?.present(browser, animated: true, completion: nil)
+        }
         
         images.removeAll()
     }
@@ -206,7 +206,9 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order \nYou can not undo this action if you reject it?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
-                    PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is rejected ", title: "Reject order")
+                    PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID],
+                                                                        body: "\(self!.user.username) has rejected your order ",
+                                                                        title: "Reject order")
                     self?.showCustomAlertView(condition: .warning)
                 }
             }
@@ -217,7 +219,6 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             
         //accept
         case 1:
-            guard let packageOwner = packageOwner else { return  }
             self.package.packageStatus = .packageIsAccepted
             self.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
             let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)

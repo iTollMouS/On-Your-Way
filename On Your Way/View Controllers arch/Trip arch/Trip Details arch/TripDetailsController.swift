@@ -83,7 +83,7 @@ class TripDetailsController: UIViewController {
     
     
     private var trip: Trip
-    private var user: User
+    private var traveler: User?
     
     private lazy var animationView: AnimationView = {
         let animationView = AnimationView()
@@ -95,8 +95,7 @@ class TripDetailsController: UIViewController {
         return animationView
     }()
     
-    init(user: User, trip: Trip) {
-        self.user = user
+    init(trip: Trip) {
         self.trip = trip
         super.init(nibName: nil, bundle: nil)
     }
@@ -131,8 +130,8 @@ class TripDetailsController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        let peopleReviewsController = PeopleReviewsController(user: user)
+        guard let traveler = traveler else { return  }
+        let peopleReviewsController = PeopleReviewsController(user: traveler)
         peopleReviewsController.popupItem.title = "People Reviews "
         peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
         peopleReviewsController.popupItem.progress = 0.34
@@ -144,10 +143,10 @@ class TripDetailsController: UIViewController {
     
     // MARK: - fetchUser()
     func fetchUser(){
-        UserServices.shared.fetchUser(userId: trip.userID) { user in
-            self.user = user
+        UserServices.shared.fetchUser(userId: trip.userID) { traveler in
+            self.traveler = traveler
             DispatchQueue.main.async { [weak self ] in
-                self?.headerView.user = user
+                self?.headerView.traveler = traveler
                 self?.tableView.reloadData()
             }
         }
@@ -234,25 +233,26 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
 // MARK:- Header Delegate + start chat
 extension TripDetailsController : TripDetailsHeaderViewDelegate {
     func handleReviewsTapped(_ view: TripDetailsHeaderView) {
-        
-        let peopleReviewsController = PeopleReviewsController(user: user)
+        guard let traveler = traveler else { return  }
+        let peopleReviewsController = PeopleReviewsController(user: traveler)
         peopleReviewsController.delegate = self
         present(peopleReviewsController, animated: true, completion: nil)
     }
     
     func handleStartToChat(_ view: TripDetailsHeaderView) {
-        
+        guard let traveler = traveler else { return  }
         if User.currentUser?.id == nil {
             showCustomAlertView(condition: .error)
             return
         }
+        
         UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
             print("DEBUG: user name is \(user.username)")
             
-            let chatId = startChat(currentUser: user, selectedUser: self!.user)
+            let chatId = startChat(currentUser: user, selectedUser: traveler)
             let chatViewController = ChatViewController(chatRoomId: chatId,
                                                         recipientId: self!.trip.userID,
-                                                        recipientName: self!.user.username)
+                                                        recipientName: traveler.username)
             
             self?.navigationController?.pushViewController(chatViewController, animated: true)
         }
@@ -265,12 +265,12 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
 extension TripDetailsController: TripDetailsFooterViewDelegate {
     
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
-        
+        guard let traveler = traveler else { return  }
         if User.currentUser?.id == nil {
             showCustomAlertView(condition: .warning)
             return
         }
-        let sendPackageController = SendPackageController(user: user, trip: trip)
+        let sendPackageController = SendPackageController(user: traveler, trip: trip)
         sendPackageController.delegate = self
         let navBar = UINavigationController(rootViewController: sendPackageController)
         navBar.isModalInPresentation = true

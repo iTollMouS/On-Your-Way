@@ -174,12 +174,9 @@ extension TripsTimelineController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
-        UserServices.shared.fetchUser(userId: trip.userID) { [weak self] user in
-            let tripDetailsController = TripDetailsController(user: user, trip: trip)
-            tripDetailsController.delegate = self
-            self?.navigationController?.pushViewController(tripDetailsController, animated: true)
-        }
-        
+        let tripDetailsController = TripDetailsController(trip: trip)
+        tripDetailsController.delegate = self
+        navigationController?.pushViewController(tripDetailsController, animated: true)
     }
     
     // MARK: - Delete row
