@@ -187,7 +187,8 @@ class TripCell: UITableViewCell {
                                                        packagesTypes,
                                                        ratingView])
         stackView.axis = .vertical
-        stackView.distribution = .fill
+        stackView.distribution = .fillProportionally
+        stackView.spacing = -30
         return stackView
     }()
     
@@ -225,7 +226,7 @@ class TripCell: UITableViewCell {
         citiesStackView.centerY(inView: lineBetweenCities, leftAnchor: lineBetweenCities.rightAnchor, paddingLeft: 12)
         citiesStackView.anchor(top: fromCityDot.topAnchor, bottom: destinationCityDot.bottomAnchor, paddingTop: -15, paddingBottom: -15)
         addSubview(containerInfoStackView)
-        containerInfoStackView.anchor(top: fullnameLable.bottomAnchor, left: citiesStackView.rightAnchor, bottom: bottomAnchor,
+        containerInfoStackView.anchor(top: fullnameLable.bottomAnchor, left: citiesStackView.rightAnchor,
                                       right: rightAnchor, paddingRight: 12)
         
     }

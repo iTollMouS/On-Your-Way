@@ -143,6 +143,7 @@ class TripDetailsHeaderView: UIView {
     func configure(){
         guard let user = user else { return }
         guard let imageUrl = URL(string: user.avatarLink) else { return }
+        checkMarkButton.isHidden = !user.isUserVerified
         ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
         ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"
         profileImageView.sd_setImage(with: imageUrl)

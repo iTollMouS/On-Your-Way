@@ -54,13 +54,8 @@ class FileStorage {
     }
     
     class func uploadVideo(_ video: NSData, directory: String, completion: @escaping(_ videoLink: String?) -> Void) {
-        
         let storageRef = storage.reference(forURL: storageReferenceKey).child(directory)
-        
-        
-        
         var task: StorageUploadTask!
-        
         task = storageRef.putData(video as Data, metadata: nil, completion: { (metadata, error) in
             if let error = error {
                 ProgressHUD.show("Error while uploading image \(error.localizedDescription)")
@@ -86,6 +81,35 @@ class FileStorage {
         }
         ProgressHUD.dismiss()
     }
+    
+    class func downloadVideo(videoLink: String, completion: @escaping (_ isReadyToPlay: Bool, _ videoFilename: String) -> Void) {
+        
+        guard let videoUrl = URL(string: videoLink) else {return}
+        let videoFileName = fileNameFrom(fileUrl: videoLink) + ".mov"
+        
+        if fileExistsAtPath(path: videoFileName) {
+            completion(true, videoFileName)
+            
+        } else {
+            let downloadQueue = DispatchQueue(label: "VideoDownloadQueue")
+            
+            downloadQueue.async {
+                let data = NSData(contentsOf: videoUrl)
+                if data != nil {
+                    FileStorage.saveFileLocally(fileData: data!, fileName: videoFileName)
+                    DispatchQueue.main.async {
+                        completion(true, videoFileName)
+                    }
+                    
+                } else {
+                    print("no document in database")
+                    
+                }
+            }
+        }
+        
+    }
+    
     
     
     // MARK: - downloadImage

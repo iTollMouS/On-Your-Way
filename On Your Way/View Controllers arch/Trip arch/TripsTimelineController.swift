@@ -19,7 +19,7 @@ class TripsTimelineController: UITableViewController {
     
     var trips: [Trip] = []
     var filteredTrips: [Trip] = []
-    
+    var tripsDictionary = [String: Trip]()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {

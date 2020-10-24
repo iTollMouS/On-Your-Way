@@ -15,7 +15,10 @@ class OutgoingMessageService {
     class func send(chatId: String, text: String?, photo: UIImage?, video: Video?, audio: String?,
                     audioDuration: Float = 0.0, location: String?, memberIds:[String]){
         
-        guard let currentUser = User.currentUser else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        UserServices.shared.fetchUser(userId: uid) { currentUser in
+            
+        
         
         let message = LocalMessage()
         message.id = UUID().uuidString
@@ -43,9 +46,12 @@ class OutgoingMessageService {
             sendVideoMessage(message: message, video: video!, memberIds: memberIds)
         }
         
-        
+        if location != nil {
+            sendLocationMessage(message: message, memberIds: memberIds)
+        }
         
         RecentChatService.shared.updateRecent(chatRoomId: chatId, lastMessage: message.message)
+        }
         
     }
     
@@ -138,3 +144,13 @@ func sendTextMessage(message: LocalMessage, text: String, memberIds: [String]){
     OutgoingMessageService.sendMessage(message: message, memberIds: memberIds)
 }
 
+func sendLocationMessage(message: LocalMessage, memberIds: [String]){
+    
+    guard let currentLocation = LocationManager.shared.currentLocation else {return}
+    message.message = "Location Message"
+    message.type = kLOCATION
+    message.latitude = currentLocation.latitude
+    message.longitude = currentLocation.longitude
+    OutgoingMessageService.sendMessage(message: message, memberIds: memberIds)
+}
+    

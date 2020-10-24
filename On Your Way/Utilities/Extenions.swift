@@ -762,6 +762,40 @@ extension Date {
     }
 }
 
+
+extension MKMapView {
+    
+    func zoomeToFit(annotations: [MKAnnotation]) {
+        var zoomRec = MKMapRect.null
+        annotations.forEach { annotation in
+            let annotationPoint = MKMapPoint(annotation.coordinate)
+            let pointRec = MKMapRect(x: annotationPoint.x, y: annotationPoint.y, width: 0.05, height: 0.05)
+            zoomRec = zoomRec.union(pointRec)
+            
+        }
+        let insets = UIEdgeInsets(top: 75, left: 75, bottom: 200, right: 75)
+        setVisibleMapRect(zoomRec, edgePadding: insets, animated: true)
+    }
+    
+    var zoomLevel: Int {
+        get {
+            return Int(log2(360 * (Double(self.frame.size.width/256) / self.region.span.longitudeDelta)) + 1);
+        }
+        
+        set (newZoomLevel){
+            setCenterCoordinate(coordinate:self.centerCoordinate, zoomLevel: newZoomLevel, animated: false)
+        }
+    }
+    
+    private func setCenterCoordinate(coordinate: CLLocationCoordinate2D, zoomLevel: Int, animated: Bool) {
+        let span = MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 360 / pow(2, Double(zoomLevel)) * Double(self.frame.size.width) / 256)
+        setRegion(MKCoordinateRegion(center: coordinate, span: span), animated: animated)
+    }
+    
+}
+
+
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
     case let (l?, r?):

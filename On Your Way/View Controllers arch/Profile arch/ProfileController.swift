@@ -89,6 +89,7 @@ class ProfileController: UIViewController {
         if User.currentUser == nil {
             presentLoggingController()
         } else {
+            
             UserServices.shared.fetchUser(userId: User.currentId) { [weak self] user in
                 self?.user = user
                 DispatchQueue.main.async {

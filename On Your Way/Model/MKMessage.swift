@@ -20,6 +20,8 @@ class MKMessage: NSObject, MessageType {
     var sender: SenderType {return mkSender}
     
     var photoItem: PhotoMessage?
+    var videoItem: VideoMessage?
+    var locationItem: LocationMessage?
     
     
     var senderInitials: String
@@ -42,6 +44,14 @@ class MKMessage: NSObject, MessageType {
             let photoItem = PhotoMessage(path: message.pictureUrl)
             self.kind = MessageKind.photo(photoItem)
             self.photoItem = photoItem
+        case kVIDEO:
+            let videoItem = VideoMessage(url: nil)
+            self.kind = MessageKind.video(videoItem)
+            self.videoItem = videoItem
+        case kLOCATION:
+            let locationItem = LocationMessage(location: CLLocation(latitude: message.latitude, longitude: message.longitude))
+            self.kind = MessageKind.location(locationItem)
+            self.locationItem = locationItem
         default: break
         }
         

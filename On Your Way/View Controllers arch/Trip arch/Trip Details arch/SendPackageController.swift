@@ -208,7 +208,7 @@ class SendPackageController: UIViewController {
         
         UserServices.shared.fetchUser(userId: uid) { [weak self] user in
             PushNotificationService.shared.sendPushNotification(userIds: [self!.trip.userID],
-                                                                body: "You have a new order from \(user.username)",
+                                                                body: "You have a new order from \(user.username) 🤩 📦",
                                                                 title: "New Order")
         }
         

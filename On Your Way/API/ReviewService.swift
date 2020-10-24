@@ -21,12 +21,17 @@ class ReviewService {
         } catch (let error) {
             print("DEBUG: error uploading reveiw \(error.localizedDescription)")
         }
-        
+    }
+    
+    func deleteMyReview(userId: String, review: Review,  completion: @escaping(Error?) -> Void ){
+        Firestore.firestore().collection("reviews")
+            .document(userId).collection("reviews")
+            .document(review.reviewId).delete(completion: completion)
     }
     
     func fetchPeopleReviews(userId: String, completion: @escaping([Review]) -> Void){
         var reviews: [Review] = []
-        Firestore.firestore().collection("reviews").document(userId).collection("reviews").getDocuments { (snapshot, error) in
+        Firestore.firestore().collection("reviews").document(userId).collection("reviews").addSnapshotListener { (snapshot, error) in
             
             guard let snapshot = snapshot else {return}
             
@@ -36,7 +41,7 @@ class ReviewService {
                         try? review.document.data(as: Review.self)
                     }
                     switch result {
-                   
+                    
                     case .success( let review):
                         if let review = review {
                             reviews

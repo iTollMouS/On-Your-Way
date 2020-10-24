@@ -17,6 +17,7 @@ enum OnboardingViewModel: Int, CaseIterable {
     case discountPolicy
     case stayHome
     case packageDelivery
+    case location
     
     var titleLabel: String {
         switch self {
@@ -27,6 +28,7 @@ enum OnboardingViewModel: Int, CaseIterable {
         case .discountPolicy: return "Clean Phones"
         case .stayHome: return "Stay Home"
         case .packageDelivery: return "Wipe your packages"
+        case .location: return "Share your location"
         }
     }
     
@@ -39,8 +41,11 @@ enum OnboardingViewModel: Int, CaseIterable {
         case .discountPolicy: return "Please clean your phone when someone uses it"
         case .stayHome: return "it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through t"
         case .packageDelivery: return "Please wipe packages before receiving and/or handling it"
+        case .location : return "Sharing your location to your customer around you"
         }
     }
+    
+//    bell_animation
     
     var JSONStringName: String {
         switch self {
@@ -51,6 +56,7 @@ enum OnboardingViewModel: Int, CaseIterable {
         case .discountPolicy: return "discount_icon"
         case .stayHome: return "stay_home"
         case .packageDelivery: return "packageDelivery"
+        case .location: return "locationAnimation"
         }
     }
     
@@ -63,6 +69,7 @@ enum OnboardingViewModel: Int, CaseIterable {
         case .discountPolicy: return (200, 300)
         case .stayHome: return (200, 300)
         case .packageDelivery: return (200, 300)
+        case .location: return (200, 300)
         }
     }
     

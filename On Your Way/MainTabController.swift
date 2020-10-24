@@ -30,7 +30,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
                                                                   tabBarItemTitle: "Travelers")
         
         let ordersController = OrdersController()
-        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!,
+        let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "tray.and.arrow.down.fill")!,
                                                            rootViewController: ordersController,
                                                            tabBarItemTitle: "Orders")
         

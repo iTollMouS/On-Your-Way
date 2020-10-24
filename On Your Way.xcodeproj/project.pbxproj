@@ -22,6 +22,13 @@
 		83375F79253B91CF008F2036 /* TypingListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F78253B91CF008F2036 /* TypingListenerService.swift */; };
 		83375F7B253BA231008F2036 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F7A253BA231008F2036 /* PushNotificationService.swift */; };
 		833E8E65253BF1CE007CCB2D /* ActiveListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */; };
+		833F713D2542E2F9000D31A2 /* VideoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F713C2542E2F9000D31A2 /* VideoMessage.swift */; };
+		833F713F2542F20A000D31A2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F713E2542F20A000D31A2 /* LocationManager.swift */; };
+		833F714125431CD0000D31A2 /* locationAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 833F714025431CD0000D31A2 /* locationAnimation.json */; };
+		833F714325431E84000D31A2 /* bell_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 833F714225431E84000D31A2 /* bell_animation.json */; };
+		833F71452543290D000D31A2 /* LocationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F71442543290D000D31A2 /* LocationMessage.swift */; };
+		833F714725433095000D31A2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F714625433095000D31A2 /* MapViewController.swift */; };
+		833F714925433CAB000D31A2 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F714825433CAB000D31A2 /* MapAnnotation.swift */; };
 		834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981B25311CCC00BE8691 /* AppDelegate.swift */; };
 		834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981D25311CCC00BE8691 /* SceneDelegate.swift */; };
 		834C982025311CCC00BE8691 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834C981F25311CCC00BE8691 /* MainTabController.swift */; };
@@ -159,6 +166,13 @@
 		83375F78253B91CF008F2036 /* TypingListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingListenerService.swift; sourceTree = "<group>"; };
 		83375F7A253BA231008F2036 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveListenerService.swift; sourceTree = "<group>"; };
+		833F713C2542E2F9000D31A2 /* VideoMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoMessage.swift; sourceTree = "<group>"; };
+		833F713E2542F20A000D31A2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		833F714025431CD0000D31A2 /* locationAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = locationAnimation.json; sourceTree = "<group>"; };
+		833F714225431E84000D31A2 /* bell_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bell_animation.json; sourceTree = "<group>"; };
+		833F71442543290D000D31A2 /* LocationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMessage.swift; sourceTree = "<group>"; };
+		833F714625433095000D31A2 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		833F714825433CAB000D31A2 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		834C981825311CCC00BE8691 /* On Your Way.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On Your Way.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		834C981B25311CCC00BE8691 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		834C981D25311CCC00BE8691 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -305,6 +319,16 @@
 			path = "Admin arch";
 			sourceTree = "<group>";
 		};
+		833F713B2542E22E000D31A2 /* Media Model */ = {
+			isa = PBXGroup;
+			children = (
+				8368383D2540B070005FEFE4 /* PhotoMessage.swift */,
+				833F71442543290D000D31A2 /* LocationMessage.swift */,
+				833F713C2542E2F9000D31A2 /* VideoMessage.swift */,
+			);
+			path = "Media Model";
+			sourceTree = "<group>";
+		};
 		834C980F25311CCC00BE8691 = {
 			isa = PBXGroup;
 			children = (
@@ -352,12 +376,14 @@
 				834C98C525312E3900BE8691 /* User.swift */,
 				835C88092539C3D400D49923 /* MKMessage.swift */,
 				835C88072539C2A100D49923 /* MKSender.swift */,
-				8368383D2540B070005FEFE4 /* PhotoMessage.swift */,
+				833F713E2542F20A000D31A2 /* LocationManager.swift */,
+				833F714825433CAB000D31A2 /* MapAnnotation.swift */,
 				8335149D253D705D001C2C9E /* Conditions.swift */,
 				834C993D25338D6800BE8691 /* Trip.swift */,
 				83B7637A2538192300503A9D /* Review.swift */,
 				83D7D4272535A49B00FA88F0 /* Package.swift */,
 				834C993425337C0900BE8691 /* RecentChat.swift */,
+				833F713B2542E22E000D31A2 /* Media Model */,
 				835C880D2539CC4200D49923 /* Realm arch */,
 			);
 			path = Model;
@@ -398,6 +424,7 @@
 		834C989B25312C3000BE8691 /* JSON files */ = {
 			isa = PBXGroup;
 			children = (
+				833F714225431E84000D31A2 /* bell_animation.json */,
 				834C98A125312C5700BE8691 /* 34548-5-estrellas.json */,
 				834C98AD25312C5700BE8691 /* chat.json */,
 				834C98A025312C5700BE8691 /* cleanPhones.json */,
@@ -405,6 +432,7 @@
 				83D7D41F2534F8F900FA88F0 /* emailConfirmation.json */,
 				833514A1253D729F001C2C9E /* animation_error.json */,
 				83B763772537409800503A9D /* failed.json */,
+				833F714025431CD0000D31A2 /* locationAnimation.json */,
 				8335149F253D724B001C2C9E /* success_motion.json */,
 				834C98A725312C5700BE8691 /* covid_19_protect.json */,
 				8335149B253D7025001C2C9E /* warning_animation.json */,
@@ -553,6 +581,7 @@
 			isa = PBXGroup;
 			children = (
 				835C87F925398BEB00D49923 /* ChatViewController.swift */,
+				833F714625433095000D31A2 /* MapViewController.swift */,
 				835C87FC2539BD0300D49923 /* Chat extentions  */,
 			);
 			path = "Chat arch";
@@ -703,6 +732,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833F714125431CD0000D31A2 /* locationAnimation.json in Resources */,
 				834C98B925312C5700BE8691 /* hand_sanitizer.json in Resources */,
 				8335149C253D7025001C2C9E /* warning_animation.json in Resources */,
 				834C98B725312C5700BE8691 /* width_measure_tape.json in Resources */,
@@ -719,6 +749,7 @@
 				83B763592536DB9100503A9D /* bell.json in Resources */,
 				83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */,
 				834C98B025312C5700BE8691 /* isTypingIndicator.json in Resources */,
+				833F714325431E84000D31A2 /* bell_animation.json in Resources */,
 				83B763552536DA7E00503A9D /* cachAnimation.json in Resources */,
 				834C98C025312C5700BE8691 /* hand_sanitizer2.json in Resources */,
 				834C98C225312C5700BE8691 /* wearMask.json in Resources */,
@@ -811,6 +842,7 @@
 				834C99052532326800BE8691 /* PeopleReviewsController.swift in Sources */,
 				834C9913253233D300BE8691 /* ProfileFooterView.swift in Sources */,
 				834C9938253382B400BE8691 /* RecentChatService.swift in Sources */,
+				833F71452543290D000D31A2 /* LocationMessage.swift in Sources */,
 				835C88002539BD3E00D49923 /* MessageCellDelegate.swift in Sources */,
 				834C98812531288D00BE8691 /* OrdersController.swift in Sources */,
 				835C88062539BD7500D49923 /* InputBarViewAccessoryDelegate.swift in Sources */,
@@ -852,6 +884,7 @@
 				834C99432533A92800BE8691 /* TripService.swift in Sources */,
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,
 				83145C7C2541C59400FF82A9 /* AdminHeaderView.swift in Sources */,
+				833F713F2542F20A000D31A2 /* LocationManager.swift in Sources */,
 				834C989825312BCE00BE8691 /* Extenions.swift in Sources */,
 				834C98FB253231E000BE8691 /* SafetyControllerGuidelines.swift in Sources */,
 				835C880A2539C3D400D49923 /* MKMessage.swift in Sources */,
@@ -859,6 +892,7 @@
 				83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */,
 				83375F4D253A8415008F2036 /* IncomingMessageService.swift in Sources */,
 				834C993525337C0A00BE8691 /* RecentChat.swift in Sources */,
+				833F714725433095000D31A2 /* MapViewController.swift in Sources */,
 				8368383E2540B073005FEFE4 /* PhotoMessage.swift in Sources */,
 				834C987E2531286100BE8691 /* TripsTimelineController.swift in Sources */,
 				834C991B2532391B00BE8691 /* DateAndTimeController.swift in Sources */,
@@ -867,6 +901,7 @@
 				834C98E02531AE0D00BE8691 /* PhoneOPTTextField.swift in Sources */,
 				83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */,
 				834C98C625312E3900BE8691 /* User.swift in Sources */,
+				833F713D2542E2F9000D31A2 /* VideoMessage.swift in Sources */,
 				834C9887253129FF00BE8691 /* RecentController.swift in Sources */,
 				834C993A253384C700BE8691 /* StartChat.swift in Sources */,
 				834C99222532D7B900BE8691 /* UserServices.swift in Sources */,
@@ -883,6 +918,7 @@
 				834C990C253232D700BE8691 /* OnboardingCell.swift in Sources */,
 				835C88112539FB2F00D49923 /* OutgoingMessageService.swift in Sources */,
 				83D7D41E2534F55E00FA88F0 /* UpdateEmailController.swift in Sources */,
+				833F714925433CAB000D31A2 /* MapAnnotation.swift in Sources */,
 				834C98E42531D0F800BE8691 /* AuthServices.swift in Sources */,
 				83B7637D253819FF00503A9D /* ReviewService.swift in Sources */,
 				834C990B253232D700BE8691 /* OnboardingViewModel.swift in Sources */,
@@ -958,7 +994,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1013,7 +1049,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1033,7 +1069,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1041,7 +1077,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ARMobileApps.org.On-Your-Way";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1055,7 +1091,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1063,7 +1099,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ARMobileApps.org.On-Your-Way";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

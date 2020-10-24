@@ -147,8 +147,6 @@ class ChatViewController: MessagesViewController {
         createTypingObserver()
         configureMessageCollectionView()
         listenForReadStatusChange()
-        print("DEBUG:: user name is \(recipientName)")
-        print("DEBUG:: user name is \(User.currentUser?.username)")
         
     }
     
@@ -221,6 +219,9 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         messagesCollectionView.refreshControl = refreshController
+        refreshController.tintColor = .white
+        refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
+                                                                [.foregroundColor: UIColor.white])
         scrollsToBottomOnKeyboardBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true
         
@@ -265,7 +266,10 @@ class ChatViewController: MessagesViewController {
             SwiftEntryKit.dismiss()
         // location
         case 2:
-            print("DEBUG: tag is \(sender.tag)")
+            if let _ = LocationManager.shared.currentLocation {
+                self.messageSend(text: nil, photo: nil, video: nil, audio: nil, location: kLOCATION)
+            }
+            SwiftEntryKit.dismiss()
         // cancel
         case 3:
             SwiftEntryKit.dismiss()

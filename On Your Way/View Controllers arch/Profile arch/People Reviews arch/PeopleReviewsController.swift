@@ -188,6 +188,7 @@ class PeopleReviewsController: UIViewController {
         textView.layer.cornerRadius = 10
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.clipsToBounds = true
+        tableView.tableFooterView = UIView()
         textView.keyboardAppearance = .dark
         textView.addSubview(placeholderLabel)
         placeholderLabel.anchor(top: textView.topAnchor, left: textView.leftAnchor,
@@ -257,19 +258,19 @@ class PeopleReviewsController: UIViewController {
     
     func fetchReviews(){
         var sumAllReviews = 0.0
-        ReviewService.shared.fetchPeopleReviews(userId: user.id) { [weak self]  in
-            self?.reviews = $0
-            self?.headerView.reviewRate.text = "\(self!.reviews.count)"
-            self?.reviews.forEach{
-                sumAllReviews += $0.rate
-                self?.user.reviewsCount = Double(self!.reviews.count)
-                self?.user.sumAllReviews = sumAllReviews
-                saveUserLocally(self!.user)
-                UserServices.shared.saveUserToFirestore(self!.user)
+        DispatchQueue.main.async { [weak self] in
+            ReviewService.shared.fetchPeopleReviews(userId: self!.user.id) { [weak self]  in
+                self?.reviews = $0
+                self?.headerView.reviewRate.text = "\(self!.reviews.count)"
+                self?.reviews.forEach{
+                    sumAllReviews += $0.rate
+                    self?.user.reviewsCount = Double(String(format: "%.02f", Double(self!.reviews.count)))!
+                    self?.user.sumAllReviews = sumAllReviews
+                }
+                self?.tableView.reloadData()
             }
-            self?.tableView.reloadData()
         }
-        configureWhenTableIsEmpty()
+        
     }
     
     func canUserReview(){
@@ -283,7 +284,6 @@ class PeopleReviewsController: UIViewController {
         
         DispatchQueue.main.async { 
             TripService.shared.fetchMyRequest(userId: reviewerId) { [weak self] packages in
-                
                 if packages.isEmpty{
                     self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
                     self?.writeReviewButton.isEnabled = false
@@ -396,6 +396,28 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let selectedReview = reviews[indexPath.row]
+        if uid == selectedReview.userID {
+            if editingStyle == .delete {
+                DispatchQueue.main.async { [weak self] in
+                    ReviewService.shared.deleteMyReview(userId: self!.user.id, review: selectedReview) { error in
+                        print("DEBUG: success!!!!")
+                        self?.reviews.remove(at: indexPath.row)
+                        self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        self?.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 extension PeopleReviewsController: UITextViewDelegate {
@@ -445,7 +467,10 @@ extension PeopleReviewsController {
                             timestamp: Date(),
                             reviewComment: reviewComment,
                             rate: rate, reviewId: reviewId)
-        PushNotificationService.shared.sendPushNotification(userIds: [user.id], body: "Someone wrote a review 🤩 check it out", title: "Rating 5/\(rate)")
+        user.sumAllReviews += rate
+        user.reviewsCount += 1
+        PushNotificationService.shared.sendPushNotification(userIds: [user.id], body: "Someone wrote a review 🤩 check it out", title: "Rating 5/ \(rate)")
+        UserServices.shared.saveUserToFirestore(user)
         ReviewService.shared.uploadNewReview(userId: user.id, review: review) { error in
             if let error = error {
                 print("DEBUG: error while \(error.localizedDescription)")
@@ -521,7 +546,8 @@ extension PeopleReviewsController {
 // MARK: - show case table is empty
 extension PeopleReviewsController {
     func configureWhenTableIsEmpty(){
-        if self.reviews.isEmpty {
+        DispatchQueue.main.async { [weak self] in
+        if self!.reviews.isEmpty {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
                 if User.currentId == self?.user.id {
                     self?.tableView.setEmptyView(title: "No Reviews",
@@ -534,6 +560,6 @@ extension PeopleReviewsController {
                 } else {self?.tableView.restore()}
             }
         }
+        }
     }
 }
-

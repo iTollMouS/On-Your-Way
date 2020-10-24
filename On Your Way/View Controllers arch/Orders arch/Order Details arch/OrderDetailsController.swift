@@ -111,9 +111,9 @@ class OrderDetailsController: UIViewController {
     
     fileprivate func fetchPackageOwnerInfo(){
         UserServices.shared.fetchUser(userId: package.userID) { [weak self] user in
-            self?.user = user
+            self?.packageOwner = user
             DispatchQueue.main.async { [weak self] in
-                self?.title = user.username
+                self?.title = self!.packageOwner?.username
                 self?.footerView.startChatButton.setTitle("Chat with \(user.username)  ", for: .normal)
             }
         }
@@ -217,12 +217,15 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             
         //accept
         case 1:
+            guard let packageOwner = packageOwner else { return  }
             self.package.packageStatus = .packageIsAccepted
             self.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
             let alert = UIAlertController(title: nil, message: "Are you sure you want accept this order ?", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Accept order", style: .default, handler: { [weak self] (alertAction) in
                 TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
-                    PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID], body: "Your Order is Accepted ", title: "Accepted order")
+                    PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID],
+                                                                        body: "\(self!.user.username) just accepted your order 📦 🤩 you can now chat with her",
+                                                                        title: "Accepted order")
                     self?.showCustomAlertView(condition: .success)
                 }
             }))
@@ -231,8 +234,8 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         // chat
         case 2:
             UserServices.shared.fetchUser(userId: package.userID) { [weak self] packageOwner in
-                
-                let chatId = startChat(currentUser: packageOwner, selectedUser: self!.user)
+                guard let currentUser = User.currentUser else {return}
+                let chatId = startChat(currentUser: currentUser, selectedUser: packageOwner)
                 let chatViewController = ChatViewController(chatRoomId: chatId,
                                                             recipientId: packageOwner.id,
                                                             recipientName: packageOwner.username)

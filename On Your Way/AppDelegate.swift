@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().delegate = self
         application.registerForRemoteNotifications()
         requestPushNotification()
+        LocationManager.shared.requestLocationAccess()
         return true
     }
 
