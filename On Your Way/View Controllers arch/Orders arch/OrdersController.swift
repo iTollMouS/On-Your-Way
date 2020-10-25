@@ -55,12 +55,13 @@ class OrdersController: UIViewController {
     var newPackageOrder = [Package]()
     var inProcessPackageOrder = [Package]()
     var completedPackageOrder = [Package]()
+    lazy var rowsToDisplay = newPackageOrder
     
     var packageDictionary = [String: Package]()
     
     private var viewModel: PackageStatus?
     
-    lazy var rowsToDisplay = newPackageOrder
+    
     
     private var user: User?
     

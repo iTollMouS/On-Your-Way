@@ -7,7 +7,14 @@
 
 import UIKit
 
+
+protocol MainTabControllerDelegate: class {
+    func handleClearUnread(_ tabBar: MainTabController)
+}
+
 class MainTabController: UITabBarController, UITabBarControllerDelegate {
+    
+    weak var delegateClearUncounted: MainTabControllerDelegate?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -16,10 +23,9 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
-
-
+        
     }
-
+    
     
     // MARK: - configureViewControllers
     func configureViewControllers(){
@@ -40,11 +46,12 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
                                                                   tabBarItemTitle: "Notifications")
         
         let recentController = RecentController()
+        recentController.delegate = self
         let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
                                                            rootViewController: recentController,
                                                            tabBarItemTitle: "Meesage")
         
-
+        
         let profileController = ProfileController()
         let profileControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                             rootViewController: profileController,
@@ -56,14 +63,14 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         
     }
     
-// MARK: - tabBarController as modal
+    // MARK: - tabBarController as modal
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.firstIndex(of: viewController)
         if index == 3 {
             let recentController = RecentController()
+            recentController.delegate = self
             let navController = UINavigationController(rootViewController: recentController)
             navController.tabBarController?.hidesBottomBarWhenPushed = true
-            
             navController.modalPresentationStyle = .custom
             navController.navigationBar.barStyle = .black
             navController.navigationBar.isTranslucent = true
@@ -75,7 +82,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     
-// MARK: - templateNavController
+    // MARK: - templateNavController
     func templateNavController(image: UIImage, rootViewController: UIViewController, tabBarItemTitle: String) -> UINavigationController {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = image
@@ -86,4 +93,25 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         return navController
     }
     
+}
+
+extension MainTabController: RecentControllerDelegate {
+    func showUnreadCount(_ recent: RecentChat, cell: RecentCell) {
+        
+        delegateClearUncounted?.handleClearUnread(self)
+        
+        guard let messageBadge = self.tabBar.items?[3] else { return  }
+                DispatchQueue.main.async {
+                    if recent.unreadCounter != 0 {
+                        cell.counterMessageLabel.text = "\(recent.unreadCounter)"
+                        messageBadge.badgeValue = "\(recent.unreadCounter)"
+                        messageBadge.badgeColor = .blueLightIcon
+                        cell.counterMessageLabel.isHidden = false
+                    } else {
+                        cell.counterMessageLabel.isHidden = true
+                        messageBadge.badgeValue = ""
+                        messageBadge.badgeColor = .clear
+                    }
+                }
+    }
 }

@@ -107,6 +107,9 @@ class ChatViewController: MessagesViewController {
     var displayingMessagesCount = 0
     var maxMessageNumber = 0
     var minMessageNumber = 0
+    var longPressGesture: UILongPressGestureRecognizer!
+    var audioFileName = ""
+    var audioDuration: Date!
     
     var gallery = GalleryController()
     
@@ -171,6 +174,7 @@ class ChatViewController: MessagesViewController {
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         
     }
+    
     
     
     
@@ -252,6 +256,18 @@ class ChatViewController: MessagesViewController {
     }
     
     // MARK: - Actions
+    
+    
+    
+    
+    fileprivate func configureGestureRecognizer(){
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressedMic))
+        longPressGesture.minimumPressDuration = 0.5
+    }
+    
+    @objc fileprivate func handleLongPressedMic(){
+        
+    }
     
     @objc fileprivate func handleActionAttachment(_ sender: UIButton){
         
@@ -426,11 +442,10 @@ class ChatViewController: MessagesViewController {
     // MARK: - messageSend
     func messageSend(text: String?, photo: UIImage?, video: Video?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
         
-        
-        
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
                                     audio: audio, location: location, memberIds: [User.currentId, recipientId])
-        //        PushNotificationService.shared.sendPushNotification(userIds:  [User.currentId, recipientId], body: text , title: recipientName)
+        
+        
     }
     
     

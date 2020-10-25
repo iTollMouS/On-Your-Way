@@ -18,39 +18,40 @@ class OutgoingMessageService {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         UserServices.shared.fetchUser(userId: uid) { currentUser in
             
-        
-        
-        let message = LocalMessage()
-        message.id = UUID().uuidString
-        message.chatRoomId = chatId
-        message.senderId = currentUser.id
-        message.senderinitials = String(currentUser.username.first!)
-        message.date = Date()
-        message.status = kSENT
-        /* when we send message , we do :
-         1- update recent message
-         2- send notification
-         3- re set read counter
-         */
-        
-        if text != nil {
             
-            sendTextMessage(message: message, text: text!, memberIds: memberIds)
-        }
-        
-        if photo != nil {
-            sendPictureMessage(message: message, photo: photo!, memberIds: memberIds)
-        }
-        
-        if video != nil {
-            sendVideoMessage(message: message, video: video!, memberIds: memberIds)
-        }
-        
-        if location != nil {
-            sendLocationMessage(message: message, memberIds: memberIds)
-        }
-        
-        RecentChatService.shared.updateRecent(chatRoomId: chatId, lastMessage: message.message)
+            
+            let message = LocalMessage()
+            message.id = UUID().uuidString
+            message.chatRoomId = chatId
+            message.senderId = currentUser.id
+            message.senderinitials = String(currentUser.username.first!)
+            message.date = Date()
+            message.status = kSENT
+            /* when we send message , we do :
+             1- update recent message
+             2- send notification
+             3- re set read counter
+             */
+            
+            if text != nil {
+                
+                sendTextMessage(message: message, text: text!, memberIds: memberIds)
+                
+            }
+            
+            if photo != nil {
+                sendPictureMessage(message: message, photo: photo!, memberIds: memberIds)
+            }
+            
+            if video != nil {
+                sendVideoMessage(message: message, video: video!, memberIds: memberIds)
+            }
+            
+            if location != nil {
+                sendLocationMessage(message: message, memberIds: memberIds)
+            }
+            
+            RecentChatService.shared.updateRecent(chatRoomId: chatId, lastMessage: message.message)
         }
         
     }
@@ -153,4 +154,4 @@ func sendLocationMessage(message: LocalMessage, memberIds: [String]){
     message.longitude = currentLocation.longitude
     OutgoingMessageService.sendMessage(message: message, memberIds: memberIds)
 }
-    
+

@@ -7,8 +7,15 @@
 
 import UIKit
 
+
+protocol RecentCellDelegate: class {
+    func showRecentMessageCount(recent: RecentChat, cell: RecentCell)
+}
+
 class RecentCell: UITableViewCell {
     
+    
+    weak var delegate: RecentCellDelegate?
     
     var recentChat: RecentChat?{
         didSet{ configure() }
@@ -41,7 +48,7 @@ class RecentCell: UITableViewCell {
         return imageView
     }()
     
-    private lazy var recentMessageLabel: UILabel = {
+    lazy var recentMessageLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.numberOfLines = 3
@@ -71,7 +78,7 @@ class RecentCell: UITableViewCell {
         return label
     }()
     
-    private lazy var counterMessageLabel: UILabel = {
+    lazy var counterMessageLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -122,15 +129,18 @@ class RecentCell: UITableViewCell {
     
     func configure(){
         guard let recent = recentChat else { return  }
+        delegate?.showRecentMessageCount(recent: recent, cell: self)
         timestampLabel.text = recent.date?.convertToTimeAgo(style: .abbreviated)
         recentMessageLabel.text = recent.lastMessage
         fullnameLabel.text = recent.receiverName
-        if recent.unreadCounter != 0 {
-            self.counterMessageLabel.text = "\(recent.unreadCounter)"
-            self.counterMessageLabel.isHidden = false
-        } else {
-            self.counterMessageLabel.isHidden = true
-        }
+        
+        
+//        if recent.unreadCounter != 0 {
+//            self.counterMessageLabel.text = "\(recent.unreadCounter)"
+//            self.counterMessageLabel.isHidden = false
+//        } else {
+//            self.counterMessageLabel.isHidden = true
+//        }
         
         FileStorage.downloadImage(imageUrl: recent.profileImageView) { image in
             guard let image = image else {

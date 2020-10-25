@@ -217,11 +217,20 @@ class TripCell: UITableViewCell {
         // construct the dots and the line in between
         addSubview(fromCityDot)
         fromCityDot.centerX(inView: profileImageView, topAnchor: profileImageView.bottomAnchor, paddingTop: 18)
+        
+        
+        
         addSubview(destinationCityDot)
         destinationCityDot.centerX(inView: fromCityDot, topAnchor: fromCityDot.bottomAnchor, paddingTop: 100)
         addSubview(lineBetweenCities)
         lineBetweenCities.centerX(inView: fromCityDot)
-        lineBetweenCities.anchor(top: fromCityDot.bottomAnchor, bottom: destinationCityDot.topAnchor, paddingTop: 8, paddingBottom: 8)
+        lineBetweenCities.anchor(top: fromCityDot.bottomAnchor,
+                                 bottom: destinationCityDot.topAnchor,
+                                 paddingTop: 8,
+                                 paddingBottom: 8)
+        
+        
+        
         addSubview(citiesStackView)
         citiesStackView.centerY(inView: lineBetweenCities, leftAnchor: lineBetweenCities.rightAnchor, paddingLeft: 12)
         citiesStackView.anchor(top: fromCityDot.topAnchor, bottom: destinationCityDot.bottomAnchor, paddingTop: -15, paddingBottom: -15)

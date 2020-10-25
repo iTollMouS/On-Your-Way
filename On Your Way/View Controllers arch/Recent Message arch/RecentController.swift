@@ -10,8 +10,15 @@ import UIKit
 
 private let reuseIdentifier = "RecentCell"
 
+
+
+protocol RecentControllerDelegate: class {
+    func showUnreadCount(_ recent: RecentChat, cell: RecentCell)
+}
+
 class RecentController: UIViewController {
-    
+ 
+    weak var delegate: RecentControllerDelegate?
     
     // MARK: - Properties
     var allRecent: [RecentChat] = []
@@ -60,8 +67,6 @@ class RecentController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        print("DEBUG: user info is \(User.currentUser?.id)")
-        print("DEBUG: user info is \(User.currentUser?.username)")
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -144,8 +149,8 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
+        cell.delegate = self
         cell.recentChat = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
-        
         return cell
     }
     
@@ -195,6 +200,13 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension RecentController: RecentCellDelegate {
+    func showRecentMessageCount(recent: RecentChat, cell: RecentCell) {
+        
+        delegate?.showUnreadCount(recent, cell: cell)
+    }
+    
+}
 
 
 // MARK: - UISearchResultsUpdating
