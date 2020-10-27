@@ -1068,7 +1068,7 @@
 				CODE_SIGN_ENTITLEMENTS = "On Your Way/On Your Way.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1092,7 +1092,7 @@
 				CODE_SIGN_ENTITLEMENTS = "On Your Way/On Your Way.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
