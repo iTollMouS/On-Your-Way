@@ -40,10 +40,8 @@ class TripService {
             
             guard let snapshot = snapshot else {return}
             
-            trips = snapshot.documentChanges.compactMap {(queryDocumentSnapshot) -> Trip? in
-                
-                return try? queryDocumentSnapshot.document.data(as: Trip.self)
-            }
+            trips = snapshot.documentChanges.compactMap {try! $0.document.data(as: Trip.self)}
+            
             
             trips.forEach { trip in
                 let tempTrip = trip

@@ -175,7 +175,6 @@ class TripCell: UITableViewCell {
         view.text = "No reviews"
         view.settings.textFont = UIFont.systemFont(ofSize: 14)
         view.backgroundColor = .clear
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleReviewTapped)))
         return view
     }()
     
@@ -283,13 +282,6 @@ class TripCell: UITableViewCell {
         label.textAlignment = textAlignment
         label.numberOfLines = 4
         return label
-    }
-    
-    
-    // MARK: - Actions
-    @objc private func handleReviewTapped(){
-        guard let trip = trip else { return }
-        delegate?.handleDisplayReviews(self, selectedTrip: trip)
     }
     
     

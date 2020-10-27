@@ -10,10 +10,6 @@ import UIKit
 class MainTabController: UITabBarController, UITabBarControllerDelegate {
     
    // MARK: - Lifecycle
-    
-    private var recent = [String: RecentChat]()
-    
-        
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
@@ -24,27 +20,28 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
  
     func fetchRecent(){
+        
         DispatchQueue.main.async { [weak self] in
             RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] recents in
-                recents.forEach { recent in
-                    if recent.unreadCounter != 0 {
-                        self?.configureTabBarBadge(recentCount: recent.unreadCounter)
-                    }
-                }
+                var value = 0
+                let totalCount =  recents.compactMap{$0.unreadCounter}
+                totalCount.forEach { value += $0 }
+                self?.configureTabBarBadge(recentCount: value)
             }
         }
     }
     
     func configureTabBarBadge(recentCount: Int){
-        if recentCount != 0 {
-            tabBar.items![3].badgeValue = recentCount.toString()
-            tabBar.items![3].badgeColor = .blueLightIcon
-        } else {
-            tabBar.items![3].badgeValue = nil
-            tabBar.items![3].badgeColor = nil
+        DispatchQueue.main.async {
+            if recentCount != 0 {
+                self.tabBar.items![3].badgeValue = recentCount.toString()
+                self.tabBar.items![3].badgeColor = .blueLightIcon
+            } else {
+                self.tabBar.items![3].badgeValue = nil
+                self.tabBar.items![3].badgeColor = nil
+            }
         }
     }
-    
     
     // MARK: - configureViewControllers
     func configureViewControllers(){
@@ -116,6 +113,8 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
 
 extension MainTabController : RecentControllerDelegate {
     func handleResetUnreadCounter(_ recentUnread: Int) {
+        
         configureTabBarBadge(recentCount: recentUnread)
+
     }
 }

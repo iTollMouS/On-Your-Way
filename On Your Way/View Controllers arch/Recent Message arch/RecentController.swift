@@ -129,9 +129,7 @@ class RecentController: UIViewController {
     @objc func handleDismissal(){
         var value = 0
         tableView.reloadData()
-        let totalCount =  allRecent.compactMap { recent -> Int? in
-            return recent.unreadCounter
-        }
+        let totalCount =  allRecent.compactMap{$0.unreadCounter}
         totalCount.forEach { value += $0 }
         delegate?.handleResetUnreadCounter(value)
         dismiss(animated: true, completion: nil)
