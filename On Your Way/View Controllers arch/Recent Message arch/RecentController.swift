@@ -132,11 +132,7 @@ class RecentController: UIViewController {
         let totalCount =  allRecent.compactMap { recent -> Int? in
             return recent.unreadCounter
         }
-        print("DEBUG: recent is \(totalCount)")
-        totalCount.forEach { number in
-            value += number
-        }
-        
+        totalCount.forEach { value += $0 }
         delegate?.handleResetUnreadCounter(value)
         dismiss(animated: true, completion: nil)
     }

@@ -128,9 +128,8 @@ class RecentCell: UITableViewCell {
         recentMessageLabel.text = recent.lastMessage
         fullnameLabel.text = recent.receiverName
         
-        
         if recent.unreadCounter != 0 {
-            self.counterMessageLabel.text = "\(recent.unreadCounter)"
+            self.counterMessageLabel.text = recent.unreadCounter.toString()
             self.counterMessageLabel.isHidden = false
         } else {
             self.counterMessageLabel.isHidden = true

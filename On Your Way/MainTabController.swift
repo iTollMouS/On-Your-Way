@@ -36,7 +36,6 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func configureTabBarBadge(recentCount: Int){
-        
         if recentCount != 0 {
             tabBar.items![3].badgeValue = recentCount.toString()
             tabBar.items![3].badgeColor = .blueLightIcon
@@ -117,14 +116,6 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
 
 extension MainTabController : RecentControllerDelegate {
     func handleResetUnreadCounter(_ recentUnread: Int) {
-        
-        if recentUnread != 0 {
-            tabBar.items![3].badgeValue = recentUnread.toString()
-            tabBar.items![3].badgeColor = .blueLightIcon
-        } else {
-            tabBar.items![3].badgeValue = nil
-            tabBar.items![3].badgeColor = nil
-        }
-        
+        configureTabBarBadge(recentCount: recentUnread)
     }
 }
