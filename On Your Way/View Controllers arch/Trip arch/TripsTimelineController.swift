@@ -229,25 +229,17 @@ extension TripsTimelineController: NewTripControllerDelegate {
 // MARK: - LoginControllerDelegate
 extension TripsTimelineController: LoginControllerDelegate {
     func handleLoggingControllerDismissal(_ view: LoginController) {
-        
-        print("DEBUG:: delegate is fired")
-        
-        view.dismiss(animated: true) {
-            if self.isAppAlreadyLaunchedOnce(){
-                print("DEBUG:: first time ")
-            } else {
-                print("DEBUG:: second time ")
+        dismiss(animated: true) { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                if !self!.isAppAlreadyLaunchedOnce(){
+                    let onboardingController = OnboardingController()
+                    onboardingController.modalPresentationStyle = .custom
+                    self!.present(onboardingController, animated: true) { [weak self] in
+                        self?.fetchTrips()
+                    }
+                }
             }
         }
-        
-        
-//        DispatchQueue.main.async { [weak self] in
-//            if !self!.isAppAlreadyLaunchedOnce() {
-//                let onboardingController = OnboardingController()
-//                onboardingController.modalPresentationStyle = .custom
-//                self!.present(onboardingController, animated: true, completion: nil)
-//            }
-//        }
     }
 }
 

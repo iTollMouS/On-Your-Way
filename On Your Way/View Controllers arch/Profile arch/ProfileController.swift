@@ -206,7 +206,18 @@ extension ProfileController: UpdateEmailControllerDelegate {
 // MARK: - LoginControllerDelegate
 extension ProfileController: LoginControllerDelegate {
     func handleLoggingControllerDismissal(_ view: LoginController) {
-        view.dismiss(animated: true) { [weak self] in self?.checkUser() }
+        view.dismiss(animated: true) {
+            [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                if !self!.isAppAlreadyLaunchedOnce() {
+                    let onboardingController = OnboardingController()
+                    onboardingController.modalPresentationStyle = .custom
+                    self!.present(onboardingController, animated: true) { [weak self] in
+                        self?.checkUser()
+                    }
+                }
+            }
+        }
     }
 }
 

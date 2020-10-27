@@ -20,7 +20,6 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
  
     func fetchRecent(){
-        
         DispatchQueue.main.async { [weak self] in
             RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] recents in
                 var value = 0
