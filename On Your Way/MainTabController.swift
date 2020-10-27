@@ -10,12 +10,40 @@ import UIKit
 class MainTabController: UITabBarController, UITabBarControllerDelegate {
     
    // MARK: - Lifecycle
+    
+    private var recent = [String: RecentChat]()
+    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
         self.delegate = self
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
+        fetchRecent()
+    }
+ 
+    func fetchRecent(){
+        DispatchQueue.main.async { [weak self] in
+            RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] recents in
+                recents.forEach { recent in
+                    if recent.unreadCounter != 0 {
+                        self?.configureTabBarBadge(recentCount: recent.unreadCounter)
+                    }
+                }
+            }
+        }
+    }
+    
+    func configureTabBarBadge(recentCount: Int){
+        
+        if recentCount != 0 {
+            tabBar.items![3].badgeValue = recentCount.toString()
+            tabBar.items![3].badgeColor = .blueLightIcon
+        } else {
+            tabBar.items![3].badgeValue = nil
+            tabBar.items![3].badgeColor = nil
+        }
     }
     
     
@@ -38,7 +66,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
                                                                   tabBarItemTitle: "Notifications")
         
         let recentController = RecentController()
-//        recentController.delegate = self
+        recentController.delegate = self
         let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
                                                            rootViewController: recentController,
                                                            tabBarItemTitle: "Meesage")
@@ -60,7 +88,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         let index = viewControllers?.firstIndex(of: viewController)
         if index == 3 {
             let recentController = RecentController()
-//            recentController.delegate = self
+            recentController.delegate = self
             let navController = UINavigationController(rootViewController: recentController)
             navController.tabBarController?.hidesBottomBarWhenPushed = true
             navController.modalPresentationStyle = .custom
@@ -85,4 +113,18 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         return navController
     }
     
+}
+
+extension MainTabController : RecentControllerDelegate {
+    func handleResetUnreadCounter(_ recentUnread: Int) {
+        
+        if recentUnread != 0 {
+            tabBar.items![3].badgeValue = recentUnread.toString()
+            tabBar.items![3].badgeColor = .blueLightIcon
+        } else {
+            tabBar.items![3].badgeValue = nil
+            tabBar.items![3].badgeColor = nil
+        }
+        
+    }
 }

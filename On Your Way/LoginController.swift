@@ -302,7 +302,7 @@ extension LoginController: PhoneLoginControllerDelegate {
 extension LoginController: RegistrationControllerDelegate {
     func handleRegistrationDismissal(_ view: RegistrationController) {
         view.dismiss(animated: true) { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+            self?.delegate?.handleLoggingControllerDismissal(self!)
         }
     }
 }

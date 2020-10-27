@@ -10,9 +10,16 @@ import UIKit
 
 private let reuseIdentifier = "RecentCell"
 
+
+protocol RecentControllerDelegate: class {
+    func handleResetUnreadCounter(_ recentUnread: Int)
+}
+
 class RecentController: UIViewController {
     
 
+    weak var delegate: RecentControllerDelegate?
+    
     // MARK: - Properties
     var allRecent: [RecentChat] = []
     var filteredAllRecent: [RecentChat] = []
@@ -50,7 +57,6 @@ class RecentController: UIViewController {
         
         
     }
-    
     
     var darkMode = false
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -121,11 +127,19 @@ class RecentController: UIViewController {
     
     // MARK: - Actions
     @objc func handleDismissal(){
+        var value = 0
+        tableView.reloadData()
+        let totalCount =  allRecent.compactMap { recent -> Int? in
+            return recent.unreadCounter
+        }
+        print("DEBUG: recent is \(totalCount)")
+        totalCount.forEach { number in
+            value += number
+        }
+        
+        delegate?.handleResetUnreadCounter(value)
         dismiss(animated: true, completion: nil)
     }
-    
-    
-    
 }
 
 

@@ -27,8 +27,6 @@ class TripsTimelineController: UITableViewController {
         configureUI()
         configureRefreshController()
         fetchTrips()
-        print("DEBUG: user info is \(User.currentUser?.id)")
-        print("DEBUG: user info is \(User.currentUser?.username)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,16 +44,6 @@ class TripsTimelineController: UITableViewController {
         return darkMode ? .lightContent : .lightContent
     }
     
-    
-    func shouldShowOnboarding(){
-        
-        //        if !isAppAlreadyLaunchedOnce() {/* show onboarding in first launch*/}
-        
-        let onboardingController = OnboardingController()
-        onboardingController.modalPresentationStyle = .custom
-        self.present(onboardingController, animated: true, completion: nil)
-    }
-    
     // MARK: - fetchTrips()
     func fetchTrips(){
         DispatchQueue.main.async {
@@ -68,8 +56,6 @@ class TripsTimelineController: UITableViewController {
                 self?.configureTapBarController()
                 self?.tableView.reloadData()
             }
-            
-            
         }
     }
     
@@ -209,7 +195,6 @@ extension TripsTimelineController {
 // MARK: -  TripCellDelegate
 extension TripsTimelineController: TripCellDelegate {
     func handleDisplayReviews(_ cell: UITableViewCell, selectedTrip: Trip) {
-        
         UserServices.shared.fetchUser(userId: selectedTrip.userID) { [weak self] user in
             let peopleReviewsController = PeopleReviewsController(user: user)
             self?.navigationController?.pushViewController(peopleReviewsController, animated: true)
@@ -244,7 +229,25 @@ extension TripsTimelineController: NewTripControllerDelegate {
 // MARK: - LoginControllerDelegate
 extension TripsTimelineController: LoginControllerDelegate {
     func handleLoggingControllerDismissal(_ view: LoginController) {
-        view.dismiss(animated: true, completion: nil)
+        
+        print("DEBUG:: delegate is fired")
+        
+        view.dismiss(animated: true) {
+            if self.isAppAlreadyLaunchedOnce(){
+                print("DEBUG:: first time ")
+            } else {
+                print("DEBUG:: second time ")
+            }
+        }
+        
+        
+//        DispatchQueue.main.async { [weak self] in
+//            if !self!.isAppAlreadyLaunchedOnce() {
+//                let onboardingController = OnboardingController()
+//                onboardingController.modalPresentationStyle = .custom
+//                self!.present(onboardingController, animated: true, completion: nil)
+//            }
+//        }
     }
 }
 

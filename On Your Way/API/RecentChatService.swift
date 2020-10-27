@@ -24,6 +24,8 @@ class RecentChatService {
         }
     }
     
+
+    
     // step 9 + also you when you are in the chat room , you should make the recent zero
     func clearUnreadCounter(recent: RecentChat){
         var recentTemp = recent

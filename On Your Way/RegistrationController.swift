@@ -16,9 +16,6 @@ protocol  RegistrationControllerDelegate: class {
     func handleRegistrationDismissal(_ view: RegistrationController)
 }
 
-
-
-
 class RegistrationController: UIViewController {
     
     weak var delegate: RegistrationControllerDelegate?
@@ -218,7 +215,7 @@ class RegistrationController: UIViewController {
             let credential = userCredential(email: email, password: password, fullName: fullname, profileImageUrl: imageUrl)
             AuthServices.shared.registerUserWith(credential: credential) {  [weak self] error in
                 if let error = error {
-                    self?.showBlurView()
+                    self?.removeBlurView()
                     self?.showLoader(false)
                     self?.showAlertMessage("Error", error.localizedDescription)
                     return
@@ -238,6 +235,7 @@ class RegistrationController: UIViewController {
                 Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
                     self?.removeBlurView()
                     self?.showLoader(false)
+                    print("DEBUG: delegate is fired in register")
                     self?.delegate?.handleRegistrationDismissal(self!)
                 }
             }
