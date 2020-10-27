@@ -18,6 +18,7 @@ class PeopleReviewsCell: UITableViewCell {
     var review: Review?{
         didSet{configure()}
     }
+
     
      private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -108,8 +109,6 @@ class PeopleReviewsCell: UITableViewCell {
         
     }
     
-    #warning("Make the review as delegate and calculate the rating in the mainView and the update the value + make the header accessable to the rating on the top to update the values .")
-    
     fileprivate func configure(){
         guard let review = review else { return }
         let viewModel = ReviewViewModel(review: review)
@@ -124,7 +123,6 @@ class PeopleReviewsCell: UITableViewCell {
         reviewLabel.text = viewModel.reviewComment
         ratingView.rating = viewModel.rate
         ratingView.text = "5/\(viewModel.rate)"
-        
         
     }
     

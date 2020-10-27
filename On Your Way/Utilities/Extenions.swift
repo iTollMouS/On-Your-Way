@@ -687,6 +687,16 @@ extension UITableView {
         self.separatorStyle = .none
     }
     
+    
+      func updateRow(row: Int, section: Int = 0)
+      {
+          let indexPath = IndexPath(row: row, section: section)
+
+          self.beginUpdates()
+          self.reloadRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
+          self.endUpdates()
+      }
+    
     func restore() {
         self.backgroundView = nil
         self.separatorStyle = .singleLine

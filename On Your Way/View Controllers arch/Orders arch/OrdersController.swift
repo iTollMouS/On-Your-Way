@@ -13,7 +13,7 @@ private let reuseIdentifier = "OrderCell"
 
 class OrdersController: UIViewController {
     
-    let segmentedControl: UISegmentedControl = {
+    lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["New Orders", "In progress" , "Done"])
         segmentedControl.selectedSegmentIndex = 0
         let normalTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -26,7 +26,7 @@ class OrdersController: UIViewController {
     }()
     
     let refreshController = UIRefreshControl()
-    let searchController = UISearchController(searchResultsController: nil)
+    lazy var searchController = UISearchController(searchResultsController: nil)
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)

@@ -397,28 +397,109 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
         return UITableView.automaticDimension
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let selectedReview = reviews[indexPath.row]
+        if selectedReview.userID == User.currentId {
+            let delete = deleteMyReview(review: selectedReview ,at: indexPath)
+            return UISwipeActionsConfiguration(actions: [delete])
+        } else {
+            return nil
+        }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let selectedReview = reviews[indexPath.row]
-        if uid == selectedReview.userID {
-            if editingStyle == .delete {
+//    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let selectedReview = reviews[indexPath.row]
+//        if selectedReview.userID == User.currentId {
+//            let delete = editMyReview(review: selectedReview ,at: indexPath)
+//            return UISwipeActionsConfiguration(actions: [delete])
+//        } else {
+//            return nil
+//        }
+//
+//    }
+    
+    func deleteMyReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completion) in
+            let alert = UIAlertController(title: nil, message: "Are you sure you want to delete your review?", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Delete my review", style: .destructive, handler: { [weak self] (alertAction) in
                 DispatchQueue.main.async { [weak self] in
-                    ReviewService.shared.deleteMyReview(userId: self!.user.id, review: selectedReview) { error in
+                    self?.user.sumAllReviews -= review.rate
+                    self?.user.reviewsCount -= Double(self!.reviews.count - 1)
+                    UserServices.shared.saveUserToFirestore(self!.user)
+                    ReviewService.shared.deleteMyReview(userId: self!.user.id, review: review) { error in
                         print("DEBUG: success!!!!")
                         self?.reviews.remove(at: indexPath.row)
                         self?.tableView.deleteRows(at: [indexPath], with: .automatic)
                         self?.tableView.reloadData()
                     }
                 }
-            }
+            }))
+            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            self!.present(alert, animated: true, completion: nil)
         }
+        return action
+    }
+    
+    func editMyReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completion) in
+            let alert = UIAlertController(title: nil, message: "Are you sure you want to delete your review?", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Delete my review", style: .destructive, handler: { [weak self] (alertAction) in
+                DispatchQueue.main.async { [weak self] in
+                    ReviewService.shared.editMyReview (userId: self!.user.id, review: review) { error in
+                        print("DEBUG: success!!!!")
+                        self?.tableView.updateRow(row: indexPath.row)
+                        self?.tableView.reloadData()
+                    }
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            self!.present(alert, animated: true, completion: nil)
+        }
+        return action
     }
     
 }
+    
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//
+//        let selectedReview = reviews[indexPath.row]
+//        if User.currentId == selectedReview.userID {
+//            if editingStyle == .delete {
+//                DispatchQueue.main.async { [weak self] in
+//                    ReviewService.shared.deleteMyReview(userId: self!.user.id, review: selectedReview) { error in
+//                        print("DEBUG: success!!!!")
+//                        self?.reviews.remove(at: indexPath.row)
+//                        self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+//                        self?.tableView.reloadData()
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+//    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let delete = deleteMyTrip(at: indexPath)
+//        return UISwipeActionsConfiguration(actions: [delete])
+//    }
+//
+//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let edit = editMyTrip(at: indexPath)
+//        return UISwipeActionsConfiguration(actions: [edit])
+//    }
+
+
+    // MARK: - deleteMyTrip
+  
+//
+//        action.image = UIImage(systemName: "trash.circle.fill")
+//        action.backgroundColor = .systemRed
+//        return action
+//    }
 
 extension PeopleReviewsController: UITextViewDelegate {
     

@@ -7,23 +7,15 @@
 
 import UIKit
 
-
-protocol MainTabControllerDelegate: class {
-    func handleClearUnread(_ tabBar: MainTabController)
-}
-
 class MainTabController: UITabBarController, UITabBarControllerDelegate {
     
-    weak var delegateClearUncounted: MainTabControllerDelegate?
-    
-    // MARK: - Lifecycle
+   // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
         self.delegate = self
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
-        
     }
     
     
@@ -46,7 +38,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
                                                                   tabBarItemTitle: "Notifications")
         
         let recentController = RecentController()
-        recentController.delegate = self
+//        recentController.delegate = self
         let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
                                                            rootViewController: recentController,
                                                            tabBarItemTitle: "Meesage")
@@ -68,7 +60,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         let index = viewControllers?.firstIndex(of: viewController)
         if index == 3 {
             let recentController = RecentController()
-            recentController.delegate = self
+//            recentController.delegate = self
             let navController = UINavigationController(rootViewController: recentController)
             navController.tabBarController?.hidesBottomBarWhenPushed = true
             navController.modalPresentationStyle = .custom
@@ -93,25 +85,4 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         return navController
     }
     
-}
-
-extension MainTabController: RecentControllerDelegate {
-    func showUnreadCount(_ recent: RecentChat, cell: RecentCell) {
-        
-        delegateClearUncounted?.handleClearUnread(self)
-        
-        guard let messageBadge = self.tabBar.items?[3] else { return  }
-                DispatchQueue.main.async {
-                    if recent.unreadCounter != 0 {
-                        cell.counterMessageLabel.text = "\(recent.unreadCounter)"
-                        messageBadge.badgeValue = "\(recent.unreadCounter)"
-                        messageBadge.badgeColor = .blueLightIcon
-                        cell.counterMessageLabel.isHidden = false
-                    } else {
-                        cell.counterMessageLabel.isHidden = true
-                        messageBadge.badgeValue = ""
-                        messageBadge.badgeColor = .clear
-                    }
-                }
-    }
 }

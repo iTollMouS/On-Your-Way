@@ -14,7 +14,7 @@ private let reuseIdentifier = "TripCell"
 class TripsTimelineController: UITableViewController {
     
     // MARK: - Properties
-    let searchController = UISearchController(searchResultsController: nil)
+    lazy var searchController = UISearchController(searchResultsController: nil)
     let refreshController = UIRefreshControl()
     
     var trips: [Trip] = []
@@ -201,7 +201,7 @@ extension TripsTimelineController {
     
     // MARK: - allow current user edit trip
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return trips[indexPath.row].userID == User.currentId ? true : false
+        return trips[indexPath.row].userID == User.currentId
     }
     
 }
@@ -295,44 +295,4 @@ extension TripsTimelineController {
 
 
 
-/*
- override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
- let delete = deleteMyTrip(at: indexPath)
- return UISwipeActionsConfiguration(actions: [delete])
- }
- 
- override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
- let edit = editMyTrip(at: indexPath)
- return UISwipeActionsConfiguration(actions: [edit])
- }
- 
- 
- // MARK: - deleteMyTrip
- func deleteMyTrip(at indexPath: IndexPath) -> UIContextualAction {
- let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
- TripService.shared.deleteMyTrip(trip: trip) { error in
- if let error = error {
- self.showAlertMessage("Error", "error with \(error.localizedDescription)")
- return
- }
- self.fetchTrips()
- self.tableView.reloadData()
- }
- }
- 
- action.image = UIImage(systemName: "trash.circle.fill")
- action.backgroundColor = .systemRed
- return action
- }
- 
- // MARK: - editMyTrip
- func editMyTrip(at indexPath: IndexPath) -> UIContextualAction {
- let action = UIContextualAction(style: .normal, title: "Edit") { (action, view, completion) in
- //            self.myTrips.remove(at: indexPath.row)
- self.tableView.deleteRows(at: [indexPath], with: .automatic)
- self.tableView.reloadData()
- }
- action.image = #imageLiteral(resourceName: "RatingStarEmpty")
- action.backgroundColor = .blueLightFont
- return action
- }*/
+

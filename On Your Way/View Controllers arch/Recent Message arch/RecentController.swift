@@ -10,16 +10,9 @@ import UIKit
 
 private let reuseIdentifier = "RecentCell"
 
-
-
-protocol RecentControllerDelegate: class {
-    func showUnreadCount(_ recent: RecentChat, cell: RecentCell)
-}
-
 class RecentController: UIViewController {
- 
-    weak var delegate: RecentControllerDelegate?
     
+
     // MARK: - Properties
     var allRecent: [RecentChat] = []
     var filteredAllRecent: [RecentChat] = []
@@ -77,9 +70,9 @@ class RecentController: UIViewController {
     // MARK: - fetchRecentChats
     fileprivate func fetchRecentChats(){
         DispatchQueue.main.async {
-        RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] allRecent in
-            self?.allRecent = allRecent
-            // check with all aip why this fucn worsk good and not duplicate stuff
+            RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] allRecent in
+                self?.allRecent = allRecent
+                // check with all aip why this fucn worsk good and not duplicate stuff
                 self?.configureWhenTableIsEmpty()
                 self?.tableView.reloadData()
             }
@@ -149,7 +142,7 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
-        cell.delegate = self
+//        cell.delegate = self
         cell.recentChat = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
         return cell
     }
@@ -200,14 +193,6 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension RecentController: RecentCellDelegate {
-    func showRecentMessageCount(recent: RecentChat, cell: RecentCell) {
-        
-        delegate?.showUnreadCount(recent, cell: cell)
-    }
-    
-}
-
 
 // MARK: - UISearchResultsUpdating
 extension RecentController: UISearchResultsUpdating {
@@ -228,7 +213,6 @@ extension RecentController {
     fileprivate func configureWhenTableIsEmpty(){
         if allRecent.isEmpty {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                
                 self?.tableView.setEmptyView(title: "No DMs",
                                              titleColor: .white,
                                              message: "People DM you when you announce your travel info for packaging shipping details and process")
