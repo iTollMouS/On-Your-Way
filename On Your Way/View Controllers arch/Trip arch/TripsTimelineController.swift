@@ -19,7 +19,7 @@ class TripsTimelineController: UITableViewController {
     
     var trips: [Trip] = []
     var filteredTrips: [Trip] = []
-
+    
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -170,7 +170,7 @@ extension TripsTimelineController {
         if editingStyle == .delete {
             let trip = searchController.isActive ? filteredTrips[indexPath.row] : trips[indexPath.row]
             DispatchQueue.main.async {
-            TripService.shared.deleteMyTrip(trip: trip) { [weak self] error in
+                TripService.shared.deleteMyTrip(trip: trip) { [weak self] error in
                     self!.searchController.isActive ? self?.filteredTrips.remove(at: indexPath.row) : self?.trips.remove(at: indexPath.row)
                     self?.tableView.deleteRows(at: [indexPath], with: .automatic)
                     self?.tableView.reloadData()

@@ -293,7 +293,7 @@ class LoginController: UIViewController {
 extension LoginController: PhoneLoginControllerDelegate {
     func handlePhoneControllerDismissal(_ view: PhoneLoginController) {
         view.dismiss(animated: true) { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+            self?.delegate?.handleLoggingControllerDismissal(self!)
         }
     }
 }
@@ -324,23 +324,23 @@ extension LoginController: GIDSignInDelegate {
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we create account for you...")
         
-        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
-            self.removeBlurView()
-            self.showLoader(false)
-            self.showBanner(message: "Successfully created account with Google account", state: .success,
+        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
+            self?.removeBlurView()
+            self?.showLoader(false)
+            self?.showBanner(message: "Successfully created account with Google account", state: .success,
                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
-                            sender: self)
+                            sender: self!)
         }
         
-        AuthServices.shared.registerUserWithGoogle(didSignInfo: user) { error in
+        AuthServices.shared.registerUserWithGoogle(didSignInfo: user) { [weak self] error in
             if let error = error {
-                self.showAlertMessage( nil ,error.localizedDescription)
+                self?.showAlertMessage(nil,error.localizedDescription)
                 return
             }
             
-            self.removeBlurView()
-            self.showLoader(false)
-            self.dismiss(animated: true, completion: nil)
+            self?.removeBlurView()
+            self?.showLoader(false)
+            self?.delegate?.handleLoggingControllerDismissal(self!)
         }
         
         
