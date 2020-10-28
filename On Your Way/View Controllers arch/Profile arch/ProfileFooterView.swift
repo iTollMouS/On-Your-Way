@@ -78,16 +78,10 @@ class ProfileFooterView: UIView {
             UserServices.shared.adminAuthentication(userId: user.id) { [weak self]isAuthenticate in
                 self?.adminButton.alpha = isAuthenticate ? 1 : 0
                 self?.adminButton.isEnabled = isAuthenticate ? true : false
-                if isAuthenticate {
-                    self?.addSubview(self!.stackView)
-                    self?.stackView.fillSuperview(padding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
-                }
             }
         }
-        addSubview(logoutButton)
-        logoutButton.centerInSuperview()
-        logoutButton.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 32, paddingRight: 32)
-        logoutButton.setHeight(height: 50)
+        addSubview(stackView)
+        stackView.fillSuperview(padding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
     }
     
     required init?(coder: NSCoder) {

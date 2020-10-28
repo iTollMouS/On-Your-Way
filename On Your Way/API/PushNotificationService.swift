@@ -5,7 +5,7 @@
 //  Created by Tariq Almazyad on 10/18/20.
 //
 
-import Foundation
+import UIKit
 
 class PushNotificationService {
     static let shared = PushNotificationService()
@@ -31,6 +31,7 @@ class PushNotificationService {
             "sound": "default"
         ]]
         
+        
         let request = NSMutableURLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: paramString, options: [.prettyPrinted])
@@ -42,8 +43,9 @@ class PushNotificationService {
         }
         task.resume()
     }
-    
 }
+
+
 
 
 func removeCurrentUserFrom(userIds: [String]) -> [String] {

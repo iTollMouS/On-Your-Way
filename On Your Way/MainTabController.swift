@@ -18,6 +18,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.barStyle = .black
         fetchRecent()
         fetchOrders()
+        
     }
     
     fileprivate func fetchOrders(){
@@ -47,6 +48,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     fileprivate func configureTabBarBadge(recentCount: Int){
+        
         DispatchQueue.main.async {
             if recentCount != 0 {
                 self.tabBar.items![3].badgeValue = recentCount.toString()

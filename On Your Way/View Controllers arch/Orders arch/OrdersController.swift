@@ -128,8 +128,6 @@ class OrdersController: UIViewController {
                 }
                 
             }
-            
-            
         }
     }
     
@@ -172,6 +170,16 @@ class OrdersController: UIViewController {
 
 extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if rowsToDisplay.isEmpty {
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                self?.tableView.setEmptyView(title: "No Orders",
+                                             titleColor: .white,
+                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city")
+            }
+        } else {
+            tableView.restore()
+            tableView.reloadData()
+        }
         return rowsToDisplay.count
     }
     
@@ -221,36 +229,4 @@ extension OrdersController : OrderDetailsControllerDelegate {
     }
 }
 
-extension OrdersController {
-    fileprivate func configureWhenTableIsEmpty(){
-        
-        if newPackageOrder.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                
-                self?.tableView.setEmptyView(title: "No Orders",
-                                             titleColor: .white,
-                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city")
-            }
-        }else if inProcessPackageOrder.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                
-                self?.tableView.setEmptyView(title: "No Accepted Orders",
-                                             titleColor: .white,
-                                             message: "You have not accepted any orders yet\nAccepted orders will be displayed here")
-            }
-            
-        } else  if completedPackageOrder.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                
-                self?.tableView.setEmptyView(title: "No Delivered Orders",
-                                             titleColor: .white,
-                                             message: "You have not delivered any orders yet\nOnce the order is completed , it will be displayed here")
-            }
-            
-        } else {
-            tableView.restore()
-            tableView.reloadData()
-        }
-    }
-}
 

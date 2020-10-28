@@ -150,6 +150,7 @@ class ChatViewController: MessagesViewController {
         createTypingObserver()
         configureMessageCollectionView()
         listenForReadStatusChange()
+        configureGestureRecognizer()
         
     }
     
@@ -166,17 +167,12 @@ class ChatViewController: MessagesViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        print("DEBUG: user info is \(User.currentUser?.id)")
-        print("DEBUG: user info is \(User.currentUser?.username)")
         IQKeyboardManager.shared.enable = false
         configureNavBar()
         fetchUser()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         
     }
-    
-    
-    
     
     fileprivate func configureLeftBarButton(){
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain,
@@ -244,6 +240,7 @@ class ChatViewController: MessagesViewController {
         
         micButton.image = UIImage(systemName: "mic.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         micButton.setSize(CGSize(width: 30, height: 30), animated: false)
+        micButton.addGestureRecognizer(longPressGesture)
         
         messageInputBar.setStackViewItems([attachButton], forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
@@ -257,12 +254,10 @@ class ChatViewController: MessagesViewController {
     
     // MARK: - Actions
     
-    
-    
-    
     fileprivate func configureGestureRecognizer(){
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressedMic))
         longPressGesture.minimumPressDuration = 0.5
+        longPressGesture.delaysTouchesBegan = true
     }
     
     @objc fileprivate func handleLongPressedMic(){
@@ -453,7 +448,7 @@ class ChatViewController: MessagesViewController {
     
     func createTypingObserver(){
         TypingListenerService.shared.createTypingObserver(chatRoomId: chatRoomId) { [weak self] isTyping in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 self?.updateTypingIndictor(isTyping)
             }
         }
@@ -464,8 +459,8 @@ class ChatViewController: MessagesViewController {
         typingCounter += 1
         TypingListenerService.saveTypingCounter(typing: true, chatRoomId: chatRoomId)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            self.typingCounterStop()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            self?.typingCounterStop()
         }
     }
     
@@ -523,8 +518,8 @@ extension ChatViewController: GalleryControllerDelegate {
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
         
         if images.count > 0 {
-            images.first?.resolve(completion: { image in
-                self.messageSend(text: nil, photo: image, video: nil, audio: nil, location: nil)
+            images.first?.resolve(completion: { [weak self] image in
+                self?.messageSend(text: nil, photo: image, video: nil, audio: nil, location: nil)
             })
         }
         
@@ -550,10 +545,13 @@ extension ChatViewController: GalleryControllerDelegate {
     }
     
     
+    @objc fileprivate func recordAudio(){
+        print("DEBUG: long press audio")
+    }
+    
 }
 
 extension ChatViewController {
-    
     
     fileprivate func actionDisplayButtonAttachments(){
         messageInputBar.inputTextView.resignFirstResponder()

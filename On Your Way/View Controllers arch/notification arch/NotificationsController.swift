@@ -54,8 +54,8 @@ class NotificationsController: UITableViewController {
     func fetchMyRequest(){
         guard let uid = Auth.auth().currentUser?.uid else { return  }
         TripService.shared.fetchMyRequest(userId: uid ) { [weak self] packages in
-            self?.packages = packages
             DispatchQueue.main.async { [weak self] in
+                self?.packages = packages
                 self?.tableView.reloadData()
             }
         }

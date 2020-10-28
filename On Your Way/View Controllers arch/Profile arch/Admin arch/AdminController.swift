@@ -14,6 +14,30 @@ private let reuseIdentifier = "AdminCell"
 
 class AdminController: UIViewController {
     
+    private lazy var titleTextField = CustomTextField(textColor: .black, placeholder: "title",
+                                                      placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: false)
+    
+    private lazy var titleContainerView = CustomContainerView(image: UIImage(systemName: "doc"), textField: titleTextField,
+                                                              iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
+                                                              setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
+    
+    private lazy var bodyTextField = CustomTextField(textColor: .black, placeholder: "message",
+                                                      placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: false)
+    
+    private lazy var bodyContainerView = CustomContainerView(image: UIImage(systemName: "doc.plaintext"), textField: bodyTextField,
+                                                              iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
+                                                              setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .boldSystemFont(ofSize: 24)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.setDimensions(height: 50, width: 400)
+        return label
+    }()
+    
     
     private lazy var headerView = AdminHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 150))
     
@@ -159,6 +183,18 @@ class AdminController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         headerView.delegate = self
+        titleTextField.addTarget(self, action: #selector(handleTextChanged), for: .editingChanged)
+        bodyTextField.addTarget(self, action: #selector(handleTextChanged), for: .editingChanged)
+    }
+    
+    @objc fileprivate func handleTextChanged(_ textField: UITextField){
+        
+        if titleTextField.hasText, bodyTextField.hasText {
+            UIView.animate(withDuration: 0.5) { [weak self] in self?.saveChangesButton.alpha = 1 }
+        } else {
+            UIView.animate(withDuration: 0.5) { [weak self] in self?.saveChangesButton.alpha = 0 }
+        }
+        
     }
     
     fileprivate func fetchUsers(){
@@ -206,8 +242,6 @@ class AdminController: UIViewController {
     
     @objc fileprivate func handleVerificationChanged(){
         UIView.animate(withDuration: 0.5) { [weak self] in self?.saveChangesButton.alpha = 1 }
-        
-        
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             isVerified = false
@@ -260,9 +294,9 @@ extension AdminController: AdminHeaderViewDelegate{
     func handleActionTapped(_ sender: UIButton) {
         switch sender.tag {
         case 1:
-            print("DEBUG: 0 is tapped")
+            configurePushNotification(title: "Send global Notification")
         case 2:
-            print("DEBUG: 0 is tapped")
+            print("DEBUG: 2 is tapped")
         default: break
         }
     }
@@ -323,6 +357,61 @@ extension AdminController {
         customAlertView.layer.cornerRadius = 10
         customAlertView.setDimensions(height: 550, width: view.frame.width)
         
+        
+        attributes.screenBackground = .visualEffect(style: .dark)
+        attributes.positionConstraints.safeArea = .overridden
+        attributes.positionConstraints.verticalOffset = -150
+        attributes.windowLevel = .alerts
+        attributes.position = .bottom
+        attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
+        attributes.displayDuration = .infinity
+        attributes.scroll = .enabled(swipeable: false, pullbackAnimation: .jolt)
+        attributes.statusBar = .light
+        attributes.lifecycleEvents.willDisappear = { [weak self] in
+            
+            self?.view.isUserInteractionEnabled = true
+        }
+        attributes.entryBackground = .clear
+        SwiftEntryKit.display(entry: customAlertView, using: attributes)
+    }
+    
+    fileprivate func configurePushNotification(title: String){
+        titleLabel.text = title
+        view.isUserInteractionEnabled = false
+     
+        customAlertView.addSubview(topDividerCustomAlertView)
+        topDividerCustomAlertView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 10)
+        topDividerCustomAlertView.setDimensions(height: 4, width: 100)
+        topDividerCustomAlertView.backgroundColor = .white
+        topDividerCustomAlertView.layer.cornerRadius = 4 / 2
+     
+        customAlertView.addSubview(titleLabel)
+        titleLabel.centerX(inView: customAlertView, topAnchor: topDividerCustomAlertView.bottomAnchor,
+                           paddingTop: 20)
+        
+        customAlertView.addSubview(titleContainerView)
+        titleContainerView.centerX(inView: customAlertView, topAnchor: titleLabel.bottomAnchor, paddingTop: 26)
+        titleContainerView.setHeight(height: 50)
+        titleContainerView.anchor(left: customAlertView.leftAnchor, right: customAlertView.rightAnchor,
+                                  paddingLeft: 30, paddingRight: 30)
+        
+        customAlertView.addSubview(bodyContainerView)
+        bodyContainerView.centerX(inView: customAlertView, topAnchor: titleContainerView.bottomAnchor, paddingTop: 26)
+        bodyContainerView.setHeight(height: 50)
+        bodyContainerView.anchor(left: customAlertView.leftAnchor, right: customAlertView.rightAnchor,
+                                  paddingLeft: 30, paddingRight: 30)
+        
+        
+        
+        customAlertView.addSubview(dismissButton)
+        dismissButton.centerX(inView: customAlertView, topAnchor: bodyContainerView.bottomAnchor, paddingTop: 43)
+        customAlertView.addSubview(saveChangesButton)
+        saveChangesButton.centerX(inView: customAlertView, topAnchor: dismissButton.bottomAnchor, paddingTop: 12)
+        
+        customAlertView.clipsToBounds = true
+        customAlertView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
+        customAlertView.layer.cornerRadius = 10
+        customAlertView.setDimensions(height: 700, width: view.frame.width)
         
         attributes.screenBackground = .visualEffect(style: .dark)
         attributes.positionConstraints.safeArea = .overridden
