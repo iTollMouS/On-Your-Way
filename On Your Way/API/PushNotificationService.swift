@@ -13,12 +13,21 @@ class PushNotificationService {
     
     func sendPushNotification(userIds: [String], body: String, title: String){
         
-        UserServices.shared.downloadUsersFromFirebase(withIds: userIds) { users in
+        UserServices.shared.downloadUsersFromFirebase(withIds: userIds) { [weak self] users in
             for user in users {
-                self.sendNotificationToUser(to: user.pushId, title: title, body: body)
+                self?.sendNotificationToUser(to: user.pushId, title: title, body: body)
             }
         }
         
+    }
+    
+    func sendGlobalNotification(body: String, title: String){
+        
+        UserServices.shared.downloadAllUsers { [weak self ] users in
+            for user in users {
+                self?.sendNotificationToUser(to: user.pushId, title: title, body: body)
+            }
+        }
     }
     
     private func sendNotificationToUser(to token: String, title: String, body: String){

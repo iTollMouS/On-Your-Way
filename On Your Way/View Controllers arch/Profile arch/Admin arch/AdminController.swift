@@ -22,11 +22,11 @@ class AdminController: UIViewController {
                                                               setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
     
     private lazy var bodyTextField = CustomTextField(textColor: .black, placeholder: "message",
-                                                      placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: false)
+                                                     placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: false)
     
     private lazy var bodyContainerView = CustomContainerView(image: UIImage(systemName: "doc.plaintext"), textField: bodyTextField,
-                                                              iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
-                                                              setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
+                                                             iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
+                                                             setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -252,12 +252,26 @@ class AdminController: UIViewController {
         
     }
     
-    @objc fileprivate func handleUpdateUserData(){
-        guard var user = selectedUser else { return }
-        user.isUserVerified = isVerified
-        UserServices.shared.saveUserToFirestore(user)
-        SwiftEntryKit.dismiss()
-        tableView.reloadData()
+    @objc fileprivate func handleUpdateUserData(_ sender: UIButton){
+        
+        switch sender.tag {
+        case 0:
+            guard var user = selectedUser else { return }
+            user.isUserVerified = isVerified
+            UserServices.shared.saveUserToFirestore(user)
+            SwiftEntryKit.dismiss()
+            tableView.reloadData()
+        case 1:
+            guard let body = bodyTextField.text else { return }
+            guard let title = titleTextField.text else { return }
+            PushNotificationService.shared.sendGlobalNotification(body: body, title: title)
+            SwiftEntryKit.dismiss()
+            tableView.reloadData()
+            bodyTextField.text = ""
+            titleTextField.text = ""
+        default:
+            break
+        }
     }
     
     @objc fileprivate func handleCustomAlertDismissal(){
@@ -284,7 +298,7 @@ extension AdminController: UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedUser = searchController.isActive ? filteredUsers[indexPath.row] : users[indexPath.row]
         checkMarkButton.isHidden = !selectedUser!.isUserVerified
-        showUserProfile()
+        showUserProfile(buttonTag: 0)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -294,7 +308,7 @@ extension AdminController: AdminHeaderViewDelegate{
     func handleActionTapped(_ sender: UIButton) {
         switch sender.tag {
         case 1:
-            configurePushNotification(title: "Send global Notification")
+            configurePushNotification(title: "Send global Notification", buttonTag: 1)
         case 2:
             print("DEBUG: 2 is tapped")
         default: break
@@ -319,7 +333,8 @@ extension AdminController :  UISearchResultsUpdating {
 
 extension AdminController {
     
-    fileprivate func showUserProfile(){
+    fileprivate func showUserProfile(buttonTag: Int){
+        saveChangesButton.tag = buttonTag
         guard let user = selectedUser else { return }
         guard let imageUrl = URL(string: user.avatarLink) else { return }
         profileImageView.sd_setImage(with: imageUrl)
@@ -375,16 +390,16 @@ extension AdminController {
         SwiftEntryKit.display(entry: customAlertView, using: attributes)
     }
     
-    fileprivate func configurePushNotification(title: String){
+    fileprivate func configurePushNotification(title: String, buttonTag: Int){
         titleLabel.text = title
         view.isUserInteractionEnabled = false
-     
+        saveChangesButton.tag = buttonTag
         customAlertView.addSubview(topDividerCustomAlertView)
         topDividerCustomAlertView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 10)
         topDividerCustomAlertView.setDimensions(height: 4, width: 100)
         topDividerCustomAlertView.backgroundColor = .white
         topDividerCustomAlertView.layer.cornerRadius = 4 / 2
-     
+        
         customAlertView.addSubview(titleLabel)
         titleLabel.centerX(inView: customAlertView, topAnchor: topDividerCustomAlertView.bottomAnchor,
                            paddingTop: 20)
@@ -399,7 +414,7 @@ extension AdminController {
         bodyContainerView.centerX(inView: customAlertView, topAnchor: titleContainerView.bottomAnchor, paddingTop: 26)
         bodyContainerView.setHeight(height: 50)
         bodyContainerView.anchor(left: customAlertView.leftAnchor, right: customAlertView.rightAnchor,
-                                  paddingLeft: 30, paddingRight: 30)
+                                 paddingLeft: 30, paddingRight: 30)
         
         
         
