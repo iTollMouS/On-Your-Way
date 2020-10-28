@@ -78,13 +78,10 @@ class OrdersController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
-        print("DEBUG: user info is \(User.currentUser?.id)")
-        print("DEBUG: user info is \(User.currentUser?.username)")
     }
     
     
-    @objc func handleOrderSectionChanges(){
-        
+    func toggleSegment(){
         switch segmentedControl.selectedSegmentIndex {
         case 0 :
             rowsToDisplay = newPackageOrder
@@ -93,9 +90,12 @@ class OrdersController: UIViewController {
         default:
             rowsToDisplay = completedPackageOrder
         }
-        
-        fetchTrips()
         tableView.reloadData()
+    }
+    
+    @objc func handleOrderSectionChanges(){
+        toggleSegment()
+        fetchTrips()
     }
     
     func fetchUser(){
@@ -113,20 +113,23 @@ class OrdersController: UIViewController {
                 TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: pendingPackage) { [weak self]  packages in
                     self?.newPackageOrder = packages
                     self?.newPackageOrder.sort(by: {$0.timestamp! > $1.timestamp!})
+                    self?.toggleSegment()
                 }
                 
                 TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: acceptedPackage) { [weak self]  packages in
                     self?.inProcessPackageOrder = packages
                     self?.inProcessPackageOrder.sort(by: {$0.timestamp! > $1.timestamp!})
+                    self?.toggleSegment()
                 }
                 
                 TripService.shared.fetchMyTrips(userId: User.currentId, packageStatus: completedPackage) { [weak self]  packages in
                     self?.completedPackageOrder = packages
+                    self?.toggleSegment()
                 }
                 
             }
             
-            tableView.reloadData()
+            
         }
     }
     
@@ -180,6 +183,7 @@ extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let package = rowsToDisplay[indexPath.row]
         guard let user = user else { return  }
         let orderDetailsController = OrderDetailsController(package: package, user: user)
@@ -196,6 +200,15 @@ extension OrdersController: UISearchResultsUpdating {
 
 
 extension OrdersController : OrderDetailsControllerDelegate {
+    func handleRefreshTableAfterAction() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.beginUpdates()
+            self?.fetchTrips()
+            self?.tableView.reloadData()
+            self?.tableView.endUpdates()
+        }
+    }
+    
     
     func handleDismissalAndRefreshing(_ view: OrderDetailsController) {
         navigationController?.popViewController(animated: true)
@@ -210,7 +223,6 @@ extension OrdersController : OrderDetailsControllerDelegate {
 
 extension OrdersController {
     fileprivate func configureWhenTableIsEmpty(){
-        
         
         if newPackageOrder.isEmpty {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in

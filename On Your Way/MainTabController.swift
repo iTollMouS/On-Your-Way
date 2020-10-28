@@ -6,10 +6,10 @@
 //
 
 import UIKit
-
+import Firebase
 class MainTabController: UITabBarController, UITabBarControllerDelegate {
     
-   // MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
@@ -17,9 +17,25 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .black
         fetchRecent()
+        fetchOrders()
     }
- 
-    func fetchRecent(){
+    
+    fileprivate func fetchOrders(){
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        DispatchQueue.main.async { [weak self] in
+            TripService.shared.fetchMyTrips(userId: uid, packageStatus: pendingPackage) { packages in
+                if !packages.isEmpty {
+                    self?.tabBar.items![1].badgeValue = packages.count.toString()
+                    self?.tabBar.items![1].badgeColor = #colorLiteral(red: 0.1176470588, green: 0.2745098039, blue: 0.2509803922, alpha: 1)
+                } else {
+                    self?.tabBar.items![1].badgeValue = nil
+                    self?.tabBar.items![1].badgeColor = nil
+                }
+            }
+        }
+    }
+    
+    fileprivate  func fetchRecent(){
         DispatchQueue.main.async { [weak self] in
             RecentChatService.shared.fetchRecentChatFromFirestore { [weak self] recents in
                 var value = 0
@@ -30,7 +46,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    func configureTabBarBadge(recentCount: Int){
+    fileprivate func configureTabBarBadge(recentCount: Int){
         DispatchQueue.main.async {
             if recentCount != 0 {
                 self.tabBar.items![3].badgeValue = recentCount.toString()
@@ -112,8 +128,6 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
 
 extension MainTabController : RecentControllerDelegate {
     func handleResetUnreadCounter(_ recentUnread: Int) {
-        
         configureTabBarBadge(recentCount: recentUnread)
-
     }
 }

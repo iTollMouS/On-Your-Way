@@ -81,14 +81,13 @@ class ProfileFooterView: UIView {
                 if isAuthenticate {
                     self?.addSubview(self!.stackView)
                     self?.stackView.fillSuperview(padding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
-                } else {
-                    self?.addSubview(self!.logoutButton)
-                    self?.logoutButton.centerInSuperview()
-                    self?.logoutButton.anchor(left: self!.leftAnchor, right: self!.rightAnchor, paddingLeft: 32, paddingRight: 32)
-                    self?.logoutButton.setHeight(height: 50)
                 }
             }
         }
+        addSubview(logoutButton)
+        logoutButton.centerInSuperview()
+        logoutButton.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 32, paddingRight: 32)
+        logoutButton.setHeight(height: 50)
     }
     
     required init?(coder: NSCoder) {

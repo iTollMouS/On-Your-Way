@@ -14,6 +14,7 @@ private let reuseIdentifier = "OrderDetailsCell"
 
 protocol OrderDetailsControllerDelegate: class {
     func handleDismissalAndRefreshing(_ view: OrderDetailsController)
+    func handleRefreshTableAfterAction()
 }
 
 
@@ -209,6 +210,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
                     PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID],
                                                                         body: "\(self!.user.username) has rejected your order ",
                                                                         title: "Reject order")
+                    self?.delegate?.handleRefreshTableAfterAction()
                     self?.showCustomAlertView(condition: .warning)
                 }
             }
@@ -227,6 +229,7 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
                     PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID],
                                                                         body: "\(self!.user.username) just accepted your order 📦 🤩 you can now chat with her",
                                                                         title: "Accepted order")
+                    self?.delegate?.handleRefreshTableAfterAction()
                     self?.showCustomAlertView(condition: .success)
                 }
             }))

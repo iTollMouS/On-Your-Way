@@ -229,8 +229,8 @@ extension TripsTimelineController: NewTripControllerDelegate {
 // MARK: - LoginControllerDelegate
 extension TripsTimelineController: LoginControllerDelegate {
     func handleLoggingControllerDismissal(_ view: LoginController) {
-        dismiss(animated: true) { [weak self] in
-            DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async { [weak self] in
+            view.dismiss(animated: true) { [weak self] in
                 if !self!.isAppAlreadyLaunchedOnce(){
                     let onboardingController = OnboardingController()
                     onboardingController.modalPresentationStyle = .custom

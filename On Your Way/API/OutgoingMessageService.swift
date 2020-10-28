@@ -18,8 +18,6 @@ class OutgoingMessageService {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         UserServices.shared.fetchUser(userId: uid) { currentUser in
             
-            
-            
             let message = LocalMessage()
             message.id = UUID().uuidString
             message.chatRoomId = chatId
@@ -36,7 +34,6 @@ class OutgoingMessageService {
             if text != nil {
                 
                 sendTextMessage(message: message, text: text!, memberIds: memberIds)
-                
             }
             
             if photo != nil {
@@ -50,6 +47,10 @@ class OutgoingMessageService {
             if location != nil {
                 sendLocationMessage(message: message, memberIds: memberIds)
             }
+            
+            PushNotificationService.shared.sendPushNotification(userIds: removeCurrentUserFrom(userIds: memberIds),
+                                                                body: message.message,
+                                                                title: currentUser.username)
             
             RecentChatService.shared.updateRecent(chatRoomId: chatId, lastMessage: message.message)
         }
@@ -71,7 +72,6 @@ class OutgoingMessageService {
 
 func sendPictureMessage(message: LocalMessage, photo: UIImage, memberIds: [String]){
     
-    print("DEBUG: sending photo")
     message.message = "Picture Message"
     message.type = kPHOTO
     

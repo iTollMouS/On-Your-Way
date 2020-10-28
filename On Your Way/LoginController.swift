@@ -65,7 +65,7 @@ class LoginController: UIViewController {
                                                               iconTintColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), dividerViewColor: .clear, dividerAlpa: 0.0,
                                                               setViewHeight: 50, iconAlpa: 1.0, backgroundColor: UIColor.white.withAlphaComponent(0.6))
     
-
+    
     private lazy var passwordTextField = CustomTextField(textColor: .black, placeholder: "**********",
                                                          placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: true)
     private lazy var passwordContainerView = CustomContainerView(image: UIImage(systemName: "lock"), textField: passwordTextField,
@@ -320,6 +320,7 @@ extension LoginController: GIDSignInDelegate {
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        print("DEBUG: delegate in firebase fired")
         guard let user = user else { return }
         self.showBlurView()
         self.showLoader(true, message: "Please wait while we create account for you...")
@@ -328,8 +329,8 @@ extension LoginController: GIDSignInDelegate {
             self?.removeBlurView()
             self?.showLoader(false)
             self?.showBanner(message: "Successfully created account with Google account", state: .success,
-                            location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
-                            sender: self!)
+                             location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
+                             sender: self!)
         }
         
         AuthServices.shared.registerUserWithGoogle(didSignInfo: user) { [weak self] error in
@@ -337,13 +338,11 @@ extension LoginController: GIDSignInDelegate {
                 self?.showAlertMessage(nil,error.localizedDescription)
                 return
             }
-            
             self?.removeBlurView()
             self?.showLoader(false)
+            print("DEBUG: delegate in firebase fired")
             self?.delegate?.handleLoggingControllerDismissal(self!)
         }
-        
-        
     }
 }
 

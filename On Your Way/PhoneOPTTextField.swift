@@ -88,7 +88,6 @@ class PhoneOPTTextField: UITextField {
         }
         
         if text.count == digitsLabel.count { didEnterLastDigit?(text) }
-        
     }
     
 }
