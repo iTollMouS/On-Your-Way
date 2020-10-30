@@ -138,6 +138,8 @@ class RecentCell: UITableViewCell {
         FileStorage.downloadImage(imageUrl: recent.profileImageView) { image in
             guard let image = image else {
                 self.profileImageView.image = #imageLiteral(resourceName: "btn_google_light_pressed_ios") // if image is empty
+                self.profileImageView.clipsToBounds = true
+                self.profileImageView.layer.cornerRadius = 50 / 2
                 return
             }
             self.profileImageView.image = image.circleMasked

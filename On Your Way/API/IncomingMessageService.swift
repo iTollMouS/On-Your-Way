@@ -54,6 +54,7 @@ class IncomingMessageService {
             let locationItem = LocationMessage(location: CLLocation(latitude: localMessage.latitude, longitude: localMessage.longitude))
             mkMessage.kind = MessageKind.location(locationItem)
             mkMessage.locationItem = locationItem
+            self.messageCollectionView.messagesCollectionView.reloadData()
             
         }
         
