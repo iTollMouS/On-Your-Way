@@ -19,6 +19,7 @@ enum OnboardingViewModel: Int, CaseIterable {
     case packageDelivery
     case location
     
+    
     var titleLabel: String {
         switch self {
         case .cashOnDelivery: return "Keep 2m"

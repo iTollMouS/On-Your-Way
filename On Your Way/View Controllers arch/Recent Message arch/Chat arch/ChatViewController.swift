@@ -102,6 +102,9 @@ class ChatViewController: MessagesViewController {
     private var recipientName = ""
     private let refreshController = UIRefreshControl()
     private let realm = try! Realm()
+    
+    open lazy var audioController = BasicAudioController(messageCollectionView: messagesCollectionView)
+    
     var allLocalMessages: Results<LocalMessage>!
     private let micButton = InputBarButtonItem()
     var displayingMessagesCount = 0
@@ -110,6 +113,8 @@ class ChatViewController: MessagesViewController {
     var longPressGesture: UILongPressGestureRecognizer!
     var audioFileName = ""
     var audioDuration: Date!
+    
+    
     
     var gallery = GalleryController()
     
@@ -143,6 +148,7 @@ class ChatViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadChats()
+        configureGestureRecognizer()
         configureMessageInputBar()
         configureLeftBarButton()
         listenToNewChats()
@@ -150,9 +156,11 @@ class ChatViewController: MessagesViewController {
         createTypingObserver()
         configureMessageCollectionView()
         listenForReadStatusChange()
-        configureGestureRecognizer()
+        
         
     }
+    
+    
     
     fileprivate func fetchUser(){
         UserServices.shared.fetchUser(userId: recipientId) { [weak self] user in
@@ -167,11 +175,18 @@ class ChatViewController: MessagesViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        RecentChatService.shared.resetRecentCounter(chatRoomId: chatRoomId)
         IQKeyboardManager.shared.enable = false
         configureNavBar()
         fetchUser()
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        RecentChatService.shared.resetRecentCounter(chatRoomId: chatRoomId)
+        audioController.stopAnyOngoingPlaying()
     }
     
     fileprivate func configureLeftBarButton(){
@@ -261,7 +276,25 @@ class ChatViewController: MessagesViewController {
     }
     
     @objc fileprivate func handleLongPressedMic(){
-        
+        switch longPressGesture.state {
+        case .began:
+            audioDuration = Date()
+            audioFileName = Date().convertDate(formattedString: .formattedType10)
+            AudioRecorder.shared.startRecording(fileName: audioFileName)
+        case .ended:
+            AudioRecorder.shared.finisRecording()
+            if fileExistsAtPath(path: audioFileName + ".m4a"){
+                let audioD = audioDuration.interval(ofComponent: .second,
+                                                    from: Date())
+                
+                messageSend(text: nil, photo: nil, video: nil, audio: audioFileName, location: nil, audioDuration: audioD)
+            } else {
+                print("No audio file")
+            }
+            
+        @unknown default: break
+            print("Unknown")
+        }
     }
     
     @objc fileprivate func handleActionAttachment(_ sender: UIButton){
@@ -438,7 +471,7 @@ class ChatViewController: MessagesViewController {
     func messageSend(text: String?, photo: UIImage?, video: Video?, audio: String?, location: String?, audioDuration: Float = 0.0 ){
         
         OutgoingMessageService.send(chatId: chatRoomId, text: text, photo: photo, video: video,
-                                    audio: audio, location: location, memberIds: [User.currentId, recipientId])
+                                    audio: audio, audioDuration: audioDuration, location: location, memberIds: [User.currentId, recipientId])
         
         
     }
@@ -542,11 +575,6 @@ extension ChatViewController: GalleryControllerDelegate {
     func galleryControllerDidCancel(_ controller: GalleryController) {
         
         controller.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    @objc fileprivate func recordAudio(){
-        print("DEBUG: long press audio")
     }
     
 }

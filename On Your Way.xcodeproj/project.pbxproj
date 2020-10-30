@@ -111,6 +111,9 @@
 		836837D6253EE018005FEFE4 /* NotificationsDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836837D5253EE018005FEFE4 /* NotificationsDetailsCell.swift */; };
 		836837D9253EF2F9005FEFE4 /* NotificationsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836837D8253EF2F9005FEFE4 /* NotificationsFooterView.swift */; };
 		8368383E2540B073005FEFE4 /* PhotoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368383D2540B070005FEFE4 /* PhotoMessage.swift */; };
+		837F0082254C89790062935C /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837F0081254C89780062935C /* AudioRecorder.swift */; };
+		837F0084254CA0BF0062935C /* AudioMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837F0083254CA0BF0062935C /* AudioMessage.swift */; };
+		837F0086254CA5600062935C /* BasicAudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837F0085254CA5600062935C /* BasicAudioController.swift */; };
 		83B763552536DA7E00503A9D /* cachAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763542536DA7E00503A9D /* cachAnimation.json */; };
 		83B763592536DB9100503A9D /* bell.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763582536DB9100503A9D /* bell.json */; };
 		83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B7635A2536DEA900503A9D /* chat_messenger.json */; };
@@ -260,6 +263,9 @@
 		836837D5253EE018005FEFE4 /* NotificationsDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsDetailsCell.swift; sourceTree = "<group>"; };
 		836837D8253EF2F9005FEFE4 /* NotificationsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsFooterView.swift; sourceTree = "<group>"; };
 		8368383D2540B070005FEFE4 /* PhotoMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMessage.swift; sourceTree = "<group>"; };
+		837F0081254C89780062935C /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		837F0083254CA0BF0062935C /* AudioMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMessage.swift; sourceTree = "<group>"; };
+		837F0085254CA5600062935C /* BasicAudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicAudioController.swift; sourceTree = "<group>"; };
 		83B763542536DA7E00503A9D /* cachAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cachAnimation.json; sourceTree = "<group>"; };
 		83B763582536DB9100503A9D /* bell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bell.json; sourceTree = "<group>"; };
 		83B7635A2536DEA900503A9D /* chat_messenger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chat_messenger.json; sourceTree = "<group>"; };
@@ -323,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				8368383D2540B070005FEFE4 /* PhotoMessage.swift */,
+				837F0083254CA0BF0062935C /* AudioMessage.swift */,
 				833F71442543290D000D31A2 /* LocationMessage.swift */,
 				833F713C2542E2F9000D31A2 /* VideoMessage.swift */,
 			);
@@ -378,11 +385,13 @@
 				835C88072539C2A100D49923 /* MKSender.swift */,
 				833F713E2542F20A000D31A2 /* LocationManager.swift */,
 				833F714825433CAB000D31A2 /* MapAnnotation.swift */,
+				837F0081254C89780062935C /* AudioRecorder.swift */,
 				8335149D253D705D001C2C9E /* Conditions.swift */,
 				834C993D25338D6800BE8691 /* Trip.swift */,
 				83B7637A2538192300503A9D /* Review.swift */,
 				83D7D4272535A49B00FA88F0 /* Package.swift */,
 				834C993425337C0900BE8691 /* RecentChat.swift */,
+				837F0085254CA5600062935C /* BasicAudioController.swift */,
 				833F713B2542E22E000D31A2 /* Media Model */,
 				835C880D2539CC4200D49923 /* Realm arch */,
 			);
@@ -581,8 +590,8 @@
 			isa = PBXGroup;
 			children = (
 				835C87F925398BEB00D49923 /* ChatViewController.swift */,
-				833F714625433095000D31A2 /* MapViewController.swift */,
 				835C87FC2539BD0300D49923 /* Chat extentions  */,
+				833F714625433095000D31A2 /* MapViewController.swift */,
 			);
 			path = "Chat arch";
 			sourceTree = "<group>";
@@ -870,6 +879,7 @@
 				83145C772541831A00FF82A9 /* AdminController.swift in Sources */,
 				83145C7A2541A7A500FF82A9 /* AdminCell.swift in Sources */,
 				834C990A253232D700BE8691 /* OnboardingController.swift in Sources */,
+				837F0086254CA5600062935C /* BasicAudioController.swift in Sources */,
 				834C98FC253231E000BE8691 /* SafetyFooterView.swift in Sources */,
 				83D7D4302535EB6300FA88F0 /* OrderDetailsFooterView.swift in Sources */,
 				83D7D42C2535E68F00FA88F0 /* OrderDetailHeader.swift in Sources */,
@@ -879,6 +889,7 @@
 				83B7637B2538192300503A9D /* Review.swift in Sources */,
 				834C981C25311CCC00BE8691 /* AppDelegate.swift in Sources */,
 				834C992B2533542B00BE8691 /* TripCell.swift in Sources */,
+				837F0084254CA0BF0062935C /* AudioMessage.swift in Sources */,
 				834C9912253233D300BE8691 /* ProfileCell.swift in Sources */,
 				834C991A2532391B00BE8691 /* NewTripController.swift in Sources */,
 				834C99432533A92800BE8691 /* TripService.swift in Sources */,
@@ -891,6 +902,7 @@
 				834C989025312B5C00BE8691 /* LoginController.swift in Sources */,
 				83D7D3F225347CEF00FA88F0 /* TripViewModel.swift in Sources */,
 				83375F4D253A8415008F2036 /* IncomingMessageService.swift in Sources */,
+				837F0082254C89790062935C /* AudioRecorder.swift in Sources */,
 				834C993525337C0A00BE8691 /* RecentChat.swift in Sources */,
 				833F714725433095000D31A2 /* MapViewController.swift in Sources */,
 				8368383E2540B073005FEFE4 /* PhotoMessage.swift in Sources */,
@@ -1068,7 +1080,7 @@
 				CODE_SIGN_ENTITLEMENTS = "On Your Way/On Your Way.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1076,7 +1088,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ARMobileApps.org.On-Your-Way";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1094,7 +1106,7 @@
 				CODE_SIGN_ENTITLEMENTS = "On Your Way/On Your Way.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = UGDUJASRTY;
 				INFOPLIST_FILE = "On Your Way/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1102,7 +1114,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ARMobileApps.org.On-Your-Way";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -660,7 +660,6 @@ extension UIView {
 
 extension UITableView {
     
-    
     func setEmptyView(title: String, titleColor: UIColor, message: String) {
         let emptyView = UIView(frame: CGRect(x: self.center.x, y: self.center.y, width: self.bounds.size.width, height: self.bounds.size.height))
         let titleLabel = UILabel()

@@ -57,6 +57,18 @@ class IncomingMessageService {
             
         }
         
+        if localMessage.type == kAUDIO{
+            let audioItem = AudioMessage(duration: Float(localMessage.audioDuration))
+            mkMessage.audioItem = audioItem
+            mkMessage.kind = MessageKind.audio(audioItem)
+            
+            FileStorage.downloadAudio(audioLink: localMessage.audioUrl) { audioFileName in
+                let audioURL = URL(fileURLWithPath: fileInDocumentsDirectory(fileName: audioFileName))
+                mkMessage.audioItem?.url = audioURL
+            }
+            self.messageCollectionView.messagesCollectionView.reloadData()
+        }
+        
         return mkMessage
     }
     

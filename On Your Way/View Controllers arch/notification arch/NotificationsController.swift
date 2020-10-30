@@ -16,8 +16,10 @@ class NotificationsController: UITableViewController {
     // MARK: - Properties
     let refreshController = UIRefreshControl()
     var packages = [Package]()
+    var filteredPackages = [Package]()
     private var user: User?
-    
+
+    lazy var searchController = UISearchController(searchResultsController: nil)
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,16 @@ class NotificationsController: UITableViewController {
         fetchMyRequest()
         fetchUser()
         configureRefreshController()
+        configureNavBar()
+    }
+    
+    fileprivate func configureNavBar(){
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for package"
+        searchController.searchResultsUpdater = self
+        definesPresentationContext = true
     }
     
     var darkMode = false
@@ -46,6 +58,7 @@ class NotificationsController: UITableViewController {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         UserServices.shared.fetchUser(userId: uid) { [weak self] user in
             self?.user = user
+            self?.tableView.reloadData()
         }
     }
     
@@ -67,23 +80,36 @@ class NotificationsController: UITableViewController {
     fileprivate func configureTableView(){
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 150
+        tableView.tableFooterView = UIView()
         title = "Notifications"
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return packages.count
+        
+        if packages.isEmpty {
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                self?.tableView.setEmptyView(title: "No Notifications",
+                                             titleColor: .white,
+                                             message: "You don't have any notifications.\nPeople usually notify you about your package status")
+            }
+        } else {
+            tableView.restore()
+            tableView.reloadData()
+        }
+        
+        return searchController.isActive ? filteredPackages.count : packages.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
-        cell.package = packages[indexPath.row]
+        cell.package = searchController.isActive ? filteredPackages[indexPath.row] : packages[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPackage = packages[indexPath.row]
+        let selectedPackage = searchController.isActive ? filteredPackages[indexPath.row] : packages[indexPath.row]
         guard let user = user else { return  }
         let notificationsDetailsController = NotificationsDetailsController(package: selectedPackage, user: user)
         navigationController?.pushViewController(notificationsDetailsController, animated: true)
@@ -121,5 +147,16 @@ class NotificationsController: UITableViewController {
             fetchMyRequest()
             self.refreshController.endRefreshing()
         }
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension NotificationsController :  UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchedText = searchController.searchBar.text else { return }
+        filteredPackages = packages.filter({ package -> Bool in
+            return package.packageType.lowercased().contains(searchedText.lowercased())
+        })
+        tableView.reloadData()
     }
 }

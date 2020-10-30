@@ -14,6 +14,11 @@ private let reuseIdentifier = "OnboardingCell"
 
 class OnboardingController: UIViewController {
     
+    
+    
+    
+   
+    
     // MARK: - Properties
     private let previousButton: UIButton = {
         let button = UIButton(type: .system)

@@ -116,7 +116,10 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     
     
     // MARK: - templateNavController
-    func templateNavController(image: UIImage, rootViewController: UIViewController, tabBarItemTitle: String) -> UINavigationController {
+    func templateNavController(image: UIImage,
+                               rootViewController: UIViewController,
+                               tabBarItemTitle: String) -> UINavigationController {
+        
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = image
         navController.tabBarItem.title = tabBarItemTitle

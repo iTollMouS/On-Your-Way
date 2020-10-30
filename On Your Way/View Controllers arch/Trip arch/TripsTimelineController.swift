@@ -20,6 +20,7 @@ class TripsTimelineController: UITableViewController {
     var trips: [Trip] = []
     var filteredTrips: [Trip] = []
     
+  
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -35,6 +36,7 @@ class TripsTimelineController: UITableViewController {
         fetchTrips()
         configureNavBar()
         searchController.searchBar.becomeFirstResponder()
+       
         
     }
     
@@ -136,9 +138,6 @@ class TripsTimelineController: UITableViewController {
 // MARK: - Extensions
 
 
-
-
-
 // MARK: - table extensions
 extension TripsTimelineController {
     
@@ -163,6 +162,7 @@ extension TripsTimelineController {
         let tripDetailsController = TripDetailsController(trip: trip)
         tripDetailsController.delegate = self
         navigationController?.pushViewController(tripDetailsController, animated: true)
+        print("DEBUG: id trip is \(trips[indexPath.row].tripID)")
     }
     
     // MARK: - Delete row

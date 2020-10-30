@@ -48,6 +48,10 @@ class OutgoingMessageService {
                 sendLocationMessage(message: message, memberIds: memberIds)
             }
             
+            if audio != nil{
+                sendAudioMessage(message: message, audioFileName: audio!, audioDuration: audioDuration, memberIds: memberIds)
+            }
+            
             PushNotificationService.shared.sendPushNotification(userIds: removeCurrentUserFrom(userIds: memberIds),
                                                                 body: message.message,
                                                                 title: currentUser.username)
@@ -153,5 +157,21 @@ func sendLocationMessage(message: LocalMessage, memberIds: [String]){
     message.latitude = currentLocation.latitude
     message.longitude = currentLocation.longitude
     OutgoingMessageService.sendMessage(message: message, memberIds: memberIds)
+}
+
+
+
+func sendAudioMessage(message: LocalMessage, audioFileName: String, audioDuration: Float ,memberIds: [String]){
+    message.message = "Audio Message"
+    message.type = kAUDIO
+    let fileDirectory =  "MediaMessages/Audio/" + "\(message.chatRoomId)/" + "_\(audioFileName)" + ".m4a"
+    FileStorage.uploadAudio(audioFileName, directory: fileDirectory) { audioUrl in
+        guard let audioUrl = audioUrl else {return}
+        message.audioUrl = audioUrl
+        message.audioDuration = Double(audioDuration)
+        OutgoingMessageService.sendMessage(message: message, memberIds: memberIds)
+        
+    }
+    
 }
 

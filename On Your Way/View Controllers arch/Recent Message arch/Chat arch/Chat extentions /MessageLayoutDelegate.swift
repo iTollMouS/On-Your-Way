@@ -7,6 +7,7 @@
 
 import Foundation
 import MessageKit
+import SDWebImage
 
 extension ChatViewController: MessagesLayoutDelegate {
     
@@ -38,7 +39,6 @@ extension ChatViewController: MessagesLayoutDelegate {
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        
         avatarView.set(avatar: Avatar(initials: mkMessages[indexPath.section].senderInitials))
     }
 
