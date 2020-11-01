@@ -67,7 +67,7 @@ struct TripViewModel {
         let attributedText = NSMutableAttributedString(string: destinationLocation,
                                                        attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
                                                                     .font: UIFont.systemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "\n\(tripDepartureDate)\n\(tripEstimateTimeArrival) hour/s",
+        attributedText.append(NSMutableAttributedString(string: "\n\(tripDepartureDate)\n\(tripEstimateTimeArrival) ساعات",
                                                         attributes: [.foregroundColor : UIColor.lightGray,
                                                                      .font: UIFont.systemFont(ofSize: 12)]))
         return attributedText
@@ -75,7 +75,7 @@ struct TripViewModel {
   
     
     var basePriceAttributedText: NSMutableAttributedString {
-        let attributedText = NSMutableAttributedString(string: "Base price: ",
+        let attributedText = NSMutableAttributedString(string: "السعر البدائي: ",
                                                        attributes: [.foregroundColor : #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
                                                                     .font: UIFont.boldSystemFont(ofSize: 15)])
         attributedText.append(NSMutableAttributedString(string:"\(trip.basePrice)" ,
@@ -86,7 +86,7 @@ struct TripViewModel {
     
     
     var packageTypeAttributedText: NSMutableAttributedString {
-        let attributedText = NSMutableAttributedString(string: "Package Allowance:\n",
+        let attributedText = NSMutableAttributedString(string: "البضائع المسموحة:\n",
                                                        attributes: [.foregroundColor : #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
                                                                     .font: UIFont.boldSystemFont(ofSize: 14)])
         attributedText.append(NSMutableAttributedString(string:"\(trip.packageType)" ,

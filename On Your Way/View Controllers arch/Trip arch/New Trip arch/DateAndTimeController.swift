@@ -76,7 +76,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Choose date and time of your travel"
+        label.text = "رحلتي"
         label.textAlignment = .center
         label.textColor = .blueLightFont
         label.font = UIFont.systemFont(ofSize: 18)
@@ -90,8 +90,8 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     
     private lazy var tripDetailsTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Design your trip"
-        label.textAlignment = .left
+        label.text = "اعدادات الرحلة"
+        label.textAlignment = .right
         label.textColor = .blueLightFont
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.numberOfLines = 0
@@ -133,7 +133,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     }()
     
     private lazy var dateTextField: UITextField = {
-        let textField = CustomTextField(textColor: .white, placeholder: "Please choose your date from calendar above",
+        let textField = CustomTextField(textColor: .white, placeholder: "اختر تاريخ سفرتك من التقويم",
                                         placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
         textField.adjustsFontSizeToFitWidth = true
         return textField
@@ -143,7 +143,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
                                                                  iconTintColor: .blueLightFont, dividerViewColor: .blueLightIcon,
                                                                  dividerAlpa: 1, setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
-    private lazy var timeTextField = CustomTextField(textColor: .blueLightFont, placeholder: "Click here to configure your time",
+    private lazy var timeTextField = CustomTextField(textColor: .blueLightFont, placeholder: "اعدادات الوقت",
                                                      placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     
@@ -153,7 +153,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     
     private lazy var packageInfoTextView: UITextView = {
         let textView = UITextView()
-        textView.textAlignment = .left
+        textView.textAlignment = .right
         textView.textColor = .blueLightFont
         textView.setHeight(height: 100)
         textView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -193,7 +193,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         let button = UIButton(type: .system)
         button.setHeight(height: 60)
         button.setTitleColor(.white, for: .normal)
-        button.setTitle("Submit new one ", for: .normal)
+        button.setTitle("تاكيد ", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 18)
         button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
         button.layer.cornerRadius = 60 / 2
@@ -249,8 +249,8 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
     
     private lazy var placeholderLabel: UILabel = {
         let label = UILabel()
-        label.text = "write what stuff you can take \nfor example : Papers , bags , etc"
-        label.textAlignment = .left
+        label.text = "ماذا تستطيع ان تحمل معك في سفرك ؟ \n حقائب ، صناديق ، بضائع ثقيلة"
+        label.textAlignment = .center
         label.textColor = .blueLightFont
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 16)
@@ -301,7 +301,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         
         packageInfoTextView.addSubview(placeholderLabel)
         placeholderLabel.anchor(top: packageInfoTextView.topAnchor, left: packageInfoTextView.leftAnchor,
-                                paddingTop: 8, paddingLeft: 8)
+                                paddingTop: 8, paddingLeft: 42)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChanger), name: UITextView.textDidChangeNotification, object: nil)
     }
@@ -326,17 +326,17 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         guard let packageType = packageInfoTextView.text else { return }
         
         if departureDate.isEmpty {
-            self.showAlertMessage("Error", "Please make sure choose your date travel")
+            self.showAlertMessage("حقل فارغ", "الرجاء التاكد من اختيار تاريخ السفر")
             return
         }
         
         if departureTime.isEmpty {
-            self.showAlertMessage("Error", "Please make sure choose your time travel")
+            self.showAlertMessage("حقل فارغ", "الرجاء التاكد من اختيار وقت السفر")
             return
         }
         
         if packageType.isEmpty {
-            self.showAlertMessage("Error", "Please make sure choose to write package allowance")
+            self.showAlertMessage("حق فارغ", "الرجاء التاكد من كتابه البضائع المسموحة بالنقل")
             return
         }
         
@@ -346,7 +346,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
         trip.tripDepartureDate = departureDate
         
         self.showBlurView()
-        self.showLoader(true, message: "Please whit while we verify ..")
+        self.showLoader(true, message: "الرجاء الانتظار...")
         TripService.shared.saveTripToFirestore(trip) { [weak self] error in
             
             if let error = error {
@@ -359,7 +359,7 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
                 self?.removeBlurView()
                 self?.showLoader(false)
-                self?.showBanner(message: "Successfully uploaded your trip", state: .success,
+                self?.showBanner(message: "تم الاعلان عن رحلتك", state: .success,
                                  location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                                  sender: self!)
             }
@@ -389,12 +389,12 @@ class DateAndTimeController: UIViewController, UIScrollViewDelegate {
 // MARK: - Show selected date in label
 extension DateAndTimeController: FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        dateTextField.text = date.convertDate(formattedString: .formattedType1)
+        dateTextField.text = date.convertDate(formattedString: .formattedType2)
         
     }
     
     func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        dateTextField.text = date.convertDate(formattedString: .formattedType1)
+        dateTextField.text = date.convertDate(formattedString: .formattedType2)
     }
     
 }

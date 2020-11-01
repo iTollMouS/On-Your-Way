@@ -63,14 +63,15 @@ enum OnboardingViewModel: Int, CaseIterable {
     
     var animationViewDimension: (CGFloat, CGFloat) {
         switch self {
-        case .cashOnDelivery: return (200, 300)
+        case .cashOnDelivery: return (200, 200)
+            
         case .notifications: return (200, 200)
-        case .covidProtections: return (200, 300)
+        case .covidProtections: return (200, 200)
         case .chatFeature: return (200, 200)
-        case .discountPolicy: return (200, 300)
-        case .stayHome: return (200, 300)
-        case .packageDelivery: return (200, 300)
-        case .location: return (200, 300)
+        case .discountPolicy: return (200, 200)
+        case .stayHome: return (200, 200)
+        case .packageDelivery: return (200, 200)
+        case .location: return (200, 200)
         }
     }
     

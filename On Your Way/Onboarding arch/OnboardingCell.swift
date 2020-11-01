@@ -39,7 +39,7 @@ class OnboardingCell: UICollectionViewCell {
         return label
     }()
     
-
+    
     private lazy var detailsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -52,16 +52,17 @@ class OnboardingCell: UICollectionViewCell {
         label.setHeight(height: 200)
         return label
     }()
-        
+    
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [ animationView ,titleLabel,
-                                                         detailsLabel])
+        let stackView = UIStackView(arrangedSubviews: [ animationView ,
+                                                        titleLabel,
+                                                        detailsLabel])
         stackView.axis = .vertical
         stackView.spacing = 5
         stackView.distribution = .fill
         return stackView
     }()
-
+    
     
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -78,6 +79,7 @@ class OnboardingCell: UICollectionViewCell {
         addSubview(stackView)
         stackView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 60)
         stackView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 30, paddingRight: 30)
+        
         animationView.animation = Animation.named(viewModel.JSONStringName)
         animationView.setDimensions(height: viewModel.animationViewDimension.0, width: viewModel.animationViewDimension.1)
         animationView.play()

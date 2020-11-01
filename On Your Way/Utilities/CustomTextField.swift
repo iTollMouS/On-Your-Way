@@ -18,6 +18,7 @@ class CustomTextField: UITextField {
         self.textColor = textColor
         keyboardAppearance = .dark
         self.isSecureTextEntry = isSecure
+        textAlignment = .right
         
     }
     

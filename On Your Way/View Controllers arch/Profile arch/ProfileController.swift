@@ -69,6 +69,7 @@ class ProfileController: UIViewController {
         peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
         peopleReviewsController.popupItem.progress = 0.34
         tabBarController?.modalPresentationStyle = .custom
+        tabBarController?.popupInteractionStyle = .drag
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: peopleReviewsController, animated: true, completion: nil)

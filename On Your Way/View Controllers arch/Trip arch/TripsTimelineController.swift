@@ -13,6 +13,7 @@ private let reuseIdentifier = "TripCell"
 
 class TripsTimelineController: UITableViewController {
     
+    
     // MARK: - Properties
     lazy var searchController = UISearchController(searchResultsController: nil)
     let refreshController = UIRefreshControl()
@@ -71,6 +72,7 @@ class TripsTimelineController: UITableViewController {
         newTripController.popupBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         newTripController.popupItem.subtitle = "show people what packages you can take"
         newTripController.popupItem.progress = 0.34
+        tabBarController?.popupInteractionStyle = .drag
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: newTripController, animated: true, completion: nil)
@@ -101,11 +103,11 @@ class TripsTimelineController: UITableViewController {
     // MARK: - configureNavBar()
     func configureNavBar(){
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.title = "Trips"
+        self.title = "المسافرون"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for trip"
+        searchController.searchBar.placeholder = "ابحث عن مسافر لمنطقة: القصيم ، الرياض.."
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
     }

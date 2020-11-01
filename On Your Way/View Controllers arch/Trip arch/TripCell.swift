@@ -32,9 +32,9 @@ class TripCell: UITableViewCell {
         button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
         button.tintColor = .systemGreen
         button.backgroundColor = .white
-        button.imageView?.setDimensions(height: 14, width: 14)
-        button.setDimensions(height: 14, width: 14)
-        button.layer.cornerRadius = 14 / 2
+        button.imageView?.setDimensions(height: 12, width: 12)
+        button.setDimensions(height: 12, width: 12)
+        button.layer.cornerRadius = 12 / 2
         button.clipsToBounds = true
         return button
     }()
@@ -54,7 +54,7 @@ class TripCell: UITableViewCell {
     
     private lazy var timestampLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 12)
         label.adjustsFontSizeToFitWidth = true
@@ -81,7 +81,7 @@ class TripCell: UITableViewCell {
     
     private lazy var currentLocation: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -90,7 +90,7 @@ class TripCell: UITableViewCell {
     
     private lazy var destinationLocation: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -99,7 +99,7 @@ class TripCell: UITableViewCell {
     private lazy var fullnameLable: UILabel = {
         let label = UILabel()
         label.textColor = #colorLiteral(red: 0.7058823529, green: 0.7058823529, blue: 0.7058823529, alpha: 1)
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -141,7 +141,7 @@ class TripCell: UITableViewCell {
     private lazy var priceBaseLabel: UILabel = {
         let label =  createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
                                  detailsText: "", detailsTextSize: 18,
-                                 detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 20)
+                                 detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .right, setHeight: 20)
         label.setHeight(height: 20)
         return label
     }()
@@ -150,7 +150,7 @@ class TripCell: UITableViewCell {
     private lazy var packagesTypes: UILabel = {
         let label = createLabel(titleText: "", titleTextSize: 14, titleColor: #colorLiteral(red: 0.5254901961, green: 0.5254901961, blue: 0.5254901961, alpha: 1),
                                 detailsText: "", detailsTextSize: 18,
-                                detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .left, setHeight: 50)
+                                detailsColor: #colorLiteral(red: 0.7137254902, green: 0.7137254902, blue: 0.7137254902, alpha: 1), textAlignment: .right, setHeight: 50)
         label.setHeight(height: 140)
         return label
     }()
@@ -188,6 +188,7 @@ class TripCell: UITableViewCell {
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
         stackView.spacing = -30
+        stackView.alignment = .trailing
         return stackView
     }()
     
@@ -201,24 +202,24 @@ class TripCell: UITableViewCell {
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         heightAnchor.constraint(equalToConstant: 250).isActive = true
         
-        addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 32, paddingLeft: 8)
+        let imageAndNameStackView = UIStackView(arrangedSubviews: [fullnameLable,profileImageView])
+        imageAndNameStackView.axis = .horizontal
+        imageAndNameStackView.spacing = 12
+        imageAndNameStackView.distribution = .fill
+        addSubview(imageAndNameStackView)
+        imageAndNameStackView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 24, paddingRight: 16)
+        
         
         addSubview(checkMarkButton)
         checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -14)
         
         
-        addSubview(fullnameLable)
-        fullnameLable.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 12)
         addSubview(timestampLabel)
-        timestampLabel.anchor(top: topAnchor, right: rightAnchor, paddingTop: 36, paddingRight: 8)
-        
+        timestampLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 26, paddingLeft: 8)
+
         // construct the dots and the line in between
         addSubview(fromCityDot)
         fromCityDot.centerX(inView: profileImageView, topAnchor: profileImageView.bottomAnchor, paddingTop: 18)
-        
-        
-        
         addSubview(destinationCityDot)
         destinationCityDot.centerX(inView: fromCityDot, topAnchor: fromCityDot.bottomAnchor, paddingTop: 100)
         addSubview(lineBetweenCities)
@@ -228,15 +229,12 @@ class TripCell: UITableViewCell {
                                  paddingTop: 8,
                                  paddingBottom: 8)
         
-        
-        
         addSubview(citiesStackView)
-        citiesStackView.centerY(inView: lineBetweenCities, leftAnchor: lineBetweenCities.rightAnchor, paddingLeft: 12)
-        citiesStackView.anchor(top: fromCityDot.topAnchor, bottom: destinationCityDot.bottomAnchor, paddingTop: -15, paddingBottom: -15)
+        citiesStackView.anchor(top: imageAndNameStackView.bottomAnchor, bottom: bottomAnchor, right: lineBetweenCities.leftAnchor,
+                               paddingTop: -12, paddingRight: 18)
         addSubview(containerInfoStackView)
-        containerInfoStackView.anchor(top: fullnameLable.bottomAnchor, left: citiesStackView.rightAnchor,
-                                      right: rightAnchor, paddingRight: 12)
-        
+        containerInfoStackView.anchor(top: imageAndNameStackView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor ,
+                                      right: citiesStackView.leftAnchor, paddingTop: 5, paddingRight: -12)
     }
     
     // MARK: - configure()

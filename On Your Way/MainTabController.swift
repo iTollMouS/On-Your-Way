@@ -61,34 +61,34 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - configureViewControllers
-    func configureViewControllers(){
+   fileprivate func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()
         let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car")!,
                                                                   rootViewController: tripsTimelineController,
-                                                                  tabBarItemTitle: "Travelers")
+                                                                  tabBarItemTitle: "المسافرون")
         
         let ordersController = OrdersController()
         let ordersControllerNavBar = templateNavController(image: UIImage(systemName: "shippingbox")!,
                                                            rootViewController: ordersController,
-                                                           tabBarItemTitle: "Orders")
+                                                           tabBarItemTitle: "الطلبات")
         
         let notificationsController = NotificationsController()
         let notificationsControllerNavBar = templateNavController(image: UIImage(systemName: "bell")!,
                                                                   rootViewController: notificationsController,
-                                                                  tabBarItemTitle: "Notifications")
+                                                                  tabBarItemTitle: "التنبيهات")
         
         let recentController = RecentController()
         recentController.delegate = self
         let recentControllerNavBar = templateNavController(image: UIImage(systemName: "envelope")!,
                                                            rootViewController: recentController,
-                                                           tabBarItemTitle: "Meesage")
+                                                           tabBarItemTitle: "الرسائل")
         
         
         let profileController = ProfileController()
         let profileControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                             rootViewController: profileController,
-                                                            tabBarItemTitle: "Profile")
+                                                            tabBarItemTitle: "")
         
         viewControllers = [tripsTimelineControllerNavBar,
                            ordersControllerNavBar, notificationsControllerNavBar,
@@ -97,7 +97,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - tabBarController as modal
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.firstIndex(of: viewController)
         if index == 3 {
             let recentController = RecentController()

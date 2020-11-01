@@ -128,7 +128,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Setup your trip info"
+        label.text = "صمم تفاصيل رحلتك"
         label.textAlignment = .center
         label.setHeight(height: 40)
         label.textColor = UIColor.white.withAlphaComponent(0.9)
@@ -138,14 +138,14 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     
     
     // MARK: - form custom containers
-    private let currentLocationTextField = CustomTextField(textColor: .white, placeholder: "Your current location",
+    private let currentLocationTextField = CustomTextField(textColor: .white, placeholder: "الموقع الحالي",
                                                            placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     private lazy var currentLocationContainerView = CustomContainerView(image: UIImage(systemName: "target"),
                                                                         textField: currentLocationTextField, iconTintColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), dividerViewColor: .black,
                                                                         dividerAlpa: 1, setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
-    private let destinationTextField = CustomTextField(textColor: .white, placeholder: "destination",
+    private let destinationTextField = CustomTextField(textColor: .white, placeholder: "الوجهة",
                                                        placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     
@@ -153,7 +153,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                                                                     textField: destinationTextField, iconTintColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), dividerViewColor: .black,
                                                                     dividerAlpa: 1, setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
-    private let meetingForPickupTextField = CustomTextField(textColor: .white, placeholder: "Where you want to meet",
+    private let meetingForPickupTextField = CustomTextField(textColor: .white, placeholder: "مكان استلام البضائع",
                                                             placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     
@@ -161,7 +161,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                                                                                     textField: meetingForPickupTextField, iconTintColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1),
                                                                                     dividerViewColor: .lightGray, dividerAlpa: 1 ,setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
-    private let timeToPickPackageTextField = CustomTextField(textColor: .white, placeholder: "when to meet?",
+    private let timeToPickPackageTextField = CustomTextField(textColor: .white, placeholder: "الوقت المناسب لاستلام البضائع",
                                                              placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     
@@ -170,7 +170,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
                                                                           dividerViewColor: .lightGray, dividerAlpa: 1,
                                                                           setViewHeight: 50, iconAlpa: 1, backgroundColor: .clear)
     
-    private let basePriceTextField = CustomTextField(textColor: .white, placeholder: "base price?",
+    private let basePriceTextField = CustomTextField(textColor: .white, placeholder: "السعر البدائي?",
                                                      placeholderColor: .blueLightFont, placeholderAlpa: 1, isSecure: false)
     
     
@@ -204,7 +204,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "calendar"), for: .normal)
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
-        button.setTitle("Setup date and time travel\t", for: .normal)
+        button.setTitle("اعدادات التاريخ و الوقت   ", for: .normal)
         button.setHeight(height: 50)
         button.setTitleColor(#colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1), for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 16)
@@ -234,7 +234,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
     private lazy var toolbar: UIToolbar = {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0))
         let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let dismissButton = UIBarButtonItem(title: "done", style: .plain, target: self,
+        let dismissButton = UIBarButtonItem(title: "تم", style: .plain, target: self,
                                             action: #selector(handlePickViewDismissal))
         toolBar.barStyle = .black
         toolBar.isTranslucent = true
@@ -334,11 +334,11 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
             return
         }
         guard let currentLocationCity = currentLocationCity else {
-            self.showAlertMessage("Error", "Please make sure you choose current city and destination")
+            self.showAlertMessage("حقل فارغ", "الرجاء قم باختيار الموقع الحالي")
             return
         }
         guard let destinationLocationCity = destinationLocationCity else {
-            self.showAlertMessage("Error", "Please make sure you choose current city and destination")
+            self.showAlertMessage("حقل فارغ", "الرجاء قم باختيار الوجهة")
             return
         }
         
@@ -353,7 +353,7 @@ class NewTripController: UIViewController, UIScrollViewDelegate {
         guard let basePrice = basePriceTextField.text else {return}
         
         [basePrice, pickupTime, pickupLocation].forEach{if $0.isEmpty{
-            self.showAlertMessage("Error", "Please make sure you fill out all the fields")
+            self.showAlertMessage("حقول فارغة", "الرجاء التاكد من ملئ جميع الحقول")
             return
         }}
         
@@ -463,19 +463,19 @@ extension NewTripController: DateAndTimeControllerDelegate {
 
 // MARK: - Cities enum
 enum Cities: String, CaseIterable {
-    case Arrass = "Arrass"
-    case Riyadh = "Riyadh"
-    case Qassim = "Qassim"
-    case Makkah = "Makkah"
-    case Dammam = "Dammam"
-    case Abha = "Abha"
-    case Jazan = "Jazan"
-    case Madinah = "Madinah"
-    case Buraidah = "Buraidah"
-    case Tabuk = "Tabuk"
-    case Hail = "Hail"
-    case Najran = "Najran"
-    case Sakaka = "Sakaka"
+    case Arrass = "الرس"
+    case Riyadh = "الرياض"
+    case Qassim = "القصيم"
+    case Makkah = "مكة"
+    case Dammam = "الدمام"
+    case Abha = "ابها"
+    case Jazan = "جازان"
+    case Madinah = "المدينة المنورة"
+    case Buraidah = "بريدة"
+    case Tabuk = "تبوك"
+    case Hail = "حائل"
+    case Najran = "نجران"
+    case Sakaka = "سكاكا"
     
     var locationCoordinates: ( Double,  Double) {
         switch self {

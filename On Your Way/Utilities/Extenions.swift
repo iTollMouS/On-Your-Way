@@ -687,14 +687,14 @@ extension UITableView {
     }
     
     
-      func updateRow(row: Int, section: Int = 0)
-      {
-          let indexPath = IndexPath(row: row, section: section)
-
-          self.beginUpdates()
-          self.reloadRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
-          self.endUpdates()
-      }
+    func updateRow(row: Int, section: Int = 0)
+    {
+        let indexPath = IndexPath(row: row, section: section)
+        
+        self.beginUpdates()
+        self.reloadRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
+        self.endUpdates()
+    }
     
     func restore() {
         self.backgroundView = nil
@@ -725,9 +725,12 @@ extension Date {
     /// To convert a date to specific type
     func convertDate(formattedString: DateFormattedType) -> String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ar_DZ")
         formatter.dateFormat = formattedString.rawValue
         return formatter.string(from: self)
     }
+    
+
     /// To print 1s ago , 4d ago, 1month ago
     func convertToTimeAgo(style: DateComponentsFormatter.UnitsStyle) -> String {
         let formatter = DateComponentsFormatter()

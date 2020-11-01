@@ -24,18 +24,16 @@ class CustomContainerView: UIView {
         icon.tintColor = iconTintColor
         icon.layer.cornerRadius = 10
         icon.clipsToBounds = true
-        
+        icon.setDimensions(height: 24, width: 24)
         icon.alpha = iconAlpa
         
         addSubview(icon)
         icon.centerY(inView: self)
-        icon.anchor(left: leftAnchor, paddingLeft: 8)
-        icon.setDimensions(height: 26, width: 25)
+        icon.anchor(right: rightAnchor, paddingRight: 8)
+        
         
         addSubview(textField)
-        textField.centerY(inView: self)
-        textField.anchor(left: icon.rightAnchor, bottom: bottomAnchor, right: rightAnchor,
-                         paddingLeft: 8)
+        textField.anchor(top: topAnchor, left: leftAnchor , bottom: bottomAnchor, right: icon.leftAnchor , paddingLeft: 8 , paddingRight: 14)
         
         let dividerView = UIView()
         dividerView.backgroundColor = dividerViewColor.withAlphaComponent(dividerAlpa)
