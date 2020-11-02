@@ -29,7 +29,7 @@ class SafetyControllerGuidelines: UIViewController {
         tableView.separatorStyle = .none
         tableView.separatorColor = .clear
         tableView.register(SafetyCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.rowHeight = 100
+        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.allowsSelection = false
         tableView.delegate = self
         tableView.dataSource = self
@@ -82,12 +82,15 @@ extension SafetyControllerGuidelines : UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let cellRowHeight = SafetyCellViewModel(rawValue: indexPath.row) else { return 0 }
+        return cellRowHeight.cellHeight
+    }
     
 }
 extension SafetyControllerGuidelines: SafetyFooterViewDelegate {
     func handleDismissal(_ view: SafetyFooterView) {
         dismiss(animated: true, completion: nil)
     }
-    
     
 }
