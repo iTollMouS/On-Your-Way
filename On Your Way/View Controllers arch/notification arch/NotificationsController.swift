@@ -81,7 +81,7 @@ class NotificationsController: UITableViewController {
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 150
         tableView.tableFooterView = UIView()
-        title = "Notifications"
+        title = "التنبيهات"
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
     }
     
@@ -89,9 +89,9 @@ class NotificationsController: UITableViewController {
         
         if packages.isEmpty {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                self?.tableView.setEmptyView(title: "No Notifications",
+                self?.tableView.setEmptyView(title: "لاتوجد تنبيهات",
                                              titleColor: .white,
-                                             message: "You don't have any notifications.\nPeople usually notify you about your package status")
+                                             message: "سيتم تنبيهك في حال المسافر قبل الطلب او رفض")
             }
         } else {
             tableView.restore()

@@ -30,18 +30,17 @@ class OrderCell: UITableViewCell {
     
     
     
-    private lazy var packageType: UILabel = {
+    private lazy var packageDescription: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.textColor = .white
-        label.numberOfLines = 0
-        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 3
         return label
     }()
     
     private lazy var timestamp: UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.textColor = .white
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -80,7 +79,7 @@ class OrderCell: UITableViewCell {
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         
         addSubview(packageOwnerImageView)
-        packageOwnerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+        packageOwnerImageView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 24, paddingRight: 8)
         
         
         addSubview(checkMarkButton)
@@ -88,19 +87,21 @@ class OrderCell: UITableViewCell {
         
         
         addSubview(packageOwnerName)
-        packageOwnerName.centerY(inView: packageOwnerImageView, leftAnchor: packageOwnerImageView.rightAnchor, paddingLeft: 6)
+        packageOwnerName.centerY(inView: packageOwnerImageView)
+        packageOwnerName.anchor(right: packageOwnerImageView.leftAnchor, paddingRight: 20)
         
         
         addSubview(timestamp)
-        timestamp.anchor(top: topAnchor, right: rightAnchor, paddingTop: 12, paddingRight: 12)
+        timestamp.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
         
         
         addSubview(packageImageView)
-        packageImageView.centerX(inView: timestamp, topAnchor: timestamp.bottomAnchor, paddingTop: 12)
-        packageImageView.anchor(right : rightAnchor, paddingRight: 40)
+        packageImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 6 )
         
-        addSubview(packageType)
-        packageType.anchor(top: packageOwnerImageView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
+        
+        addSubview(packageDescription)
+        packageDescription.anchor(top: packageOwnerImageView.bottomAnchor, left: packageImageView.rightAnchor,
+                           bottom: bottomAnchor, right: packageOwnerImageView.leftAnchor,
                            paddingTop: 10, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
         
     }
@@ -108,7 +109,7 @@ class OrderCell: UITableViewCell {
     fileprivate func configure(){
         guard let package = package else { return }
         let viewModel = PackageViewModel(package: package)
-
+        
         UserServices.shared.fetchUser(userId: viewModel.packageOwnerId) { [weak self] user in
             guard let imageUrl = URL(string: user.avatarLink) else {return}
             self?.packageOwnerImageView.sd_setImage(with: imageUrl)
@@ -118,7 +119,7 @@ class OrderCell: UITableViewCell {
         
         timestamp.text = viewModel.timestamp
         packageImageView.sd_setImage(with: viewModel.packageImages.first)
-        packageType.text = viewModel.packageType
+        packageDescription.text = viewModel.packageType
     }
     
     
@@ -143,7 +144,6 @@ struct PackageViewModel {
     }
     
     var packageOwnerId: String {
-        
         return package.userID
     }
     
@@ -152,7 +152,7 @@ struct PackageViewModel {
     }
     
     var timestamp: String {
-        guard let timestamp = package.timestamp?.convertDate(formattedString: .formattedType2) else { return "" }
+        guard let timestamp = package.timestamp?.convertDate(formattedString: .formattedType10) else { return "" }
         return timestamp
     }
     

@@ -690,7 +690,6 @@ extension UITableView {
     func updateRow(row: Int, section: Int = 0)
     {
         let indexPath = IndexPath(row: row, section: section)
-        
         self.beginUpdates()
         self.reloadRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
         self.endUpdates()
@@ -730,7 +729,7 @@ extension Date {
         return formatter.string(from: self)
     }
     
-
+    
     /// To print 1s ago , 4d ago, 1month ago
     func convertToTimeAgo(style: DateComponentsFormatter.UnitsStyle) -> String {
         let formatter = DateComponentsFormatter()

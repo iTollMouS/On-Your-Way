@@ -14,7 +14,7 @@ private let reuseIdentifier = "OrderCell"
 class OrdersController: UIViewController {
     
     lazy var segmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["New Orders", "In progress" , "Done"])
+        let segmentedControl = UISegmentedControl(items: ["طلبات جديدة", "طلبات مقبولة" , "طلبات منتهية"])
         segmentedControl.selectedSegmentIndex = 0
         let normalTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         segmentedControl.setTitleTextAttributes(normalTitleTextAttributes, for: .normal)
@@ -56,6 +56,7 @@ class OrdersController: UIViewController {
     var inProcessPackageOrder = [Package]()
     var completedPackageOrder = [Package]()
     lazy var rowsToDisplay = newPackageOrder
+    lazy var filteredOrders = [Package]()
     
     var packageDictionary = [String: Package]()
     
@@ -150,10 +151,10 @@ class OrdersController: UIViewController {
     
     func configureNavBar(){
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.title = "Orders"
+        self.title = "الطلبات"
         navigationItem.searchController = searchController
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for order"
+        searchController.searchBar.placeholder = "البحث عن طلب"
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
     }
@@ -170,29 +171,35 @@ class OrdersController: UIViewController {
 
 extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if rowsToDisplay.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                self?.tableView.setEmptyView(title: "No Orders",
-                                             titleColor: .white,
-                                             message: "You don't have any order.\nPeople usually request shipping order when people travel from to city")
+        
+        
+        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] time in
+            DispatchQueue.main.async { [weak self] in
+                if self!.newPackageOrder.isEmpty {
+                    
+                    self?.tableView.setEmptyView(title: "لاتوجد طلبات جديدة",
+                                                 titleColor: .white,
+                                                 message: "")
+                } else {
+                    tableView.restore()
+                }
             }
-        } else {
-            tableView.restore()
-            tableView.reloadData()
+            
         }
-        return rowsToDisplay.count
+        
+        return searchController.isActive ? filteredOrders.count : rowsToDisplay.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! OrderCell
-        cell.package = rowsToDisplay[indexPath.row]
+        cell.package = searchController.isActive ? filteredOrders[indexPath.row] : rowsToDisplay[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let package = rowsToDisplay[indexPath.row]
+        let package = searchController.isActive ? filteredOrders[indexPath.row] : rowsToDisplay[indexPath.row]
         guard let user = user else { return  }
         let orderDetailsController = OrderDetailsController(package: package, user: user)
         orderDetailsController.delegate = self
@@ -202,7 +209,14 @@ extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
 
 extension OrdersController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        print("DEBUG: \(searchController.searchBar.text ?? "" )")
+        guard let searchedText = searchController.searchBar.text else { return }
+        
+        filteredOrders = rowsToDisplay.filter({ (package) -> Bool in
+            return package.packageType.lowercased().contains(searchedText.lowercased())
+        })
+        
+        tableView.reloadData()
+        
     }
 }
 
