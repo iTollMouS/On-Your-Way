@@ -62,8 +62,6 @@ class OrdersController: UIViewController {
     
     private var viewModel: PackageStatus?
     
-    
-    
     private var user: User?
     
     override func viewDidLoad() {

@@ -138,6 +138,7 @@
 		83D7D42C2535E68F00FA88F0 /* OrderDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D42B2535E68F00FA88F0 /* OrderDetailHeader.swift */; };
 		83D7D42E2535E6F800FA88F0 /* OrderDetailHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D42D2535E6F800FA88F0 /* OrderDetailHeaderCell.swift */; };
 		83D7D4302535EB6300FA88F0 /* OrderDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D42F2535EB6200FA88F0 /* OrderDetailsFooterView.swift */; };
+		83E977772554AD070046DE63 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -300,6 +301,7 @@
 			files = (
 				28CD9B8C6FE7E3DF245CA0E7 /* Pods_On_Your_Way.framework in Frameworks */,
 				83375F50253B1C95008F2036 /* LNPopupController.framework in Frameworks */,
+				83E977772554AD070046DE63 /* LNPopupController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
