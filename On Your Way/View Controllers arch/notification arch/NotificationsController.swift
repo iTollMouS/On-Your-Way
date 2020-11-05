@@ -95,7 +95,6 @@ class NotificationsController: UITableViewController {
             }
         } else {
             tableView.restore()
-            tableView.reloadData()
         }
         
         return searchController.isActive ? filteredPackages.count : packages.count
