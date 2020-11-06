@@ -95,8 +95,8 @@ class NotificationsDetailsController: UITableViewController {
     // MARK: - header View in section
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.text = section == 0 ?  "Package description" : "Star Chat"
-        label.textAlignment = .left
+        label.text = section == 0 ?  "وصف الطلب" : "بدء المحادثة"
+        label.textAlignment = .right
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         return label

@@ -12,7 +12,7 @@ class NotificationsFooterView: UIView {
     lazy var deleteOrderButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitleColor(.white, for: .normal)
-        button.setTitle("Delete my order", for: .normal)
+        button.setTitle("الغاء طلبي", for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.6)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(handleDeleteOrder), for: .touchUpInside)

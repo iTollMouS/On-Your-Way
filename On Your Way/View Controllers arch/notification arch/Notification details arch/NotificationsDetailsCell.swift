@@ -96,10 +96,10 @@ class NotificationsDetailsCell: UITableViewCell {
         
         
         if packageStatus == .packageIsAccepted {
-            startChatButton.setTitle("Start chat  ", for: .normal)
+            startChatButton.setTitle("بدء المحادثة  ", for: .normal)
             startChatButton.isEnabled = true
         } else {
-            startChatButton.setTitle("Chat will be enable once \(traveler.username) accept your order", for: .normal)
+            startChatButton.setTitle("سيتم تفعيل المحادثه عندما \(traveler.username) يقبل طلبك", for: .normal)
             startChatButton.isEnabled = false
         }
     }
@@ -146,9 +146,9 @@ class NotificationsDetailsCell: UITableViewCell {
         button.titleLabel?.numberOfLines = 0
         button.setImage(UIImage(systemName: systemName), for: .normal)
         button.backgroundColor = backgroundColor.withAlphaComponent(alpha)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.addTarget(self, action: #selector(handleActions), for: .touchUpInside)
-        button.setDimensions(height: 50, width: 320)
+        button.setDimensions(height: 50, width: 360)
         button.layer.cornerRadius = 50 / 2
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.clipsToBounds = true

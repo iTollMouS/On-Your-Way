@@ -30,7 +30,7 @@ class NotificationCell: UITableViewCell {
     
     private lazy var packageStatusLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.textColor = .white
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
@@ -39,7 +39,7 @@ class NotificationCell: UITableViewCell {
     
     private lazy var timestamp: UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.textColor = .white
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -47,7 +47,7 @@ class NotificationCell: UITableViewCell {
     
     private lazy var travelerName: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.textColor = .white
         label.setDimensions(height: 40, width: 200)
         label.adjustsFontSizeToFitWidth = true
@@ -79,27 +79,29 @@ class NotificationCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        
+        
         addSubview(travelerImageView)
-        travelerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
+        travelerImageView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 24, paddingRight: 12)
         
         addSubview(checkMarkButton)
         checkMarkButton.anchor(top: travelerImageView.bottomAnchor, right: travelerImageView.rightAnchor,
                                paddingTop: -14, paddingRight: -4)
         
         
-        addSubview(timestamp)
-        timestamp.anchor(top: topAnchor, right: rightAnchor, paddingTop: 12, paddingRight: 12)
-        
-        addSubview(packageImageView)
-        packageImageView.centerX(inView: timestamp, topAnchor: timestamp.bottomAnchor, paddingTop: 12)
-        packageImageView.anchor(right : rightAnchor, paddingRight: 40)
-        
         addSubview(travelerName)
-        travelerName.centerY(inView: travelerImageView, leftAnchor: travelerImageView.rightAnchor, paddingLeft: 12)
+        travelerName.centerY(inView: travelerImageView)
+        travelerName.anchor(right: travelerImageView.leftAnchor, paddingRight: 12)
         
         
+        addSubview(timestamp)
+        timestamp.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
+
+        addSubview(packageImageView)
+        packageImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
+
         addSubview(packageStatusLabel)
-        packageStatusLabel.anchor(top: topAnchor, left: travelerImageView.rightAnchor, bottom: bottomAnchor, right: packageImageView.leftAnchor,
+        packageStatusLabel.anchor(top: travelerName.bottomAnchor, left: packageImageView.rightAnchor, bottom: bottomAnchor, right: travelerImageView.leftAnchor,
                                   paddingTop: 20, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
         
     }
@@ -124,19 +126,19 @@ class NotificationCell: UITableViewCell {
         // MARK: - switch viewModel
         switch viewModel.packageStatus {
         case .packageIsPending:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
+            packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان :",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemYellow)
         case .packageIsRejected:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
+            packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان : ",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemRed)
         case .packageIsAccepted:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
+            packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان :",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemGreen)
         case .packageIsDelivered:
-            packageStatusLabel.attributedText = attributedText(title: "Your package status is:",
+            packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان :",
                                                                details: viewModel.packageStatus.rawValue,
                                                                textColor: .systemBlue)
         }

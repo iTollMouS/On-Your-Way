@@ -87,14 +87,17 @@ class NotificationsController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if packages.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                self?.tableView.setEmptyView(title: "لاتوجد تنبيهات",
-                                             titleColor: .white,
-                                             message: "سيتم تنبيهك في حال المسافر قبل الطلب او رفض")
+        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] time in
+            DispatchQueue.main.async { [weak self] in
+                if self!.packages.isEmpty {
+                    self?.tableView.setEmptyView(title: "لاتوجد تنبيهات",
+                                                 titleColor: .white,
+                                                 message: "سيتم تنبيهك في حال المسافر قبل الطلب او رفض")
+                } else {
+                    tableView.restore()
+                }
             }
-        } else {
-            tableView.restore()
+            
         }
         
         return searchController.isActive ? filteredPackages.count : packages.count
@@ -103,7 +106,6 @@ class NotificationsController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
         cell.package = searchController.isActive ? filteredPackages[indexPath.row] : packages[indexPath.row]
-        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
