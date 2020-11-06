@@ -61,7 +61,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - configureViewControllers
-   fileprivate func configureViewControllers(){
+    fileprivate func configureViewControllers(){
         
         let tripsTimelineController = TripsTimelineController()
         let tripsTimelineControllerNavBar = templateNavController(image: UIImage(systemName: "car")!,
@@ -97,7 +97,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - tabBarController as modal
-     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.firstIndex(of: viewController)
         if index == 3 {
             let recentController = RecentController()

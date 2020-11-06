@@ -9,6 +9,22 @@ import UIKit
 import SwiftEntryKit
 import Lottie
 
+
+enum Conditions: String, CaseIterable, Codable {
+    case success
+    case warning
+    case error
+    
+    var JSONStringName: String {
+        switch self {
+        case .success : return "success_motion"
+        case .warning : return "warning_animation"
+        case .error : return "New_error"
+        }
+    }
+}
+
+
 class CustomAlertMessage: UIView {
     
     var messageDidDismiss: (() -> Void)
