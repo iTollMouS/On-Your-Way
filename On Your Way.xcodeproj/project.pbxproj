@@ -124,6 +124,7 @@
 		83B763782537409800503A9D /* failed.json in Resources */ = {isa = PBXBuildFile; fileRef = 83B763772537409800503A9D /* failed.json */; };
 		83B7637B2538192300503A9D /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7637A2538192300503A9D /* Review.swift */; };
 		83B7637D253819FF00503A9D /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7637C253819FF00503A9D /* ReviewService.swift */; };
+		83BA1D442555D25500B527E0 /* CustomAlertMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA1D432555D25500B527E0 /* CustomAlertMessage.swift */; };
 		83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3E92534720400FA88F0 /* TripDetailsController.swift */; };
 		83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */; };
 		83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */; };
@@ -277,6 +278,7 @@
 		83B763772537409800503A9D /* failed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = failed.json; sourceTree = "<group>"; };
 		83B7637A2538192300503A9D /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		83B7637C253819FF00503A9D /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
+		83BA1D432555D25500B527E0 /* CustomAlertMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertMessage.swift; sourceTree = "<group>"; };
 		83D7D3E92534720400FA88F0 /* TripDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsController.swift; sourceTree = "<group>"; };
 		83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsCell.swift; sourceTree = "<group>"; };
 		83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsHeaderView.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				834C981B25311CCC00BE8691 /* AppDelegate.swift */,
 				834C981D25311CCC00BE8691 /* SceneDelegate.swift */,
 				834C98742531227D00BE8691 /* Constants.swift */,
+				83BA1D432555D25500B527E0 /* CustomAlertMessage.swift */,
 				834C9906253232CD00BE8691 /* Onboarding arch */,
 				834C981F25311CCC00BE8691 /* MainTabController.swift */,
 				834C9883253128E700BE8691 /* View Controllers arch */,
@@ -859,6 +862,7 @@
 				835C88062539BD7500D49923 /* InputBarViewAccessoryDelegate.swift in Sources */,
 				83D7D42E2535E6F800FA88F0 /* OrderDetailHeaderCell.swift in Sources */,
 				834C99032532326800BE8691 /* PeopleReviewHeader.swift in Sources */,
+				83BA1D442555D25500B527E0 /* CustomAlertMessage.swift in Sources */,
 				83B76373253715ED00503A9D /* NotificationCell.swift in Sources */,
 				834C991D25323C3200BE8691 /* RecentCell.swift in Sources */,
 				836837D9253EF2F9005FEFE4 /* NotificationsFooterView.swift in Sources */,

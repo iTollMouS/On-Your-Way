@@ -13,6 +13,8 @@ private let reuseIdentifier = "OrderCell"
 
 class OrdersController: UIViewController {
     
+    
+    // MARK: - Properties
     lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["طلبات جديدة", "طلبات مقبولة" , "طلبات منتهية"])
         segmentedControl.selectedSegmentIndex = 0
@@ -52,6 +54,8 @@ class OrdersController: UIViewController {
         return stackView
     }()
     
+    
+    // MARK: - vars
     var newPackageOrder = [Package]()
     var inProcessPackageOrder = [Package]()
     var completedPackageOrder = [Package]()
@@ -64,6 +68,8 @@ class OrdersController: UIViewController {
     
     private var user: User?
     
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchTrips()
@@ -73,13 +79,16 @@ class OrdersController: UIViewController {
         fetchUser()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarController?.dismissPopupBar(animated: true, completion: nil)
     }
     
-    
+    // MARK: - toggleSegment
     func toggleSegment(){
         switch segmentedControl.selectedSegmentIndex {
         case 0 :
@@ -92,11 +101,13 @@ class OrdersController: UIViewController {
         tableView.reloadData()
     }
     
+    // MARK: - Action handlers
     @objc func handleOrderSectionChanges(){
         toggleSegment()
         fetchTrips()
     }
     
+    // MARK: - fetchUser
     func fetchUser(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
         UserServices.shared.fetchUser(userId: uid) { [weak self] user in
@@ -105,6 +116,8 @@ class OrdersController: UIViewController {
         }
     }
     
+    
+    // MARK: - fetchTrips
     func fetchTrips() {
         if User.currentUser?.id == nil { return }
         else {
@@ -125,21 +138,19 @@ class OrdersController: UIViewController {
                     self?.completedPackageOrder = packages
                     self?.toggleSegment()
                 }
-                
             }
         }
     }
     
+    // MARK: - configureRefreshController
     func configureRefreshController(){
         refreshController.tintColor = .white
         refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
                                                                 [.foregroundColor: UIColor.white])
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
     
+    // MARK: - configureUI
     func configureUI(){
         view.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         view.addSubview(stackView)
@@ -147,6 +158,8 @@ class OrdersController: UIViewController {
     }
     
     
+    
+    // MARK: - configureNavBar
     func configureNavBar(){
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "الطلبات"
@@ -167,6 +180,8 @@ class OrdersController: UIViewController {
     
 }
 
+
+// MARK:- extension
 extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -205,6 +220,7 @@ extension OrdersController: UITableViewDelegate, UITableViewDataSource  {
     }
 }
 
+// MARK: UISearchResultsUpdating
 extension OrdersController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchedText = searchController.searchBar.text else { return }
@@ -219,6 +235,7 @@ extension OrdersController: UISearchResultsUpdating {
 }
 
 
+//MARK:OrderDetailsControllerDelegate
 extension OrdersController : OrderDetailsControllerDelegate {
     func handleRefreshTableAfterAction() {
         DispatchQueue.main.async { [weak self] in

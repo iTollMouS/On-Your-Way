@@ -209,6 +209,7 @@ extension RecentController: UISearchResultsUpdating {
         filteredAllRecent = allRecent.filter({ recent -> Bool in
             return recent.receiverName.lowercased().contains(searchedText.lowercased())
         })
+        tableView.reloadData()
     }
     
 }

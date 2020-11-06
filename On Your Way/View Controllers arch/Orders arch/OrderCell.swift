@@ -10,11 +10,14 @@ import SDWebImage
 
 class OrderCell: UITableViewCell {
     
+    
+    // MARK: - var
     var package: Package?{
         didSet{configure()}
     }
     
     
+    // MARK: - Properties
     private lazy var checkMarkButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
@@ -74,6 +77,8 @@ class OrderCell: UITableViewCell {
         return imageView
     }()
     
+    
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
@@ -101,8 +106,8 @@ class OrderCell: UITableViewCell {
         
         addSubview(packageDescription)
         packageDescription.anchor(top: packageOwnerImageView.bottomAnchor, left: packageImageView.rightAnchor,
-                           bottom: bottomAnchor, right: packageOwnerImageView.leftAnchor,
-                           paddingTop: 10, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
+                                  bottom: bottomAnchor, right: packageOwnerImageView.leftAnchor,
+                                  paddingTop: 10, paddingLeft: 20, paddingBottom: 20, paddingRight: 20)
         
     }
     
@@ -131,6 +136,7 @@ class OrderCell: UITableViewCell {
 }
 
 
+// MARK: PackageViewModel
 struct PackageViewModel {
     
     let package: Package
