@@ -88,7 +88,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         let profileController = ProfileController()
         let profileControllerNavBar = templateNavController(image: UIImage(systemName: "person")!,
                                                             rootViewController: profileController,
-                                                            tabBarItemTitle: "")
+                                                            tabBarItemTitle: "الملف الشخصي")
         
         viewControllers = [tripsTimelineControllerNavBar,
                            ordersControllerNavBar, notificationsControllerNavBar,

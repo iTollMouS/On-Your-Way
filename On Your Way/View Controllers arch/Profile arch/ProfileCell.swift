@@ -23,10 +23,10 @@ class ProfileCell: UITableViewCell {
     
     lazy var phoneNumberTextField: UITextField = {
         let label = UITextField()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.delegate = self
-        label.placeholder = "Update your phone number here"
+        label.placeholder = "الرجاء تحديث رقم الجوال"
         label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 20)
         return label
@@ -34,7 +34,7 @@ class ProfileCell: UITableViewCell {
     
     lazy var emailTextField: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
         return label
@@ -42,7 +42,7 @@ class ProfileCell: UITableViewCell {
     
     private lazy var appVersionLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.text = "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")"
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
@@ -51,8 +51,8 @@ class ProfileCell: UITableViewCell {
     
     private lazy var covid_19_GuidelinesLabel: UILabel = {
         let label = UILabel()
-        label.text = "View covid-19 guidelines "
-        label.textAlignment = .left
+        label.text = "ارشادات كورونا COVID-19 "
+        label.textAlignment = .right
         label.textColor = #colorLiteral(red: 0, green: 0.4509803922, blue: 0.9294117647, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
         return label
@@ -99,12 +99,12 @@ class ProfileCell: UITableViewCell {
         switch viewModel {
         case .section_1:
             addSubview(phoneNumberTextField)
-            phoneNumberTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 30))
+            phoneNumberTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 50))
             phoneNumberTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             configureAccessory()
         case .section_2:
             addSubview(emailTextField)
-            emailTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+            emailTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 50))
             configureAccessory()
         case .section_4:
             addSubview(appVersionLabel)
@@ -128,7 +128,7 @@ class ProfileCell: UITableViewCell {
         delegate?.showGuidelines(self)
     }
     
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -169,10 +169,10 @@ enum ProfileViewModel: Int, CaseIterable {
     
     var sectionTitle: String {
         switch self {
-        case .section_1: return "Phone Number"
-        case .section_2: return "Email"
-        case .section_4: return "App Version"
-        case .section_5: return "COVID-19 Guidelines"
+        case .section_1: return "رقم الجوال"
+        case .section_2: return "البريد الالكتروني"
+        case .section_4: return "الاصدار"
+        case .section_5: return "ارشادات كورونا"
         }
     }
     var systemNameIcon: String {

@@ -25,7 +25,7 @@ class ProfileFooterView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.setImage(UIImage(systemName: "power"), for: .normal)
         button.tintColor = .white
-        button.setTitle("Log out  ", for: .normal)
+        button.setTitle("تسجيل خروج  ", for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.6)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)

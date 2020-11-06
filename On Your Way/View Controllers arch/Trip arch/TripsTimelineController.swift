@@ -72,10 +72,17 @@ class TripsTimelineController: UITableViewController {
         newTripController.popupBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         newTripController.popupItem.subtitle = "show people what packages you can take"
         newTripController.popupItem.progress = 0.34
+        newTripController.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
+        newTripController.popupBar.semanticContentAttribute = .forceRightToLeft
+        tabBarController?.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
+        tabBarController?.popupBar.semanticContentAttribute = .forceRightToLeft
         tabBarController?.popupInteractionStyle = .drag
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: newTripController, animated: true, completion: nil)
+        
+        
+        
     }
     
     

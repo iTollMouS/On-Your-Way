@@ -100,7 +100,7 @@ class RecentController: UIViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for a user"
+        searchController.searchBar.placeholder = "البحث عن مستخدم"
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
     }
@@ -118,8 +118,8 @@ class RecentController: UIViewController {
     
     // MARK: - configureNavBar
     func configureNavBar(){
-        self.title = "Messages"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dismiss", style: .done, target: self, action: #selector(handleDismissal))
+        self.title = "الرسائل"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "الرجوع", style: .done, target: self, action: #selector(handleDismissal))
         self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -150,7 +150,6 @@ extension RecentController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RecentCell
-//        cell.delegate = self
         cell.recentChat = searchController.isActive ? filteredAllRecent[indexPath.row] : allRecent[indexPath.row]
         return cell
     }
@@ -221,9 +220,9 @@ extension RecentController {
     fileprivate func configureWhenTableIsEmpty(){
         if allRecent.isEmpty {
             Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                self?.tableView.setEmptyView(title: "No DMs",
+                self?.tableView.setEmptyView(title: "لاتوجد رسائل",
                                              titleColor: .white,
-                                             message: "People DM you when you announce your travel info for packaging shipping details and process")
+                                             message: "")
             }
         } else {tableView.restore()}
         

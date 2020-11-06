@@ -65,9 +65,12 @@ class ProfileController: UIViewController {
         guard let user = user else { return }
         tabBarController?.tabBar.isHidden = false
         let peopleReviewsController = PeopleReviewsController(user: user)
-        peopleReviewsController.popupItem.title = "People Reviews "
-        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
-        peopleReviewsController.popupItem.progress = 0.34
+        peopleReviewsController.popupItem.title = "تقييم العملاء"
+        peopleReviewsController.popupItem.subtitle = "شاهد تقييم العملاء عن ادائك معهم"
+        peopleReviewsController.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
+        peopleReviewsController.popupBar.semanticContentAttribute = .forceRightToLeft
+        tabBarController?.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
+        tabBarController?.popupBar.semanticContentAttribute = .forceRightToLeft
         tabBarController?.modalPresentationStyle = .custom
         tabBarController?.popupInteractionStyle = .drag
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
@@ -262,13 +265,14 @@ extension ProfileController: UITableViewDelegate, UITableViewDataSource {
         label.text = viewModel.sectionTitle
         label.textColor = #colorLiteral(red: 0.6274509804, green: 0.6274509804, blue: 0.6274509804, alpha: 1)
         label.backgroundColor = .clear
-        label.textAlignment = .left
+        label.textAlignment = .right
         
         let containerView = UIView()
         containerView.addSubview(iconImage)
         iconImage.centerY(inView: containerView, leftAnchor: containerView.leftAnchor, paddingLeft: 12)
         containerView.addSubview(label)
-        label.centerY(inView: iconImage, leftAnchor: iconImage.rightAnchor, paddingLeft: 8)
+        label.centerY(inView: iconImage)
+        label.anchor(right: containerView.rightAnchor, paddingRight: 24)
         return containerView
     }
     

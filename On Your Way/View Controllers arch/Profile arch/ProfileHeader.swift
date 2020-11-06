@@ -54,7 +54,7 @@ class ProfileHeader: UIView {
     
     private lazy var editImageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Edit image"
+        label.text = "تغيير الصورة"
         label.textAlignment = .center
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 10)
@@ -98,7 +98,7 @@ class ProfileHeader: UIView {
         view.settings.starSize = 24
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
-        view.text = "No reviews"
+        view.text = "لاتوجد تقييمات"
         view.rating = 0
         view.settings.textColor = .lightGray
         view.settings.disablePanGestures = true

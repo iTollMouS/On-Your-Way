@@ -37,15 +37,24 @@ class RecentCell: UITableViewCell {
         imageView.backgroundColor = .gray
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = false
-        imageView.setupShadow(opacity: 0.3, radius: 10, offset: CGSize(width: 0, height: 0.8), color: .white)
         imageView.layer.borderWidth = 0.8
         imageView.layer.borderColor = UIColor.white.cgColor
         return imageView
     }()
     
+    
+    private lazy var accessoryImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.setDimensions(height: 18, width: 12)
+        imageView.image = UIImage(systemName: "chevron.right")
+        imageView.backgroundColor = .clear
+        imageView.tintColor = .gray
+        return imageView
+    }()
+    
     lazy var recentMessageLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .lightGray
@@ -54,7 +63,7 @@ class RecentCell: UITableViewCell {
     
     private lazy var fullnameLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -98,27 +107,31 @@ class RecentCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
-        accessoryType = .disclosureIndicator
-        addSubview(profileImageView)
-        profileImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
         
+        addSubview(accessoryImageView)
+        accessoryImageView.centerY(inView: self)
+        accessoryImageView.anchor(right: rightAnchor, paddingRight: 16)
+
+        addSubview(profileImageView)
+        profileImageView.centerY(inView: self)
+        profileImageView.anchor(right: accessoryImageView.leftAnchor, paddingRight: 12)
+
         addSubview(checkMarkButton)
         checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor,
-                               paddingTop: -14, paddingRight: -4)
-        
-        
-        
+                               paddingTop: -16, paddingRight: -4)
+
+
         addSubview(timestampLabel)
-        timestampLabel.anchor(top: topAnchor, right: rightAnchor, paddingTop: 6, paddingRight: 12)
-        
-        
+        timestampLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 6, paddingLeft: 8)
+
+
         addSubview(counterMessageLabel)
         counterMessageLabel.centerX(inView: timestampLabel)
-        counterMessageLabel.centerY(inView: profileImageView)
-        
+        counterMessageLabel.centerY(inView: self)
+
         addSubview(stackView)
-        stackView.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: bottomAnchor,
-                         right: counterMessageLabel.leftAnchor, paddingTop: 16, paddingLeft: 20, paddingBottom: 20, paddingRight: 30)
+        stackView.anchor(top: topAnchor, left: counterMessageLabel.rightAnchor, bottom: bottomAnchor,
+                         right: profileImageView.leftAnchor, paddingTop: 16, paddingLeft: 20, paddingBottom: 20, paddingRight: 30)
         
     }
     
