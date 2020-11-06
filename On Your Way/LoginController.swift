@@ -53,7 +53,7 @@ class LoginController: UIViewController {
         label.font = .boldSystemFont(ofSize: 14)
         label.textAlignment = .center
         label.backgroundColor = .clear
-        label.text = "OR\nlogin with other services "
+        label.text = "او \nسجل دخول بواسطة "
         label.numberOfLines = 0
         return label
     }()
@@ -76,7 +76,7 @@ class LoginController: UIViewController {
     // MARK: - Logging Buttons
     private lazy var browsAnonymousButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("  Brows as anonymous", for: .normal)
+        button.setTitle("  التصفح بدون حساب", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
         button.setHeight(height: 50)
         button.tintColor = .white
@@ -92,7 +92,7 @@ class LoginController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "btn_google_light_pressed_ios").withRenderingMode(.alwaysOriginal) , for: .normal)
         button.imageView?.clipsToBounds = true
-        button.setTitle("  Sign With Google Account", for: .normal)
+        button.setTitle("  تسجيل دخول بواسطة قوقل", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.9215686275, green: 0.9215686275, blue: 0.9215686275, alpha: 1)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -116,7 +116,7 @@ class LoginController: UIViewController {
         let button = UIButton (type: .system)
         button.setImage(UIImage(systemName: "phone"), for: .normal)
         button.tintColor = .white
-        button.setTitle("  Sign in with your phone number  ", for: .normal)
+        button.setTitle("  تسجيل دخول برقم الجوال", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setHeight(height: 50)
         button.layer.cornerRadius = 50 / 2
@@ -143,10 +143,10 @@ class LoginController: UIViewController {
     
     private lazy var dontHaveAccountButton: UIButton = {
         let button = UIButton (type: .system)
-        let attributedText = NSMutableAttributedString(string: "Don't have an account? ",
+        let attributedText = NSMutableAttributedString(string: "ليس لديك حساب؟ ",
                                                        attributes: [.foregroundColor : UIColor.white,
                                                                     .font : UIFont.systemFont(ofSize: 18)])
-        attributedText.append(NSMutableAttributedString(string: "Create new",
+        attributedText.append(NSMutableAttributedString(string: "انشئ حساب هنا ",
                                                         attributes: [.foregroundColor : UIColor.white,
                                                                      .font : UIFont.boldSystemFont(ofSize: 20)]))
         button.setAttributedTitle(attributedText, for: .normal)
@@ -230,7 +230,7 @@ class LoginController: UIViewController {
     @objc private func handleLogin(){
         
         self.showBlurView()
-        self.showLoader(true, message: "Please wait...")
+        self.showLoader(true, message: "الرجاء الانتظار...")
         guard let email = emailTextField.text else { return  }
         guard let password = passwordTextField.text else { return }
         AuthServices.shared.logUserWitEmail(withEmail: email, password: password) { [weak self] (authResult, error) in
@@ -248,20 +248,19 @@ class LoginController: UIViewController {
             }
             self?.removeBlurView()
             self?.showLoader(false)
-            self?.showBanner(message: "Successfully logged in", state: .success,
+            self?.showBanner(message: "تم تسجيل الدخول بنجاح", state: .success,
                              location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                              sender: self!)
             
             Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
                 self?.showBlurView()
-                self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+                self?.showLoader(true, message: "الرجاء الانتظار \nبينما نتفحص البيئة")
             }
             
             Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
                 self?.removeBlurView()
                 self?.showLoader(false)
                 self?.delegate?.handleLoggingControllerDismissal(self!)
-                print("DEBUG: delegate ")
             }
             
         }
@@ -323,12 +322,12 @@ extension LoginController: GIDSignInDelegate {
         print("DEBUG: delegate in firebase fired")
         guard let user = user else { return }
         self.showBlurView()
-        self.showLoader(true, message: "Please wait while we create account for you...")
+        self.showLoader(true, message: "الرجاء الانتظار بينما يتم انشاء الحساب")
         
         Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
             self?.removeBlurView()
             self?.showLoader(false)
-            self?.showBanner(message: "Successfully created account with Google account", state: .success,
+            self?.showBanner(message: "تم انشاء حساب بواسطة قوقل", state: .success,
                              location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                              sender: self!)
         }

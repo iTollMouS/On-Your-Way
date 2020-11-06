@@ -43,7 +43,7 @@ class UpdateEmailController: UIViewController {
     
     private lazy var loggingButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
+        button.setTitle("حفظ التغيرات", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
         button.setHeight(height: 50)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
@@ -109,7 +109,7 @@ class UpdateEmailController: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         self.showBlurView()
-        self.showLoader(true, message: "Please wait...")
+        self.showLoader(true, message: "الرجاء الانتظار")
         AuthServices.shared.updateEmailAndPassword(email: email, password: password) { [weak self] error in
             if let error = error {
                 self?.removeBlurView()
@@ -120,13 +120,13 @@ class UpdateEmailController: UIViewController {
             
             self?.removeBlurView()
             self?.showLoader(false)
-            self?.showBanner(message: "Successfully verified your info", state: .success,
+            self?.showBanner(message: "تم تحفظ التغيرات بنجاح", state: .success,
                              location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                              sender: self!)
             
             Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
                 self?.showBlurView()
-                self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+                self?.showLoader(true, message: "سيتم تسجيل خروجك\nالرجاء تسجيل الدخول بواسطة البيانات المحدثه")
             }
             
             Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
@@ -136,9 +136,5 @@ class UpdateEmailController: UIViewController {
             }
             
         }
-        
-        
     }
-    
-    
 }

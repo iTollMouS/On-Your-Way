@@ -49,9 +49,9 @@ class RegistrationController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = CLTypingLabel()
-        label.text = "Create\nAccount"
+        label.text = "انشاء\nحساب"
         label.textColor = .white
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 32)
         label.numberOfLines = 2
         return label
@@ -79,7 +79,7 @@ class RegistrationController: UIViewController {
     
     private lazy var registrationButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Register", for: .normal)
+        button.setTitle("انشاء حساب", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
         button.setHeight(height: 50)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
@@ -124,8 +124,8 @@ class RegistrationController: UIViewController {
     }()
     
     private lazy var topStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel,
-                                                       selectProfileImage])
+        let stackView = UIStackView(arrangedSubviews: [selectProfileImage,
+                                                       titleLabel])
         stackView.axis = .horizontal
         stackView.setDimensions(height: 100, width: view.frame.width)
         return stackView
@@ -200,6 +200,9 @@ class RegistrationController: UIViewController {
     
     // MARK: - handleRegistration
     @objc private func handleRegistration(){
+        if profileImage == nil {
+            self.showAlertMessage("حدث خطا ما", "الرجاء اختيار صورة شخصية للحساب")
+        }
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullname = fullnameTextField.text else { return }

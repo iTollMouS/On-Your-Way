@@ -17,7 +17,7 @@ protocol RecentControllerDelegate: class {
 
 class RecentController: UIViewController {
     
-
+    
     weak var delegate: RecentControllerDelegate?
     
     // MARK: - Properties

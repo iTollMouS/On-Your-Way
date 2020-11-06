@@ -10,7 +10,7 @@ import UIKit
 class RecentCell: UITableViewCell {
     
     
-
+    
     
     var recentChat: RecentChat?{
         didSet{ configure() }
@@ -111,24 +111,24 @@ class RecentCell: UITableViewCell {
         addSubview(accessoryImageView)
         accessoryImageView.centerY(inView: self)
         accessoryImageView.anchor(right: rightAnchor, paddingRight: 16)
-
+        
         addSubview(profileImageView)
         profileImageView.centerY(inView: self)
         profileImageView.anchor(right: accessoryImageView.leftAnchor, paddingRight: 12)
-
+        
         addSubview(checkMarkButton)
         checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor,
                                paddingTop: -16, paddingRight: -4)
-
-
+        
+        
         addSubview(timestampLabel)
         timestampLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 6, paddingLeft: 8)
-
-
+        
+        
         addSubview(counterMessageLabel)
         counterMessageLabel.centerX(inView: timestampLabel)
         counterMessageLabel.centerY(inView: self)
-
+        
         addSubview(stackView)
         stackView.anchor(top: topAnchor, left: counterMessageLabel.rightAnchor, bottom: bottomAnchor,
                          right: profileImageView.leftAnchor, paddingTop: 16, paddingLeft: 20, paddingBottom: 20, paddingRight: 30)

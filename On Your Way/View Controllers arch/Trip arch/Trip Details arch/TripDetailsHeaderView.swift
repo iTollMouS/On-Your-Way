@@ -78,8 +78,7 @@ class TripDetailsHeaderView: UIView {
     private lazy var userInfoStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [fullnameLabel,
                                                        phoneNumberLabel,
-                                                       ratingView,
-                                                       startChatButton])
+                                                       ratingView])
         stackView.axis = .vertical
         stackView.spacing = 6
         stackView.distribution = .fill
