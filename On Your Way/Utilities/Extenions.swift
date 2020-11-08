@@ -12,7 +12,7 @@ import AudioToolbox
 import Photos
 import JGProgressHUD
 import Loaf
-import SwiftEntryKit
+
 
 public struct AnchoredConstraints {
     public var top, leading, bottom, trailing, width, height: NSLayoutConstraint?

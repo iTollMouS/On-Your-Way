@@ -124,8 +124,8 @@ extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.text = "Package description"
-        label.textAlignment = .left
+        label.text = "وصف الغرض"
+        label.textAlignment = .right
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         return label

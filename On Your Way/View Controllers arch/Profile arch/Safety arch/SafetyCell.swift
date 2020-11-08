@@ -48,7 +48,7 @@ class SafetyCell: UITableViewCell {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, detailsLabel])
         stackView.axis = .vertical
-        stackView.spacing = 12
+        stackView.spacing = 4
         stackView.distribution = .fillProportionally
         stackView.setWidth(width: 240)
         return stackView
@@ -62,7 +62,7 @@ class SafetyCell: UITableViewCell {
         stackView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
         stackView.anchor(top: topAnchor, bottom: bottomAnchor, paddingTop: 20, paddingBottom: 20)
         addSubview(animationView)
-        animationView.centerY(inView: self, leftAnchor: stackView.rightAnchor, paddingLeft: 12)
+        animationView.anchor(top: topAnchor, left: stackView.rightAnchor, paddingLeft: 12)
         backgroundColor =  .clear
     }
     
@@ -99,7 +99,7 @@ enum SafetyCellViewModel: Int, CaseIterable {
         case .socialDistancing: return 160
         case .washHands: return 140
         case .handSanitizer: return 120
-        case .wearMask: return 120
+        case .wearMask: return 140
         case .cleanPhones: return 120
         case .stayHome: return 140
         case .packageDelivery: return 160
@@ -111,24 +111,24 @@ enum SafetyCellViewModel: Int, CaseIterable {
         switch self {
         case .socialDistancing: return "مسافر مترين"
         case .washHands: return "غسل اليدين بشكل مستمر"
-        case .handSanitizer: return "Use hands sanitizer"
+        case .handSanitizer: return "استخدم المعقم"
         case .wearMask: return "تأكد من أنها تغطي أنفك وفمك وذقنك"
         case .cleanPhones: return "Clean Phones"
-        case .stayHome: return "Stay Home"
+        case .stayHome: return "ابقى في المنزل"
         case .packageDelivery: return "Wipe your packages"
         }
     }
     
     var detailsLabel: String {
         switch self {
-        case .socialDistancing: return "ابتعد مسافة متر واحد على الأقل عن الآخرين للحد من مخاطر الإصابة بالعدوى عندما يسعلون أو يعطسون أو يتكلمون. ابتعد مسافة أكبر من ذلك عن الآخرين عندما تكون في أماكن مغلقة. كلما ابتعدت مسافة أكبر، كان ذلك أفضل."
+        case .socialDistancing: return "ابتعد مسافة متر واحد على الأقل عن الآخرين للحد من مخاطر الإصابة بالعدوى عندما يسعلون أو يعطسون أو يتكلمون. ابتعد مسافة أكبر من ذلك عن الآخرين عندما تكون في أماكن مغلقة."
         case .washHands: return "نظف يديك جيداً بانتظام باستخدام مطهر اليدين الكحولي أو اغسلهما بالماء والصابون. ويؤدي ذلك إلى إزالة الجراثيم بما في ذلك الفيروسات التي قد توجد على يديك."
-        case .handSanitizer: return "استخدم معقم كحولي اذا لم يتوفر الماء استخدم معقم كحولي اذا لم يتوفر الماء استخدم معقم كحولي اذا لم يتوفر الماء"
+        case .handSanitizer: return "إحمل معك معقم كحولي اينما تذهب، احرص على حمله معك واستخدامه بشكل دائم بعد ملامسة اسطح خارجيه"
             
-        case .wearMask: return "تُعد الكمامات الطبية من معدات الحماية الشخصية الأساسية للعاملين. فمجرد ارتداؤها ، يتم تقليل نسبة الاصابة من الفايروس"
+        case .wearMask: return "تُعد الكمامات الطبية من معدات الحماية الشخصية الأساسية للعاملين. فمجرد ارتداؤها يتم تقليل نسبة الاصابة من الفايروس"
             
         case .cleanPhones: return "ظف الأسطح وطهّرها بشكل متكرر ولاسيما تلك التي تُلمس بانتظام، مثل مقابض الأبواب والحنفيات وشاشات الهاتف."
-        case .stayHome: return "time at homeSave yourself and other by spending your \ntime at homeSave yourself and other by spending your"
+        case .stayHome: return "ان بقائك في المنزل وعدم الخروج إلا للضرورة القصوى يحميك ويحمي اسرتك ومجتمعك من إنتشار العدوى"
         case .packageDelivery: return "Please wipe packages before receiving and/or handling it"
         }
     }

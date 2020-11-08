@@ -173,6 +173,12 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
         guard let traveler = traveler else { return  }
         if User.currentUser?.id == nil {
+            
+            
+            
+            
+            
+            
             self.view.isUserInteractionEnabled = false
             CustomAlertMessage(condition: .error,
                                messageTitle: "تصفح بدون حساب",
@@ -183,6 +189,16 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
             }
             return
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         let sendPackageController = SendPackageController(user: traveler, trip: trip)
         sendPackageController.delegate = self
         let navBar = UINavigationController(rootViewController: sendPackageController)

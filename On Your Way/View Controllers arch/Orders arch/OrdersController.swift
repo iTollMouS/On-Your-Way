@@ -85,7 +85,8 @@ class OrdersController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        tabBarController?.dismissPopupBar(animated: true, completion: nil)
+        tabBarController?.dismissPopupBar(animated: true,
+                                          completion: nil)
     }
     
     // MARK: - toggleSegment

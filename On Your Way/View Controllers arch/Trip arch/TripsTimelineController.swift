@@ -281,7 +281,6 @@ extension TripsTimelineController : TripDetailsControllerDelegate {
 }
 
 
-
 extension TripsTimelineController {
     fileprivate func configureWhenTableIsEmpty(){
         DispatchQueue.main.async { [weak self] in
