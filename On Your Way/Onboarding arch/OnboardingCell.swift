@@ -77,7 +77,7 @@ class OnboardingCell: UICollectionViewCell {
         guard let viewModel = viewModel else { return  }
         
         addSubview(stackView)
-        stackView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 60)
+        stackView.centerX(inView: self, topAnchor: topAnchor, paddingTop: 100)
         stackView.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 30, paddingRight: 30)
         
         animationView.animation = Animation.named(viewModel.JSONStringName)

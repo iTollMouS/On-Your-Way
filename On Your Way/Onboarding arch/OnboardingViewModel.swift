@@ -15,47 +15,41 @@ enum OnboardingViewModel: Int, CaseIterable {
     case covidProtections
     case chatFeature
     case discountPolicy
-    case stayHome
     case packageDelivery
     case location
     
     
     var titleLabel: String {
         switch self {
-        case .cashOnDelivery: return "Keep 2m"
-        case .notifications: return "wash hands"
-        case .covidProtections: return "Use hands sanitizer"
-        case .chatFeature: return "wear mask"
-        case .discountPolicy: return "Clean Phones"
-        case .stayHome: return "Stay Home"
-        case .packageDelivery: return "Wipe your packages"
-        case .location: return "Share your location"
+        case .cashOnDelivery: return "مسافر؟"
+        case .notifications: return "التنبيهات"
+        case .covidProtections: return "ارشادات وزارة الصحة من الوقاية من كورونا \nCOVID-19"
+        case .chatFeature: return "المحادثات الخاصة"
+        case .discountPolicy: return "عروض و تخفيضات"
+        case .packageDelivery: return "تعقيم الشحنات"
+        case .location: return "مشاركة الموقع"
         }
     }
     
     var detailsLabel: String {
         switch self {
-        case .cashOnDelivery: return "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown"
-        case .notifications: return "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the u"
-        case .covidProtections: return "Use good hand sanitizer before handling your package"
-        case .chatFeature: return "Always wear a mask before going outside"
-        case .discountPolicy: return "Please clean your phone when someone uses it"
-        case .stayHome: return "it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through t"
-        case .packageDelivery: return "Please wipe packages before receiving and/or handling it"
-        case .location : return "Sharing your location to your customer around you"
+        case .cashOnDelivery: return "تستطيع زيادة دخلك الشهري من خلال سفرك بين المدن بواسطة شحن البضائع للعملاء على طريقك"
+        case .notifications: return "عندما تسافر من مكان لاخر ، سيصلك تنبيهات من العملاء عند رغبتهم في شحن البضائع على طريقك و عند قبولك او رفض الطلب ، سيتم اشعار العملاء بذلك"
+        case .covidProtections: return "نوصي جميع المسافرين و العملاء باتخاذ كافه الاجراءات و التوصيات من وزارة الصحة للوقاية من فايروس كورونا"
+        case .chatFeature: return "عندما يتم ارسال شحنة مع مسافر ، سيتم اتاحة خاصية الدردشة مع المسافر للتفاوض على اسعار الخدمة\nتستطيع مشاركة الصور ، الفيديو ، الموقع و ارسال ملاحظة صوتية"
+        case .discountPolicy: return "هدفنا هو خدمه العملاء و حفظ حق المسافرين و ايصال اعلى معايير الجودة\nسيتم اعلان عن عروض لخدمات ارسال الشحنات بشكل اسبوعي"
+        case .packageDelivery: return "سياستنا هي الزام جميع العملاء و المسافرين بتعقيم الشحنات قبل التسليم و الاستلام لتفادي نقل الامراض المعدية"
+        case .location : return "تستطيع ان تشارك موقعك مع العملاء لتحديث مكان الشحنه على طريقك"
         }
     }
-    
-//    bell_animation
     
     var JSONStringName: String {
         switch self {
         case .cashOnDelivery: return "cachAnimation"
-        case .notifications: return "bell"
+        case .notifications: return "bell_animation"
         case .covidProtections: return "covid_19_protect"
         case .chatFeature: return "chat_messenger"
         case .discountPolicy: return "discount_icon"
-        case .stayHome: return "stay_home"
         case .packageDelivery: return "packageDelivery"
         case .location: return "locationAnimation"
         }
@@ -64,12 +58,10 @@ enum OnboardingViewModel: Int, CaseIterable {
     var animationViewDimension: (CGFloat, CGFloat) {
         switch self {
         case .cashOnDelivery: return (200, 200)
-            
         case .notifications: return (200, 200)
         case .covidProtections: return (200, 200)
         case .chatFeature: return (200, 200)
         case .discountPolicy: return (200, 200)
-        case .stayHome: return (200, 200)
         case .packageDelivery: return (200, 200)
         case .location: return (200, 200)
         }

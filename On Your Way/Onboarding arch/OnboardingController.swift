@@ -17,12 +17,12 @@ class OnboardingController: UIViewController {
     
     
     
-   
+    
     
     // MARK: - Properties
     private let previousButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("PREV", for: .normal)
+        button.setTitle("قبل", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1).withAlphaComponent(0.6)
@@ -35,7 +35,7 @@ class OnboardingController: UIViewController {
     
     private let nextButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("NEXT", for: .normal)
+        button.setTitle("التالي", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
         button.setDimensions(height: 50, width: 50)
@@ -58,7 +58,7 @@ class OnboardingController: UIViewController {
     
     private lazy var dismissalButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Okay", for: .normal)
+        button.setTitle("انطلق", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 0.9411764706, alpha: 1), for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
         button.alpha = 0
@@ -104,6 +104,13 @@ class OnboardingController: UIViewController {
         configureUI()
         
     }
+    
+    
+    var darkMode = false
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return darkMode ? .lightContent : .lightContent
+    }
+    
     
     
     // MARK: - configureCollectionView

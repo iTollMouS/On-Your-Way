@@ -55,7 +55,6 @@ class TripsTimelineController: UITableViewController {
                  best way to handle empty cases
                  */
                 self?.trips = trips
-                self?.configureWhenTableIsEmpty()
                 self?.configureTapBarController()
                 self?.tableView.reloadData()
             }
@@ -68,10 +67,9 @@ class TripsTimelineController: UITableViewController {
         tabBarController?.tabBar.isHidden = false
         let newTripController = NewTripController()
         newTripController.delegate = self
-        newTripController.popupItem.title = "Design your trip"
+        newTripController.popupItem.title = "مسافر؟"
         newTripController.popupBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        newTripController.popupItem.subtitle = "show people what packages you can take"
-        newTripController.popupItem.progress = 0.34
+        newTripController.popupItem.subtitle = "اضغط هنا لإعلام العملاء برحلتك لزيادة دخلك الشهري"
         newTripController.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
         newTripController.popupBar.semanticContentAttribute = .forceRightToLeft
         tabBarController?.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
@@ -80,8 +78,6 @@ class TripsTimelineController: UITableViewController {
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: newTripController, animated: true, completion: nil)
-        
-        
         
     }
     
@@ -151,6 +147,16 @@ class TripsTimelineController: UITableViewController {
 extension TripsTimelineController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] time in
+            DispatchQueue.main.async { [weak self] in
+                if self!.trips.isEmpty {
+                    self?.tableView.setEmptyView(title: "لايوجد مسافرون",
+                                                 titleColor: .white,
+                                                 message: "اذا كنت مسافر ، اضغط في الاسفل لإعلام الناس بسفرك لزيادة دخلك الشهري")
+                } else { tableView.restore() }
+            }
+        }
         return searchController.isActive ? filteredTrips.count : trips.count
     }
     
@@ -279,23 +285,3 @@ extension TripsTimelineController : TripDetailsControllerDelegate {
         presentLoggingController()
     }
 }
-
-
-extension TripsTimelineController {
-    fileprivate func configureWhenTableIsEmpty(){
-        DispatchQueue.main.async { [weak self] in
-            if self!.trips.isEmpty {
-                Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                    self?.tableView.setEmptyView(title: "No travelers",
-                                                 titleColor: .white,
-                                                 message: "No on has announce that they will travel from to city. Once people announce their travel info, you can ship your package with them\nYou can announce your travel details in\n'Design Your Trip' down below ")
-                }
-            } else {self?.tableView.restore()}
-            
-        }
-    }
-}
-
-
-
-

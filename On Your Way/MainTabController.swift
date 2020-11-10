@@ -123,6 +123,7 @@ class MainTabController: UITabBarController, UITabBarControllerDelegate {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = image
         navController.tabBarItem.title = tabBarItemTitle
+        
         navController.navigationBar.barStyle = .black
         navController.navigationBar.isTranslucent = true
         navController.navigationBar.prefersLargeTitles = true

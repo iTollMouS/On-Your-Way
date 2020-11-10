@@ -26,7 +26,8 @@ class ProfileCell: UITableViewCell {
         label.textAlignment = .right
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.delegate = self
-        label.placeholder = "الرجاء تحديث رقم الجوال"
+        label.attributedPlaceholder = NSAttributedString(string: "الرجاء تحديث رقم الجوال",
+                                                         attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
         label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 20)
         return label
@@ -43,7 +44,7 @@ class ProfileCell: UITableViewCell {
     private lazy var appVersionLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.text = "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")"
+        label.text = Bundle.mainAppVersion
         label.textColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.7843137255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 20)
         return label
