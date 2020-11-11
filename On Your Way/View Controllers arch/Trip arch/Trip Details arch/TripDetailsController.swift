@@ -93,6 +93,7 @@ class TripDetailsController: UIViewController {
             self.traveler = traveler
             DispatchQueue.main.async { [weak self ] in
                 self?.headerView.traveler = traveler
+                self?.footerView.traveler = traveler
                 self?.tableView.reloadData()
             }
         }
@@ -153,7 +154,7 @@ extension TripDetailsController: UITableViewDelegate, UITableViewDataSource {
         guard let titleInSection = TripDetailsViewModel(rawValue: section) else { return nil }
         let label = UILabel()
         label.text = titleInSection.titleInSection
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.textColor = .lightGray
         return label
     }

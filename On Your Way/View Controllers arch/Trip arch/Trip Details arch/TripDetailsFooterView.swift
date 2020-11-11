@@ -15,17 +15,24 @@ protocol TripDetailsFooterViewDelegate: class {
 
 class TripDetailsFooterView: UIView {
     
+    
+    var traveler: User?{
+        didSet {
+            configure()
+        }
+    }
+    
     weak var delegate: TripDetailsFooterViewDelegate?
 
     private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
-        button.setTitle("Send package with  ", for: .normal)
         button.setImage(UIImage(systemName: "shippingbox.fill"), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
         button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.addTarget(self, action: #selector(handleRequestSendingPackage), for: .touchUpInside)
         button.layer.cornerRadius = 50 / 2
         button.clipsToBounds = true
@@ -41,6 +48,12 @@ class TripDetailsFooterView: UIView {
                             paddingLeft: 32, paddingRight: 32)
         logoutButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         logoutButton.centerY(inView: self)
+    }
+    
+    fileprivate  func configure() {
+        guard let traveler = traveler else { return  }
+        logoutButton.setTitle("ارسال شحنه مع \(traveler.username)", for: .normal)
+        
     }
     
     required init?(coder: NSCoder) {

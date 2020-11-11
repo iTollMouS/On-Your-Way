@@ -49,7 +49,7 @@ class TripDetailsCell: UITableViewCell {
     
     private lazy var currentLocation: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.numberOfLines = 0
         label.textColor = .white
         label.adjustsFontSizeToFitWidth = true
@@ -70,7 +70,7 @@ class TripDetailsCell: UITableViewCell {
     
     private lazy var destinationLocation: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -108,9 +108,9 @@ class TripDetailsCell: UITableViewCell {
         let stackView = UIStackView(arrangedSubviews: [currentLocation, destinationLocation])
         stackView.axis = .vertical
         stackView.spacing = 10
-        stackView.setDimensions(height: 200, width: 400)
+        stackView.setDimensions(height: 200, width: 300)
         stackView.distribution = .fillEqually
-        stackView.alignment = .leading
+        stackView.alignment = .trailing
         return stackView
     }()
     
@@ -176,9 +176,10 @@ class TripDetailsCell: UITableViewCell {
     }
     
     func configureSection_0(){
+        backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         addSubview(fromCityDot)
         heightAnchor.constraint(equalToConstant: 150).isActive = true
-        fromCityDot.anchor(top: topAnchor, left: leftAnchor, paddingTop: 20, paddingLeft: 50)
+        fromCityDot.anchor(top: topAnchor, right: rightAnchor, paddingTop: 20, paddingRight: 40)
         
         addSubview(destinationCityDot)
         destinationCityDot.centerX(inView: fromCityDot, topAnchor: fromCityDot.bottomAnchor, paddingTop: 120)
@@ -188,9 +189,14 @@ class TripDetailsCell: UITableViewCell {
         lineBetweenDots.anchor(top: fromCityDot.bottomAnchor, bottom: destinationCityDot.topAnchor, paddingTop: 10, paddingBottom: 10)
         
         addSubview(citiesStackView)
-        citiesStackView.centerY(inView: lineBetweenDots, leftAnchor: lineBetweenDots.rightAnchor, paddingLeft: 12)
-        citiesStackView.anchor(top: fromCityDot.topAnchor, bottom: destinationCityDot.bottomAnchor)
-        backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
+        citiesStackView.anchor(top: fromCityDot.topAnchor,
+                               bottom: destinationCityDot.bottomAnchor,
+                               right: lineBetweenDots.leftAnchor,
+                               paddingTop: -20,
+                               paddingBottom: -20,
+                               paddingRight: 24)
+        
+        
     }
     
     func configureSection_1(){
@@ -256,10 +262,10 @@ enum TripDetailsViewModel: Int, CaseIterable {
     
     var titleInSection: String {
         switch self {
-        case .fromCityToCity: return "Trip Destination"
-        case .whereToMeet: return "Place and time to meet for picking a package"
-        case .packageAllowance: return "What I can take with me"
-        case .basePrice: return "the base price"
+        case .fromCityToCity: return "الوجهة"
+        case .whereToMeet: return "الوقت و المكان لاستلام البضاذع"
+        case .packageAllowance: return "البضائع المسموحة"
+        case .basePrice: return "السعر البدائي"
         }
     }
     
