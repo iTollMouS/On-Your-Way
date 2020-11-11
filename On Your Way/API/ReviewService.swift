@@ -8,10 +8,13 @@
 import Foundation
 import Firebase
 
+
+
 class ReviewService {
     
     static let shared = ReviewService()
     
+    // make enum for the 3 functions 
     func uploadNewReview(userId: String, review: Review , completion: @escaping(Error?) -> Void ){
         do {
             try   Firestore.firestore().collection("reviews")
@@ -38,6 +41,8 @@ class ReviewService {
             print(error.localizedDescription)
         }
     }
+    
+    
     
     func fetchPeopleReviews(userId: String, completion: @escaping([Review]) -> Void){
         var reviewsDictionary = [String: Review]()

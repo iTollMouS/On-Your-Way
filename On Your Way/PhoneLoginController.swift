@@ -49,9 +49,9 @@ class PhoneLoginController: UIViewController {
     
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "Enter your phone number",
+        let attributedText = NSMutableAttributedString(string: "ادخل رقم الجوال",
                                                        attributes: [.foregroundColor : UIColor.white, .font: UIFont.boldSystemFont(ofSize: 26)])
-        attributedText.append(NSMutableAttributedString(string: "\nWe will send you a code to verify your phone number",
+        attributedText.append(NSMutableAttributedString(string: "\nسيتم ارسال رسالة SMS للتاكد من رقم الجوال",
                                                         attributes: [.foregroundColor : UIColor.white, .font: UIFont.systemFont(ofSize: 16)]))
         label.attributedText = attributedText
         label.setDimensions(height: 100, width: 300)
@@ -63,7 +63,7 @@ class PhoneLoginController: UIViewController {
     
     private lazy var requestOPTButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Request OPT", for: .normal)
+        button.setTitle("طلب رمز التاكيد", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
         button.setHeight(height: 50)
         button.alpha = 0
@@ -79,7 +79,7 @@ class PhoneLoginController: UIViewController {
     
     private lazy var verifyOPTButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Verify OPT", for: .normal)
+        button.setTitle("تاكيد الرمز", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
         button.setHeight(height: 50)
         button.alpha = 0
@@ -217,7 +217,7 @@ class PhoneLoginController: UIViewController {
         oneTimeCodeTextField.didEnterLastDigit = { [weak self] verificationCode in
             
             self?.showBlurView()
-            self?.showLoader(true, message: "Please whit while we verify ..")
+            self?.showLoader(true, message: "الرجاء الانتظار ببينما يتم التحقق من الرمز")
             guard let verificationID = userDefaults.string(forKey: "verificationID") else { return }
             let credentials = PhoneAuthProvider.provider().credential(withVerificationID: verificationID,
                                                                       verificationCode: verificationCode)
@@ -231,13 +231,13 @@ class PhoneLoginController: UIViewController {
                 
                 self?.removeBlurView()
                 self?.showLoader(false)
-                self?.showBanner(message: "Successfully verified your phone number", state: .success,
+                self?.showBanner(message: "تم انشاء حسابك بنجاح", state: .success,
                                  location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                                  sender: self!)
                 
                 Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
                     self?.showBlurView()
-                    self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+                    self?.showLoader(true, message: "الرجاء الانتظار \nبينما نتفحص البيئة...")
                 }
                 
                 Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in
@@ -249,7 +249,6 @@ class PhoneLoginController: UIViewController {
             }
         }
     }
-    
 }
 
 extension PhoneLoginController: UITextFieldDelegate {

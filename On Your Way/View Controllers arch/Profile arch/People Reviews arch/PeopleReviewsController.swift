@@ -13,73 +13,29 @@ import Lottie
 
 private let reuseIdentifier = "PeopleReviewsCell"
 
+
+// MARK: - protocol
 protocol PeopleReviewsControllerDelegate: class {
     func handleLoggingOutAnonymousUser(_ view: PeopleReviewsController)
 }
 
 class PeopleReviewsController: UIViewController {
     
+    
+    // MARK: - delegate
     weak var delegate: PeopleReviewsControllerDelegate?
     
+    
+    
+    
+    // MARK: - Properties
     private lazy var reviewSheetPopOver = UIView()
     var attributes = EKAttributes.bottomNote
-    
-    
-    private lazy var customAlertView = UIView()
-    private lazy var bottomContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.2156862745, green: 0.2156862745, blue: 0.2156862745, alpha: 1)
-        view.layer.cornerRadius = 30
-        return view
-    }()
-    
-    private lazy var animationView: AnimationView = {
-        let animationView = AnimationView()
-        animationView.setDimensions(height: 100, width: 100)
-        animationView.clipsToBounds = true
-        animationView.layer.cornerRadius = 100 / 5
-        animationView.backgroundColor = .clear
-        animationView.contentMode = .scaleAspectFill
-        return animationView
-    }()
-    
-    private lazy var messageLabel: UILabel = {
-        let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "Ops!\n",
-                                                       attributes: [.foregroundColor : #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1),
-                                                                    .font: UIFont.boldSystemFont(ofSize: 18)])
-        attributedText.append(NSMutableAttributedString(string: "You can not ship packages or chat without an account.\nPlease press Ok on the bottom to go back",
-                                                        attributes: [.foregroundColor : UIColor.lightGray,
-                                                                     .font: UIFont.systemFont(ofSize: 16)]))
-        
-        label.attributedText = attributedText
-        label.setHeight(height: 80)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private lazy var dismissalButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Okay", for: .normal)
-        button.setTitleColor(#colorLiteral(red: 0.8705882353, green: 0.8705882353, blue: 0.8705882353, alpha: 1), for: .normal)
-        button.setDimensions(height: 50, width: 300)
-        button.tintColor = .white
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.layer.cornerRadius = 50 / 2
-        button.backgroundColor = #colorLiteral(red: 0.3450980392, green: 0.3450980392, blue: 0.3450980392, alpha: 1)
-        button.addTarget(self, action: #selector(handleAnonymousMode), for: .touchUpInside)
-        return button
-    }()
-    
-    
-    
-    
     
     private lazy var writeReviewButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
-        button.setTitle("Write a review", for: .normal)
+        button.setTitle("اكتب تقييم", for: .normal)
         button.setDimensions(height: 50, width: view.frame.width - 50)
         button.layer.cornerRadius = 50 / 2
         button.titleLabel?.font = .boldSystemFont(ofSize: 16)
@@ -103,6 +59,7 @@ class PeopleReviewsController: UIViewController {
         return view
     }()
     
+    let refreshController = UIRefreshControl()
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
@@ -229,6 +186,9 @@ class PeopleReviewsController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -236,7 +196,9 @@ class PeopleReviewsController: UIViewController {
         configureTableView()
         configureReviewSheetPopOver()
         self.hideKeyboardWhenTouchOutsideTextField()
+        configureRefreshController()
         fetchUser()
+        configureNavBar()
         headerView.user = user
     }
     
@@ -255,6 +217,25 @@ class PeopleReviewsController: UIViewController {
         return darkMode ? .lightContent : .lightContent
     }
     
+    // MARK: - configureTableView()
+    fileprivate func configureTableView(){
+        view.addSubview(buttonContainerView)
+        buttonContainerView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        view.addSubview(tableView)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: buttonContainerView.topAnchor, right: view.rightAnchor)
+        tableView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+    }
+    
+    fileprivate func configureNavBar(){
+        self.title = "التقييمات"
+        view.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "رجوع", style: .plain, target: self, action: #selector(handleDismissalView))
+        navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+    }
+    
+    
+    
+    // MARK: - fetchReviews()
     func fetchReviews(){
         var sumAllReviews = 0.0
         DispatchQueue.main.async { [weak self] in
@@ -272,13 +253,19 @@ class PeopleReviewsController: UIViewController {
         
     }
     
+    // MARK: - canUserReview()
     func canUserReview(){
         
         guard let reviewerId = Auth.auth().currentUser?.uid else {
-            showCustomAlertView(condition: .error)
             view.isUserInteractionEnabled = false
+            CustomAlertMessage(condition: .error,
+                               messageTitle: "تصفح بدون حساب",
+                               messageBody: "لاتستطيع ارسال شحنه ، او المحادثه بدون حساب \n الرجاء الرجوع للصفحة الرئيسية لانشاء حساب ",
+                               size: CGSize(width: view.frame.width - 50, height: 280)) { [weak self] in
+                self?.delegate?.handleLoggingOutAnonymousUser(self!)
+                return
+            }
             return
-            
         }
         
         DispatchQueue.main.async { 
@@ -302,6 +289,17 @@ class PeopleReviewsController: UIViewController {
         }
     }
     
+    
+    // MARK: - configureRefreshController
+    func configureRefreshController(){
+        refreshController.tintColor = .white
+        refreshController.attributedTitle = NSAttributedString(string: "اسحب للأسفل للتحديث", attributes:
+                                                                [.foregroundColor: UIColor.white])
+        tableView.refreshControl = refreshController
+    }
+    
+    
+    // MARK: - fetchUser()
     func fetchUser(){
         guard let uid = Auth.auth().currentUser?.uid else { return  }
         if user.id == uid {
@@ -312,12 +310,15 @@ class PeopleReviewsController: UIViewController {
         
     }
     
+    
+    // MARK: - updateReviewOnTouch()
     func updateReviewOnTouch(){
         ratingView.didTouchCosmos = { [self] in ratingView.text = "\($0)" }
         ratingView.didFinishTouchingCosmos = { [self] in  ratingView.text = "\($0)" }
     }
     
     
+    // MARK: - configureReviewSheetPopOver()
     func configureReviewSheetPopOver(){
         
         reviewSheetPopOver.addSubview(drawerView)
@@ -343,6 +344,8 @@ class PeopleReviewsController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChanger), name: UITextView.textDidChangeNotification, object: nil)
     }
     
+    
+    // MARK: - handleTextInputChanger()
     @objc func handleTextInputChanger(){
         placeholderLabel.isHidden = !reviewTextView.text.isEmpty
         if !reviewTextView.text.isEmpty {
@@ -355,33 +358,29 @@ class PeopleReviewsController: UIViewController {
         }
     }
     
-    @objc func handleAnonymousMode(){
-        SwiftEntryKit.dismiss() { [weak self] in
-            self?.view.isUserInteractionEnabled = true
-            self?.delegate?.handleLoggingOutAnonymousUser(self!)
-        }
-    }
-    
+    // MARK: - handleShowReview()
     @objc func handleShowReview(){
         configureReviewSheet()
     }
     
-    func configureTableView(){
-        view.addSubview(buttonContainerView)
-        buttonContainerView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
-        view.addSubview(tableView)
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: buttonContainerView.topAnchor, right: view.rightAnchor)
+    @objc fileprivate func handleDismissalView(){
+        dismiss(animated: true, completion: nil)
     }
     
-    func configureNavBar(){
-        self.title = "Reviews"
-        view.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
-    }
 }
 
 extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] time in
+            DispatchQueue.main.async { [weak self] in
+                if self?.reviews.isEmpty ?? false {
+                    self?.tableView.setEmptyView(title: "لايوجد اي تقييم",
+                                                 titleColor: .white,
+                                                 message: "العملاء يرسلون تقييمات المسافرين عندما يتم قبول طلباتهم")
+                } else { tableView.restore() }
+            }
+        }
         return reviews.count
     }
     
@@ -411,6 +410,13 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if refreshController.isRefreshing {
+            fetchReviews()
+            refreshController.endRefreshing()
+        }
+    }
+    
     //    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     //        let selectedReview = reviews[indexPath.row]
     //        if selectedReview.userID == User.currentId {
@@ -423,9 +429,9 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     //    }
     
     func deleteMyReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completion) in
-            let alert = UIAlertController(title: nil, message: "Are you sure you want to delete your review?", preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Delete my review", style: .destructive, handler: { [weak self] (alertAction) in
+        let action = UIContextualAction(style: .destructive, title: "ازالة") { [weak self] (action, view, completion) in
+            let alert = UIAlertController(title: nil, message: "هل انت متاكد من ازاله التقييم؟", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "مسح التقييم", style: .destructive, handler: { [weak self] (alertAction) in
                 DispatchQueue.main.async { [weak self] in
                     self?.user.sumAllReviews -= review.rate
                     self?.user.reviewsCount -= Double(self!.reviews.count - 1)
@@ -438,16 +444,16 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
                     }
                 }
             }))
-            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "الغاء", style: .cancel, handler: nil))
             self!.present(alert, animated: true, completion: nil)
         }
         return action
     }
     
     func editMyReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completion) in
-            let alert = UIAlertController(title: nil, message: "Are you sure you want to delete your review?", preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Delete my review", style: .destructive, handler: { [weak self] (alertAction) in
+        let action = UIContextualAction(style: .destructive, title: "تعديل التقييم") { [weak self] (action, view, completion) in
+            let alert = UIAlertController(title: nil, message: "هل انت متاكد من تعديل تقييمك", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "تعديل", style: .destructive, handler: { [weak self] (alertAction) in
                 DispatchQueue.main.async { [weak self] in
                     ReviewService.shared.editMyReview (userId: self!.user.id, review: review) { error in
                         print("DEBUG: success!!!!")
@@ -456,7 +462,7 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
                     }
                 }
             }))
-            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "الغاء", style: .cancel, handler: nil))
             self!.present(alert, animated: true, completion: nil)
         }
         return action
@@ -513,7 +519,7 @@ extension PeopleReviewsController: UITextViewDelegate {
 extension PeopleReviewsController {
     
     func configureReviewSheet(){
-        
+        reviewLabel.text = "كيف كانت تجربتك مع \(user.username)"
         reviewSheetPopOver.backgroundColor = #colorLiteral(red: 0.2588235294, green: 0.2588235294, blue: 0.2588235294, alpha: 1)
         reviewSheetPopOver.layer.cornerRadius = 10
         reviewSheetPopOver.setDimensions(height: 800, width: view.frame.width)
@@ -549,7 +555,7 @@ extension PeopleReviewsController {
                             rate: rate, reviewId: reviewId)
         user.sumAllReviews += rate
         user.reviewsCount += 1
-        PushNotificationService.shared.sendPushNotification(userIds: [user.id], body: "Someone wrote a review 🤩 check it out", title: "Rating 5/ \(rate)")
+        PushNotificationService.shared.sendPushNotification(userIds: [user.id], body: "احدهم كتب تقييم عنك 🤩", title: "Rating 5/ \(rate)")
         UserServices.shared.saveUserToFirestore(user)
         ReviewService.shared.uploadNewReview(userId: user.id, review: review) { error in
             if let error = error {
@@ -564,82 +570,4 @@ extension PeopleReviewsController {
         
     }
     
-}
-
-extension PeopleReviewsController {
-    
-    
-    func showCustomAlertView(condition: Conditions) {
-        configureCustomAlertUI()
-        
-        switch condition {
-        case .success:
-            animationView.animation = Animation.named(condition.JSONStringName)
-            animationView.play()
-            animationView.loopMode = .repeat(5)
-        case .warning:
-            animationView.animation = Animation.named(condition.JSONStringName)
-            animationView.play()
-            animationView.loopMode = .repeat(5)
-        case .error:
-            animationView.animation = Animation.named(condition.JSONStringName)
-            animationView.play()
-            animationView.loopMode = .repeat(5)
-        }
-    }
-    
-    func configureCustomAlertUI(){
-        view.isUserInteractionEnabled = false
-        customAlertView.clipsToBounds = true
-        customAlertView.addSubview(bottomContainerView)
-        customAlertView.addSubview(animationView)
-        
-        animationView.centerX(inView: customAlertView, topAnchor: customAlertView.topAnchor, paddingTop: 0)
-        bottomContainerView.anchor(top: animationView.bottomAnchor, left: customAlertView.leftAnchor, bottom: customAlertView.bottomAnchor, right: customAlertView.rightAnchor, paddingTop: -50)
-        
-        bottomContainerView.addSubview(messageLabel)
-        messageLabel.anchor(top: bottomContainerView.topAnchor, left: bottomContainerView.leftAnchor, right: bottomContainerView.rightAnchor, paddingTop: 50)
-        bottomContainerView.addSubview(dismissalButton)
-        dismissalButton.anchor(left: bottomContainerView.leftAnchor, bottom: bottomContainerView.bottomAnchor, right: bottomContainerView.rightAnchor,
-                               paddingLeft: 30, paddingBottom: 30, paddingRight: 30)
-        
-        customAlertView.backgroundColor = .clear
-        customAlertView.layer.cornerRadius = 10
-        customAlertView.setDimensions(height: 300, width: view.frame.width - 50)
-        attributes.screenBackground = .visualEffect(style: .dark)
-        attributes.positionConstraints.safeArea = .overridden
-        attributes.positionConstraints.verticalOffset = 250
-        attributes.windowLevel = .normal
-        attributes.position = .bottom
-        attributes.precedence = .override(priority: .max, dropEnqueuedEntries: false)
-        attributes.displayDuration = .infinity
-        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
-        attributes.statusBar = .light
-        attributes.lifecycleEvents.willDisappear = { [weak self] in
-            self?.delegate?.handleLoggingOutAnonymousUser(self!)
-        }
-        attributes.entryBackground = .clear
-        SwiftEntryKit.display(entry: customAlertView, using: attributes)
-    }
-}
-
-// MARK: - show case table is empty
-extension PeopleReviewsController {
-    func configureWhenTableIsEmpty(){
-        DispatchQueue.main.async { [weak self] in
-            if self!.reviews.isEmpty {
-                Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                    if User.currentId == self?.user.id {
-                        self?.tableView.setEmptyView(title: "No Reviews",
-                                                     titleColor: .white,
-                                                     message: "No one has wrote a review about you.\nOnce you accept people packages, people they can submit reviews")
-                    } else if User.currentId != self?.user.id {
-                        self?.tableView.setEmptyView(title: "No Reviews",
-                                                     titleColor: .white,
-                                                     message: "No one has wrote a review about \(self!.user.username)")
-                    } else {self?.tableView.restore()}
-                }
-            }
-        }
-    }
 }

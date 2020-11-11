@@ -122,7 +122,7 @@ class PeopleReviewsCell: UITableViewCell {
 
         addSubview(reviewLabel)
         reviewLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor,
-                           right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
+                           right: rightAnchor, paddingTop: 16, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
         
     }
     

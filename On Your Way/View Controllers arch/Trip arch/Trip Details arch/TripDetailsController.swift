@@ -41,7 +41,7 @@ class TripDetailsController: UIViewController {
     
     private var trip: Trip
     private var traveler: User?
-
+    
     
     init(trip: Trip) {
         self.trip = trip
@@ -78,8 +78,8 @@ class TripDetailsController: UIViewController {
         super.viewWillAppear(true)
         guard let traveler = traveler else { return  }
         let peopleReviewsController = PeopleReviewsController(user: traveler)
-        peopleReviewsController.popupItem.title = "People Reviews "
-        peopleReviewsController.popupItem.subtitle = "Tab here to see who wrote a review about you"
+        peopleReviewsController.popupItem.title = "تقييم العملاء "
+        peopleReviewsController.popupItem.subtitle = "شاهد تقييم العملاء عن اداء \(traveler.username)"
         peopleReviewsController.popupItem.progress = 0.34
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
@@ -173,12 +173,6 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
     func handleSendingPackage(_ footer: TripDetailsFooterView) {
         guard let traveler = traveler else { return  }
         if User.currentUser?.id == nil {
-            
-            
-            
-            
-            
-            
             self.view.isUserInteractionEnabled = false
             CustomAlertMessage(condition: .error,
                                messageTitle: "تصفح بدون حساب",
@@ -189,15 +183,6 @@ extension TripDetailsController: TripDetailsFooterViewDelegate {
             }
             return
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         let sendPackageController = SendPackageController(user: traveler, trip: trip)
         sendPackageController.delegate = self
@@ -229,7 +214,7 @@ extension TripDetailsController : SendPackageControllerDelegate {
     }
 }
 
-        
+
 // MARK:- Header Delegate + start chat
 extension TripDetailsController : TripDetailsHeaderViewDelegate {
     func handleStartToChat(_ view: TripDetailsHeaderView) {
@@ -240,7 +225,10 @@ extension TripDetailsController : TripDetailsHeaderViewDelegate {
         guard let traveler = traveler else { return  }
         let peopleReviewsController = PeopleReviewsController(user: traveler)
         peopleReviewsController.delegate = self
-        present(peopleReviewsController, animated: true, completion: nil)
+        let navBarPeopleReviewsController = UINavigationController(rootViewController: peopleReviewsController)
+        navBarPeopleReviewsController.navigationBar.barStyle = .black
+        navBarPeopleReviewsController.navigationBar.isTranslucent = true
+        present(navBarPeopleReviewsController, animated: true, completion: nil)
     }
 }
 

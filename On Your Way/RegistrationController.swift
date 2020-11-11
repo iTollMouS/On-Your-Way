@@ -226,13 +226,13 @@ class RegistrationController: UIViewController {
                 
                 self?.removeBlurView()
                 self?.showLoader(false)
-                self?.showBanner(message: "Successfully create an account", state: .success,
+                self?.showBanner(message: "تم انشاء حساب بنجاح", state: .success,
                                  location: .top, presentingDirection: .vertical, dismissingDirection: .vertical,
                                  sender: self!)
                 
                 Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] timer in
                     self?.showBlurView()
-                    self?.showLoader(true, message: "Please wait while we \nprepare the environment...")
+                    self?.showLoader(true, message: "الرجاء الانتظار بينما نتفحص البيئة...")
                 }
                 
                 Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { [weak self]  (timer) in

@@ -102,19 +102,37 @@ class ProfileCell: UITableViewCell {
             addSubview(phoneNumberTextField)
             phoneNumberTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 50))
             phoneNumberTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            phoneNumberTextField.isHidden = false
+            emailTextField.isHidden = true
+            appVersionLabel.isHidden = true
+            covid_19_GuidelinesLabel.isHidden = true
             configureAccessory()
+            accessoryButton.isHidden = false
         case .section_2:
             addSubview(emailTextField)
             emailTextField.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 50))
+            emailTextField.isHidden = false
+            phoneNumberTextField.isHidden = true
+            appVersionLabel.isHidden = true
+            covid_19_GuidelinesLabel.isHidden = true
+            accessoryButton.isHidden = false
             configureAccessory()
-        case .section_4:
+        case .section_3:
             addSubview(appVersionLabel)
+            appVersionLabel.isHidden = false
+            phoneNumberTextField.isHidden = true
+            emailTextField.isHidden = true
+            covid_19_GuidelinesLabel.isHidden = true
             appVersionLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-        case .section_5:
+        case .section_4:
             addSubview(covid_19_GuidelinesLabel)
+            covid_19_GuidelinesLabel.isHidden = false
             covid_19_GuidelinesLabel.fillSuperview(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
             addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleShowGuidelines)))
-            accessoryButton.addTarget(self, action: #selector(handleShowGuidelines), for: .touchUpInside)
+            accessoryButton.isHidden = true
+            phoneNumberTextField.isHidden = true
+            emailTextField.isHidden = true
+            appVersionLabel.isHidden = true
         }
     }
     
@@ -156,15 +174,15 @@ extension ProfileCell: UITextFieldDelegate {
 enum ProfileViewModel: Int, CaseIterable {
     case section_1
     case section_2
+    case section_3
     case section_4
-    case section_5
     
     var numberOfCells: Int {
         switch self {
         case .section_1: return 1
         case .section_2: return 1
+        case .section_3: return 1
         case .section_4: return 1
-        case .section_5: return 1
         }
     }
     
@@ -172,16 +190,16 @@ enum ProfileViewModel: Int, CaseIterable {
         switch self {
         case .section_1: return "رقم الجوال"
         case .section_2: return "البريد الالكتروني"
-        case .section_4: return "الاصدار"
-        case .section_5: return "ارشادات كورونا"
+        case .section_3: return "الاصدار"
+        case .section_4: return "ارشادات كورونا"
         }
     }
     var systemNameIcon: String {
         switch self {
         case .section_1: return "iphone"
         case .section_2: return "envelope"
-        case .section_4: return "apps.iphone"
-        case .section_5: return "staroflife.fill"
+        case .section_3: return "apps.iphone"
+        case .section_4: return "staroflife.fill"
         }
     }
     
@@ -189,8 +207,8 @@ enum ProfileViewModel: Int, CaseIterable {
         switch self {
         case .section_1: return (24, 24)
         case .section_2: return (24, 24)
-        case .section_4: return (28, 24)
-        case .section_5: return (30, 24)
+        case .section_3: return (28, 24)
+        case .section_4: return (30, 24)
         }
     }
 }

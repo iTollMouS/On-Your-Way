@@ -29,8 +29,6 @@ class PeopleReviewHeader: UIView {
         return button
     }()
     
-    
-    
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 80, width: 80)
@@ -48,7 +46,7 @@ class PeopleReviewHeader: UIView {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Reviews"
+        label.text = "التقييمات"
         label.textAlignment = .center
         label.textColor = .lightGray
         label.setHeight(height: 30)
@@ -59,7 +57,7 @@ class PeopleReviewHeader: UIView {
     
     lazy var reviewRate: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.setHeight(height: 60)
         label.numberOfLines = 0
         return label
@@ -76,7 +74,7 @@ class PeopleReviewHeader: UIView {
         view.settings.totalStars = 5
         view.settings.starMargin = 3.0
         view.rating = 0.0
-        view.text = "No reviews"
+        view.text = "لايوجد تقييمات"
         view.settings.updateOnTouch = false
         view.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         view.setDimensions(height: 50, width: 130)
@@ -93,8 +91,8 @@ class PeopleReviewHeader: UIView {
     }()
     
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [profileImageView,
-                                                       reviewStackView])
+        let stackView = UIStackView(arrangedSubviews: [reviewStackView,
+                                                       profileImageView])
         stackView.axis = .horizontal
         stackView.spacing = 18
         stackView.setDimensions(height: 80, width: 240)
@@ -132,9 +130,9 @@ class PeopleReviewHeader: UIView {
         ratingView.rating = Double(user.sumAllReviews / user.reviewsCount).isNaN ? 0.0 : Double(user.sumAllReviews / user.reviewsCount)
         ratingView.text = "5/\((user.sumAllReviews / user.reviewsCount).isNaN ?  "\(0.0)" : "\(Double(user.sumAllReviews / user.reviewsCount))" )"
         
-        let attributedText = NSMutableAttributedString(string: "\(user.username) has\n", attributes: [.foregroundColor : UIColor.lightGray,
+        let attributedText = NSMutableAttributedString(string: " لديه \(user.username) \n", attributes: [.foregroundColor : UIColor.lightGray,
                                                                                                       .font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSMutableAttributedString(string: "\(user.reviewsCount) reviews", attributes: [.foregroundColor : UIColor.gray,
+        attributedText.append(NSMutableAttributedString(string: "\(user.reviewsCount) تقييمات", attributes: [.foregroundColor : UIColor.gray,
                                                                                                              .font: UIFont.systemFont(ofSize: 14)]))
         reviewRate.attributedText = attributedText
         
