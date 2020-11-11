@@ -24,6 +24,7 @@ class OnboardingCell: UICollectionViewCell {
         animationView.clipsToBounds = true
         animationView.layer.cornerRadius = 60 / 2
         animationView.backgroundColor = .clear
+        animationView.tintColor = .white
         return animationView
     }()
     

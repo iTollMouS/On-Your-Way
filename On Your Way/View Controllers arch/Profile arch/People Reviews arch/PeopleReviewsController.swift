@@ -111,7 +111,7 @@ class PeopleReviewsController: UIViewController {
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.tableHeaderView = headerView
+        tableView.tableFooterView = UIView()
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.rowHeight = 1000
         return tableView
@@ -188,7 +188,6 @@ class PeopleReviewsController: UIViewController {
         textView.layer.cornerRadius = 10
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.clipsToBounds = true
-        tableView.tableFooterView = UIView()
         textView.keyboardAppearance = .dark
         textView.addSubview(placeholderLabel)
         placeholderLabel.anchor(top: textView.topAnchor, left: textView.leftAnchor,
@@ -400,7 +399,7 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let selectedReview = reviews[indexPath.row]
@@ -412,16 +411,16 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-//    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let selectedReview = reviews[indexPath.row]
-//        if selectedReview.userID == User.currentId {
-//            let delete = editMyReview(review: selectedReview ,at: indexPath)
-//            return UISwipeActionsConfiguration(actions: [delete])
-//        } else {
-//            return nil
-//        }
-//
-//    }
+    //    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    //        let selectedReview = reviews[indexPath.row]
+    //        if selectedReview.userID == User.currentId {
+    //            let delete = editMyReview(review: selectedReview ,at: indexPath)
+    //            return UISwipeActionsConfiguration(actions: [delete])
+    //        } else {
+    //            return nil
+    //        }
+    //
+    //    }
     
     func deleteMyReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completion) in
@@ -464,7 +463,7 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
-    
+
 //    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 //
 //        let selectedReview = reviews[indexPath.row]
@@ -481,7 +480,7 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
 //            }
 //        }
 //    }
-    
+
 //    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 //        let delete = deleteMyTrip(at: indexPath)
 //        return UISwipeActionsConfiguration(actions: [delete])
@@ -493,8 +492,8 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
 //    }
 
 
-    // MARK: - deleteMyTrip
-  
+// MARK: - deleteMyTrip
+
 //
 //        action.image = UIImage(systemName: "trash.circle.fill")
 //        action.backgroundColor = .systemRed
@@ -628,19 +627,19 @@ extension PeopleReviewsController {
 extension PeopleReviewsController {
     func configureWhenTableIsEmpty(){
         DispatchQueue.main.async { [weak self] in
-        if self!.reviews.isEmpty {
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                if User.currentId == self?.user.id {
-                    self?.tableView.setEmptyView(title: "No Reviews",
-                                                 titleColor: .white,
-                                                 message: "No one has wrote a review about you.\nOnce you accept people packages, people they can submit reviews")
-                } else if User.currentId != self?.user.id {
-                    self?.tableView.setEmptyView(title: "No Reviews",
-                                                 titleColor: .white,
-                                                 message: "No one has wrote a review about \(self!.user.username)")
-                } else {self?.tableView.restore()}
+            if self!.reviews.isEmpty {
+                Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                    if User.currentId == self?.user.id {
+                        self?.tableView.setEmptyView(title: "No Reviews",
+                                                     titleColor: .white,
+                                                     message: "No one has wrote a review about you.\nOnce you accept people packages, people they can submit reviews")
+                    } else if User.currentId != self?.user.id {
+                        self?.tableView.setEmptyView(title: "No Reviews",
+                                                     titleColor: .white,
+                                                     message: "No one has wrote a review about \(self!.user.username)")
+                    } else {self?.tableView.restore()}
+                }
             }
-        }
         }
     }
 }

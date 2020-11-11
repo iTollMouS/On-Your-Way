@@ -90,8 +90,10 @@ class UpdateEmailController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        tabBarController?.tabBar.isHidden = true
-        tabBarController?.dismissPopupBar(animated: true, completion: nil)
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.tabBarController?.tabBar.isHidden = true
+            self?.tabBarController?.dismissPopupBar(animated: true, completion: nil)
+        }
     }
     
     func configureUI(){

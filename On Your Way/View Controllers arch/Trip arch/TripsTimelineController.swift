@@ -54,6 +54,7 @@ class TripsTimelineController: UITableViewController {
                 /*note that in the func we made some omitting duplicate methods
                  best way to handle empty cases
                  */
+              
                 self?.trips = trips
                 self?.configureTapBarController()
                 self?.tableView.reloadData()
@@ -74,7 +75,6 @@ class TripsTimelineController: UITableViewController {
         newTripController.popupBar.semanticContentAttribute = .forceRightToLeft
         tabBarController?.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
         tabBarController?.popupBar.semanticContentAttribute = .forceRightToLeft
-        tabBarController?.popupInteractionStyle = .drag
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: newTripController, animated: true, completion: nil)
@@ -85,7 +85,7 @@ class TripsTimelineController: UITableViewController {
     // MARK: - configureRefreshController()
     func configureRefreshController(){
         refreshController.tintColor = .white
-        refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
+        refreshController.attributedTitle = NSAttributedString(string: "اسحب للأسفل للتحديث", attributes:
                                                                 [.foregroundColor: UIColor.white])
         tableView.refreshControl = refreshController
     }
@@ -99,7 +99,6 @@ class TripsTimelineController: UITableViewController {
         tableView.rowHeight = 250
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.tableHeaderView = UIView()
-        
     }
     
     

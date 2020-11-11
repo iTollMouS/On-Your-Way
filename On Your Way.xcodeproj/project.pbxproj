@@ -21,6 +21,7 @@
 		83375F51253B1C95008F2036 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 834C98EF2532304600BE8691 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		83375F79253B91CF008F2036 /* TypingListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F78253B91CF008F2036 /* TypingListenerService.swift */; };
 		83375F7B253BA231008F2036 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83375F7A253BA231008F2036 /* PushNotificationService.swift */; };
+		833B5607255B693700BF0D25 /* RequestPushNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833B5606255B693700BF0D25 /* RequestPushNotification.swift */; };
 		833E8E65253BF1CE007CCB2D /* ActiveListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */; };
 		833F713D2542E2F9000D31A2 /* VideoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F713C2542E2F9000D31A2 /* VideoMessage.swift */; };
 		833F713F2542F20A000D31A2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F713E2542F20A000D31A2 /* LocationManager.swift */; };
@@ -170,6 +171,7 @@
 		83375F4C253A8415008F2036 /* IncomingMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingMessageService.swift; sourceTree = "<group>"; };
 		83375F78253B91CF008F2036 /* TypingListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingListenerService.swift; sourceTree = "<group>"; };
 		83375F7A253BA231008F2036 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		833B5606255B693700BF0D25 /* RequestPushNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPushNotification.swift; sourceTree = "<group>"; };
 		833E8E64253BF1CE007CCB2D /* ActiveListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveListenerService.swift; sourceTree = "<group>"; };
 		833F713C2542E2F9000D31A2 /* VideoMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoMessage.swift; sourceTree = "<group>"; };
 		833F713E2542F20A000D31A2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				834C983125311CE900BE8691 /* On Your Way.entitlements */,
 				834C989B25312C3000BE8691 /* JSON files */,
 				834C981B25311CCC00BE8691 /* AppDelegate.swift */,
+				833B5606255B693700BF0D25 /* RequestPushNotification.swift */,
 				834C981D25311CCC00BE8691 /* SceneDelegate.swift */,
 				834C98742531227D00BE8691 /* Constants.swift */,
 				83BA1D432555D25500B527E0 /* CustomAlertMessage.swift */,
@@ -897,6 +900,7 @@
 				834C992B2533542B00BE8691 /* TripCell.swift in Sources */,
 				837F0084254CA0BF0062935C /* AudioMessage.swift in Sources */,
 				834C9912253233D300BE8691 /* ProfileCell.swift in Sources */,
+				833B5607255B693700BF0D25 /* RequestPushNotification.swift in Sources */,
 				834C991A2532391B00BE8691 /* NewTripController.swift in Sources */,
 				834C99432533A92800BE8691 /* TripService.swift in Sources */,
 				834C981E25311CCC00BE8691 /* SceneDelegate.swift in Sources */,

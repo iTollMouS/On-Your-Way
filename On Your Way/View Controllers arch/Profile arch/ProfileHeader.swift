@@ -15,7 +15,7 @@ protocol ProfileHeaderDelegate: class {
 }
 
 class ProfileHeader: UIView {
-
+    
     
     var user: User?{
         didSet{ configureUI()}
@@ -36,7 +36,7 @@ class ProfileHeader: UIView {
         return button
     }()
     
-     lazy var profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setDimensions(height: 100, width: 100)
         imageView.layer.cornerRadius = 100 / 2
@@ -62,7 +62,7 @@ class ProfileHeader: UIView {
         return label
     }()
     
-     lazy var fullNameTextField: UITextField = {
+    lazy var fullNameTextField: UITextField = {
         let textField = UITextField()
         textField.textAlignment = .center
         textField.textColor = .lightGray
@@ -73,7 +73,7 @@ class ProfileHeader: UIView {
     }()
     
     
-     lazy var userStatusLabel: UILabel = {
+    lazy var userStatusLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .gray
@@ -129,7 +129,7 @@ class ProfileHeader: UIView {
         addSubview(editImageLabel)
         editImageLabel.centerX(inView: profileImageView, topAnchor: profileImageView.bottomAnchor, paddingTop: 2)
         fullNameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-
+        
         
     }
     
@@ -162,5 +162,5 @@ class ProfileHeader: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }

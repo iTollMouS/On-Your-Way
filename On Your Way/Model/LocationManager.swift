@@ -14,6 +14,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
     var currentLocation: CLLocationCoordinate2D?
     
+    
+    
     private override init() {
         
         super.init()
@@ -25,7 +27,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        
     }
     
     func startUpdating(){

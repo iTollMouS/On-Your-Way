@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance()?.clientID = FirebaseApp.app()?.options.clientID
         Messaging.messaging().delegate = self
         application.registerForRemoteNotifications()
-        requestPushNotification()
-        LocationManager.shared.requestLocationAccess()
         return true
     }
 
@@ -48,13 +46,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("DEBUG: unable to \(error.localizedDescription)")
     }
     
-    private func requestPushNotification(){
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (_, _) in
-            
-        }
-    }
-    
+//    private func requestPushNotification(){
+//        UNUserNotificationCenter.current().delegate = self
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (_, _) in
+//
+//        }
+//    }
+//
 
     // MARK: - updateUserPushIdWith
     private func updateUserPushIdWith(_ fcmToken: String){
@@ -67,13 +65,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-
-// MARK: - UNUserNotificationCenterDelegate
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        completionHandler()
-    }
-}
+//
+//// MARK: - UNUserNotificationCenterDelegate
+//extension AppDelegate: UNUserNotificationCenterDelegate {
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//        completionHandler()
+//    }
+//}
 
 // MARK: - MessagingDelegate
 extension AppDelegate: MessagingDelegate {

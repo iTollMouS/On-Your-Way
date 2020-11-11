@@ -31,10 +31,23 @@ class PeopleReviewsCell: UITableViewCell {
         return imageView
     }()
     
+    private lazy var checkMarkButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .white
+        button.imageView?.setDimensions(height: 12, width: 12)
+        button.setDimensions(height: 12, width: 12)
+        button.layer.cornerRadius = 12 / 2
+        button.clipsToBounds = true
+        button.isHidden = true
+        return button
+    }()
+    
     
     private lazy var fullname: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .lightGray
@@ -44,7 +57,7 @@ class PeopleReviewsCell: UITableViewCell {
     
     private lazy var timestamp: UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = .lightGray
@@ -72,14 +85,14 @@ class PeopleReviewsCell: UITableViewCell {
         stackView.axis = .vertical
         stackView.spacing = 0
         stackView.distribution = .fillEqually
-        stackView.alignment = .fill
+        stackView.alignment = .trailing
         return stackView
     }()
     
     
     lazy var reviewLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.textColor = .white
         label.backgroundColor = .clear
         label.adjustsFontSizeToFitWidth = true
@@ -94,15 +107,19 @@ class PeopleReviewsCell: UITableViewCell {
         backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
         
         addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 16, paddingLeft: 16)
-        
-        addSubview(stackView)
-        stackView.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 12)
+        profileImageView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 24, paddingRight: 16)
+            
+        addSubview(checkMarkButton)
+        checkMarkButton.anchor(top: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -14)
         
         addSubview(timestamp)
-        timestamp.centerY(inView: stackView)
-        timestamp.anchor(right: rightAnchor, paddingRight: 16)
         
+        timestamp.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
+        
+        addSubview(stackView)
+        stackView.centerY(inView: profileImageView)
+        stackView.anchor(right: profileImageView.leftAnchor, paddingRight: 36)
+
         addSubview(reviewLabel)
         reviewLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor,
                            right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
@@ -118,6 +135,7 @@ class PeopleReviewsCell: UITableViewCell {
             self?.profileImageView.sd_setImage(with: imageUrl)
             self?.profileImageView.layer.cornerRadius = 50 / 2
             self?.profileImageView.clipsToBounds = true
+            self?.checkMarkButton.isHidden = !user.isUserVerified
         }
         timestamp.text = viewModel.timestamp
         reviewLabel.text = viewModel.reviewComment
@@ -156,7 +174,7 @@ struct ReviewViewModel {
     }
     
     var timestamp: String {
-        guard let timestamp  = review.timestamp?.convertDate(formattedString: .formattedType1) else { return "" }
+        guard let timestamp  = review.timestamp?.convertDate(formattedString: .formattedType10) else { return "" }
         return timestamp
     }
     

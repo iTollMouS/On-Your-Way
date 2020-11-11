@@ -109,7 +109,7 @@ class TripDetailsController: UIViewController {
         footerView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        
+        headerView.delegate = self
     }
     
     
@@ -229,16 +229,21 @@ extension TripDetailsController : SendPackageControllerDelegate {
     }
 }
 
-//        headerView.delegate = self
-//// MARK:- Header Delegate + start chat
-//extension TripDetailsController : TripDetailsHeaderViewDelegate {
-//    func handleReviewsTapped(_ view: TripDetailsHeaderView) {
-//        guard let traveler = traveler else { return  }
-//        let peopleReviewsController = PeopleReviewsController(user: traveler)
-//        peopleReviewsController.delegate = self
-//        present(peopleReviewsController, animated: true, completion: nil)
-//    }
-//
+        
+// MARK:- Header Delegate + start chat
+extension TripDetailsController : TripDetailsHeaderViewDelegate {
+    func handleStartToChat(_ view: TripDetailsHeaderView) {
+        
+    }
+    
+    func handleReviewsTapped(_ view: TripDetailsHeaderView) {
+        guard let traveler = traveler else { return  }
+        let peopleReviewsController = PeopleReviewsController(user: traveler)
+        peopleReviewsController.delegate = self
+        present(peopleReviewsController, animated: true, completion: nil)
+    }
+}
+
 //    func handleStartToChat(_ view: TripDetailsHeaderView) {
 //        guard let traveler = traveler else { return  }
 //        if User.currentUser?.id == nil {

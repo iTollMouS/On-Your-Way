@@ -15,10 +15,6 @@ private let reuseIdentifier = "OnboardingCell"
 class OnboardingController: UIViewController {
     
     
-    
-    
-    
-    
     // MARK: - Properties
     private let previousButton: UIButton = {
         let button = UIButton(type: .system)
@@ -68,6 +64,20 @@ class OnboardingController: UIViewController {
         button.layer.cornerRadius = 50 / 2
         return button
     }()
+    
+    private lazy var requestPushNotificationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("السماح للوصول للتنبيهات", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 0.9411764706, alpha: 1), for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1)
+        button.alpha = 0
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.addTarget(self, action: #selector(handleRequestingNotification), for: .touchUpInside)
+        button.setDimensions(height: 50, width: 300)
+        button.layer.cornerRadius = 50 / 2
+        return button
+    }()
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [previousButton, pageControl, nextButton])
         stackView.distribution = .fill
@@ -132,35 +142,56 @@ class OnboardingController: UIViewController {
         view.addSubview(dismissalButton)
         dismissalButton.centerX(inView: view)
         dismissalButton.anchor(bottom: pageControl.topAnchor, paddingBottom: 20)
+        view.addSubview(requestPushNotificationButton)
+        requestPushNotificationButton.centerX(inView: view)
+        requestPushNotificationButton.anchor(bottom: pageControl.topAnchor, paddingBottom: 20)
     }
     
     
     
     // MARK: -
     fileprivate func shouldShowDismissalButton(_ show: Bool){
+        
         UIView.animate(withDuration: 0.5) { [weak self] in
             self?.dismissalButton.alpha = show ? 1 : 0
         }
-        
+        if show{
+            LocationManager.shared.requestLocationAccess()
+        } else {
+            
+        }
     }
+    
+    
+    fileprivate func shouldRequestForNotification(_ show: Bool){
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.requestPushNotificationButton.alpha = show ? 1 : 0
+        }
+    }
+    
+    
     
     // MARK: - handlePrev
     @objc private func handlePrev() {
+        guard let notificationIndex = OnboardingViewModel.allCases.firstIndex(of: .notifications) else { return }
         let nextIndex = max(pageControl.currentPage - 1, 0)
         let indexPath = IndexPath(item: nextIndex, section: 0)
         pageControl.currentPage = nextIndex
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        pageControl.currentPage == notificationIndex ? shouldRequestForNotification(true) : shouldRequestForNotification(false)
         (indexPath.row + 1) == OnboardingViewModel.allCases.count ? shouldShowDismissalButton( true) : shouldShowDismissalButton(false)
     }
     
     
     // MARK: - handleNext
     @objc private func handleNext() {
+        guard let notificationIndex = OnboardingViewModel.allCases.firstIndex(of: .notifications) else { return }
         let nextIndex = min(pageControl.currentPage + 1, OnboardingViewModel.allCases.count - 1)
         let indexPath = IndexPath(item: nextIndex, section: 0)
         pageControl.currentPage = nextIndex
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         // reached to the last index
+        pageControl.currentPage == notificationIndex ? shouldRequestForNotification(true) : shouldRequestForNotification(false)
         (indexPath.row + 1) == OnboardingViewModel.allCases.count ? shouldShowDismissalButton(true) : shouldShowDismissalButton(false)
     }
     
@@ -168,6 +199,24 @@ class OnboardingController: UIViewController {
     // MARK: - handleDismissalView
     @objc fileprivate func handleDismissalView(){
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func handleRequestingNotification(){
+        RequestPushNotification.shared.requestPushNotification { (isAuthorized, error) in
+            if let error = error{
+                print("DEBUG: errorl while \(error.localizedDescription)")
+                return
+            }
+            DispatchQueue.main.async {
+                if isAuthorized {
+                    UIView.animate(withDuration: 0.5) { [weak self] in
+                        self?.requestPushNotificationButton.backgroundColor = #colorLiteral(red: 0.1612981856, green: 0.5460270643, blue: 0.5476448536, alpha: 1)
+                        self?.requestPushNotificationButton.setTitle("تم تفعيل للتنبيهات بنجاح", for: .normal)
+                        self?.requestPushNotificationButton.isEnabled = false
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -187,8 +236,10 @@ extension OnboardingController:  UICollectionViewDelegateFlowLayout, UICollectio
     
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard let notificationIndex = OnboardingViewModel.allCases.firstIndex(of: .notifications) else { return }
         let x = targetContentOffset.pointee.x
         pageControl.currentPage = Int(x / view.frame.width)
+        pageControl.currentPage == notificationIndex ? shouldRequestForNotification(true) : shouldRequestForNotification(false)
         Int(x / view.frame.width) + 1 == OnboardingViewModel.allCases.count ? shouldShowDismissalButton(true) : shouldShowDismissalButton(false)
     }
     

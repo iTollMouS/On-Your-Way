@@ -235,7 +235,7 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         messagesCollectionView.refreshControl = refreshController
         refreshController.tintColor = .white
-        refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
+        refreshController.attributedTitle = NSAttributedString(string: "اسحب للأسفل للتحديث", attributes:
                                                                 [.foregroundColor: UIColor.white])
         scrollsToBottomOnKeyboardBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true

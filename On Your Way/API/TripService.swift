@@ -50,12 +50,6 @@ class TripService {
             trips = Array(tripsDictionary.values)
             trips.sort(by: { $0.timestamp! > $1.timestamp! })
             
-            for trip in trips {
-                if trip.tripDepartureTime >= Date().convertDate(formattedString: .formattedType2) {
-                    self.deleteMyTrip(trip: trip) { error in }
-                }
-            }
-            
             completion(trips)
         }
     }

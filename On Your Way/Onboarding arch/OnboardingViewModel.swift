@@ -11,9 +11,9 @@ import UIKit
 enum OnboardingViewModel: Int, CaseIterable {
     
     case cashOnDelivery
-    case notifications
     case covidProtections
     case chatFeature
+    case notifications
     case discountPolicy
     case packageDelivery
     case location

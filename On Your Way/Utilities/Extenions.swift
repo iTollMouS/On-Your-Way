@@ -767,7 +767,7 @@ extension Date {
         /// Time sample  Fri23/Oct/2020
         case formattedType9 = "E d/MMM/yyy"
         /// Thu, 22 Oct 2020 5:56:22 pm
-        case formattedType10 = "E, d MMM yyyy h:mm:ss a"
+        case formattedType10 = "E, d MMM yyyy h:mm a"
         /// time only 9:24:22 PM
         case timeOnly = "h:mm a"
     }
