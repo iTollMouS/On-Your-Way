@@ -7,7 +7,36 @@
 
 import UIKit
 
+
+protocol NotificationsFooterViewDelegate: class {
+    func handleCancellingMyOrder()
+}
+
 class NotificationsFooterView: UIView {
+    
+    weak var delegate: NotificationsFooterViewDelegate?
+    
+    private lazy var packageIsDeliveredLabel: UILabel = {
+        let label = UILabel()
+        label.text = "سوف يتم مشاركة صوره من اثبات وصول الشحنه عندما يسلم المسافر الشحنه"
+        label.textAlignment = .right
+        label.numberOfLines = 0
+        label.textColor = .white
+        label.setHeight(height: 80)
+        return label
+    }()
+    
+    private lazy var imagePlaceholder: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "photo.on.rectangle.angled")
+        imageView.tintColor = .white
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFill
+        imageView.setDimensions(height: 60, width: 60)
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleImageTapped)))
+        return imageView
+    }()
     
     lazy var deleteOrderButton: UIButton = {
         let button = UIButton(type: .system)
@@ -25,11 +54,19 @@ class NotificationsFooterView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        addSubview(packageIsDeliveredLabel)
+        packageIsDeliveredLabel.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor,
+                                       paddingLeft: 28, paddingRight: 28)
+        addSubview(imagePlaceholder)
+        imagePlaceholder.centerX(inView: self, topAnchor: packageIsDeliveredLabel.bottomAnchor, paddingTop: 12)
+        
         addSubview(deleteOrderButton)
+        deleteOrderButton.centerX(inView: self, topAnchor: imagePlaceholder.bottomAnchor, paddingTop: 36)
         deleteOrderButton.anchor(left: leftAnchor, right: rightAnchor,
                             paddingLeft: 32, paddingRight: 32)
         deleteOrderButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        deleteOrderButton.centerY(inView: self)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -37,8 +74,12 @@ class NotificationsFooterView: UIView {
     }
     
     
+    @objc func handleImageTapped(){
+        print("image tapped")
+    }
+    
     @objc func handleDeleteOrder(){
-        
+        delegate?.handleCancellingMyOrder()
     }
     
 }

@@ -115,7 +115,7 @@ enum SafetyCellViewModel: Int, CaseIterable {
         case .wearMask: return "تأكد من أنها تغطي أنفك وفمك وذقنك"
         case .cleanPhones: return "Clean Phones"
         case .stayHome: return "ابقى في المنزل"
-        case .packageDelivery: return "Wipe your packages"
+        case .packageDelivery: return "تعقييم البضائع"
         }
     }
     
@@ -129,7 +129,7 @@ enum SafetyCellViewModel: Int, CaseIterable {
             
         case .cleanPhones: return "ظف الأسطح وطهّرها بشكل متكرر ولاسيما تلك التي تُلمس بانتظام، مثل مقابض الأبواب والحنفيات وشاشات الهاتف."
         case .stayHome: return "ان بقائك في المنزل وعدم الخروج إلا للضرورة القصوى يحميك ويحمي اسرتك ومجتمعك من إنتشار العدوى"
-        case .packageDelivery: return "Please wipe packages before receiving and/or handling it"
+        case .packageDelivery: return "سياستنا هي الزام جميع العملاء و المسافرين بتعقيم الشحنات قبل التسليم و الاستلام لتفادي نقل الامراض المعدية"
         }
     }
     

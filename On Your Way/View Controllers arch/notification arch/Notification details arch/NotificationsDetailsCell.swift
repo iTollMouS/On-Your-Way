@@ -120,8 +120,6 @@ class NotificationsDetailsCell: UITableViewCell {
         checkMarkButton.anchor(top: travelerImageView.bottomAnchor, right: travelerImageView.rightAnchor,
                                paddingTop: -14, paddingRight: -4)
         
-        
-        
         addSubview(travelerName)
         travelerName.centerY(inView: travelerImageView, leftAnchor: travelerImageView.rightAnchor, paddingLeft: 12)
         addSubview(startChatButton)
@@ -130,8 +128,6 @@ class NotificationsDetailsCell: UITableViewCell {
             self?.travelerImageView.image = image
             self?.travelerName.text = traveler.username
         }
-        
-        
     }
     
     @objc fileprivate func handleActions(){
@@ -148,7 +144,7 @@ class NotificationsDetailsCell: UITableViewCell {
         button.backgroundColor = backgroundColor.withAlphaComponent(alpha)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.addTarget(self, action: #selector(handleActions), for: .touchUpInside)
-        button.setDimensions(height: 50, width: 360)
+        button.setDimensions(height: 50, width: 300)
         button.layer.cornerRadius = 50 / 2
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.clipsToBounds = true
@@ -161,6 +157,4 @@ class NotificationsDetailsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
 }

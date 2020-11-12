@@ -10,13 +10,21 @@ import SKPhotoBrowser
 
 private let reuseIdentifier = "NotificationsDetailsCell"
 
+
+protocol NotificationsDetailsControllerDelegate: class {
+    func handleDismissalAndRefreshAfterDeleting()
+}
+
 class NotificationsDetailsController: UITableViewController {
+    
+    
+    weak var delegate: NotificationsDetailsControllerDelegate?
     
     
     // MARK: - Propertes
     private var package: Package
     private lazy var headerView = OrderDetailHeader(package: package)
-    private lazy var footerView = NotificationsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 120))
+    private lazy var footerView = NotificationsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 350))
     private var images = [SKPhoto]()
     private var traveler: User?
     private var user: User
@@ -38,6 +46,11 @@ class NotificationsDetailsController: UITableViewController {
         super.viewDidLoad()
         configureTableView()
         fetchTravelerInfo()
+        configureDelegates()
+    }
+    
+    func configureDelegates(){
+        footerView.delegate = self
     }
     
     fileprivate func fetchTravelerInfo(){
@@ -140,4 +153,36 @@ extension NotificationsDetailsController: NotificationsDetailsCellDelegate {
         
     }
 }
+
+extension NotificationsDetailsController : NotificationsFooterViewDelegate {
+    func handleCancellingMyOrder() {
+        let alert = UIAlertController(title: nil, message: "هل انت متاكد من الغاء طلبك ؟", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "الغاء طلبي", style: .default, handler: { [weak self] (alertAction) in
+            DispatchQueue.main.async { [weak self] in
+                TripService.shared.fetchTrip(tripId: self!.package.tripID) { [weak self] trip in
+                    TripService.shared.deleteMyOutgoingPackage(trip: trip, userId: self?.package.userID ?? "", package: self!.package) { [weak self] error in
+                        if let error = error {
+                            print("DEBIG error whule deleting the package \(error.localizedDescription)")
+                            return
+                        }
+                        
+                        CustomAlertMessage(condition: .success,
+                                           messageTitle: "تم الغاء طلبك بنجاح",
+                                           messageBody: "",
+                                           size: CGSize(width: self!.view.frame.width - 50, height: 280)) { [weak self] in
+                            self?.delegate?.handleDismissalAndRefreshAfterDeleting()
+                            self?.view.isUserInteractionEnabled = true
+                        }
+                    }
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "الغاء", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+
+
 

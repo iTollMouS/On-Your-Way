@@ -21,9 +21,31 @@ class OrderDetailsFooterView: UIView {
     }
     
     
-    lazy var rejectButton = createButton(tagNumber: 0, title: "Reject", backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "xmark.circle.fill")
-    lazy var acceptButton = createButton(tagNumber: 1, title: "Accept", backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
-    lazy var startChatButton = createButton(tagNumber: 2, title: "Chat", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
+    lazy var rejectButton = createButton(tagNumber: 0, title: "رفض", backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "xmark.circle.fill")
+    lazy var acceptButton = createButton(tagNumber: 1, title: "قبول", backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
+    lazy var startChatButton = createButton(tagNumber: 2, title: "المحادثه", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
+    
+    private lazy var packageIsDeliveredLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 0
+        label.textColor = .white
+        label.setHeight(height: 120)
+        return label
+    }()
+    
+    lazy var imagePlaceholder: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "photo.on.rectangle.angled")
+        imageView.tintColor = .white
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFill
+        imageView.setDimensions(height: 60, width: 60)
+        imageView.isUserInteractionEnabled = true
+        imageView.isHidden = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleImageTapped)))
+        return imageView
+    }()
     
     
     private lazy var stackView: UIStackView = {
@@ -41,8 +63,16 @@ class OrderDetailsFooterView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        
+        addSubview(packageIsDeliveredLabel)
+        packageIsDeliveredLabel.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor,
+                                       paddingLeft: 28, paddingRight: 28)
+        addSubview(imagePlaceholder)
+        imagePlaceholder.centerX(inView: self, topAnchor: packageIsDeliveredLabel.bottomAnchor, paddingTop: 36)
+        
+        
         addSubview(stackView)
-        stackView.centerInSuperview()
+        stackView.centerX(inView: self, topAnchor: imagePlaceholder.bottomAnchor, paddingTop: 24)
         
     }
     
@@ -51,15 +81,35 @@ class OrderDetailsFooterView: UIView {
         
         switch package.packageStatus {
         case .packageIsPending:
-            print("")
+            imagePlaceholder.isHidden = true
+            packageIsDeliveredLabel.text = "في حالة قبولك للطلب ، تستطيع مشاركة صورة  من اثبات وصول الشحنه عند التسليم\nسيتم ارسال تنبيه للعميل عند رفع صوره اثبات وصول الشحنه"
         case .packageIsRejected:
             print("")
         case .packageIsAccepted:
-            acceptButton.setTitle("You have accepted order in \n\(package.packageStatusTimestamp)", for: .normal)
+            acceptButton.setTitle("قمت بقبول الطلب في \n\(package.packageStatusTimestamp)", for: .normal)
             acceptButton.isEnabled = false
+            imagePlaceholder.isHidden = false
         case .packageIsDelivered:
-            print("")
+            packageIsDeliveredLabel.text = "يستطيع العميل ان يرسل تقييم عن جودة الخدمه المقدمة منك"
+            FileStorage.downloadImage(imageUrl: package.packageProofOfDeliveredImage) { [weak self] image in
+                guard let image = image else {return}
+                self?.imagePlaceholder.image = image
+                self?.imagePlaceholder.contentMode = .scaleAspectFill
+                self?.imagePlaceholder.setDimensions(height: 60, width: 60)
+                self?.imagePlaceholder.clipsToBounds = true
+                self?.imagePlaceholder.layer.cornerRadius = 60 / 2
+            }
+            acceptButton.setTitle(" تم ايصال الطلب في\n\(package.packageStatusTimestamp)", for: .normal)
+            imagePlaceholder.isHidden = false
+            rejectButton.isEnabled = false
+            rejectButton.alpha = 0
+            acceptButton.isEnabled = false
         }
+    }
+    
+    
+    @objc func handleImageTapped(){
+       
     }
     
     
@@ -74,7 +124,7 @@ class OrderDetailsFooterView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
         button.titleLabel?.numberOfLines = 0
-        button.setTitle("\(title) order ", for: .normal)
+        button.setTitle("\(title) الطلب ", for: .normal)
         button.setImage(UIImage(systemName: systemName), for: .normal)
         button.backgroundColor = backgroundColor.withAlphaComponent(alpha)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)

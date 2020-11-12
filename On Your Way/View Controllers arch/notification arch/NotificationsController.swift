@@ -18,7 +18,7 @@ class NotificationsController: UITableViewController {
     var packages = [Package]()
     var filteredPackages = [Package]()
     private var user: User?
-
+    
     lazy var searchController = UISearchController(searchResultsController: nil)
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -113,6 +113,7 @@ class NotificationsController: UITableViewController {
         let selectedPackage = searchController.isActive ? filteredPackages[indexPath.row] : packages[indexPath.row]
         guard let user = user else { return  }
         let notificationsDetailsController = NotificationsDetailsController(package: selectedPackage, user: user)
+        notificationsDetailsController.delegate = self
         navigationController?.pushViewController(notificationsDetailsController, animated: true)
     }
     
@@ -159,5 +160,14 @@ extension NotificationsController :  UISearchResultsUpdating {
             return package.packageType.lowercased().contains(searchedText.lowercased())
         })
         tableView.reloadData()
+    }
+}
+
+extension NotificationsController : NotificationsDetailsControllerDelegate {
+    func handleDismissalAndRefreshAfterDeleting() {
+        DispatchQueue.main.async { [weak self] in
+            self?.fetchMyRequest()
+            self?.tableView.reloadData()
+        }
     }
 }

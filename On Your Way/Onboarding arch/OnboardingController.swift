@@ -211,7 +211,7 @@ class OnboardingController: UIViewController {
                 if isAuthorized {
                     UIView.animate(withDuration: 0.5) { [weak self] in
                         self?.requestPushNotificationButton.backgroundColor = #colorLiteral(red: 0.1612981856, green: 0.5460270643, blue: 0.5476448536, alpha: 1)
-                        self?.requestPushNotificationButton.setTitle("تم تفعيل للتنبيهات بنجاح", for: .normal)
+                        self?.requestPushNotificationButton.setTitle("تم تفعيل التنبيهات بنجاح", for: .normal)
                         self?.requestPushNotificationButton.isEnabled = false
                     }
                 }

@@ -22,16 +22,17 @@ class OrderDetailsController: UIViewController {
     weak var delegate: OrderDetailsControllerDelegate?
     
     private lazy var headerView = OrderDetailHeader(package: package)
-    private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
+    private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 550))
     
     private var viewModel: PackageStatus?
     private var images = [SKPhoto]()
     
     private lazy var rejectButton = createButton(tagNumber: 0, title: "Reject Order\nThis order will be removed",
                                                  backgroundColor: #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
-    
-    private lazy var acceptButton = createButton(tagNumber: 1, title: "Accept", backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
-    private lazy var startChatButton = createButton(tagNumber: 2, title: "Chat", backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
+    private lazy var acceptButton = createButton(tagNumber: 1, title: "Accept",
+                                                 backgroundColor: #colorLiteral(red: 0.1803921569, green: 0.5215686275, blue: 0.431372549, alpha: 1), colorAlpa: 0.6, systemName: "checkmark.circle.fill")
+    private lazy var startChatButton = createButton(tagNumber: 2, title: "Chat",
+                                                    backgroundColor: #colorLiteral(red: 0.3568627451, green: 0.4078431373, blue: 0.4901960784, alpha: 1), colorAlpa: 0.4, systemName: "bubble.left.and.bubble.right.fill")
     
     
     private lazy var tableView: UITableView = {
@@ -65,6 +66,31 @@ class OrderDetailsController: UIViewController {
         configureUI()
         configureDelegates()
         fetchPackageOwnerInfo()
+        configureNavBar()
+        
+    }
+    
+    fileprivate func configureNavBar(){
+        
+        DispatchQueue.main.async { [weak self] in
+            if self?.package.packageStatus == .packageIsAccepted {
+                self?.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "ارفاق اثبات استلام الشحنه", style: .plain,
+                                                                          target: self, action: #selector(self?.handleUploadProofOfDeliveryImage))
+            }
+        }
+    }
+    
+    @objc func handleUploadProofOfDeliveryImage(){
+        
+        let alert = UIAlertController(title: nil, message: "ارفاق اثبات وصول الشحنه", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "اكمال الطلب", style: .default, handler: { [weak self] (alertAction) in
+            let imagePicker = UIImagePickerController()
+            imagePicker.allowsEditing = true
+            imagePicker.delegate = self
+            self?.present(imagePicker, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "تراجع", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
         
     }
     
@@ -73,7 +99,7 @@ class OrderDetailsController: UIViewController {
             self?.packageOwner = user
             DispatchQueue.main.async { [weak self] in
                 self?.title = self!.packageOwner?.username
-                self?.footerView.startChatButton.setTitle("Chat with \(user.username)  ", for: .normal)
+                self?.footerView.startChatButton.setTitle("المحادثة مع \(user.username)  ", for: .normal)
             }
         }
     }
@@ -107,6 +133,46 @@ class OrderDetailsController: UIViewController {
         }
         
     }
+}
+
+extension OrderDetailsController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image  = info[.editedImage] as? UIImage else { return }
+        let imageID = UUID().uuidString
+        let fileDirectory = "delivered/" + "_\(imageID)" + ".jpg"
+        FileStorage.uploadImage(image, directory: fileDirectory) { [weak self] imageUrl in
+            guard let imageUrl = imageUrl else {return}
+            self?.package.packageProofOfDeliveredImage = imageUrl
+            self?.package.packageStatus = .packageIsDelivered
+            self?.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
+            
+            DispatchQueue.main.async { [weak self] in
+                CustomAlertMessage(condition: .success,
+                                   messageTitle: " اكمال الطلب",
+                                   messageBody: " تم اكمال الطلب بنجاح\nسيتم ارسال تنبيه للعميل عن اكمال الطلب",
+                                   size: CGSize(width: self!.view.frame.width - 50, height: 280)) { [weak self] in
+                    self?.view.isUserInteractionEnabled = true
+                    TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
+                        PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID],
+                                                                            body: "تم ايصال شحنتك ، \(self!.user.username) تم ارفاق صورة اثبات وصول الشحنة",
+                                                                            title: "وصول الشحنة")
+                        self?.delegate?.handleRefreshTableAfterAction()
+                    }
+                }
+                self?.footerView.imagePlaceholder.image = image
+                self?.footerView.imagePlaceholder.contentMode = .scaleAspectFill
+                self?.footerView.imagePlaceholder.setDimensions(height: 60, width: 60)
+                self?.footerView.imagePlaceholder.layer.cornerRadius = 60 / 2
+                self?.footerView.imagePlaceholder.clipsToBounds = true
+            }
+        }
+        
+        
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 extension OrderDetailsController: UITableViewDelegate, UITableViewDataSource {
@@ -162,8 +228,8 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
         case 0:
             self.package.packageStatus = .packageIsRejected
             self.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
-            let alert = UIAlertController(title: nil, message: "Are you sure you want delete this order \nYou can not undo this action if you reject it?", preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Reject order", style: .destructive, handler: { [weak self] (alertAction) in
+            let alert = UIAlertController(title: nil, message: "هل انت متاكد من رفض الطلب؟\nعندما ترفض الطلب ، لاتستطيع التراجع عن هذا الاجراء", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "رفض الطلب", style: .destructive, handler: { [weak self] (alertAction) in
                 self?.view.isUserInteractionEnabled = false
                 DispatchQueue.main.async { [weak self] in
                     CustomAlertMessage(condition: .warning,
@@ -182,11 +248,12 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
             }
             
             ))
-            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "التراجع", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
             
         //accept
         case 1:
+            
             self.package.packageStatus = .packageIsAccepted
             self.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
             let alert = UIAlertController(title: nil, message: "هل انت متاكد من قبول الطلب؟", preferredStyle: .actionSheet)
@@ -202,13 +269,12 @@ extension OrderDetailsController: OrderDetailsFooterViewDelegate {
                                                                                 body: " طلبك مقبول 📦 🤩 الان تستطيع المحادثة مع \(self!.user.username) ",
                                                                                 title: "طلب مقبول")
                             self?.delegate?.handleRefreshTableAfterAction()
-                            
                         }
                     }
                 }
                 
             }))
-            alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "تراجع", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
         // chat
         case 2:
@@ -235,7 +301,7 @@ extension OrderDetailsController{
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
-        button.setTitle("\(title) order  ", for: .normal)
+        button.setTitle("\(title) طلب  ", for: .normal)
         button.setImage(UIImage(systemName: systemName), for: .normal)
         button.backgroundColor = backgroundColor.withAlphaComponent(colorAlpa)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)

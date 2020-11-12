@@ -21,7 +21,7 @@ class TripsTimelineController: UITableViewController {
     var trips: [Trip] = []
     var filteredTrips: [Trip] = []
     
-  
+    
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -37,7 +37,7 @@ class TripsTimelineController: UITableViewController {
         fetchTrips()
         configureNavBar()
         searchController.searchBar.becomeFirstResponder()
-       
+        
         
     }
     
@@ -54,7 +54,7 @@ class TripsTimelineController: UITableViewController {
                 /*note that in the func we made some omitting duplicate methods
                  best way to handle empty cases
                  */
-              
+                
                 self?.trips = trips
                 self?.configureTapBarController()
                 self?.tableView.reloadData()

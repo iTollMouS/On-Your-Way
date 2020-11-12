@@ -15,6 +15,7 @@ struct Package: Codable {
     var packageType = ""
     @ServerTimestamp var timestamp = Date()
     var packageImages = [String]()
+    var packageProofOfDeliveredImage = ""
     var packageID = ""
     var packageStatus: PackageStatus
     var packageStatusTimestamp = ""
