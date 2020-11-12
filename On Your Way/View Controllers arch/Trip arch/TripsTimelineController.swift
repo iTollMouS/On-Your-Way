@@ -71,10 +71,10 @@ class TripsTimelineController: UITableViewController {
         newTripController.popupItem.title = "مسافر؟"
         newTripController.popupBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         newTripController.popupItem.subtitle = "اضغط هنا لإعلام العملاء برحلتك لزيادة دخلك الشهري"
-        newTripController.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
-        newTripController.popupBar.semanticContentAttribute = .forceRightToLeft
-        tabBarController?.popupBar.barItemsSemanticContentAttribute = .forceRightToLeft
-        tabBarController?.popupBar.semanticContentAttribute = .forceRightToLeft
+//        newTripController.popupBar.barItemsSemanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
+//        newTripController.popupBar.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
+//        tabBarController?.popupBar.barItemsSemanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
+//        tabBarController?.popupBar.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: newTripController, animated: true, completion: nil)
@@ -134,9 +134,7 @@ class TripsTimelineController: UITableViewController {
             fetchTrips()
             refreshController.endRefreshing()
         }
-        
     }
-    
 }
 
 // MARK: - Extensions
@@ -146,7 +144,6 @@ class TripsTimelineController: UITableViewController {
 extension TripsTimelineController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] time in
             DispatchQueue.main.async { [weak self] in
                 if self!.trips.isEmpty {
@@ -166,8 +163,6 @@ extension TripsTimelineController {
         cell.delegate = self
         return cell
     }
-    
-    
     
     // MARK: - didSelectRowAt
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -257,7 +252,6 @@ extension TripsTimelineController: LoginControllerDelegate {
     }
 }
 
-
 // MARK: - UISearchResultsUpdating
 extension TripsTimelineController :  UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
@@ -273,9 +267,6 @@ extension TripsTimelineController :  UISearchResultsUpdating {
         
     }
 }
-
-
-
 
 // MARK: - TripDetailsControllerDelegate
 extension TripsTimelineController : TripDetailsControllerDelegate {
