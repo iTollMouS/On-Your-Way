@@ -126,6 +126,7 @@
 		83B7637B2538192300503A9D /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7637A2538192300503A9D /* Review.swift */; };
 		83B7637D253819FF00503A9D /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7637C253819FF00503A9D /* ReviewService.swift */; };
 		83BA1D442555D25500B527E0 /* CustomAlertMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA1D432555D25500B527E0 /* CustomAlertMessage.swift */; };
+		83CF8B70255CF153009724E0 /* verify_checkmark.json in Resources */ = {isa = PBXBuildFile; fileRef = 83CF8B6F255CF152009724E0 /* verify_checkmark.json */; };
 		83D7D3ED2534720500FA88F0 /* TripDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3E92534720400FA88F0 /* TripDetailsController.swift */; };
 		83D7D3EE2534720500FA88F0 /* TripDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */; };
 		83D7D3EF2534720500FA88F0 /* TripDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */; };
@@ -281,6 +282,7 @@
 		83B7637A2538192300503A9D /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		83B7637C253819FF00503A9D /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
 		83BA1D432555D25500B527E0 /* CustomAlertMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertMessage.swift; sourceTree = "<group>"; };
+		83CF8B6F255CF152009724E0 /* verify_checkmark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = verify_checkmark.json; sourceTree = "<group>"; };
 		83D7D3E92534720400FA88F0 /* TripDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsController.swift; sourceTree = "<group>"; };
 		83D7D3EA2534720500FA88F0 /* TripDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsCell.swift; sourceTree = "<group>"; };
 		83D7D3EB2534720500FA88F0 /* TripDetailsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsHeaderView.swift; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 		834C989B25312C3000BE8691 /* JSON files */ = {
 			isa = PBXGroup;
 			children = (
+				83CF8B6F255CF152009724E0 /* verify_checkmark.json */,
 				833F714225431E84000D31A2 /* bell_animation.json */,
 				834C98A125312C5700BE8691 /* 34548-5-estrellas.json */,
 				834C98AD25312C5700BE8691 /* chat.json */,
@@ -762,6 +765,7 @@
 				833514A0253D724B001C2C9E /* success_motion.json in Resources */,
 				834C98B525312C5700BE8691 /* 34548-5-estrellas.json in Resources */,
 				833514A4253D796B001C2C9E /* New_error.json in Resources */,
+				83CF8B70255CF153009724E0 /* verify_checkmark.json in Resources */,
 				83B763762537401D00503A9D /* success_animation.json in Resources */,
 				83B763592536DB9100503A9D /* bell.json in Resources */,
 				83B7635B2536DEA900503A9D /* chat_messenger.json in Resources */,
