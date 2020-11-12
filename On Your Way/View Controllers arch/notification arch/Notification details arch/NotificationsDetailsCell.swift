@@ -93,15 +93,22 @@ class NotificationsDetailsCell: UITableViewCell {
         guard let packageStatus = packageStatus else { return }
         guard let traveler = traveler else { return  }
         
-        
-        
-        if packageStatus == .packageIsAccepted {
-            startChatButton.setTitle("بدء المحادثة  ", for: .normal)
-            startChatButton.isEnabled = true
-        } else {
+        switch packageStatus {
+     
+        case .packageIsPending:
             startChatButton.setTitle("سيتم تفعيل المحادثه عندما \(traveler.username) يقبل طلبك", for: .normal)
             startChatButton.isEnabled = false
+        case .packageIsRejected:
+            startChatButton.setTitle("سيتم تفعيل المحادثه عندما \(traveler.username) يقبل طلبك", for: .normal)
+            startChatButton.isEnabled = false
+        case .packageIsAccepted:
+            startChatButton.setTitle("بدء المحادثة  ", for: .normal)
+            startChatButton.isEnabled = true
+        case .packageIsDelivered:
+            startChatButton.setTitle("بدء المحادثة  ", for: .normal)
+            startChatButton.isEnabled = true
         }
+        
     }
     
     fileprivate func configureTraveler(){

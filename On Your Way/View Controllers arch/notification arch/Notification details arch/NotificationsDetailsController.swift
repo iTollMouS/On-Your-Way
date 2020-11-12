@@ -47,10 +47,41 @@ class NotificationsDetailsController: UITableViewController {
         configureTableView()
         fetchTravelerInfo()
         configureDelegates()
+        checkPackageStatus()
+        fetchPackageImage()
+    }
+    
+    fileprivate func fetchPackageImage(){
+        DispatchQueue.main.async { [weak self] in
+            FileStorage.downloadImage(imageUrl: self!.package.packageProofOfDeliveredImage) { image in
+                guard let image = image else {return}
+                self?.footerView.imagePlaceholder.image = image
+                self?.footerView.imagePlaceholder.backgroundColor = .clear
+                self?.footerView.imagePlaceholder.contentMode = .scaleAspectFill
+                self?.footerView.imagePlaceholder.setDimensions(height: 120, width: 120)
+                self?.footerView.imagePlaceholder.layer.cornerRadius = 120 / 2
+                self?.footerView.imagePlaceholder.clipsToBounds = true
+                self?.tableView.reloadData()
+            }
+        }
+    }
+    
+    func checkPackageStatus(){
+        switch package.packageStatus {
+        case .packageIsPending:
+            footerView.deleteOrderButton.isHidden = false
+        case .packageIsRejected:
+            footerView.deleteOrderButton.isHidden = false
+        case .packageIsAccepted:
+            footerView.deleteOrderButton.isHidden = false
+        case .packageIsDelivered:
+            footerView.deleteOrderButton.isHidden = true
+        }
     }
     
     func configureDelegates(){
         footerView.delegate = self
+        headerView.delegate = self
     }
     
     fileprivate func fetchTravelerInfo(){
@@ -73,10 +104,9 @@ class NotificationsDetailsController: UITableViewController {
         tableView.rowHeight = 150
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.tableHeaderView = headerView
-        headerView.delegate = self
         tableView.tableFooterView = footerView
-        
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
+        
     }
     
     // MARK: - Table view data source
@@ -114,7 +144,6 @@ class NotificationsDetailsController: UITableViewController {
         label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }
-    
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 48
@@ -155,6 +184,17 @@ extension NotificationsDetailsController: NotificationsDetailsCellDelegate {
 }
 
 extension NotificationsDetailsController : NotificationsFooterViewDelegate {
+    func handleShowingProofOfDelivery(_ footerView: NotificationsFooterView) {
+        guard let image = footerView.imagePlaceholder.image else {return}
+        let photo = SKPhoto.photoWithImage(image)
+        images.append(photo)
+        let browser = SKPhotoBrowser(photos: images)
+        browser.initializePageIndex(0)
+        present(browser, animated: true, completion: nil)
+        images.removeAll()
+    }
+    
+    
     func handleCancellingMyOrder() {
         let alert = UIAlertController(title: nil, message: "هل انت متاكد من الغاء طلبك ؟", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "الغاء طلبي", style: .default, handler: { [weak self] (alertAction) in

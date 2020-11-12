@@ -10,6 +10,7 @@ import UIKit
 
 protocol NotificationsFooterViewDelegate: class {
     func handleCancellingMyOrder()
+    func handleShowingProofOfDelivery(_ footerView: NotificationsFooterView)
 }
 
 class NotificationsFooterView: UIView {
@@ -26,13 +27,14 @@ class NotificationsFooterView: UIView {
         return label
     }()
     
-    private lazy var imagePlaceholder: UIImageView = {
+    lazy var imagePlaceholder: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo.on.rectangle.angled")
         imageView.tintColor = .white
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFill
-        imageView.setDimensions(height: 60, width: 60)
+        imageView.setDimensions(height: 120, width: 120)
+        imageView.layer.cornerRadius = 120 / 2
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleImageTapped)))
         return imageView
@@ -75,7 +77,7 @@ class NotificationsFooterView: UIView {
     
     
     @objc func handleImageTapped(){
-        print("image tapped")
+        delegate?.handleShowingProofOfDelivery(self)
     }
     
     @objc func handleDeleteOrder(){

@@ -124,7 +124,6 @@ class NotificationsController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
             let selectedPackage = packages[indexPath.row]
             TripService.shared.fetchTrip(tripId: selectedPackage.tripID) { [weak self] trip in
                 self?.packages.remove(at: indexPath.row)

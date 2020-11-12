@@ -9,6 +9,7 @@ import UIKit
 
 protocol OrderDetailsFooterViewDelegate: class {
     func assignPackageStatus(_ sender: UIButton, _ footer: OrderDetailsFooterView)
+    func handleShowingProofOfDelivery(_ footerView: OrderDetailsFooterView)
 }
 
 class OrderDetailsFooterView: UIView {
@@ -40,7 +41,8 @@ class OrderDetailsFooterView: UIView {
         imageView.tintColor = .white
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFill
-        imageView.setDimensions(height: 60, width: 60)
+        imageView.setDimensions(height: 120, width: 120)
+        imageView.layer.cornerRadius = 120 / 2
         imageView.isUserInteractionEnabled = true
         imageView.isHidden = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleImageTapped)))
@@ -95,9 +97,9 @@ class OrderDetailsFooterView: UIView {
                 guard let image = image else {return}
                 self?.imagePlaceholder.image = image
                 self?.imagePlaceholder.contentMode = .scaleAspectFill
-                self?.imagePlaceholder.setDimensions(height: 60, width: 60)
+                self?.imagePlaceholder.setDimensions(height: 120, width: 120)
                 self?.imagePlaceholder.clipsToBounds = true
-                self?.imagePlaceholder.layer.cornerRadius = 60 / 2
+                self?.imagePlaceholder.layer.cornerRadius = 120 / 2
             }
             acceptButton.setTitle(" تم ايصال الطلب في\n\(package.packageStatusTimestamp)", for: .normal)
             imagePlaceholder.isHidden = false
@@ -109,7 +111,7 @@ class OrderDetailsFooterView: UIView {
     
     
     @objc func handleImageTapped(){
-       
+        delegate?.handleShowingProofOfDelivery(self)
     }
     
     

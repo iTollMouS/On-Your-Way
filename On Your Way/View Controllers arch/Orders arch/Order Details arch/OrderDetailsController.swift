@@ -162,9 +162,10 @@ extension OrderDetailsController: UIImagePickerControllerDelegate, UINavigationC
                 }
                 self?.footerView.imagePlaceholder.image = image
                 self?.footerView.imagePlaceholder.contentMode = .scaleAspectFill
-                self?.footerView.imagePlaceholder.setDimensions(height: 60, width: 60)
-                self?.footerView.imagePlaceholder.layer.cornerRadius = 60 / 2
+                self?.footerView.imagePlaceholder.setDimensions(height: 120, width: 120)
+                self?.footerView.imagePlaceholder.layer.cornerRadius = 120 / 2
                 self?.footerView.imagePlaceholder.clipsToBounds = true
+                self?.tableView.reloadData()
             }
         }
         
@@ -221,6 +222,16 @@ extension OrderDetailsController : OrderDetailHeaderDelegate {
 }
 
 extension OrderDetailsController: OrderDetailsFooterViewDelegate {
+    func handleShowingProofOfDelivery(_ footerView: OrderDetailsFooterView) {
+        guard let image = footerView.imagePlaceholder.image else {return}
+        let photo = SKPhoto.photoWithImage(image)
+        images.append(photo)
+        let browser = SKPhotoBrowser(photos: images)
+        browser.initializePageIndex(0)
+        present(browser, animated: true, completion: nil)
+        images.removeAll()
+    }
+    
     func assignPackageStatus(_ sender: UIButton, _ footer: OrderDetailsFooterView) {
         
         switch sender.tag {
