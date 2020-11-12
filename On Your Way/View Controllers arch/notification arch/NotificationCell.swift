@@ -127,19 +127,19 @@ class NotificationCell: UITableViewCell {
         switch viewModel.packageStatus {
         case .packageIsPending:
             packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان :",
-                                                               details: viewModel.packageStatus.rawValue,
+                                                               details: "في انتظار القبول",
                                                                textColor: .systemYellow)
         case .packageIsRejected:
             packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان : ",
-                                                               details: viewModel.packageStatus.rawValue,
+                                                               details: "الطلب مرفوض",
                                                                textColor: .systemRed)
         case .packageIsAccepted:
             packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان :",
-                                                               details: viewModel.packageStatus.rawValue,
+                                                               details: "تم قبول الطلب\nتستطيع ان تتواصل مع المسافر في المحادثات الشخصية",
                                                                textColor: .systemGreen)
         case .packageIsDelivered:
             packageStatusLabel.attributedText = attributedText(title: "حالة الطلب الان :",
-                                                               details: viewModel.packageStatus.rawValue,
+                                                               details: "تم ايصال الطلب ، في حال المسافر لم يرفع اثبات الوصول ، يحق لك تقديم شكوى",
                                                                textColor: .systemBlue)
         }
     }

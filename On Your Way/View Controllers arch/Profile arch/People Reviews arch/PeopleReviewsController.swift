@@ -175,6 +175,7 @@ class PeopleReviewsController: UIViewController {
     }
     
     private var reviews = [Review]()
+    
     private lazy var headerView = PeopleReviewHeader(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
     
     init(user: User) {
@@ -403,30 +404,12 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let selectedReview = reviews[indexPath.row]
         if selectedReview.userID == User.currentId {
-            let delete = deleteMyReview(review: selectedReview ,at: indexPath)
-            return UISwipeActionsConfiguration(actions: [delete])
+            let deleteAction = deleteMyReview(review: selectedReview ,at: indexPath)
+            return UISwipeActionsConfiguration(actions: [deleteAction])
         } else {
             return nil
         }
     }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if refreshController.isRefreshing {
-            fetchReviews()
-            refreshController.endRefreshing()
-        }
-    }
-    
-    //    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    //        let selectedReview = reviews[indexPath.row]
-    //        if selectedReview.userID == User.currentId {
-    //            let delete = editMyReview(review: selectedReview ,at: indexPath)
-    //            return UISwipeActionsConfiguration(actions: [delete])
-    //        } else {
-    //            return nil
-    //        }
-    //
-    //    }
     
     func deleteMyReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "ازالة") { [weak self] (action, view, completion) in
@@ -437,6 +420,13 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
                     self?.user.reviewsCount -= Double(self!.reviews.count - 1)
                     UserServices.shared.saveUserToFirestore(self!.user)
                     ReviewService.shared.deleteMyReview(userId: self!.user.id, review: review) { error in
+                        if let error = error {
+                            CustomAlertMessage(condition: .error, messageTitle: "حدث خطا ما",
+                                               messageBody: "حدث خطا ما ، الرجاء التاكد من الاتصال بالانترنت\(error.localizedDescription)",
+                                               size: CGSize(width: view.frame.width - 50, height: 280)) { [weak self] in
+                            }
+                            return
+                        }
                         print("DEBUG: success!!!!")
                         self?.reviews.remove(at: indexPath.row)
                         self?.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -449,11 +439,23 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
         }
         return action
     }
+
+        func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+            let selectedReview = reviews[indexPath.row]
+            if selectedReview.userID == User.currentId {
+                let reportAction = reportReview(review: selectedReview ,at: indexPath)
+                return UISwipeActionsConfiguration(actions: [reportAction])
+            } else {
+                return nil
+            }
+        }
     
-    func editMyReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "تعديل التقييم") { [weak self] (action, view, completion) in
-            let alert = UIAlertController(title: nil, message: "هل انت متاكد من تعديل تقييمك", preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "تعديل", style: .destructive, handler: { [weak self] (alertAction) in
+ 
+    
+    func reportReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "ابلاغ عن مخالفه") { [weak self] (action, view, completion) in
+            let alert = UIAlertController(title: nil, message: "هل انت متاكد من الابلاغ غن مخالفه؟", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "الابلاغ", style: .destructive, handler: { [weak self] (alertAction) in
                 DispatchQueue.main.async { [weak self] in
                     ReviewService.shared.editMyReview (userId: self!.user.id, review: review) { error in
                         print("DEBUG: success!!!!")
@@ -468,43 +470,16 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
         return action
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if refreshController.isRefreshing {
+            fetchReviews()
+            refreshController.endRefreshing()
+        }
+    }
+    
+    
 }
 
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//
-//        let selectedReview = reviews[indexPath.row]
-//        if User.currentId == selectedReview.userID {
-//            if editingStyle == .delete {
-//                DispatchQueue.main.async { [weak self] in
-//                    ReviewService.shared.deleteMyReview(userId: self!.user.id, review: selectedReview) { error in
-//                        print("DEBUG: success!!!!")
-//                        self?.reviews.remove(at: indexPath.row)
-//                        self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-//                        self?.tableView.reloadData()
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let delete = deleteMyTrip(at: indexPath)
-//        return UISwipeActionsConfiguration(actions: [delete])
-//    }
-//
-//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let edit = editMyTrip(at: indexPath)
-//        return UISwipeActionsConfiguration(actions: [edit])
-//    }
-
-
-// MARK: - deleteMyTrip
-
-//
-//        action.image = UIImage(systemName: "trash.circle.fill")
-//        action.backgroundColor = .systemRed
-//        return action
-//    }
 
 extension PeopleReviewsController: UITextViewDelegate {
     
@@ -564,9 +539,11 @@ extension PeopleReviewsController {
             }
             print("DEBUG:: success")
         }
+        
         SwiftEntryKit.dismiss(.displayed) { [self] in reviewTextView.text = "" }
         self.fetchReviews()
         self.tableView.reloadData()
+        
         
     }
     

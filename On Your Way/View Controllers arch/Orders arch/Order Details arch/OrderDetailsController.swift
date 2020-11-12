@@ -145,7 +145,7 @@ extension OrderDetailsController: UIImagePickerControllerDelegate, UINavigationC
             guard let imageUrl = imageUrl else {return}
             self?.package.packageProofOfDeliveredImage = imageUrl
             self?.package.packageStatus = .packageIsDelivered
-            self?.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType2)
+            self?.package.packageStatusTimestamp = Date().convertDate(formattedString: .formattedType3)
             
             DispatchQueue.main.async { [weak self] in
                 CustomAlertMessage(condition: .success,
@@ -168,8 +168,6 @@ extension OrderDetailsController: UIImagePickerControllerDelegate, UINavigationC
                 self?.tableView.reloadData()
             }
         }
-        
-        
         
         picker.dismiss(animated: true, completion: nil)
     }

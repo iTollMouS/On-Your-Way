@@ -241,14 +241,15 @@ extension OrdersController: UISearchResultsUpdating {
 //MARK:OrderDetailsControllerDelegate
 extension OrdersController : OrderDetailsControllerDelegate {
     func handleRefreshTableAfterAction() {
+        
         DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
             self?.tableView.beginUpdates()
             self?.fetchTrips()
             self?.tableView.reloadData()
             self?.tableView.endUpdates()
         }
     }
-    
     
     func handleDismissalAndRefreshing(_ view: OrderDetailsController) {
         navigationController?.popViewController(animated: true)

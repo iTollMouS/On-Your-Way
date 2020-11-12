@@ -120,7 +120,7 @@ class TripDetailsCell: UITableViewCell {
         label.adjustsFontSizeToFitWidth = true
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.numberOfLines = 0
         return label
     }()
@@ -131,7 +131,7 @@ class TripDetailsCell: UITableViewCell {
         label.adjustsFontSizeToFitWidth = true
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.numberOfLines = 0
         return label
     }()
@@ -161,7 +161,7 @@ class TripDetailsCell: UITableViewCell {
         
         
         packagesTypes.text = viewModel.packageType
-        priceBaseLabel.text = viewModel.basePrice
+        priceBaseLabel.text = "\(viewModel.basePrice) ريال "
     }
     
     

@@ -48,7 +48,7 @@ class NotificationsController: UITableViewController {
     // MARK: - configureRefreshController
     func configureRefreshController(){
         refreshController.tintColor = .white
-        refreshController.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:
+        refreshController.attributedTitle = NSAttributedString(string: "اسحب للأسفل للتحديث", attributes:
                                                                 [.foregroundColor: UIColor.white])
         tableView.refreshControl = refreshController
     }

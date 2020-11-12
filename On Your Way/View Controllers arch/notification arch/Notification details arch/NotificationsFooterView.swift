@@ -15,11 +15,15 @@ protocol NotificationsFooterViewDelegate: class {
 
 class NotificationsFooterView: UIView {
     
+    var package: Package?{
+        didSet{configure()}
+    }
+    
     weak var delegate: NotificationsFooterViewDelegate?
     
-    private lazy var packageIsDeliveredLabel: UILabel = {
+    lazy var packageIsDeliveredLabel: UILabel = {
         let label = UILabel()
-        label.text = "سوف يتم مشاركة صوره من اثبات وصول الشحنه عندما يسلم المسافر الشحنه"
+        
         label.textAlignment = .right
         label.numberOfLines = 0
         label.textColor = .white
@@ -66,7 +70,7 @@ class NotificationsFooterView: UIView {
         addSubview(deleteOrderButton)
         deleteOrderButton.centerX(inView: self, topAnchor: imagePlaceholder.bottomAnchor, paddingTop: 36)
         deleteOrderButton.anchor(left: leftAnchor, right: rightAnchor,
-                            paddingLeft: 32, paddingRight: 32)
+                                 paddingLeft: 32, paddingRight: 32)
         deleteOrderButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
@@ -75,6 +79,20 @@ class NotificationsFooterView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    fileprivate func configure(){
+        guard let package = package else { return }
+        switch package.packageStatus {
+        
+        case .packageIsPending:
+            packageIsDeliveredLabel.text = "سوف يتم مشاركة صوره من اثبات وصول الشحنه عندما يسلم المسافر الشحنه"
+        case .packageIsRejected:
+            print("")
+        case .packageIsAccepted:
+            packageIsDeliveredLabel.text = "سوف يتم مشاركة صوره من اثبات وصول الشحنه عندما يسلم المسافر الشحنه"
+        case .packageIsDelivered:
+            packageIsDeliveredLabel.text = "تم مشاركة صورة من اثبات الوصول في الاسفل\n\(package.packageStatusTimestamp)"
+        }
+    }
     
     @objc func handleImageTapped(){
         delegate?.handleShowingProofOfDelivery(self)

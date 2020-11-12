@@ -25,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: UISceneSession Lifecycle
-
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
@@ -45,14 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("DEBUG: unable to \(error.localizedDescription)")
     }
-    
-//    private func requestPushNotification(){
-//        UNUserNotificationCenter.current().delegate = self
-//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (_, _) in
-//
-//        }
-//    }
-//
 
     // MARK: - updateUserPushIdWith
     private func updateUserPushIdWith(_ fcmToken: String){
@@ -65,20 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-//
-//// MARK: - UNUserNotificationCenterDelegate
-//extension AppDelegate: UNUserNotificationCenterDelegate {
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//        completionHandler()
-//    }
-//}
-
 // MARK: - MessagingDelegate
 extension AppDelegate: MessagingDelegate {
-    
     public func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("DEBUG: the fcm token is \(fcmToken)")
         updateUserPushIdWith(fcmToken)
     }
-    
 }

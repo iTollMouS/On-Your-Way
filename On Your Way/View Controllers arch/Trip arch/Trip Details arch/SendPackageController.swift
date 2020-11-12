@@ -17,7 +17,6 @@ protocol SendPackageControllerDelegate: class {
     func handleDismissalView(_ view: SendPackageController)
 }
 
-
 class SendPackageController: UIViewController {
     
     // MARK: - delegate
@@ -28,16 +27,16 @@ class SendPackageController: UIViewController {
     
     private let packageTitleLabel: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "Write any additional info\n",
+        let attributedText = NSMutableAttributedString(string: "اكتب اي وصف اضافي للشحنه ، مثلا : الكرتون داخله بعض الاوراق او اجهزه كهرب\n",
                                                        attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
-        attributedText.append(NSMutableAttributedString(string: "You only have 150 letters",
+        attributedText.append(NSMutableAttributedString(string: "لديك فقط 150 حرف لكتابة الوصف",
                                                         attributes: [NSAttributedString.Key.foregroundColor : UIColor.white]))
         label.attributedText = attributedText
         label.textColor = .white
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.numberOfLines = 0
-        label.setDimensions(height: 40, width: 200)
+        label.setDimensions(height: 60, width: 200)
         return label
     }()
     
@@ -45,7 +44,7 @@ class SendPackageController: UIViewController {
     private lazy var sendPackageButton: UIButton = {
         let button = UIButton(type: .system)
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
-        button.setTitle("Send package with  ", for: .normal)
+        button.setTitle("ارسال الشحنة  ", for: .normal)
         button.setImage(UIImage(systemName: "shippingbox.fill"), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
@@ -77,8 +76,8 @@ class SendPackageController: UIViewController {
     
     private lazy var placeholderLabel: UILabel = {
         let label = UILabel()
-        label.text = "write what stuff you can take \nfor example : Papers , bags , etc"
-        label.textAlignment = .left
+        label.text = "اكتب وصف بسيط عن الشحنه المرسلة"
+        label.textAlignment = .right
         label.textColor = .lightGray
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 16)
@@ -134,7 +133,7 @@ class SendPackageController: UIViewController {
                                navBarColor: #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1), smallTitleColorWhenScrolling: .light,
                                prefersLargeTitles: true)
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dismiss", style: .done, target: self, action: #selector(handleDismissal))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "تراجع", style: .done, target: self, action: #selector(handleDismissal))
         self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -156,6 +155,7 @@ class SendPackageController: UIViewController {
         
         view.addSubview(packageTitleLabel)
         packageTitleLabel.centerX(inView: packagesImage, topAnchor: packagesImage.bottomAnchor, paddingTop: 20)
+        packageTitleLabel.anchor(left: view.leftAnchor, right: view.rightAnchor)
         
         view.addSubview(packageInfoTextView)
         packageInfoTextView.anchor(top: packageTitleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20 ,
@@ -179,10 +179,11 @@ class SendPackageController: UIViewController {
     
     
     @objc func handleTextInputChanger(){
+        
         placeholderLabel.isHidden = !packageInfoTextView.text.isEmpty
-        let attributedText = NSMutableAttributedString(string: "Write any additional info\n",
+        let attributedText = NSMutableAttributedString(string: "اكتب اي وصف اضافي للشحنه ، مثلا : الكرتون داخله بعض الاوراق او اجهزه كهرب\n",
                                                        attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
-        attributedText.append(NSMutableAttributedString(string: "You only have \(limitedLetter - packageInfoTextView.text.count) letters",
+        attributedText.append(NSMutableAttributedString(string: "لديك فقط \(limitedLetter - packageInfoTextView.text.count) حرف لكتابة الوصف",
                                                         attributes: [NSAttributedString.Key.foregroundColor : UIColor.white]))
         packageTitleLabel.attributedText = attributedText
     }
@@ -200,7 +201,7 @@ class SendPackageController: UIViewController {
     @objc fileprivate func handleSubmittingShipment(){
         
         if packageImageUrls.isEmpty {
-            self.showAlertMessage("Error", "Please upload at least 1 image")
+            self.showAlertMessage("لاتوجد صورة", "الرجاء ارفاق صورة واحدة على الاقل")
             return
         }
         
@@ -208,13 +209,13 @@ class SendPackageController: UIViewController {
         
         UserServices.shared.fetchUser(userId: uid) { [weak self] user in
             PushNotificationService.shared.sendPushNotification(userIds: [self!.trip.userID],
-                                                                body: "You have a new order from \(user.username) 🤩 📦",
-                                                                title: "New Order")
+                                                                body: "لديك طلب شحنه جديد من \(user.username) 🤩 📦",
+                                                                title: "طلب ارسال شحنه")
         }
         
         view.isUserInteractionEnabled = false
         self.showBlurView()
-        self.showLoader(true, message: "Please wait while we\nsend your request....")
+        self.showLoader(true, message: "الرجاء الانتظار بينما نرسل طلبك ...")
         guard let packageType = packageInfoTextView.text else { return }
         let packageId = UUID().uuidString
         let package = Package(userID: User.currentId,

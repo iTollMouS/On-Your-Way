@@ -27,7 +27,6 @@ class UpdateEmailController: UIViewController {
     }()
     
     
-    
     private lazy var emailTextField = CustomTextField(textColor: .black, placeholder: "example@example.com",
                                                       placeholderColor: #colorLiteral(red: 0.2901960784, green: 0.3137254902, blue: 0.3529411765, alpha: 1), placeholderAlpa: 0.9, isSecure: false)
     

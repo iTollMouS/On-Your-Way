@@ -81,6 +81,7 @@ class NotificationsDetailsController: UITableViewController {
     
     func configureDelegates(){
         footerView.delegate = self
+        footerView.package = package
         headerView.delegate = self
     }
     

@@ -254,7 +254,6 @@ class TripCell: UITableViewCell {
         
         timestampLabel.text = viewModel.timestamp
         priceBaseLabel.attributedText = viewModel.basePriceAttributedText
-        destinationLocation.text = viewModel.destinationLocation
         departureTime.text = viewModel.tripDepartureTime
         packagesTypes.attributedText = viewModel.packageTypeAttributedText
         currentLocation.attributedText = viewModel.currentLocationInfoAttributedText
