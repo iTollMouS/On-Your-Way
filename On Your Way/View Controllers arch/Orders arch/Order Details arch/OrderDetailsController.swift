@@ -95,6 +95,13 @@ class OrderDetailsController: UIViewController {
     }
     
     fileprivate func fetchPackageOwnerInfo(){
+        if !isConnectedToNetwork(){
+            CustomAlertMessage(condition: .warning, messageTitle: "انقطاع في الاتصال",
+                               messageBody: "الرجاء التاكد من الاتصال للشبكة",
+                               size: CGSize(width: view.frame.width - 50, height: 280)) {
+            }
+            return
+        }
         UserServices.shared.fetchUser(userId: package.userID) { [weak self] user in
             self?.packageOwner = user
             DispatchQueue.main.async { [weak self] in
@@ -155,7 +162,7 @@ extension OrderDetailsController: UIImagePickerControllerDelegate, UINavigationC
                     self?.view.isUserInteractionEnabled = true
                     TripService.shared.updatePackageStatus(userId: User.currentId, package: self!.package) { [weak self] error in
                         PushNotificationService.shared.sendPushNotification(userIds: [self!.package.userID],
-                                                                            body: "تم ايصال شحنتك ، \(self!.user.username) تم ارفاق صورة اثبات وصول الشحنة",
+                                                                            body: "تم ايصال شحنتك ، \(self!.user.username) ارفق صورة اثبات وصول الشحنة",
                                                                             title: "وصول الشحنة")
                         self?.delegate?.handleRefreshTableAfterAction()
                     }

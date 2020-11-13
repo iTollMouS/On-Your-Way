@@ -15,11 +15,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     var currentLocation: CLLocationCoordinate2D?
     
     
-    
     private override init() {
-        
         super.init()
-        
     }
     
     func requestLocationAccess(){
@@ -34,9 +31,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func stopUpdating(){
-        
         locationManager.stopUpdatingLocation()
-        
     }
     
     

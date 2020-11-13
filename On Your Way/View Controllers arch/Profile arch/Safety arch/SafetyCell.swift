@@ -113,7 +113,7 @@ enum SafetyCellViewModel: Int, CaseIterable {
         case .washHands: return "غسل اليدين بشكل مستمر"
         case .handSanitizer: return "استخدم المعقم"
         case .wearMask: return "تأكد من أنها تغطي أنفك وفمك وذقنك"
-        case .cleanPhones: return "Clean Phones"
+        case .cleanPhones: return "تعقييم الاسطح"
         case .stayHome: return "ابقى في المنزل"
         case .packageDelivery: return "تعقييم البضائع"
         }

@@ -286,7 +286,6 @@ class ChatViewController: MessagesViewController {
             if fileExistsAtPath(path: audioFileName + ".m4a"){
                 let audioD = audioDuration.interval(ofComponent: .second,
                                                     from: Date())
-                
                 messageSend(text: nil, photo: nil, video: nil, audio: audioFileName, location: nil, audioDuration: audioD)
             } else {
                 print("No audio file")

@@ -34,8 +34,8 @@ class ReviewService {
     
     func editMyReview(userId: String, review: Review,  completion: @escaping(Error?) -> Void ){
         do {
-            try Firestore.firestore().collection("reviews")
-                .document(userId).collection("reviews")
+            try Firestore.firestore().collection("reported-reviews")
+                .document(userId).collection(review.userID)
                 .document(review.reviewId).setData(from: review, merge: true, completion:  completion)
         } catch (let error){
             print(error.localizedDescription)

@@ -90,6 +90,13 @@ class ProfileController: UIViewController {
     
     // MARK: - checkUser
     func checkUser(){
+        if !isConnectedToNetwork(){
+            CustomAlertMessage(condition: .warning, messageTitle: "انقطاع في الاتصال",
+                               messageBody: "الرجاء التاكد من الاتصال للشبكة",
+                               size: CGSize(width: view.frame.width - 50, height: 280)) {
+            }
+            return
+        }
         if User.currentUser == nil {
             presentLoggingController()
         } else {

@@ -116,6 +116,7 @@ class NotificationCell: UITableViewCell {
                 guard let imageUrl = URL(string: user.avatarLink) else {return}
                 self?.travelerImageView.sd_setImage(with: imageUrl)
                 self?.travelerName.text = user.username
+                self?.checkMarkButton.isHidden = !user.isUserVerified
                 
             }
         }

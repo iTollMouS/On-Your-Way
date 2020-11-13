@@ -112,6 +112,13 @@ class OrdersController: UIViewController {
     
     // MARK: - fetchUser
     func fetchUser(){
+        if !isConnectedToNetwork(){
+            CustomAlertMessage(condition: .warning, messageTitle: "انقطاع في الاتصال",
+                               messageBody: "الرجاء التاكد من الاتصال للشبكة",
+                               size: CGSize(width: view.frame.width - 50, height: 280)) {
+            }
+            return
+        }
         guard let uid = Auth.auth().currentUser?.uid else { return }
         UserServices.shared.fetchUser(userId: uid) { [weak self] user in
             self?.user = user
@@ -252,8 +259,8 @@ extension OrdersController : OrderDetailsControllerDelegate {
     }
     
     func handleDismissalAndRefreshing(_ view: OrderDetailsController) {
-        navigationController?.popViewController(animated: true)
         DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
             self?.tableView.beginUpdates()
             self?.fetchTrips()
             self?.tableView.reloadData()

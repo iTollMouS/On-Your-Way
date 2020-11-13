@@ -272,15 +272,15 @@ class PeopleReviewsController: UIViewController {
         DispatchQueue.main.async { 
             TripService.shared.fetchMyRequest(userId: reviewerId) { [weak self] packages in
                 if packages.isEmpty{
-                    self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
+                    self?.writeReviewButton.setTitle("لاتستطيع تقييم \(self!.user.username)", for: .normal)
                     self?.writeReviewButton.isEnabled = false
                 } else {
                     packages.forEach{
-                        if $0.packageStatus == .packageIsAccepted {
-                            self?.submitReviewButton.setTitle("Write a review for \(self!.user.username)", for: .normal)
+                        if $0.packageStatus == .packageIsAccepted || $0.packageStatus == .packageIsDelivered {
+                            self?.submitReviewButton.setTitle("اكتب تقييم عن \(self!.user.username)", for: .normal)
                             self?.updateReviewOnTouch()
                         } else {
-                            self?.writeReviewButton.setTitle("You can not review \(self!.user.username)", for: .normal)
+                            self?.writeReviewButton.setTitle("لاتستطيع تقييم \(self!.user.username)", for: .normal)
                             self?.writeReviewButton.isEnabled = false
                         }
                         self?.tableView.reloadData()
@@ -388,7 +388,7 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PeopleReviewsCell
         cell.review = reviews[indexPath.row]
-        
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -439,18 +439,13 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
         }
         return action
     }
-
-        func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-            let selectedReview = reviews[indexPath.row]
-            if selectedReview.userID == User.currentId {
-                let reportAction = reportReview(review: selectedReview ,at: indexPath)
-                return UISwipeActionsConfiguration(actions: [reportAction])
-            } else {
-                return nil
-            }
-        }
     
- 
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let selectedReview = reviews[indexPath.row]
+        let reportAction = reportReview(review: selectedReview ,at: indexPath)
+        return UISwipeActionsConfiguration(actions: [reportAction])
+    }
+    
     
     func reportReview(review: Review ,at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "ابلاغ عن مخالفه") { [weak self] (action, view, completion) in
@@ -458,7 +453,17 @@ extension PeopleReviewsController: UITableViewDataSource, UITableViewDelegate {
             alert.addAction(UIAlertAction(title: "الابلاغ", style: .destructive, handler: { [weak self] (alertAction) in
                 DispatchQueue.main.async { [weak self] in
                     ReviewService.shared.editMyReview (userId: self!.user.id, review: review) { error in
-                        print("DEBUG: success!!!!")
+                        if let error = error {
+                            CustomAlertMessage(condition: .error, messageTitle: "حدث خطا ما",
+                                               messageBody: "حدث خطا ما ، الرجاء التاكد من الاتصال بالانترنت\(error.localizedDescription)",
+                                               size: CGSize(width: 360, height: 280)) { [weak self] in
+                            }
+                            return
+                        }
+                        CustomAlertMessage(condition: .success, messageTitle: "استلام بلاغ",
+                                           messageBody: "تم استلام الشكوى بنجاح ، و سيتم التواصل معك لمتابعة الحالة",
+                                           size: CGSize(width: 360, height: 280)) { [weak self] in
+                        }
                         self?.tableView.updateRow(row: indexPath.row)
                         self?.tableView.reloadData()
                     }

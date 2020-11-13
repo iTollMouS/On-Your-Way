@@ -49,6 +49,13 @@ class TripsTimelineController: UITableViewController {
     
     // MARK: - fetchTrips()
     func fetchTrips(){
+        if !isConnectedToNetwork(){
+            CustomAlertMessage(condition: .warning, messageTitle: "انقطاع في الاتصال",
+                               messageBody: "الرجاء التاكد من الاتصال للشبكة",
+                               size: CGSize(width: view.frame.width - 50, height: 280)) {
+            }
+            return
+        }
         DispatchQueue.main.async {
             TripService.shared.fetchAllTrips { [weak self] trips in
                 /*note that in the func we made some omitting duplicate methods
@@ -71,10 +78,10 @@ class TripsTimelineController: UITableViewController {
         newTripController.popupItem.title = "مسافر؟"
         newTripController.popupBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         newTripController.popupItem.subtitle = "اضغط هنا لإعلام العملاء برحلتك لزيادة دخلك الشهري"
-//        newTripController.popupBar.barItemsSemanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
-//        newTripController.popupBar.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
-//        tabBarController?.popupBar.barItemsSemanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
-//        tabBarController?.popupBar.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
+        //        newTripController.popupBar.barItemsSemanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
+        //        newTripController.popupBar.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
+        //        tabBarController?.popupBar.barItemsSemanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
+        //        tabBarController?.popupBar.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ? .forceRightToLeft : .forceRightToLeft
         tabBarController?.popupBar.titleTextAttributes = [ .foregroundColor: UIColor.white ]
         tabBarController?.popupBar.subtitleTextAttributes = [ .foregroundColor: UIColor.gray ]
         tabBarController?.presentPopupBar(withContentViewController: newTripController, animated: true, completion: nil)
@@ -138,6 +145,8 @@ class TripsTimelineController: UITableViewController {
 }
 
 // MARK: - Extensions
+
+
 
 
 // MARK: - table extensions

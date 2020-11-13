@@ -44,7 +44,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
              
             do {
                 
-                try recordingSession.setCategory(.playAndRecord, mode: .default)
+                try recordingSession.setCategory(.playAndRecord, mode: .spokenAudio)
                 try recordingSession.setActive(true)
                 
             } catch (let error){

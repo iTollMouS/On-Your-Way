@@ -244,19 +244,19 @@ class TripService {
                     }
                 }
                 
-                if packageChanged.type == .removed {
-                    let result = Result {
-                        try? packageChanged.document.data(as: Package.self)
-                    }
-                    switch result {
-                    case .success( let package):
-                        if let package = package {
-                            packages.append(package)
-                        }
-                    case .failure(let error ):
-                        print("DEBUG: error \(error.localizedDescription)")
-                    }
-                }
+//                if packageChanged.type == .removed {
+//                    let result = Result {
+//                        try? packageChanged.document.data(as: Package.self)
+//                    }
+//                    switch result {
+//                    case .success( let package):
+//                        if let package = package {
+//                            packages.append(package)
+//                        }
+//                    case .failure(let error ):
+//                        print("DEBUG: error \(error.localizedDescription)")
+//                    }
+//                }
                 
             }
             

@@ -62,7 +62,7 @@ class SendPackageController: UIViewController {
     
     private lazy var packageInfoTextView: UITextView = {
         let textView = UITextView()
-        textView.textAlignment = .left
+        textView.textAlignment = .center
         textView.textColor = .blueLightFont
         textView.setHeight(height: 100)
         textView.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
@@ -165,8 +165,7 @@ class SendPackageController: UIViewController {
         sendPackageButton.centerX(inView: packageInfoTextView, topAnchor: packageInfoTextView.bottomAnchor, paddingTop: 30)
         
         packageInfoTextView.addSubview(placeholderLabel)
-        placeholderLabel.anchor(top: packageInfoTextView.topAnchor, left: packageInfoTextView.leftAnchor,
-                                paddingTop: 8, paddingLeft: 8)
+        placeholderLabel.centerInSuperview()
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChanger), name: UITextView.textDidChangeNotification, object: nil)
     }
     
@@ -199,6 +198,14 @@ class SendPackageController: UIViewController {
     }
     
     @objc fileprivate func handleSubmittingShipment(){
+        
+        if !isConnectedToNetwork(){
+            CustomAlertMessage(condition: .warning, messageTitle: "انقطاع في الاتصال",
+                               messageBody: "الرجاء التاكد من الاتصال للشبكة",
+                               size: CGSize(width: view.frame.width - 50, height: 280)) {
+            }
+            return
+        }
         
         if packageImageUrls.isEmpty {
             self.showAlertMessage("لاتوجد صورة", "الرجاء ارفاق صورة واحدة على الاقل")
@@ -268,26 +275,26 @@ extension SendPackageController : SendPackageImagesStackViewDelegate {
     func imagesStackView(_ view: SendPackageImagesStackView, index: Int) {
         
         if !isConnectedToNetwork() {
-            showBanner(message: "Please check your internet connection!", state: .error, location: .top,
+            showBanner(message: "الرجائ التاكد من الاتصال بالانترنت!", state: .error, location: .top,
                        presentingDirection: .vertical, dismissingDirection: .vertical, sender: self)
             return
         }
         
         self.imageIndex = index
-        let alert = UIAlertController(title: nil, message: "Choose photo source", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alertAction) in
+        let alert = UIAlertController(title: nil, message: "اختر مصدر الصور", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "الكاميرا", style: .default, handler: { (alertAction) in
             self.imagePicker.sourceType = .camera
             self.imagePicker.cameraCaptureMode = .photo
             self.imagePicker.showsCameraControls = true
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
         
-        alert.addAction(UIAlertAction(title: "Album", style: .default, handler: { (alertAction) in
+        alert.addAction(UIAlertAction(title: "البوم الصور", style: .default, handler: { (alertAction) in
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
         
-        alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "الغاء", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 }
