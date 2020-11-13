@@ -37,8 +37,8 @@ class NotificationsFooterView: UIView {
         imageView.tintColor = .white
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFill
-        imageView.setDimensions(height: 120, width: 120)
-        imageView.layer.cornerRadius = 120 / 2
+        imageView.setDimensions(height: 60, width: 60)
+        imageView.layer.cornerRadius = 60 / 2
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleImageTapped)))
         return imageView
@@ -84,13 +84,17 @@ class NotificationsFooterView: UIView {
         switch package.packageStatus {
         
         case .packageIsPending:
-            packageIsDeliveredLabel.text = "سوف يتم مشاركة صوره من اثبات وصول الشحنه عندما يسلم المسافر الشحنه"
+            packageIsDeliveredLabel.text = "في انتظار قبول الطلب"
+            imagePlaceholder.isHidden = true
+            imagePlaceholder.setDimensions(height: 10, width: 10)
         case .packageIsRejected:
             print("")
         case .packageIsAccepted:
             packageIsDeliveredLabel.text = "سوف يتم مشاركة صوره من اثبات وصول الشحنه عندما يسلم المسافر الشحنه"
+            imagePlaceholder.setDimensions(height: 60, width: 60)
         case .packageIsDelivered:
             packageIsDeliveredLabel.text = "تم مشاركة صورة من اثبات الوصول في الاسفل\n\(package.packageStatusTimestamp)"
+            imagePlaceholder.setDimensions(height: 60, width: 60)
         }
     }
     

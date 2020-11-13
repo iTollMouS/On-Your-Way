@@ -22,7 +22,7 @@ class OrderDetailsController: UIViewController {
     weak var delegate: OrderDetailsControllerDelegate?
     
     private lazy var headerView = OrderDetailHeader(package: package)
-    private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 550))
+    private lazy var footerView = OrderDetailsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 450))
     
     private var viewModel: PackageStatus?
     private var images = [SKPhoto]()

@@ -41,8 +41,8 @@ class OrderDetailsFooterView: UIView {
         imageView.tintColor = .white
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFill
-        imageView.setDimensions(height: 120, width: 120)
-        imageView.layer.cornerRadius = 120 / 2
+        imageView.setDimensions(height: 60, width: 60)
+        imageView.layer.cornerRadius = 60 / 2
         imageView.isUserInteractionEnabled = true
         imageView.isHidden = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleImageTapped)))
@@ -51,9 +51,9 @@ class OrderDetailsFooterView: UIView {
     
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [rejectButton,
-                                                       acceptButton,
+        let stackView = UIStackView(arrangedSubviews: [acceptButton,
                                                        startChatButton,
+                                                       rejectButton,
         ])
         stackView.axis = .vertical
         stackView.spacing = 20
@@ -69,8 +69,9 @@ class OrderDetailsFooterView: UIView {
         addSubview(packageIsDeliveredLabel)
         packageIsDeliveredLabel.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor,
                                        paddingLeft: 28, paddingRight: 28)
+        packageIsDeliveredLabel.backgroundColor = .systemGreen
         addSubview(imagePlaceholder)
-        imagePlaceholder.centerX(inView: self, topAnchor: packageIsDeliveredLabel.bottomAnchor, paddingTop: 36)
+        imagePlaceholder.centerX(inView: self, topAnchor: packageIsDeliveredLabel.bottomAnchor, paddingTop: 26)
         
         
         addSubview(stackView)
@@ -84,6 +85,7 @@ class OrderDetailsFooterView: UIView {
         switch package.packageStatus {
         case .packageIsPending:
             imagePlaceholder.isHidden = true
+            imagePlaceholder.setDimensions(height: 10, width: 10)
             packageIsDeliveredLabel.text = "في حالة قبولك للطلب ، تستطيع مشاركة صورة  من اثبات وصول الشحنه عند التسليم\nسيتم ارسال تنبيه للعميل عند رفع صوره اثبات وصول الشحنه"
         case .packageIsRejected:
             print("")
@@ -91,21 +93,25 @@ class OrderDetailsFooterView: UIView {
             acceptButton.setTitle("قمت بقبول الطلب في \n\(package.packageStatusTimestamp)", for: .normal)
             acceptButton.isEnabled = false
             imagePlaceholder.isHidden = false
+            imagePlaceholder.setDimensions(height: 60, width: 60)
+            imagePlaceholder.isUserInteractionEnabled = false
+            packageIsDeliveredLabel.text = "يستطيع العميل ان يرسل تقييم عن جودة الخدمه المقدمة منك"
         case .packageIsDelivered:
             packageIsDeliveredLabel.text = "يستطيع العميل ان يرسل تقييم عن جودة الخدمه المقدمة منك"
             FileStorage.downloadImage(imageUrl: package.packageProofOfDeliveredImage) { [weak self] image in
                 guard let image = image else {return}
                 self?.imagePlaceholder.image = image
                 self?.imagePlaceholder.contentMode = .scaleAspectFill
-                self?.imagePlaceholder.setDimensions(height: 120, width: 120)
+                self?.imagePlaceholder.setDimensions(height: 60, width: 60)
                 self?.imagePlaceholder.clipsToBounds = true
-                self?.imagePlaceholder.layer.cornerRadius = 120 / 2
+                self?.imagePlaceholder.layer.cornerRadius = 60 / 2
             }
             acceptButton.setTitle(" تم ايصال الطلب في\n\(package.packageStatusTimestamp)", for: .normal)
             imagePlaceholder.isHidden = false
             rejectButton.isEnabled = false
             rejectButton.alpha = 0
             acceptButton.isEnabled = false
+            imagePlaceholder.isUserInteractionEnabled = true
         }
     }
     

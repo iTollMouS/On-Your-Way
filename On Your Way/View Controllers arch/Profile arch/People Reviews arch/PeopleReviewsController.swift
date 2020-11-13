@@ -544,12 +544,10 @@ extension PeopleReviewsController {
             }
             print("DEBUG:: success")
         }
-        
         SwiftEntryKit.dismiss(.displayed) { [self] in reviewTextView.text = "" }
         self.fetchReviews()
         self.tableView.reloadData()
         
         
     }
-    
 }

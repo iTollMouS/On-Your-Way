@@ -24,7 +24,7 @@ class NotificationsDetailsController: UITableViewController {
     // MARK: - Propertes
     private var package: Package
     private lazy var headerView = OrderDetailHeader(package: package)
-    private lazy var footerView = NotificationsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 350))
+    private lazy var footerView = NotificationsFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
     private var images = [SKPhoto]()
     private var traveler: User?
     private var user: User
@@ -58,8 +58,8 @@ class NotificationsDetailsController: UITableViewController {
                 self?.footerView.imagePlaceholder.image = image
                 self?.footerView.imagePlaceholder.backgroundColor = .clear
                 self?.footerView.imagePlaceholder.contentMode = .scaleAspectFill
-                self?.footerView.imagePlaceholder.setDimensions(height: 120, width: 120)
-                self?.footerView.imagePlaceholder.layer.cornerRadius = 120 / 2
+                self?.footerView.imagePlaceholder.setDimensions(height: 60, width: 60)
+                self?.footerView.imagePlaceholder.layer.cornerRadius = 60 / 2
                 self?.footerView.imagePlaceholder.clipsToBounds = true
                 self?.tableView.reloadData()
             }
@@ -102,7 +102,7 @@ class NotificationsDetailsController: UITableViewController {
     fileprivate func configureTableView(){
         tableView.register(NotificationsDetailsCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.estimatedRowHeight = UITableView.automaticDimension
-        tableView.rowHeight = 150
+        tableView.rowHeight = 140
         tableView.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
         tableView.tableHeaderView = headerView
         tableView.tableFooterView = footerView
